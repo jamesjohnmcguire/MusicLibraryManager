@@ -156,10 +156,10 @@ namespace MusicUtility
 				if (null == tracks)
 				{
 					// not in collection yet, add it
-					string filePath = MoveFileBasedOnTags(file);
+					string track = MoveFileBasedOnTags(file);
 
 					IITOperationStatus status =
-						iTunes.LibraryPlaylist.AddFile(filePath);
+						iTunes.LibraryPlaylist.AddFile(track);
 				}
 			}
 			catch (Exception exception)
