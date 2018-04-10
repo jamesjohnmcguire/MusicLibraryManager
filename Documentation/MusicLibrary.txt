@@ -1,19 +1,65 @@
+Music
+	Music Files
+	Library
+		Issues
+			Duplicate files (exact)
+				DoubleKiller.exe
+				easy .net method
+			Duplicate files (nearly identical - different metadata)
+				need to find some examples
+				go through some test cases
+			Duplicate files (nearly identical - based off same original, different rips)
+				need to find some examples
+				compare
+				choose better based off of sample rate, length, review
+			Duplicate files (different originals)
+				need to find some examples
+				compare
+				keep both?
+				keep preferred
+			bad file names	ex: track 5
+				easy .net method
+			file names	track number in front
+				easy .net method
+			Songs not put in their artist directory
+			various artists, compilations
+				remove compilation flag
+				move to proper folder
+			skips in files
+				replace
+			missing tracks in iTunes
+				re-add to iTunes
+			lost iTunes data (Play counts, rating, PlayLists)
+				fix xml file
+			random named artwork
+				identify and move to proper place
+			artwork not placed in correct folder
+				identify and move to proper place
+			top level sometimes contains album specific folder, as opposed to just performer info.
+				identify and move to proper place
+			add support for art work and such
+			link compilations
+			(Disk 2)
+			remove begin and ending symbols such as _
+Process
+	get music library location
+	for each folder
+		for each file
+			Fix file name, if needed
+			if file is in iTunes
+				Update file name in iTunes
+			else
+				Add to iTunes
+			Add to our list
+				name
+				size
+				crc
+				date
+
 https://github.com/filoe/cscore
 https://github.com/mono/taglib-sharp
 http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
 
-7z e iTunes6464Setup.exe
-CALL AppleApplicationSupport64.msi
-PAUSE
-AppleMobileDeviceSupport6464.msi
-PAUSE
-AppleSoftwareUpdate.msi
-PAUSE
-Bonjour64.msi
-PAUSE
-iTunes6464.msi
-iTunes6464Setup.exe
-SetupAdmin.exe
 
 {"Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE))."}
 	After several retries, got it to work
@@ -22,37 +68,6 @@ Exception from HRESULT: 0xA0040203
 mvhd box not found.
 "}	System.Exception {TagLib.CorruptFileException}
 
-http://securityblog.gr/1127/top-15-open-sourcefree-securityhacking-tools/
-
-.plist
-.txt
-.lit
-.pdf
-.doc
-.zip
-.htm
-.Lit
-.LIT
-.opf
-.jpg
-.XLS
-.SAV
-.psp
-.gz
-.sav
-.JPG
-.gif
-.ini
-.cue
-.log
-.flac
-.crd
-.png
-.jpeg
-.nfo
-.sfv
-.url
-.exe
 
 .m3u
 .m4a
@@ -62,11 +77,6 @@ http://securityblog.gr/1127/top-15-open-sourcefree-securityhacking-tools/
 
 .wma
 
-later	add support for art work and such
-link compilations
- (Disk 2)
-Music
-	remove begin and ending symbols such as _
 Music
 	c# itunes api
 	http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
@@ -93,75 +103,12 @@ Music
 	https://github.com/naudio/NAudio
 	http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
 	http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
-Music
-	Music Files
-	Library
-		Issues
-			Duplicate files (exact)
-				DoubleKiller.exe
-				easy .net method
-			Duplicate files (nearly identical - different metadata)
-				need to find some examples
-				go through some test cases
-			Duplicate files (nearly identical - based off same original, different rips)
-				need to find some examples
-				compare
-				choose better based off of sample rate, length, review
-			Duplicate files (different originals)
-				need to find some examples
-				compare
-				keep both?
-				keep preferred
-			bad file names	ex: track 5
-				easy .net method
-			file names	track number in front
-				easy .net method
-			various artists, compilations
-				remove compilation flag
-				move to proper folder
-			skips in files
-				replace
-			missing tracks in iTunes
-				re-add to iTunes
-			lost iTunes data (Play counts, rating, PlayLists)
-				fix xml file
-			random named artwork
-				identify and move to proper place
-			artwork not placed in correct folder
-				identify and move to proper place
-			top level sometimes contains album specific folder, as opposed to just performer info.
-				identify and move to proper place
-
-			get music library location
-			for each folder
-				for each file
-					Fix file name, if needed
-					if file is in iTunes
-						Update file name in iTunes
-					else
-						Add to iTunes
-					Add to our list
-						name
-						size
-						crc
-						date
 
 		https://musicbrainz.org/doc/Beginners_Guide
 		Remove file duplicates
 		iTunes
-			iTunes Installer Problem
-				1) Close iTunes if open
-				2) Use a program such as 7-zip to open up the iTunes 12.3 executable (e.g. iTunes6464Setup.exe) and extract the following:
-					iTunes6464.msi
-					AppleApplicationSupport64.msi
-					AppleMobileDeviceSupport6464.msi
-					NOTE: the names will vary slight for 32-bit OSs
-				3) Right-click on AppleApplicationSupport64.msi and choose install. If there is a prompt to repair or install then choose repair.
-				4) Right-click on AppleMobileDeviceSupport6464.msi and choose install. If there is a prompt to repair or install then choose repair.
-				5) Right-click on iTunes6464.msi and choose install.
 			http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
 			https://support.apple.com/en-us/HT201596
-		iTunes
 			http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
 			http://samsoft.org.uk/iTunes/scripts.asp
 			http://www.everythingitunes.com/os/windows/category/scripts/
@@ -172,28 +119,3 @@ Music
 
 				http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
 				https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-		Songs
-			Duran Duran	Ordinary World
-			Right Said Fred
-			Cee Lo	Green	Forget You
-			Shikuasa
-			Jungle Boogie
-			That's the way I like it
-			Chika boom boom
-			Superstition
-			Wild cherry
-			Rockafella slang
-			Rare earth
-			Lincoln park
-			Gonna make you sweat
-			Sexy mother fucker prince
-			Hey ho
-			Too sexy
-			Jet are u gonna me girl
-			Cold Play	Hymn for the weekend
-			Indian Ropeman
-			radar love
-		Songs to get
-			Jimmy Cliff	I can see clearly now
-			Alexandra Burke	Halleliyah
-			Rage against the machine	Killing in the Name

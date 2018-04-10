@@ -14,15 +14,16 @@ namespace MusicUtility
 	{
 		private iTunesApp iTunes = null;
 		private IITLibraryPlaylist playList = null;
-		private string iTunesFolderLocation = null;
+		private string iTunesDirectoryLocation = null;
 
 		public string ITunesLibraryLocation
 		{
 			get
 			{
-				return null;
+				return iTunesDirectoryLocation;
 			}
 		}
+
 		public MusicUtility()
 		{
 			//create a reference to iTunes
@@ -32,12 +33,12 @@ namespace MusicUtility
 
 			ItunesXmlFile iTunesXmlFile =
 				new ItunesXmlFile(iTunes.LibraryXMLPath);
-			iTunesFolderLocation = iTunesXmlFile.ITunesFolderLocation;
+			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 		}
 
 		public int CleanMusicLibrary()
 		{
-			CleanFiles(iTunesFolderLocation);
+			CleanFiles(iTunesDirectoryLocation);
 
 			// dispose
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(iTunes);
@@ -145,13 +146,16 @@ namespace MusicUtility
 			{
 				Console.WriteLine("Checking: " + file.FullName);
 
-				string filePath = CleanTrackNumbersOutOfFileName(file);
+				string fileName = CleanTrackNumbersOutOfFileName(file);
 
-				// filename might have changed
-				file = new FileInfo(filePath);
+				if (!fileName.Equals(file.Name))
+				{
+					string filePath = Path.Combine(file.DirectoryName, fileName);
+					file= new FileInfo(filePath);
+				}
 
 				IITTrackCollection tracks =
-					GetTracksFromFileName(file.Name, filePath);
+					GetTracksFromFileName(file.Name, file.FullName);
 
 				if (null == tracks)
 				{
@@ -170,6 +174,33 @@ namespace MusicUtility
 			}
 		}
 
+		private FileInfo CleanFileName(FileInfo file, string artist)
+		{
+			string regex = @" \[.*?\]";
+			string fileName = CleanTrackNumbersOutOfFileName(file);
+
+			if (!fileName.Equals(file.Name))
+			{
+				string filePath = Path.Combine(file.DirectoryName, fileName);
+				file = new FileInfo(filePath);
+			}
+
+			if (Regex.IsMatch(file.Name, regex))
+			{
+				string filePath = Regex.Replace(file.Name, regex, @"");
+				file = new FileInfo(filePath);
+			}
+
+			if ((!string.IsNullOrWhiteSpace(artist)) &&
+				(file.Name.Contains(artist + " - ")))
+			{
+				string filePath = file.Name.Replace(artist + " - ", "");
+				file = new FileInfo(filePath);
+			}
+
+			return file;
+		}
+
 		private void CleanFiles(string path)
 		{
 			try
@@ -183,9 +214,19 @@ namespace MusicUtility
 
 				if (Directory.Exists(path))
 				{
-					DirectoryInfo dir = new DirectoryInfo(path);
+					string newPath = UpdateArtistLocation(path);
 
-					FileInfo[] files = dir.GetFiles();
+					//if (!path.Equals(newPath))
+					//{
+					//	// current directory is no more
+					//	return;
+					//}
+
+					path = UpdateAlbumDirectory(path);
+
+					DirectoryInfo directory = new DirectoryInfo(path);
+
+					FileInfo[] files = directory.GetFiles();
 
 					foreach (FileInfo file in files)
 					{
@@ -197,9 +238,18 @@ namespace MusicUtility
 
 					string[] directories = Directory.GetDirectories(path);
 
-					foreach (string directory in directories)
+					foreach (string subDirectory in directories)
 					{
-						CleanFiles(directory);
+						CleanFiles(subDirectory);
+					}
+
+					// refresh
+					directories = Directory.GetDirectories(path);
+					files = directory.GetFiles();
+
+					if ((files.Length == 0) && (directories.Length == 0))
+					{
+						Directory.Delete(path, false);
 					}
 				}
 			}
@@ -216,7 +266,8 @@ namespace MusicUtility
 
 		private string CleanTrackNumbersOutOfFileName(FileInfo file)
 		{
-			string newName = null;
+			string newName = file.Name;
+
 			string[] regexes =
 				new string[] { @"^\d+-\d+ ", @"^\d+ - ", @"^\d+ " };
 
@@ -397,7 +448,7 @@ namespace MusicUtility
 
 			if (!string.IsNullOrWhiteSpace(tags.Artist))
 			{
-				string path = Path.Combine(iTunesFolderLocation,
+				string path = Path.Combine(iTunesDirectoryLocation,
 					"Music\\" + tags.Artist);
 				DirectoryInfo directory = new DirectoryInfo(path);
 
@@ -423,7 +474,10 @@ namespace MusicUtility
 						path + "\\" + tags.Title + file.Extension;
 				}
 
-				System.IO.File.Move(file.FullName, filePath);
+				if (!filePath.Equals(file.FullName))
+				{
+					System.IO.File.Move(file.FullName, filePath);
+				}
 			}
 
 			return filePath;
@@ -536,6 +590,66 @@ namespace MusicUtility
 
 			//this.UpdateLabel("Checked " + numberChecked.ToString() + " tracks and " + numberDuplicateFound.ToString() + " duplicate tracks found.");
 			//this.SetupProgress(1);
+		}
+
+		private string UpdateArtistLocation(string path)
+		{
+			string newPath = path;
+
+			string[] pathParts =
+				path.Split(Path.DirectorySeparatorChar);
+			string[] iTunesPathParts =
+				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+			int depth = pathParts.Length - iTunesPathParts.Length;
+
+			if ((depth >  2) && pathParts[6].Equals("Music"))
+			{
+				List<string> sourceList = new List<string>(pathParts);
+				sourceList.RemoveAt(sourceList.Count - 1);
+				string[] sourceParts = sourceList.ToArray();
+				string sourcePath = string.Join("\\", sourceParts);
+
+				List<string> list = new List<string>(pathParts);
+				list.RemoveAt(7);
+
+				pathParts = list.ToArray();
+				newPath = string.Join("\\", pathParts);
+
+				list.RemoveAt(list.Count - 1);
+
+				string[] destinationParts = list.ToArray();
+				string destinationPath = string.Join("\\", destinationParts);
+
+				DirectoryInfo directory = new DirectoryInfo(destinationPath);
+
+				if (!directory.Exists)
+				{
+					directory.Create();
+					//Directory.Move(sourcePath, destinationPath);
+				}
+			}
+
+			return newPath;
+		}
+
+		private static string UpdateAlbumDirectory(string albumPath)
+		{
+			string newAlbumPath = albumPath;
+			string regex = @" \[.*?\]";
+
+			if (albumPath.EndsWith(" (Disc 2)"))
+			{
+				newAlbumPath = albumPath.Replace(" (Disc 2)", "");
+
+				Directory.Move(albumPath, newAlbumPath);
+			}
+
+			if (Regex.IsMatch(newAlbumPath, regex))
+			{
+				newAlbumPath = Regex.Replace(newAlbumPath, regex, @"");
+			}
+
+			return newAlbumPath;
 		}
 
 		private bool UpdateLocation(IITTrack track, string filePath)

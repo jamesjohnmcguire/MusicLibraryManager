@@ -51,7 +51,7 @@ namespace MusicUtility
 			//innerText = xmlNodeList[0].InnerText;
 			if (!string.IsNullOrWhiteSpace(innerText))
 			{
-				Console.WriteLine("value: " + innerText);
+				//Console.WriteLine("value: " + innerText);
 
 				value = innerText;
 			}
