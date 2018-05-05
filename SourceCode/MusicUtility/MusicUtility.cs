@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text.RegularExpressions;
 using iTunesLib;
 using TagLib;
@@ -13,8 +17,13 @@ namespace MusicUtility
 	public class MusicUtility
 	{
 		private iTunesApp iTunes = null;
+		private static readonly ILog log = LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private IITLibraryPlaylist playList = null;
 		private string iTunesDirectoryLocation = null;
+		private static readonly ResourceManager stringTable =
+			new ResourceManager("MusicUtility.Resources",
+			Assembly.GetExecutingAssembly());
 		private Tags tags = null;
 
 		public string ITunesLibraryLocation
@@ -131,9 +140,8 @@ namespace MusicUtility
 			}
 			catch(Exception exception)
 			{
-				Console.WriteLine("Exception: " + exception.Message);
-				//log.Error(CultureInfo.InvariantCulture, m => m(
-				//	stringTable.GetString("EXCEPTION") + ex.Message));
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
 			}
 
 			return same;
@@ -143,7 +151,8 @@ namespace MusicUtility
 		{
 			try
 			{
-				Console.WriteLine("Checking: " + file.FullName);
+				log.Info(CultureInfo.InvariantCulture, m => m(
+					"Checking: " + file.FullName));
 
 				// get and update tags
 				tags = new Tags(file.FullName);
@@ -158,9 +167,8 @@ namespace MusicUtility
 			}
 			catch (Exception exception)
 			{
-				Console.WriteLine("Exception: " + exception.Message);
-				//log.Error(CultureInfo.InvariantCulture, m => m(
-				//	stringTable.GetString("EXCEPTION") + ex.Message));
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
 			}
 		}
 
@@ -238,9 +246,8 @@ namespace MusicUtility
 			}
 			catch (Exception exception)
 			{
-				Console.WriteLine("Exception: " + exception.Message);
-				//log.Error(CultureInfo.InvariantCulture, m => m(
-				//	stringTable.GetString("EXCEPTION") + ex.Message));
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
 			}
 			finally
 			{
@@ -271,7 +278,7 @@ namespace MusicUtility
 
 					string message = string.Format("updated: {0} with: {1}",
 						oldName, name);
-					Console.WriteLine(message);
+					log.Info(CultureInfo.InvariantCulture, m => m(message));
 
 					newName = filePath;
 					break;
@@ -567,7 +574,7 @@ namespace MusicUtility
 			string message = string.Format("Removed { 0} track{ 1}.",
 				deletedTracks, deletedTracks == 1 ? "" : "s");
 
-			Console.WriteLine(message);
+			log.Info(CultureInfo.InvariantCulture, m => m(message));
 		}
 
 		private void RemoveDuplicates()
@@ -801,9 +808,8 @@ namespace MusicUtility
 						// TODO:  If you get here, find out why the exception,
 						// the actual type of exception, then find out if the
 						// below code makes any sense
-						Console.WriteLine("Exception: " + exception.Message);
-						//log.Error(CultureInfo.InvariantCulture, m => m(
-						//	stringTable.GetString("EXCEPTION") + ex.Message));
+						log.Error(CultureInfo.InvariantCulture, m => m(
+							exception.ToString()));
 
 						//addFileFromLocation(ref track, filePath);
 						result = UpdateTrackFromLocation(track, filePath);
@@ -818,6 +824,7 @@ namespace MusicUtility
 				//	string location = "C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Music\\The Jackson 5\\Soul Source Jackson 5 Remixes\\05 ABC (Love Stream Mix By Kayoko Ki).m4a";
 				//	fileTrack.Location = location;
 
+				// log.Info(CultureInfo.InvariantCulture, m => m(message));
 				//	Console.WriteLine("Location: " + fileTrack.Location);
 				//}
 			}
@@ -877,10 +884,8 @@ namespace MusicUtility
 							}
 							catch (Exception exception)
 							{
-								Console.WriteLine("Exception: " +
-									exception.Message);
-								//log.Error(CultureInfo.InvariantCulture, m => m(
-								//	stringTable.GetString("EXCEPTION") + ex.Message));
+								log.Error(CultureInfo.InvariantCulture, m => m(
+									exception.ToString()));
 							}
 
 							foundTrack.Artist = artist;

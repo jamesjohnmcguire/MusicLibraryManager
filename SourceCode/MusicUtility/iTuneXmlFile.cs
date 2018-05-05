@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Resources;
 using System.Web;
 using System.Xml;
 
@@ -11,6 +14,11 @@ namespace MusicUtility
 	public class ItunesXmlFile
 	{
 		private string filePath = null;
+		private static readonly ILog log = LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ResourceManager stringTable =
+			new ResourceManager("MusicUtility.Resources",
+			Assembly.GetExecutingAssembly());
 		private XmlDocument xmlDocument = null;
 
 		public string ITunesFolderLocation
@@ -51,7 +59,7 @@ namespace MusicUtility
 			//innerText = xmlNodeList[0].InnerText;
 			if (!string.IsNullOrWhiteSpace(innerText))
 			{
-				//Console.WriteLine("value: " + innerText);
+				log.Info("value: " + innerText);
 
 				value = innerText;
 			}
@@ -142,50 +150,50 @@ namespace MusicUtility
 			{
 				switch (str)
 				{
-					case "plist":
+				case "plist":
+					{
+						return ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.FirstChild);
+					}
+				case "integer":
+				case "real":
+				case "data":
+				case "date":
+					{
+						return currentElement.InnerText;
+					}
+				case "key":
+					{
+						return currentElement.InnerText;
+					}
+				case "string":
+					{
+						return currentElement.InnerText;
+					}
+				case "dict":
+					{
+						Dictionary<string, object> strs = new Dictionary<string, object>();
+						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i = i + 2)
 						{
-							return ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.FirstChild);
+							string str1 = (string)ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
+							object obj = ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
+							strs.Add(str1, obj);
 						}
-					case "integer":
-					case "real":
-					case "data":
-					case "date":
+						return strs;
+					}
+				case "array":
+					{
+						ArrayList arrayLists = new ArrayList();
+						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
-							return currentElement.InnerText;
+							arrayLists.Add(ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
 						}
-					case "key":
-						{
-							return currentElement.InnerText;
-						}
-					case "string":
-						{
-							return currentElement.InnerText;
-						}
-					case "dict":
-						{
-							Dictionary<string, object> strs = new Dictionary<string, object>();
-							for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i = i + 2)
-							{
-								string str1 = (string)ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
-								object obj = ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
-								strs.Add(str1, obj);
-							}
-							return strs;
-						}
-					case "array":
-						{
-							ArrayList arrayLists = new ArrayList();
-							for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
-							{
-								arrayLists.Add(ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
-							}
-							return arrayLists;
-						}
-					case "true":
-					case "false":
-						{
-							return currentElement.Name;
-						}
+						return arrayLists;
+					}
+				case "true":
+				case "false":
+					{
+						return currentElement.Name;
+					}
 				}
 			}
 			return null;

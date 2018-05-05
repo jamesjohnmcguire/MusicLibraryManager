@@ -850,6 +850,7 @@ namespace MusicUtility
 								}
 								catch (Exception exception)
 								{
+									log.Info(CultureInfo.InvariantCulture, m => m(message));
 									Console.WriteLine(string.Concat("Failed to delete track from iTunes.  Error: ", exception.ToString()));
 									flag = false;
 									break;
@@ -904,6 +905,7 @@ namespace MusicUtility
 									}
 									catch (Exception exception1)
 									{
+										log.Info(CultureInfo.InvariantCulture, m => m(message));
 										Console.WriteLine("Error importing track {0} to iTunes:  {1}", this.Location, exception1.ToString());
 										flag = false;
 									}
@@ -943,6 +945,7 @@ namespace MusicUtility
 					}
 					catch (Exception exception)
 					{
+						log.Info(CultureInfo.InvariantCulture, m => m(message));
 						Console.WriteLine("Deletion of track with path {0} failed: {1}", this.Location, exception.ToString());
 						flag = false;
 						this.ActionStatus = TrackItem.DA_ActionStatus.error;
@@ -1028,7 +1031,7 @@ namespace MusicUtility
 					return this.Location.Contains(fi.FullName);
 				}
 */
-				protected void OnPropertyChanged(string name)
+		protected void OnPropertyChanged(string name)
 				{
 					PropertyChangedEventHandler propertyChangedEventHandler = this.PropertyChanged;
 					if (propertyChangedEventHandler != null)
