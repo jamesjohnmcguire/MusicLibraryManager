@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
@@ -54,7 +49,34 @@ namespace MusicUtility
 
 			TagLib.File musicFile = TagLib.File.Create(file);
 
-			album = UpdateAlbumTag(musicFile.Tag.Album);
+			UpdateFileTags(musicFile, file);
+			album = musicFile.Tag.Album;
+
+			if (musicFile.Tag.AlbumArtists.Length > 0)
+			{
+				artist = musicFile.Tag.AlbumArtists[0];
+			}
+			else if (musicFile.Tag.Performers.Length > 0)
+			{
+				artist = musicFile.Tag.Performers[0];
+			}
+			else if (musicFile.Tag.Artists.Length > 0)
+			{
+				artist = musicFile.Tag.Artists[0];
+			}
+
+			title = musicFile.Tag.Title;
+			year = musicFile.Tag.Year;
+
+			musicFile.Dispose();
+		}
+
+		public bool UpdateFileTags(TagLib.File musicFile, string fileName)
+		{
+			bool updated = false;
+			string regex = @" \[.*?\]";
+
+			string album = UpdateAlbumTag(musicFile, fileName);
 
 			if (!album.Equals(musicFile.Tag.Album))
 			{
@@ -91,39 +113,58 @@ namespace MusicUtility
 				updated = true;
 			}
 
-			year = musicFile.Tag.Year;
-
 			if (true == updated)
 			{
 				musicFile.Save();
 			}
 
-			musicFile.Dispose();
-		}
-
-		public bool UpdateFileTags()
-		{
-			bool updated = false;
-
 			return updated;
 		}
 
-		private static string UpdateAlbumTag(string album)
+		private static string UpdateAlbumTag(
+			TagLib.File musicFile, string fileName)
 		{
-			string newAlbum = album;
-			string regex = @" \[.*?\]";
+			string album = musicFile.Tag.Album;
 
-			if (album.EndsWith(" (Disc 2)"))
+			if (string.IsNullOrWhiteSpace(album))
 			{
-				newAlbum = album.Replace(" (Disc 2)", "");
+				//foreach (TagLib.Tag tags in tag.Tags)
+				//{
+				//	album = tags.Album;
+
+				//	if (!string.IsNullOrWhiteSpace(album))
+				//	{
+				//		break;
+				//	}
+				//}
 			}
 
-			if (Regex.IsMatch(newAlbum, regex))
+			// tags are toast, attempt to get from file name
+			if (string.IsNullOrWhiteSpace(album))
 			{
-				newAlbum = Regex.Replace(album, regex, @"");
 			}
 
-			return newAlbum;
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				string[] regexes =
+					new string[] { @" \[.*?\]", @" \(Disc.*?Side\)",
+						@" \(Disc.*?Res\)" };
+
+				foreach (string regex in regexes)
+				{
+					if (Regex.IsMatch(album, regex))
+					{
+						album = Regex.Replace(album, regex, @"");
+					}
+				}
+
+				if (album.EndsWith(" (Disc 2)"))
+				{
+					album = album.Replace(" (Disc 2)", "");
+				}
+			}
+
+			return album;
 		}
 	}
 }

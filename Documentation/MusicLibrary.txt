@@ -119,3 +119,73 @@ Music
 
 				http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
 				https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+C:\Users\JamesMc\Music\iTunes
+often wrong year
+what about votes and stuff?
+C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Flac\\Chicago\\Beginnings\\07 - South California Purples.m4a
+Iron Butterfly - In-A-Gadda-Da-Vida [MFSL UDCD 675].m4a
+5
+9
+
+ Path.GetFullPath(tmpPath).Split(Path.DirectorySeparatorChar).Length;
+string[] pathParts = path.Split(Path.DirectorySeparatorChar);
+.Length;
+C:\Users\JamesMc\Data\External\Entertainment\Music\Derek and the Dominos\Layla And Other Assorted Love Songs (Disc 2)
+make 	public class Tags	Disposable
+title case
+"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Flac\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
+"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
+C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
+	FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
+Soul Source Jackson 5 Remixes 
+ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
+The Jackson 5 (Soul Source, 2000)
+iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
+MusicUtility.MusicUtility.AreFileAndTrackTheSame(String file, IITTrack track)
+Eternally Grateful (Disc 1: Disc 1 - In The Studio)
+Process Flow
+	CleanFiles
+		UpdateArtistLocation
+		//UpdateAlbumDirectory
+		CleanFile
+			tags = new Tags(file.FullName);
+			//CleanFileName
+			//	CleanTrackNumbersOutOfFileName
+			IITTrackCollection = GetTracksFromFileName
+				IITTrackCollection playList.Search
+				foreach
+					AreFileAndTrackTheSame
+					// TODO update based on tags
+					MoveFileBasedOnTags
+						File.Move
+					UpdateLocation
+						fileTrack.Location = filePath;
+				MoveFileBasedOnTags
+					File.Move
+				iTunes.LibraryPlaylist.AddFile
+			MoveFileBasedOnTags(file);
+					File.Move
+			iTunes.LibraryPlaylist.AddFile(track);
+updating tags
+updating directories
+updating filenames
+updating iTunes
+	adding file
+	updating track
+http://regexstorm.net/tester
+"More Songs About Buildings And Food (Disc 2: DVD Side)"
+"Fear Of Music (Disc 1: CD Side)"
+C:\Users\JamesMc\Data\External\Entertainment\Music\Flac\Talking Heads\Speaking in Tongues\I Get Wild_Wild Gravity.m4a
+C:\Users\JamesMc\Data\External\Entertainment\Music\Flac\Talking Heads\Speaking in Tongues\I Get Wild_Wild Gravity.m4a
+"Talking Heads- 77"
+fix "best hits of..." lame tags
+mp4 file diffs almost same... same?
+-		exception	{"mvhd box not found."}	System.Exception {TagLib.CorruptFileException}
+C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
+mp3 extract metadata
+https://www.sno.phy.queensu.ca/~phil/exiftool/#running
+https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
+music tag original album
+	https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
+	https://picard.musicbrainz.org/docs/development/
+https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3

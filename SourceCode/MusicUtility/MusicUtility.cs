@@ -15,6 +15,7 @@ namespace MusicUtility
 		private iTunesApp iTunes = null;
 		private IITLibraryPlaylist playList = null;
 		private string iTunesDirectoryLocation = null;
+		private Tags tags = null;
 
 		public string ITunesLibraryLocation
 		{
@@ -109,8 +110,6 @@ namespace MusicUtility
 
 			try
 			{
-				Tags tags = new Tags(file);
-
 				string album1 = track.Album;
 				string album2 = tags.Album;
 				string artist1 = track.Artist;
@@ -146,25 +145,16 @@ namespace MusicUtility
 			{
 				Console.WriteLine("Checking: " + file.FullName);
 
-				string fileName = CleanTrackNumbersOutOfFileName(file);
+				// get and update tags
+				tags = new Tags(file.FullName);
 
-				if (!fileName.Equals(file.Name))
-				{
-					string filePath = Path.Combine(file.DirectoryName, fileName);
-					file= new FileInfo(filePath);
-				}
+				//file = CleanFileName(file, tags.Artist);
 
-				IITTrackCollection tracks =
-					GetTracksFromFileName(file.Name, file.FullName);
+				// update directory and file names
+				file = UpdateFile(file);
 
-				if (null == tracks)
-				{
-					// not in collection yet, add it
-					string track = MoveFileBasedOnTags(file);
-
-					IITOperationStatus status =
-						iTunes.LibraryPlaylist.AddFile(track);
-				}
+				// update iTunes
+				IITTrackCollection tracks = UpdateItunes(file);
 			}
 			catch (Exception exception)
 			{
@@ -174,6 +164,7 @@ namespace MusicUtility
 			}
 		}
 
+		// NOT USED
 		private FileInfo CleanFileName(FileInfo file, string artist)
 		{
 			string regex = @" \[.*?\]";
@@ -214,15 +205,7 @@ namespace MusicUtility
 
 				if (Directory.Exists(path))
 				{
-					string newPath = UpdateArtistLocation(path);
-
-					//if (!path.Equals(newPath))
-					//{
-					//	// current directory is no more
-					//	return;
-					//}
-
-					path = UpdateAlbumDirectory(path);
+					//UpdateArtistLocation(path);
 
 					DirectoryInfo directory = new DirectoryInfo(path);
 
@@ -264,6 +247,7 @@ namespace MusicUtility
 			}
 		}
 
+		// NOT USED
 		private string CleanTrackNumbersOutOfFileName(FileInfo file)
 		{
 			string newName = file.Name;
@@ -295,6 +279,16 @@ namespace MusicUtility
 			}
 
 			return newName;
+		}
+
+		private static void CreateDirectoryIfNotExists(string path)
+		{
+			DirectoryInfo directory = new DirectoryInfo(path);
+
+			if (!directory.Exists)
+			{
+				directory.Create();
+			}
 		}
 
 		private void FindDeadTracks()
@@ -351,6 +345,124 @@ namespace MusicUtility
 			//this.SetupProgress(1);
 		}
 
+		private string GetAlbumFromPath(string path)
+		{
+			string artist = GetPathPart(path, 8);
+
+			return artist;
+		}
+
+		private string GetArtistFromPath(string path)
+		{
+			string artist = GetPathPart(path, 7);
+
+			return artist;
+		}
+
+		private string GetDulicateLocation(string path)
+		{
+			bool locationOk = false;
+			int tries = 2;
+
+			string destinationPath = path;
+			string[] pathParts =
+				path.Split(Path.DirectorySeparatorChar);
+
+			string[] iTunesPathParts =
+				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+			int depth = iTunesPathParts.Length - 1;
+
+			while (false == locationOk)
+			{
+				pathParts[depth] = "Music" + tries.ToString();
+
+				List<string> newList = new List<string>(pathParts);
+				while (newList.Count > depth + 1)
+				{
+					newList.RemoveAt(newList.Count - 1);
+				}
+				string[] newParts = newList.ToArray();
+				string newPath = string.Join("\\", newParts);
+
+				CreateDirectoryIfNotExists(newPath);
+
+				while (pathParts.Length > depth + 2)
+				{
+					depth++;
+					newPath += "\\" + pathParts[depth];
+
+					CreateDirectoryIfNotExists(newPath);
+				}
+
+				destinationPath =
+					newPath + "\\" + pathParts[pathParts.Length - 1];
+
+				if (!System.IO.File.Exists(destinationPath))
+				{
+					locationOk = true;
+				}
+			}
+
+			return destinationPath;
+		}
+
+		private string GetPathPart(string path, int index)
+		{
+			string part = string.Empty;
+
+			string cleanPath = RemoveIntermediaryPath(path);
+
+			string[] pathParts =
+				cleanPath.Split(Path.DirectorySeparatorChar);
+			string[] iTunesPathParts =
+				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+			int depth = pathParts.Length - iTunesPathParts.Length;
+
+			part = pathParts[index];
+
+			return part;
+		}
+
+		private static string GetPathPartFromTag(string tag, string path)
+		{
+			if (!string.IsNullOrWhiteSpace(tag))
+			{
+				path = tag;
+				char[] illegalCharactors = new char[]
+					{ '<', '>', '"', '?', '*', '\'' };
+
+				foreach(char charactor in illegalCharactors)
+				{
+					if (path.Contains(charactor))
+					{
+						path = path.Replace(charactor.ToString(), "");
+					}
+				}
+
+				illegalCharactors = new char[] { ':', '/', '\\', '|' };
+
+				foreach (char charactor in illegalCharactors)
+				{
+					if (path.Contains(charactor))
+					{
+						path = path.Replace(charactor.ToString(), " - ");
+					}
+				}
+
+				path = path.Replace("  ", " ");
+			}
+
+			return path;
+		}
+
+		private string GetTitleFromPath(string path)
+		{
+			string artist = GetPathPart(path, 8);
+
+			return artist;
+		}
+
+		// NOT USED
 		private DataTable GetTracks(IITPlaylist playlist)
 		{
 			DataTable tracksTable = new DataTable();
@@ -398,89 +510,27 @@ namespace MusicUtility
 			return tracksTable;
 		}
 
-		private IITTrackCollection GetTracksFromFileName(string fileName,
-			string filePath)
+		private string RemoveIntermediaryPath(string path)
 		{
-			string searchName = Path.GetFileNameWithoutExtension(fileName);
+			string newPath = path;
 
-			IITTrackCollection tracks = playList.Search(searchName,
-				ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+			string[] pathParts =
+				path.Split(Path.DirectorySeparatorChar);
+			string[] iTunesPathParts =
+				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+			int depth = pathParts.Length - iTunesPathParts.Length;
 
-			if (null != tracks)
+			if ((depth > 2) && pathParts[6].Equals("Music"))
 			{
-				bool found = false;
+				// there is an extra intermediary directory, remove it
+				List<string> list = new List<string>(pathParts);
+				list.RemoveAt(7);
 
-				foreach (IITTrack track in tracks)
-				{
-					bool same = AreFileAndTrackTheSame(filePath, track);
-
-					if (true == same)
-					{
-						// TODO update based on tags
-						FileInfo file = new FileInfo(filePath);
-						filePath = MoveFileBasedOnTags(file);
-
-						found =
-							UpdateLocation(track, filePath);
-						//	File.Move(file.FullName, file.FullPath);
-						//	string message = string.Format("updated: {0} with: {1}",
-						//		oldName, name);
-						//	Console.WriteLine(message);
-					}
-				}
-
-				if (false == found)
-				{
-					// TODO update based on tags
-					FileInfo file = new FileInfo(filePath);
-					filePath = MoveFileBasedOnTags(file);
-					iTunes.LibraryPlaylist.AddFile(filePath);
-				}
+				pathParts = list.ToArray();
+				newPath = string.Join("\\", pathParts);
 			}
 
-			return tracks;
-		}
-
-		private string MoveFileBasedOnTags(FileInfo file)
-		{
-			string filePath = file.FullName;
-			Tags tags = new Tags(file.FullName);
-
-			if (!string.IsNullOrWhiteSpace(tags.Artist))
-			{
-				string path = Path.Combine(iTunesDirectoryLocation,
-					"Music\\" + tags.Artist);
-				DirectoryInfo directory = new DirectoryInfo(path);
-
-				if (!directory.Exists)
-				{
-					directory.Create();
-				}
-
-				if (!string.IsNullOrWhiteSpace(tags.Album))
-				{
-					path = Path.Combine(path, tags.Album);
-					directory = new DirectoryInfo(path);
-
-					if (!directory.Exists)
-					{
-						directory.Create();
-					}
-				}
-
-				if (!string.IsNullOrWhiteSpace(tags.Title))
-				{
-					filePath =
-						path + "\\" + tags.Title + file.Extension;
-				}
-
-				if (!filePath.Equals(file.FullName))
-				{
-					System.IO.File.Move(file.FullName, filePath);
-				}
-			}
-
-			return filePath;
+			return newPath;
 		}
 
 		private void RemoveDeadTracks()
@@ -592,6 +642,7 @@ namespace MusicUtility
 			//this.SetupProgress(1);
 		}
 
+		// NOT USED
 		private string UpdateArtistLocation(string path)
 		{
 			string newPath = path;
@@ -607,7 +658,7 @@ namespace MusicUtility
 				List<string> sourceList = new List<string>(pathParts);
 				sourceList.RemoveAt(sourceList.Count - 1);
 				string[] sourceParts = sourceList.ToArray();
-				string sourcePath = string.Join("\\", sourceParts);
+				string sourcePath = string.Join("\\", sourceParts);	
 
 				List<string> list = new List<string>(pathParts);
 				list.RemoveAt(7);
@@ -632,6 +683,7 @@ namespace MusicUtility
 			return newPath;
 		}
 
+		// NOT USED
 		private static string UpdateAlbumDirectory(string albumPath)
 		{
 			string newAlbumPath = albumPath;
@@ -640,8 +692,6 @@ namespace MusicUtility
 			if (albumPath.EndsWith(" (Disc 2)"))
 			{
 				newAlbumPath = albumPath.Replace(" (Disc 2)", "");
-
-				Directory.Move(albumPath, newAlbumPath);
 			}
 
 			if (Regex.IsMatch(newAlbumPath, regex))
@@ -649,10 +699,89 @@ namespace MusicUtility
 				newAlbumPath = Regex.Replace(newAlbumPath, regex, @"");
 			}
 
+			CreateDirectoryIfNotExists(newAlbumPath);
+
 			return newAlbumPath;
 		}
 
-		private bool UpdateLocation(IITTrack track, string filePath)
+		private FileInfo UpdateFile(FileInfo file)
+		{
+			string filePath = file.FullName;
+
+			string artist = GetArtistFromPath(file.FullName);
+			string pathPart = GetPathPartFromTag(tags.Artist, artist);
+
+			string path = Path.Combine(iTunesDirectoryLocation,
+					"Music\\" + pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			string album = GetAlbumFromPath(file.FullName);
+			pathPart = GetPathPartFromTag(tags.Album, album);
+			path = Path.Combine(path, pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			string title = GetTitleFromPath(file.FullName);
+			pathPart = GetPathPartFromTag(tags.Title, title);
+			filePath = path + "\\" + pathPart + file.Extension;
+
+			if (!filePath.Equals(file.FullName))
+			{
+				if (!System.IO.File.Exists(filePath))
+				{
+					System.IO.File.Move(file.FullName, filePath);
+				}
+				else
+				{
+					// a file is already there, move into duplicates
+					filePath = GetDulicateLocation(filePath);
+					System.IO.File.Move(file.FullName, filePath);
+				}
+
+				file = new FileInfo(filePath);
+			}
+
+			return file;
+		}
+
+		private IITTrackCollection UpdateItunes(FileInfo file)
+		{
+			string searchName = Path.GetFileNameWithoutExtension(file.Name);
+
+			IITTrackCollection tracks = playList.Search(searchName,
+				ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+
+			if (null == tracks)
+			{
+				// not in collection yet, add it
+				IITOperationStatus status =
+					iTunes.LibraryPlaylist.AddFile(file.FullName);
+			}
+			else
+			{
+				// tracks is a list of potential matches
+				bool found = false;
+
+				foreach (IITTrack track in tracks)
+				{
+					bool same = AreFileAndTrackTheSame(file.FullName, track);
+
+					if (true == same)
+					{
+						found = UpdateItunesLocation(track, file.FullName);
+					}
+				}
+
+				if (false == found)
+				{
+					// not in collection yet, add it
+					iTunes.LibraryPlaylist.AddFile(file.FullName);
+				}
+			}
+
+			return tracks;
+		}
+
+		private bool UpdateItunesLocation(IITTrack track, string filePath)
 		{
 			bool result = false;
 
@@ -669,6 +798,9 @@ namespace MusicUtility
 					}
 					catch(Exception exception)
 					{
+						// TODO:  If you get here, find out why the exception,
+						// the actual type of exception, then find out if the
+						// below code makes any sense
 						Console.WriteLine("Exception: " + exception.Message);
 						//log.Error(CultureInfo.InvariantCulture, m => m(
 						//	stringTable.GetString("EXCEPTION") + ex.Message));
