@@ -1,46 +1,48 @@
-Music
-	Music Files
-	Library
-		Issues
-			Duplicate files (exact)
-				DoubleKiller.exe
-				easy .net method
-			Duplicate files (nearly identical - different metadata)
-				need to find some examples
-				go through some test cases
-			Duplicate files (nearly identical - based off same original, different rips)
-				need to find some examples
-				compare
-				choose better based off of sample rate, length, review
-			Duplicate files (different originals)
-				need to find some examples
-				compare
-				keep both?
-				keep preferred
-			bad file names	ex: track 5
-				easy .net method
-			file names	track number in front
-				easy .net method
-			Songs not put in their artist directory
-			various artists, compilations
-				remove compilation flag
-				move to proper folder
-			skips in files
-				replace
-			missing tracks in iTunes
-				re-add to iTunes
-			lost iTunes data (Play counts, rating, PlayLists)
-				fix xml file
-			random named artwork
-				identify and move to proper place
-			artwork not placed in correct folder
-				identify and move to proper place
-			top level sometimes contains album specific folder, as opposed to just performer info.
-				identify and move to proper place
-			add support for art work and such
-			link compilations
-			(Disk 2)
-			remove begin and ending symbols such as _
+Music Library
+Music Files
+Library
+Issues
+	Duplicate files (exact)
+		DoubleKiller.exe
+		easy .net method
+	Duplicate files (nearly identical - different metadata)
+		need to find some examples
+		go through some test cases
+	Duplicate files (nearly identical - based off same original, different rips)
+		need to find some examples
+		compare
+		choose better based off of sample rate, length, review
+	Duplicate files (different originals)
+		need to find some examples
+		compare
+		keep both?
+		keep preferred
+	bad file names	ex: track 5
+		easy .net method
+	file names	track number in front
+		easy .net method
+	Songs not put in their artist directory
+	various artists, compilations
+		remove compilation flag
+		move to proper folder
+	skips in files
+		replace
+	missing tracks in iTunes
+		re-add to iTunes
+	lost iTunes data (Play counts, rating, PlayLists)
+		fix xml file
+	random named artwork
+		identify and move to proper place
+	artwork not placed in correct folder
+		identify and move to proper place
+	top level sometimes contains album specific folder, as opposed to just performer info.
+		identify and move to proper place
+	add support for art work and such
+	link compilations
+	(Disk 2)
+	remove begin and ending symbols such as _
+	often wrong year
+	what about votes and stuff?
 Process
 	get music library location
 	for each folder
@@ -55,94 +57,6 @@ Process
 				size
 				crc
 				date
-
-https://github.com/filoe/cscore
-https://github.com/mono/taglib-sharp
-http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
-
-
-{"Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE))."}
-	After several retries, got it to work
-
-Exception from HRESULT: 0xA0040203
-mvhd box not found.
-"}	System.Exception {TagLib.CorruptFileException}
-
-
-.m3u
-.m4a
-.mp3
-.aifc
-.wav
-
-.wma
-
-Music
-	c# itunes api
-	http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
-	http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
-	https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-	https://www.google.com/#q=c%23+iTunes
-	http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
-	http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
-	http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
-	https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
-	https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
-	http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
-
-	answer: http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
-
-	http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
-
-	https://taglib.github.io/api/annotated.html
-
-	http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
-
-	http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
-	https://naudio.codeplex.com/
-	https://github.com/naudio/NAudio
-	http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
-	http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
-
-		https://musicbrainz.org/doc/Beginners_Guide
-		Remove file duplicates
-		iTunes
-			http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-			https://support.apple.com/en-us/HT201596
-			http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-			http://samsoft.org.uk/iTunes/scripts.asp
-			http://www.everythingitunes.com/os/windows/category/scripts/
-			http://dougscripts.com/itunes/itinfo/windowshelp.php
-			Xml
-				http://stackoverflow.com/questions/55828/how-does-one-parse-xml-files
-				https://github.com/mercury2269/ITunesManager
-
-				http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
-				https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-C:\Users\JamesMc\Music\iTunes
-often wrong year
-what about votes and stuff?
-C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Flac\\Chicago\\Beginnings\\07 - South California Purples.m4a
-Iron Butterfly - In-A-Gadda-Da-Vida [MFSL UDCD 675].m4a
-5
-9
-
- Path.GetFullPath(tmpPath).Split(Path.DirectorySeparatorChar).Length;
-string[] pathParts = path.Split(Path.DirectorySeparatorChar);
-.Length;
-C:\Users\JamesMc\Data\External\Entertainment\Music\Derek and the Dominos\Layla And Other Assorted Love Songs (Disc 2)
-make 	public class Tags	Disposable
-title case
-"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Flac\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
-"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
-C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
-	FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
-Soul Source Jackson 5 Remixes 
-ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
-The Jackson 5 (Soul Source, 2000)
-iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
-MusicUtility.MusicUtility.AreFileAndTrackTheSame(String file, IITTrack track)
-Eternally Grateful (Disc 1: Disc 1 - In The Studio)
 Process Flow
 	CleanFiles
 		UpdateArtistLocation
@@ -166,26 +80,97 @@ Process Flow
 			MoveFileBasedOnTags(file);
 					File.Move
 			iTunes.LibraryPlaylist.AddFile(track);
-updating tags
-updating directories
-updating filenames
-updating iTunes
-	adding file
-	updating track
-http://regexstorm.net/tester
-"More Songs About Buildings And Food (Disc 2: DVD Side)"
-"Fear Of Music (Disc 1: CD Side)"
-C:\Users\JamesMc\Data\External\Entertainment\Music\Flac\Talking Heads\Speaking in Tongues\I Get Wild_Wild Gravity.m4a
-C:\Users\JamesMc\Data\External\Entertainment\Music\Flac\Talking Heads\Speaking in Tongues\I Get Wild_Wild Gravity.m4a
-"Talking Heads- 77"
-fix "best hits of..." lame tags
-mp4 file diffs almost same... same?
--		exception	{"mvhd box not found."}	System.Exception {TagLib.CorruptFileException}
-C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
-mp3 extract metadata
-https://www.sno.phy.queensu.ca/~phil/exiftool/#running
-https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
-music tag original album
-	https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
-	https://picard.musicbrainz.org/docs/development/
-https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3
+overall
+	updating tags
+	updating directories
+	updating filenames
+	updating iTunes
+		adding file
+		updating track
+Resources
+	https://github.com/filoe/cscore
+	Tags
+		https://github.com/mono/taglib-sharp
+		http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
+	c# itunes api
+		http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
+		http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
+		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+		https://www.google.com/#q=c%23+iTunes
+		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
+		http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
+		http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
+		https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
+		https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
+		http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
+		http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
+		http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
+		https://taglib.github.io/api/annotated.html
+		http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
+		http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
+		https://naudio.codeplex.com/
+		https://github.com/naudio/NAudio
+		http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
+		http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
+		https://musicbrainz.org/doc/Beginners_Guide
+	iTunes
+		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
+		https://support.apple.com/en-us/HT201596
+		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
+		http://samsoft.org.uk/iTunes/scripts.asp
+		http://www.everythingitunes.com/os/windows/category/scripts/
+		http://dougscripts.com/itunes/itinfo/windowshelp.php
+	Xml
+		http://stackoverflow.com/questions/55828/how-does-one-parse-xml-files
+		https://github.com/mercury2269/ITunesManager
+
+		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
+		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+	MusicBrainz
+		music tag original album
+			https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
+			https://picard.musicbrainz.org/docs/development/
+		https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3
+	http://regexstorm.net/tester
+	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
+	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
+FileTypes
+	.m3u
+	.m4a
+	.mp3
+	.aifc
+	.wav
+	.wma
+ITunes info
+	C:\Users\JamesMc\Music\iTunes
+Manual Renaming
+	C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
+		FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
+	Soul Source Jackson 5 Remixes 
+	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
+	The Jackson 5 (Soul Source, 2000)
+Scratch
+	The Very Best Of Grateful Dead
+	The Very Best of Grateful Dead
+Tasks
+		Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)).
+		Exception from HRESULT: 0xA0040203
+		Remove track number from file names
+		Remove [MFSL UDCD 675] type of junk from file names
+		extra directories	Music\\Flac\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
+		(Disc 2)
+	logging
+	add code analysis
+	make 	public class Tags	Disposable
+	unit tests
+	directory depth
+	title case
+	updating itunes on duplicates
+	Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
+	fix "best hits of..." lame tags
+	often wrong year
+	what about votes and stuff?
+	mp4 file diffs almost same... same?
+	mp3 extract metadata
+	mvhd box not found.	TagLib.CorruptFileException}
+	iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
