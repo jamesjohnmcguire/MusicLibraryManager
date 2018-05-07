@@ -1,29 +1,30 @@
 ﻿using Common.Logging;
+using iTunesLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
-using iTunesLib;
-using TagLib;
 
 namespace MusicUtility
 {
-	public class MusicUtility
+	public class MusicUtility : IDisposable
 	{
 		private iTunesApp iTunes = null;
+
 		private static readonly ILog log = LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private IITLibraryPlaylist playList = null;
 		private string iTunesDirectoryLocation = null;
+
 		private static readonly ResourceManager stringTable =
 			new ResourceManager("MusicUtility.Resources",
 			Assembly.GetExecutingAssembly());
+
 		private Tags tags = null;
 
 		public string ITunesLibraryLocation
@@ -37,13 +38,28 @@ namespace MusicUtility
 		public MusicUtility()
 		{
 			//create a reference to iTunes
-			//iTunesAppClass iTunes = new iTunesAppClass();
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
 			ItunesXmlFile iTunesXmlFile =
 				new ItunesXmlFile(iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// dispose managed resources
+				tags.Dispose();
+				tags = null;
+			}
 		}
 
 		public int CleanMusicLibrary()
@@ -56,61 +72,6 @@ namespace MusicUtility
 			GC.Collect();
 
 			return 0;
-		}
-
-		private IITTrack AddFileFromLocation(ref IITTrack thisITTrack, string thisLocation)
-		{
-			string name = thisITTrack.Name;
-			string artist = thisITTrack.Artist;
-			string album = thisITTrack.Album;
-			int playedCount = thisITTrack.PlayedCount;
-			int rating = thisITTrack.Rating;
-			string genre = thisITTrack.Genre;
-			iTunes.LibraryPlaylist.AddFile(thisLocation);
-			int count = iTunes.LibraryPlaylist.Tracks.Count;
-			IITTrack item = iTunes.LibraryPlaylist.Tracks[count];
-			if (!item.Name.Equals(name))
-			{
-				return null;
-			}
-			try
-			{
-				item.Artist = artist;
-			}
-			catch (Exception exception)
-			{
-			}
-			try
-			{
-				item.Album = album;
-			}
-			catch (Exception exception1)
-			{
-			}
-			try
-			{
-				item.PlayedCount = playedCount;
-			}
-			catch (Exception exception2)
-			{
-			}
-			try
-			{
-				item.Rating = rating;
-			}
-			catch (Exception exception3)
-			{
-			}
-			try
-			{
-				item.Genre = genre;
-			}
-			catch (Exception exception4)
-			{
-			}
-
-			thisITTrack.Delete();
-			return item;
 		}
 
 		private bool AreFileAndTrackTheSame(string file, IITTrack track)
@@ -128,17 +89,18 @@ namespace MusicUtility
 				int year1 = track.Year;
 				int year2 = (int)tags.Year;
 
-				if ((album1.Equals(album2,
-					StringComparison.OrdinalIgnoreCase)) && (artist1.Equals(
-					artist2, StringComparison.OrdinalIgnoreCase)) &&
-					(title1.Equals(title2,
+				if ((string.Equals(album1, album2,
+					StringComparison.OrdinalIgnoreCase)) &&
+					(string.Equals(artist1, artist2,
+					StringComparison.OrdinalIgnoreCase)) &&
+					(string.Equals(title1, title2,
 					StringComparison.OrdinalIgnoreCase)) &&
 					(year1 == year2))
 				{
 					same = true;
 				}
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
@@ -155,9 +117,7 @@ namespace MusicUtility
 					"Checking: " + file.FullName));
 
 				// get and update tags
-				tags = new Tags(file.FullName);
-
-				//file = CleanFileName(file, tags.Artist);
+				tags = new Tags(file.FullName, ITunesLibraryLocation);
 
 				// update directory and file names
 				file = UpdateFile(file);
@@ -172,49 +132,19 @@ namespace MusicUtility
 			}
 		}
 
-		// NOT USED
-		private FileInfo CleanFileName(FileInfo file, string artist)
-		{
-			string regex = @" \[.*?\]";
-			string fileName = CleanTrackNumbersOutOfFileName(file);
-
-			if (!fileName.Equals(file.Name))
-			{
-				string filePath = Path.Combine(file.DirectoryName, fileName);
-				file = new FileInfo(filePath);
-			}
-
-			if (Regex.IsMatch(file.Name, regex))
-			{
-				string filePath = Regex.Replace(file.Name, regex, @"");
-				file = new FileInfo(filePath);
-			}
-
-			if ((!string.IsNullOrWhiteSpace(artist)) &&
-				(file.Name.Contains(artist + " - ")))
-			{
-				string filePath = file.Name.Replace(artist + " - ", "");
-				file = new FileInfo(filePath);
-			}
-
-			return file;
-		}
-
 		private void CleanFiles(string path)
 		{
 			try
 			{
-				string[] excludes = { ".crd", ".cue", ".doc", ".flac", ".gif",
+				string[] excludes = { ".crd", ".cue", ".doc", ".gif",
 					".gz", ".htm", ".ini", ".jpeg", ".jpg", ".lit", ".log",
 					".m3u", ".nfo", ".opf", ".pdf", ".plist", ".png", ".psp",
 					".sav", ".sfv", ".txt", ".url", ".xls", ".zip" };
-				string[] includes = { ".aifc", ".m4a", ".mp3", ".wav",
+				string[] includes = { ".aifc", ".flac", ".m4a", ".mp3", ".wav",
 					".wma" };
 
 				if (Directory.Exists(path))
 				{
-					//UpdateArtistLocation(path);
-
 					DirectoryInfo directory = new DirectoryInfo(path);
 
 					FileInfo[] files = directory.GetFiles();
@@ -254,40 +184,6 @@ namespace MusicUtility
 			}
 		}
 
-		// NOT USED
-		private string CleanTrackNumbersOutOfFileName(FileInfo file)
-		{
-			string newName = file.Name;
-
-			string[] regexes =
-				new string[] { @"^\d+-\d+ ", @"^\d+ - ", @"^\d+ " };
-
-			foreach (string regex in regexes)
-			{
-				if (Regex.IsMatch(file.Name, regex))
-				{
-					string oldName = file.Name;
-
-					//name =
-					//	Regex.Replace(name, @"(?<prefix>\d+)", @"${prefix}");
-					string name = Regex.Replace(file.Name, regex, @"");
-
-					string filePath = Path.Combine(file.DirectoryName, name);
-
-					System.IO.File.Move(file.FullName, filePath);
-
-					string message = string.Format("updated: {0} with: {1}",
-						oldName, name);
-					log.Info(CultureInfo.InvariantCulture, m => m(message));
-
-					newName = filePath;
-					break;
-				}
-			}
-
-			return newName;
-		}
-
 		private static void CreateDirectoryIfNotExists(string path)
 		{
 			DirectoryInfo directory = new DirectoryInfo(path);
@@ -298,72 +194,140 @@ namespace MusicUtility
 			}
 		}
 
-		private void FindDeadTracks()
+		private string CreateAlbumPathFromTag(
+			FileInfo file, string currentPath, string albumTag)
 		{
-			//get a reference to the collection of all tracks
-			IITTrackCollection tracks = iTunes.LibraryPlaylist.Tracks;
+			string album = Paths.GetAlbumFromPath(
+				file.FullName, iTunesDirectoryLocation);
+			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
+
+			string pattern = @" \[\.]{2,}";
+
+			if (Regex.IsMatch(pathPart, pattern))
+			{
+				pathPart = Regex.Replace(pathPart, pattern, @"");
+			}
+
+			string path = Path.Combine(currentPath, pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
+		}
+
+		private string CreateArtistPathFromTag(FileInfo file, string artistTag)
+		{
+			string artist = Paths.GetArtistFromPath(
+				file.FullName, iTunesDirectoryLocation);
+			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
+
+			string path = Path.Combine(iTunesDirectoryLocation,
+					"Music\\" + pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
+		}
+
+		private void DeleteDeadTracks()
+		{
+			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
+			IITTrackCollection tracks = mainLibrary.Tracks;
+			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
 			int numberChecked = 0;
 			int numberDeadFound = 0;
 
-			//setup the progress control
-			//this.SetupProgress(trackCount);
+			// set up progress monitor, if needed
 
-			for (int i = trackCount; i > 0; i--)
+			for (int index = 0; index < trackCount; index++)
 			{
-				//if (!this._shouldStop)
+				// check for cancel
+
+				// only work with files
+				fileTrack = tracks[index] as IITFileOrCDTrack;
+
+				// is this a file track?
+				if ((null != fileTrack) &&
+					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
 				{
-					IITTrack track = tracks[i];
-					numberChecked++;
-					//this.IncrementProgress();
-					//this.UpdateLabel("Checking track # " + numberChecked.ToString() + " - " + track.Name);
-
-					if (track.Kind == ITTrackKind.ITTrackKindFile)
+					if (string.IsNullOrWhiteSpace(fileTrack.Location))
 					{
-						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
+						numberDeadFound++;
 
-						//if the file doesn't exist, we'll delete it from iTunes
-						if (fileTrack.Location == String.Empty)
+						fileTrack.Delete();
+					}
+					else if (!File.Exists(fileTrack.Location))
+					{
+						numberDeadFound++;
+						fileTrack.Delete();
+					}
+				}
+
+				numberChecked++;
+				// increment progress
+			}
+		}
+
+		private IList<IITTrack> FindDuplicates()
+		{
+			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
+			IITTrackCollection tracks = mainLibrary.Tracks;
+			Dictionary<string, IITTrack> trackCollection =
+				new Dictionary<string, IITTrack>();
+			List<IITTrack> duplicateTracks = new List<IITTrack>();
+			IITFileOrCDTrack fileTrack;
+
+			int trackCount = tracks.Count;
+			int numberChecked = 0;
+			int duplicatesFound = 0;
+
+			// set up progress monitor, if needed
+
+			for (int index = 0; index < trackCount; index++)
+			{
+				fileTrack = tracks[index] as IITFileOrCDTrack;
+
+				// is this a file track?
+				if ((null != fileTrack) &&
+					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+				{
+					numberChecked++;
+					string trackKey =
+						fileTrack.Name + fileTrack.Artist + fileTrack.Album;
+
+					if (!trackCollection.ContainsKey(trackKey))
+					{
+						trackCollection.Add(trackKey, fileTrack);
+					}
+					else
+					{
+						if ((trackCollection[trackKey].Album !=
+								fileTrack.Album) ||
+							(trackCollection[trackKey].Artist !=
+								fileTrack.Artist))
 						{
-							numberDeadFound++;
-							//this.AddTrackToList(fileTrack);
-
-							//if (this.checkBoxRemove.Checked)
-							{
-								fileTrack.Delete();
-							}
+							trackCollection.Add(trackKey, fileTrack);
 						}
-						else if (!System.IO.File.Exists(fileTrack.Location))
+						else if (trackCollection[trackKey].BitRate >
+							fileTrack.BitRate)
 						{
-							numberDeadFound++;
-							//this.AddTrackToList(fileTrack);
-
-							//if (this.checkBoxRemove.Checked)
-							{
-								fileTrack.Delete();
-							}
+							duplicatesFound++;
+							duplicateTracks.Add(fileTrack);
+						}
+						else
+						{
+							trackCollection[trackKey] = fileTrack;
+							duplicatesFound++;
+							duplicateTracks.Add(fileTrack);
 						}
 					}
 				}
+
+				numberChecked++;
+				// increment progress
 			}
 
-			//this.UpdateLabel("Checked " + numberChecked.ToString() + " tracks and " + numberDeadFound.ToString() + " dead tracks found.");
-			//this.SetupProgress(1);
-		}
-
-		private string GetAlbumFromPath(string path)
-		{
-			string artist = GetPathPart(path, 8);
-
-			return artist;
-		}
-
-		private string GetArtistFromPath(string path)
-		{
-			string artist = GetPathPart(path, 7);
-
-			return artist;
+			return duplicateTracks;
 		}
 
 		private string GetDulicateLocation(string path)
@@ -413,325 +377,23 @@ namespace MusicUtility
 			return destinationPath;
 		}
 
-		private string GetPathPart(string path, int index)
-		{
-			string part = string.Empty;
-
-			string cleanPath = RemoveIntermediaryPath(path);
-
-			string[] pathParts =
-				cleanPath.Split(Path.DirectorySeparatorChar);
-			string[] iTunesPathParts =
-				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-			int depth = pathParts.Length - iTunesPathParts.Length;
-
-			part = pathParts[index];
-
-			return part;
-		}
-
-		private static string GetPathPartFromTag(string tag, string path)
-		{
-			if (!string.IsNullOrWhiteSpace(tag))
-			{
-				path = tag;
-				char[] illegalCharactors = new char[]
-					{ '<', '>', '"', '?', '*', '\'' };
-
-				foreach(char charactor in illegalCharactors)
-				{
-					if (path.Contains(charactor))
-					{
-						path = path.Replace(charactor.ToString(), "");
-					}
-				}
-
-				illegalCharactors = new char[] { ':', '/', '\\', '|' };
-
-				foreach (char charactor in illegalCharactors)
-				{
-					if (path.Contains(charactor))
-					{
-						path = path.Replace(charactor.ToString(), " - ");
-					}
-				}
-
-				path = path.Replace("  ", " ");
-			}
-
-			return path;
-		}
-
-		private string GetTitleFromPath(string path)
-		{
-			string artist = GetPathPart(path, 8);
-
-			return artist;
-		}
-
-		// NOT USED
-		private DataTable GetTracks(IITPlaylist playlist)
-		{
-			DataTable tracksTable = new DataTable();
-
-			tracksTable.Rows.Clear();
-
-			IITTrackCollection tracks = playlist.Tracks;
-			int numTracks = tracks.Count;
-
-			foreach(IITTrack track in tracks)
-			{
-				DataRow row = tracksTable.NewRow();
-
-				// get the track from the current track list
-				row["artist"] = track.Artist;
-				row["song name"] = track.Name;
-				row["album"] = track.Album;
-				row["genre"] = track.Genre;
-
-				// if track is a file, then get the file 
-				// location on the drive. 
-				if (track.Kind == ITTrackKind.ITTrackKindFile)
-				{
-					IITFileOrCDTrack file = (IITFileOrCDTrack)track;
-					if (file.Location != null)
-					{
-						FileInfo fi = new FileInfo(file.Location);
-						if (fi.Exists)
-						{
-							row["FileLocation"] = file.Location;
-						}
-						else
-							row["FileLocation"] =
-									 "not found " + file.Location;
-					}
-				}
-				tracksTable.Rows.Add(row);
-			}
-
-			//lbl_numsongs.Text =
-			//	"number of songs: " + dataTable1.Rows.Count.ToString() +
-			//	", total file size: " +
-			//	(totalfilesize / 1024.00 / 1024.00).ToString("#,### mb");
-
-			return tracksTable;
-		}
-
-		private string RemoveIntermediaryPath(string path)
-		{
-			string newPath = path;
-
-			string[] pathParts =
-				path.Split(Path.DirectorySeparatorChar);
-			string[] iTunesPathParts =
-				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-			int depth = pathParts.Length - iTunesPathParts.Length;
-
-			if ((depth > 2) && pathParts[6].Equals("Music"))
-			{
-				// there is an extra intermediary directory, remove it
-				List<string> list = new List<string>(pathParts);
-				list.RemoveAt(7);
-
-				pathParts = list.ToArray();
-				newPath = string.Join("\\", pathParts);
-			}
-
-			return newPath;
-		}
-
-		private void RemoveDeadTracks()
-		{
-			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
-			IITTrackCollection tracks = mainLibrary.Tracks;
-			IITFileOrCDTrack currTrack;
-
-			int numTracks = tracks.Count;
-			int deletedTracks = 0;
-
-			while (numTracks != 0)
-			{
-				// only work with files
-				currTrack = tracks[numTracks] as IITFileOrCDTrack;
-
-				// is this a file track?
-				if (currTrack != null && currTrack.Kind == ITTrackKind.ITTrackKindFile)
-				{
-					// yes, does it have an empty location?
-					if (currTrack.Location == null)
-					{
-						// yes, delete it
-						currTrack.Delete();
-						deletedTracks++;
-					}
-				}
-
-				// progress to the next tack
-				numTracks--;
-			}
-
-			// report to the user the results
-			string message = string.Format("Removed { 0} track{ 1}.",
-				deletedTracks, deletedTracks == 1 ? "" : "s");
-
-			log.Info(CultureInfo.InvariantCulture, m => m(message));
-		}
-
-		private void RemoveDuplicates()
-		{
-			//get a reference to the collection of all tracks
-			IITTrackCollection tracks = iTunes.LibraryPlaylist.Tracks;
-
-			int trackCount = tracks.Count;
-			int numberChecked = 0;
-			int numberDuplicateFound = 0;
-			Dictionary<string, IITTrack> trackCollection = new Dictionary<string, IITTrack>();
-			ArrayList tracksToRemove = new ArrayList();
-
-			//setup the progress control
-			//this.SetupProgress(trackCount);
-
-			for (int i = trackCount; i > 0; i--)
-			{
-				if (tracks[i].Kind == ITTrackKind.ITTrackKindFile)
-				{
-					//if (!this._shouldStop)
-					{
-						numberChecked++;
-						//this.IncrementProgress();
-						//this.UpdateLabel("Checking track # " + numberChecked.ToString() + " - " + tracks[i].Name);
-						string trackKey = tracks[i].Name + tracks[i].Artist + tracks[i].Album;
-
-						if (!trackCollection.ContainsKey(trackKey))
-						{
-							trackCollection.Add(trackKey, tracks[i]);
-						}
-						else
-						{
-							if (trackCollection[trackKey].Album != tracks[i].Album || trackCollection[trackKey].Artist != tracks[i].Artist)
-							{
-								trackCollection.Add(trackKey, tracks[i]);
-							}
-							else if (trackCollection[trackKey].BitRate > tracks[i].BitRate)
-							{
-								IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)tracks[i];
-								numberDuplicateFound++;
-								tracksToRemove.Add(tracks[i]);
-							}
-							else
-							{
-								IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)tracks[i];
-								trackCollection[trackKey] = fileTrack;
-								numberDuplicateFound++;
-								tracksToRemove.Add(tracks[i]);
-							}
-						}
-					}
-				}
-			}
-
-			//this.SetupProgress(tracksToRemove.Count);
-
-			for (int i = 0; i < tracksToRemove.Count; i++)
-			{
-				IITFileOrCDTrack track = (IITFileOrCDTrack)tracksToRemove[i];
-				//this.UpdateLabel("Removing " + track.Name);
-				//this.IncrementProgress();
-				//this.AddTrackToList((IITFileOrCDTrack)tracksToRemove[i]);
-
-				//if (this.checkBoxRemove.Checked)
-				{
-					track.Delete();
-				}
-			}
-
-			//this.UpdateLabel("Checked " + numberChecked.ToString() + " tracks and " + numberDuplicateFound.ToString() + " duplicate tracks found.");
-			//this.SetupProgress(1);
-		}
-
-		// NOT USED
-		private string UpdateArtistLocation(string path)
-		{
-			string newPath = path;
-
-			string[] pathParts =
-				path.Split(Path.DirectorySeparatorChar);
-			string[] iTunesPathParts =
-				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-			int depth = pathParts.Length - iTunesPathParts.Length;
-
-			if ((depth >  2) && pathParts[6].Equals("Music"))
-			{
-				List<string> sourceList = new List<string>(pathParts);
-				sourceList.RemoveAt(sourceList.Count - 1);
-				string[] sourceParts = sourceList.ToArray();
-				string sourcePath = string.Join("\\", sourceParts);	
-
-				List<string> list = new List<string>(pathParts);
-				list.RemoveAt(7);
-
-				pathParts = list.ToArray();
-				newPath = string.Join("\\", pathParts);
-
-				list.RemoveAt(list.Count - 1);
-
-				string[] destinationParts = list.ToArray();
-				string destinationPath = string.Join("\\", destinationParts);
-
-				DirectoryInfo directory = new DirectoryInfo(destinationPath);
-
-				if (!directory.Exists)
-				{
-					directory.Create();
-					//Directory.Move(sourcePath, destinationPath);
-				}
-			}
-
-			return newPath;
-		}
-
-		// NOT USED
-		private static string UpdateAlbumDirectory(string albumPath)
-		{
-			string newAlbumPath = albumPath;
-			string regex = @" \[.*?\]";
-
-			if (albumPath.EndsWith(" (Disc 2)"))
-			{
-				newAlbumPath = albumPath.Replace(" (Disc 2)", "");
-			}
-
-			if (Regex.IsMatch(newAlbumPath, regex))
-			{
-				newAlbumPath = Regex.Replace(newAlbumPath, regex, @"");
-			}
-
-			CreateDirectoryIfNotExists(newAlbumPath);
-
-			return newAlbumPath;
-		}
-
 		private FileInfo UpdateFile(FileInfo file)
 		{
 			string filePath = file.FullName;
 
-			string artist = GetArtistFromPath(file.FullName);
-			string pathPart = GetPathPartFromTag(tags.Artist, artist);
+			string path = CreateArtistPathFromTag(file, tags.Artist);
 
-			string path = Path.Combine(iTunesDirectoryLocation,
-					"Music\\" + pathPart);
-			CreateDirectoryIfNotExists(path);
+			path = CreateAlbumPathFromTag(file, path, tags.Album);
 
-			string album = GetAlbumFromPath(file.FullName);
-			pathPart = GetPathPartFromTag(tags.Album, album);
-			path = Path.Combine(path, pathPart);
-			CreateDirectoryIfNotExists(path);
-
-			string title = GetTitleFromPath(file.FullName);
-			pathPart = GetPathPartFromTag(tags.Title, title);
+			string title = Paths.GetTitleFromPath(
+				file.FullName, ITunesLibraryLocation);
+			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
 			filePath = path + "\\" + pathPart + file.Extension;
 
-			if (!filePath.Equals(file.FullName))
+			// windows will treat different cases as same file names,
+			// so need to compensate
+			if (!filePath.Equals(
+				file.FullName, StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (!System.IO.File.Exists(filePath))
 				{
@@ -743,9 +405,12 @@ namespace MusicUtility
 					filePath = GetDulicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}
-
-				file = new FileInfo(filePath);
 			}
+
+			// might have difference in title case, even though, the OS will
+			// treat different cases the same, let's try to keep to the proper
+			// title case
+			file = new FileInfo(filePath);
 
 			return file;
 		}
@@ -796,14 +461,17 @@ namespace MusicUtility
 			{
 				IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
 
+				// only update in iTunes,
+				// if the current actual file doesn't exist
 				if ((string.IsNullOrWhiteSpace(fileTrack.Location)) ||
-					(!filePath.Equals(fileTrack.Location)))
+					((!filePath.Equals(fileTrack.Location)) &&
+					(!System.IO.File.Exists(fileTrack.Location))))
 				{
 					try
 					{
 						fileTrack.Location = filePath;
 					}
-					catch(Exception exception)
+					catch (Exception exception)
 					{
 						// TODO:  If you get here, find out why the exception,
 						// the actual type of exception, then find out if the
@@ -811,7 +479,6 @@ namespace MusicUtility
 						log.Error(CultureInfo.InvariantCulture, m => m(
 							exception.ToString()));
 
-						//addFileFromLocation(ref track, filePath);
 						result = UpdateTrackFromLocation(track, filePath);
 					}
 				}
@@ -819,21 +486,13 @@ namespace MusicUtility
 				{
 					result = true;
 				}
-				//else if (!string.IsNullOrWhiteSpace(fileTrack.Location))
-				//{
-				//	string location = "C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\Music\\The Jackson 5\\Soul Source Jackson 5 Remixes\\05 ABC (Love Stream Mix By Kayoko Ki).m4a";
-				//	fileTrack.Location = location;
-
-				// log.Info(CultureInfo.InvariantCulture, m => m(message));
-				//	Console.WriteLine("Location: " + fileTrack.Location);
-				//}
 			}
 
 			return result;
 		}
 
-		private bool UpdateTrackFromLocation(IITTrack track,
-			string musicFilePath)
+		private bool UpdateTrackFromLocation(
+			IITTrack track, string musicFilePath)
 		{
 			bool result = false;
 
@@ -906,10 +565,6 @@ namespace MusicUtility
 							foundTrack.TrackNumber = trackNumber;
 							foundTrack.Year = year;
 						}
-						//if ((!string.IsNullOrWhiteSpace(name)) && (name.Equals(item.Name)))
-						//{
-						//	return null;
-						//}
 
 						result = true;
 						break;

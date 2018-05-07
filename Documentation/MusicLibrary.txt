@@ -159,10 +159,11 @@ Tasks
 		Remove [MFSL UDCD 675] type of junk from file names
 		extra directories	Music\\Flac\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
 		(Disc 2)
-	logging
-	add code analysis
-	make 	public class Tags	Disposable
+		logging
+		add code analysis
+		make	public class Tags	Disposable
 	unit tests
+	review code files
 	directory depth
 	title case
 	updating itunes on duplicates
@@ -172,5 +173,6 @@ Tasks
 	what about votes and stuff?
 	mp4 file diffs almost same... same?
 	mp3 extract metadata
+	deal with album artwork
 	mvhd box not found.	TagLib.CorruptFileException}
 	iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.

@@ -1,133 +1,59 @@
-﻿using System.Text.RegularExpressions;
+﻿#pragma warning disable CS0618 // Type or member is obsolete
+using System;
+using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
-	public class Tags
+	public class Tags : IDisposable
 	{
-		private string album = null;
-		private string artist = null;
-		private TagLib.File file = null;
-		private string title = null;
-		private uint year = 0;
+		private string iTunesLocation = null;
+		private TagLib.File tagFile = null;
 
-		public string Album
+		public string Album { get; set; }
+
+		public string Artist { get; set; }
+
+		public string Title { get; set; }
+
+		public uint Year { get; set; }
+
+		public Tags(string file, string iTunesLocation)
 		{
-			get
+			this.iTunesLocation = iTunesLocation;
+
+			tagFile = TagLib.File.Create(file);
+
+			UpdateFileTags(file);
+
+			tagFile.Dispose();
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
 			{
-				return album;
+				// dispose managed resources
+				tagFile.Dispose();
+				tagFile = null;
 			}
 		}
 
-		public string Artist
-		{
-			get
-			{
-				return artist;
-			}
-		}
-
-		public string Title
-		{
-			get
-			{
-				return title;
-			}
-		}
-
-		public uint Year
-		{
-			get
-			{
-				return year;
-			}
-		}
-
-		public Tags(string file)
+		private bool UpdateAlbumTag(string fileName)
 		{
 			bool updated = false;
-			string regex = @" \[.*?\]";
 
-			TagLib.File musicFile = TagLib.File.Create(file);
+			Album = tagFile.Tag.Album;
 
-			UpdateFileTags(musicFile, file);
-			album = musicFile.Tag.Album;
-
-			if (musicFile.Tag.AlbumArtists.Length > 0)
+			// tags are toast, attempt to get from file name
+			if (string.IsNullOrWhiteSpace(Album))
 			{
-				artist = musicFile.Tag.AlbumArtists[0];
-			}
-			else if (musicFile.Tag.Performers.Length > 0)
-			{
-				artist = musicFile.Tag.Performers[0];
-			}
-			else if (musicFile.Tag.Artists.Length > 0)
-			{
-				artist = musicFile.Tag.Artists[0];
-			}
-
-			title = musicFile.Tag.Title;
-			year = musicFile.Tag.Year;
-
-			musicFile.Dispose();
-		}
-
-		public bool UpdateFileTags(TagLib.File musicFile, string fileName)
-		{
-			bool updated = false;
-			string regex = @" \[.*?\]";
-
-			string album = UpdateAlbumTag(musicFile, fileName);
-
-			if (!album.Equals(musicFile.Tag.Album))
-			{
-				musicFile.Tag.Album = album;
-				updated = true;
-			}
-
-			if (musicFile.Tag.AlbumArtists.Length > 0)
-			{
-				artist = musicFile.Tag.AlbumArtists[0];
-			}
-			else if (musicFile.Tag.Performers.Length > 0)
-			{
-				artist = musicFile.Tag.Performers[0];
-			}
-			else if (musicFile.Tag.Artists.Length > 0)
-			{
-				artist = musicFile.Tag.Artists[0];
-			}
-
-			title = musicFile.Tag.Title;
-			if (Regex.IsMatch(title, regex))
-			{
-				title = Regex.Replace(title, regex, @"");
-				musicFile.Tag.Title = title;
-				updated = true;
-			}
-
-			if ((!string.IsNullOrWhiteSpace(artist)) &&
-				(title.Contains(artist + " - ")))
-			{
-				title = title.Replace(artist + " - ", "");
-				musicFile.Tag.Title = title;
-				updated = true;
-			}
-
-			if (true == updated)
-			{
-				musicFile.Save();
-			}
-
-			return updated;
-		}
-
-		private static string UpdateAlbumTag(
-			TagLib.File musicFile, string fileName)
-		{
-			string album = musicFile.Tag.Album;
-
-			if (string.IsNullOrWhiteSpace(album))
-			{
+				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
 				//foreach (TagLib.Tag tags in tag.Tags)
 				//{
 				//	album = tags.Album;
@@ -139,32 +65,155 @@ namespace MusicUtility
 				//}
 			}
 
-			// tags are toast, attempt to get from file name
-			if (string.IsNullOrWhiteSpace(album))
-			{
-			}
-
-			if (!string.IsNullOrWhiteSpace(album))
+			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string[] regexes =
 					new string[] { @" \[.*?\]", @" \(Disc.*?Side\)",
-						@" \(Disc.*?Res\)" };
+						@" \(Disc.*?Res\)", @" \(Disc.*?\)"  };
 
 				foreach (string regex in regexes)
 				{
-					if (Regex.IsMatch(album, regex))
+					if (Regex.IsMatch(Album, regex))
 					{
-						album = Regex.Replace(album, regex, @"");
+						Album = Regex.Replace(Album, regex, @"");
 					}
 				}
 
-				if (album.EndsWith(" (Disc 2)"))
+				if (Album.EndsWith(" (Disc 2)"))
 				{
-					album = album.Replace(" (Disc 2)", "");
+					Album = Album.Replace(" (Disc 2)", "");
+				}
+
+				string breaker = " - ";
+				if (Album.Contains(breaker))
+				{
+					string[] separators = new string[] { breaker };
+					string[] parts = Album.Split(
+						separators, StringSplitOptions.RemoveEmptyEntries);
+
+					Album = parts[1];
+				}
+
+				string pattern = @" \(.*?\)";
+
+				if (Regex.IsMatch(Album, pattern))
+				{
+					Regex regex = new Regex(pattern);
+					MatchCollection matches = regex.Matches(pattern);
+
+					foreach (Match match in matches)
+					{
+						Console.WriteLine("Found '{0}' at position {1}",
+							match.Value, match.Index);
+					}
 				}
 			}
 
-			return album;
+			if (!Album.Equals(tagFile.Tag.Album))
+			{
+				updated = true;
+			}
+
+			return updated;
+		}
+
+		private bool UpdateArtistTag(string fileName)
+		{
+			bool updated = false;
+
+			if (tagFile.Tag.AlbumArtists.Length > 0)
+			{
+				Artist = tagFile.Tag.AlbumArtists[0];
+			}
+
+			if ((string.IsNullOrWhiteSpace(Artist)) ||
+				(Artist.ToLower().Equals("various artists")))
+			{
+				if (tagFile.Tag.Performers.Length > 0)
+				{
+					Artist = tagFile.Tag.Performers[0];
+				}
+			}
+
+			if ((string.IsNullOrWhiteSpace(Artist)) ||
+				(Artist.ToLower().Equals("various artists")))
+			{
+				if (tagFile.Tag.Artists.Length > 0)
+				{
+					Artist = tagFile.Tag.Artists[0];
+				}
+			}
+
+			if (string.IsNullOrWhiteSpace(Artist))
+			{
+				// attempt to get from filename
+				Artist = Paths.GetArtistFromPath(fileName, iTunesLocation);
+				updated = true;
+			}
+
+			if (!string.IsNullOrWhiteSpace(Artist))
+			{
+				string breaker = " - ";
+				if (Artist.Contains(breaker))
+				{
+					string[] separators = new string[] { breaker };
+					string[] parts = Artist.Split(
+						separators, StringSplitOptions.RemoveEmptyEntries);
+
+					Artist = parts[0];
+					updated = true;
+				}
+			}
+
+			return updated;
+		}
+
+		private bool UpdateFileTags(string fileName)
+		{
+			bool artistUpdated = UpdateArtistTag(fileName);
+
+			bool updated = UpdateAlbumTag(fileName);
+
+			bool titleUpdated = UpdateTitleTag();
+
+			Year = tagFile.Tag.Year;
+
+			if ((true == updated) || (true == artistUpdated) ||
+				(true == titleUpdated))
+			{
+				tagFile.Save();
+			}
+
+			return updated;
+		}
+
+		private bool UpdateTitleTag()
+		{
+			bool updated = false;
+
+			Title = tagFile.Tag.Title;
+
+			string[] regexes =
+				new string[] { @" \[.*?\]", @" \(.*?\)"  };
+
+			foreach (string regex in regexes)
+			{
+				if (Regex.IsMatch(Title, regex))
+				{
+					Title = Regex.Replace(Title, regex, @"");
+					updated = true;
+				}
+			}
+
+			if ((!string.IsNullOrWhiteSpace(Artist)) &&
+				(Title.Contains(Artist + " - ")))
+			{
+				Title = Title.Replace(Artist + " - ", "");
+				tagFile.Tag.Title = Title;
+				updated = true;
+			}
+
+			return updated;
 		}
 	}
 }

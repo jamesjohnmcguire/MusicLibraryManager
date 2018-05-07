@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -14,11 +15,14 @@ namespace MusicUtility
 	public class ItunesXmlFile
 	{
 		private string filePath = null;
+
 		private static readonly ILog log = LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly ResourceManager stringTable =
 			new ResourceManager("MusicUtility.Resources",
 			Assembly.GetExecutingAssembly());
+
 		private XmlDocument xmlDocument = null;
 
 		public string ITunesFolderLocation
@@ -67,27 +71,28 @@ namespace MusicUtility
 			return value;
 		}
 
-		private static string getURLDecodeOfString(string str)
+		private static string GetURLDecodeOfString(string value)
 		{
-			string localPath;
-			if (str == null)
-			{
-				return null;
-			}
+			string localPath = value;
+
 			try
 			{
-				str = str.Replace("+", "%2b");
-				string str1 = HttpUtility.UrlDecode(str);
-				if (str1.StartsWith("file://localhost/"))
+				value = value.Replace("+", "%2b");
+				string uri = HttpUtility.UrlDecode(value);
+				if (uri.StartsWith("file://localhost/"))
 				{
-					str1 = str1.Remove(0, 17);
+					uri = uri.Remove(0, 17);
 				}
-				localPath = (new Uri(str1, UriKind.Absolute)).LocalPath;
+
+				localPath = (new Uri(uri, UriKind.Absolute)).LocalPath;
 			}
 			catch (Exception exception)
 			{
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
 				localPath = null;
 			}
+
 			return localPath;
 		}
 
@@ -137,6 +142,8 @@ namespace MusicUtility
 			}
 			catch (Exception exception)
 			{
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
 				strs = null;
 			}
 			return strs;
@@ -211,7 +218,7 @@ namespace MusicUtility
 		{
 			if (thisDict.ContainsKey(key))
 			{
-				thisDict[key] = ItunesXmlFile.getURLDecodeOfString((string)thisDict[key]);
+				thisDict[key] = ItunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
 			}
 		}
 	}
