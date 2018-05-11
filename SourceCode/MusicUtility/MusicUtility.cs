@@ -113,8 +113,9 @@ namespace MusicUtility
 		{
 			try
 			{
+				string message = "Checking: " + file.FullName;
 				log.Info(CultureInfo.InvariantCulture, m => m(
-					"Checking: " + file.FullName));
+					message));
 
 				// get and update tags
 				tags = new Tags(file.FullName, ITunesLibraryLocation);
@@ -201,13 +202,14 @@ namespace MusicUtility
 				file.FullName, iTunesDirectoryLocation);
 			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
 
-			string pattern = @" \[\.]{2,}";
+			string pattern = @"\.{2,}";
 
 			if (Regex.IsMatch(pathPart, pattern))
 			{
 				pathPart = Regex.Replace(pathPart, pattern, @"");
 			}
 
+			pathPart = pathPart.Trim();
 			string path = Path.Combine(currentPath, pathPart);
 			CreateDirectoryIfNotExists(path);
 
@@ -219,6 +221,15 @@ namespace MusicUtility
 			string artist = Paths.GetArtistFromPath(
 				file.FullName, iTunesDirectoryLocation);
 			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
+
+			string pattern = @"\.{2,}";
+
+			if (Regex.IsMatch(pathPart, pattern))
+			{
+				pathPart = Regex.Replace(pathPart, pattern, @"");
+			}
+
+			pathPart = pathPart.Trim();
 
 			string path = Path.Combine(iTunesDirectoryLocation,
 					"Music\\" + pathPart);
@@ -345,6 +356,7 @@ namespace MusicUtility
 
 			while (false == locationOk)
 			{
+				depth = iTunesPathParts.Length - 1;
 				pathParts[depth] = "Music" + tries.ToString();
 
 				List<string> newList = new List<string>(pathParts);
@@ -372,6 +384,7 @@ namespace MusicUtility
 				{
 					locationOk = true;
 				}
+				tries++;
 			}
 
 			return destinationPath;
@@ -402,6 +415,7 @@ namespace MusicUtility
 				else
 				{
 					// a file is already there, move into duplicates
+
 					filePath = GetDulicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}

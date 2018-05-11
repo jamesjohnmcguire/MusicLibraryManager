@@ -69,14 +69,21 @@ namespace MusicUtility
 			{
 				string[] regexes =
 					new string[] { @" \[.*?\]", @" \(Disc.*?Side\)",
-						@" \(Disc.*?Res\)", @" \(Disc.*?\)"  };
+						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
+						@" \(disc \d+\)" };
 
 				foreach (string regex in regexes)
 				{
-					if (Regex.IsMatch(Album, regex))
+					if (Regex.IsMatch(Album, regex, RegexOptions.IgnoreCase))
 					{
-						Album = Regex.Replace(Album, regex, @"");
+						Album = Regex.Replace(
+							Album, regex, @"", RegexOptions.IgnoreCase);
 					}
+				}
+
+				if (Album.EndsWith(" (Disc 2)"))
+				{
+					Album = Album.Replace(" (Disc 2)", "");
 				}
 
 				if (Album.EndsWith(" (Disc 2)"))
@@ -162,6 +169,19 @@ namespace MusicUtility
 
 					Artist = parts[0];
 					updated = true;
+				}
+
+				string[] regexes =
+					new string[] { @" \[.*?\]", @" \(Disc.*?\)", @" Cd.*" };
+
+				foreach (string regex in regexes)
+				{
+					if (Regex.IsMatch(Artist, regex, RegexOptions.IgnoreCase))
+					{
+						Artist = Regex.Replace(
+							Artist, regex, @"", RegexOptions.IgnoreCase);
+						updated = true;
+					}
 				}
 			}
 
