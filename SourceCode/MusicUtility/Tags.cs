@@ -54,15 +54,6 @@ namespace MusicUtility
 			if (string.IsNullOrWhiteSpace(Album))
 			{
 				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
-				//foreach (TagLib.Tag tags in tag.Tags)
-				//{
-				//	album = tags.Album;
-
-				//	if (!string.IsNullOrWhiteSpace(album))
-				//	{
-				//		break;
-				//	}
-				//}
 			}
 
 			if (!string.IsNullOrWhiteSpace(Album))
@@ -86,34 +77,15 @@ namespace MusicUtility
 					Album = Album.Replace(" (Disc 2)", "");
 				}
 
-				if (Album.EndsWith(" (Disc 2)"))
-				{
-					Album = Album.Replace(" (Disc 2)", "");
-				}
+				//string breaker = " - ";
+				//if (Album.Contains(breaker))
+				//{
+				//	string[] separators = new string[] { breaker };
+				//	string[] parts = Album.Split(
+				//		separators, StringSplitOptions.RemoveEmptyEntries);
 
-				string breaker = " - ";
-				if (Album.Contains(breaker))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = Album.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
-
-					Album = parts[1];
-				}
-
-				string pattern = @" \(.*?\)";
-
-				if (Regex.IsMatch(Album, pattern))
-				{
-					Regex regex = new Regex(pattern);
-					MatchCollection matches = regex.Matches(pattern);
-
-					foreach (Match match in matches)
-					{
-						Console.WriteLine("Found '{0}' at position {1}",
-							match.Value, match.Index);
-					}
-				}
+				//	Album = parts[1];
+				//}
 			}
 
 			if (!Album.Equals(tagFile.Tag.Album))
@@ -160,16 +132,16 @@ namespace MusicUtility
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
-				string breaker = " - ";
-				if (Artist.Contains(breaker))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = Artist.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
+				//string breaker = " - ";
+				//if (Artist.Contains(breaker))
+				//{
+				//	string[] separators = new string[] { breaker };
+				//	string[] parts = Artist.Split(
+				//		separators, StringSplitOptions.RemoveEmptyEntries);
 
-					Artist = parts[0];
-					updated = true;
-				}
+				//	Artist = parts[0];
+				//	updated = true;
+				//}
 
 				string[] regexes =
 					new string[] { @" \[.*?\]", @" \(Disc.*?\)", @" Cd.*" };

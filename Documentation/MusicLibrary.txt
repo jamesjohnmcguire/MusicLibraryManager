@@ -149,10 +149,8 @@ Manual Renaming
 	Soul Source Jackson 5 Remixes 
 	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
 	The Jackson 5 (Soul Source, 2000)
-Scratch
-	The Very Best Of Grateful Dead
-	The Very Best of Grateful Dead
 Tasks
+	Finished
 		Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)).
 		Exception from HRESULT: 0xA0040203
 		Remove track number from file names
@@ -162,13 +160,19 @@ Tasks
 		logging
 		add code analysis
 		make	public class Tags	Disposable
-	unit tests
-	review code files
-	directory depth
-	title case
+		unit tests
+		review code files
+		directory depth
+		title case
+		Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
+		deal with ' - ' split rules
+	remove dead tracks
+	extended unit tests to test tag rules
+	change rules to actual rules
+	Merge tags from previous libraries
 	updating itunes on duplicates
-	Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
-	fix "best hits of..." lame tags
+	remove extra tracks that point to the same file
+	fix "best hits of...", Compilations, Great Rock Hits lame tags
 	often wrong year
 	what about votes and stuff?
 	mp4 file diffs almost same... same?
@@ -176,3 +180,12 @@ Tasks
 	deal with album artwork
 	mvhd box not found.	TagLib.CorruptFileException}
 	iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
+	Failed obtaining configuration for Common.Logging from configuration section 'common/logging'	MusicClean.exe.Config line 11
+	Not Sure
+		1-05 Do You Know The Way To San Jose.m4a
+		Tangled Up In Blue (2).mp3
+		Guy Cabay & Toots Thielemans & Philip Catherine
+		Brussels Jazz Rally
+		Compilations\\P.S. I Love You\\Everything We Had.mp3
+		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
+		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
