@@ -18,8 +18,8 @@ namespace MusicUtility
 		private static readonly ILog log = LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		private IITLibraryPlaylist playList = null;
-		private string iTunesDirectoryLocation = null;
+		private readonly IITLibraryPlaylist playList = null;
+		private readonly string iTunesDirectoryLocation = null;
 
 		private static readonly ResourceManager stringTable =
 			new ResourceManager("MusicUtility.Resources",
@@ -78,7 +78,7 @@ namespace MusicUtility
 			return 0;
 		}
 
-		private bool AreFileAndTrackTheSame(string file, IITTrack track)
+		private bool AreFileAndTrackTheSame(IITTrack track)
 		{
 			bool same = false;
 
@@ -366,11 +366,10 @@ namespace MusicUtility
 
 			string[] iTunesPathParts =
 				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-			int depth = iTunesPathParts.Length - 1;
 
 			while (false == locationOk)
 			{
-				depth = iTunesPathParts.Length - 1;
+				int depth = iTunesPathParts.Length - 1;
 				pathParts[depth] = "Music" + tries.ToString();
 
 				List<string> newList = new List<string>(pathParts);
@@ -406,8 +405,6 @@ namespace MusicUtility
 
 		private FileInfo UpdateFile(FileInfo file)
 		{
-			string filePath = file.FullName;
-
 			string path = CreateArtistPathFromTag(file, tags.Artist);
 
 			path = CreateAlbumPathFromTag(file, path, tags.Album);
@@ -415,7 +412,8 @@ namespace MusicUtility
 			string title = Paths.GetTitleFromPath(
 				file.FullName, ITunesLibraryLocation);
 			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
-			filePath = path + "\\" + pathPart + file.Extension;
+
+			string filePath = path + "\\" + pathPart + file.Extension;
 
 			// windows will treat different cases as same file names,
 			// so need to compensate
@@ -453,8 +451,7 @@ namespace MusicUtility
 			if (null == tracks)
 			{
 				// not in collection yet, add it
-				IITOperationStatus status =
-					iTunes.LibraryPlaylist.AddFile(file.FullName);
+				iTunes.LibraryPlaylist.AddFile(file.FullName);
 			}
 			else
 			{
@@ -463,7 +460,7 @@ namespace MusicUtility
 
 				foreach (IITTrack track in tracks)
 				{
-					bool same = AreFileAndTrackTheSame(file.FullName, track);
+					bool same = AreFileAndTrackTheSame(track);
 
 					if (true == same)
 					{
@@ -556,7 +553,7 @@ namespace MusicUtility
 			{
 				foreach (IITTrack foundTrack in tracks)
 				{
-					bool same = AreFileAndTrackTheSame(musicFilePath, track);
+					bool same = AreFileAndTrackTheSame(track);
 
 					if (true == same)
 					{

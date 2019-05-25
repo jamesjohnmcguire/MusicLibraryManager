@@ -14,8 +14,6 @@ namespace MusicUtility
 {
 	public class ItunesXmlFile
 	{
-		private string filePath = null;
-
 		private static readonly ILog log = LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,7 +21,7 @@ namespace MusicUtility
 			new ResourceManager("MusicUtility.Resources",
 			Assembly.GetExecutingAssembly());
 
-		private XmlDocument xmlDocument = null;
+		private readonly XmlDocument xmlDocument = null;
 
 		public string ITunesFolderLocation
 		{
@@ -44,8 +42,6 @@ namespace MusicUtility
 
 		public ItunesXmlFile(string filePath)
 		{
-			this.filePath = filePath;
-
 			xmlDocument = new XmlDocument();
 			xmlDocument.Load(filePath);
 		}
@@ -179,7 +175,7 @@ namespace MusicUtility
 				case "dict":
 					{
 						Dictionary<string, object> strs = new Dictionary<string, object>();
-						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i = i + 2)
+						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
 							string str1 = (string)ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
 							object obj = ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
