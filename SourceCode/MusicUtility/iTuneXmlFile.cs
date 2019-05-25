@@ -124,18 +124,18 @@ namespace MusicUtility
 					xmlDocument.Load(xmlReader);
 					Dictionary<string, object> strs1 =
 						(Dictionary<string, object>)ItunesXmlFile.
-						readKeyAsDictionaryEntry(xmlDocument.ChildNodes[0]);
+						ReadKeyAsDictionaryEntry(xmlDocument.ChildNodes[0]);
 					xmlReader.Close();
 					foreach (Dictionary<string, object> value in ((Dictionary<string, object>)strs1["Tracks"]).Values)
 					{
 						Dictionary<string, object> strs2 = value;
-						ItunesXmlFile.setToHTMLDecode("Name", ref strs2);
-						ItunesXmlFile.setToHTMLDecode("Artist", ref strs2);
-						ItunesXmlFile.setToHTMLDecode("Album", ref strs2);
-						ItunesXmlFile.setToHTMLDecode("Genre", ref strs2);
-						ItunesXmlFile.setToHTMLDecode("Kind", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Name", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Album", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
 						ItunesXmlFile.SetToURLDecode("Location", ref strs2);
-						ItunesXmlFile.setToHTMLDecode("Comments", ref strs2);
+						ItunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
 					}
 					strs = strs1;
 				}
@@ -149,7 +149,7 @@ namespace MusicUtility
 			return strs;
 		}
 
-		private static object readKeyAsDictionaryEntry(XmlNode currentElement)
+		private static object ReadKeyAsDictionaryEntry(XmlNode currentElement)
 		{
 			string name = currentElement.Name;
 			string str = name;
@@ -159,7 +159,7 @@ namespace MusicUtility
 				{
 				case "plist":
 					{
-						return ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.FirstChild);
+						return ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
 					}
 				case "integer":
 				case "real":
@@ -181,8 +181,8 @@ namespace MusicUtility
 						Dictionary<string, object> strs = new Dictionary<string, object>();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i = i + 2)
 						{
-							string str1 = (string)ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
-							object obj = ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
+							string str1 = (string)ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
+							object obj = ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
 							strs.Add(str1, obj);
 						}
 						return strs;
@@ -192,7 +192,7 @@ namespace MusicUtility
 						ArrayList arrayLists = new ArrayList();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
-							arrayLists.Add(ItunesXmlFile.readKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
+							arrayLists.Add(ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
 						}
 						return arrayLists;
 					}
@@ -206,7 +206,7 @@ namespace MusicUtility
 			return null;
 		}
 
-		private static void setToHTMLDecode(string key, ref Dictionary<string, object> thisDict)
+		private static void SetToHTMLDecode(string key, ref Dictionary<string, object> thisDict)
 		{
 			if (thisDict.ContainsKey(key))
 			{
