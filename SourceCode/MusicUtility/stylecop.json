@@ -12,7 +12,7 @@
     },
     "namingRules": {
       "allowedHungarianPrefixes": [
-        "my"
+        "my", "i"
       ]
     }
     }

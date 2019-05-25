@@ -14,14 +14,20 @@ namespace MusicUtility
 {
 	public class ItunesXmlFile
 	{
-		private static readonly ILog log = LogManager.GetLogger
-			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager stringTable =
-			new ResourceManager("MusicUtility.Resources",
-			Assembly.GetExecutingAssembly());
+			new ResourceManager(
+				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly XmlDocument xmlDocument = null;
+
+		public ItunesXmlFile(string filePath)
+		{
+			xmlDocument = new XmlDocument();
+			xmlDocument.Load(filePath);
+		}
 
 		public string ITunesFolderLocation
 		{
@@ -32,64 +38,13 @@ namespace MusicUtility
 				Uri uri = new Uri(value);
 				if (uri.IsFile)
 				{
-					path = uri.LocalPath.Replace("\\\\localhost\\", "");
+					path =
+						uri.LocalPath.Replace("\\\\localhost\\", string.Empty);
 					path = Path.GetFullPath(path);
 				}
 
 				return path;
 			}
-		}
-
-		public ItunesXmlFile(string filePath)
-		{
-			xmlDocument = new XmlDocument();
-			xmlDocument.Load(filePath);
-		}
-
-		private string GetValue(string key)
-		{
-			string value = null;
-			string expression = "plist/dict/key[.='" + key +
-				"']/following-sibling::string[1]";
-
-			XmlNode location = xmlDocument.SelectSingleNode(expression);
-
-			string innerText = location.InnerText;
-
-			//innerText = xmlNodeList[0].InnerText;
-			if (!string.IsNullOrWhiteSpace(innerText))
-			{
-				log.Info("value: " + innerText);
-
-				value = innerText;
-			}
-
-			return value;
-		}
-
-		private static string GetURLDecodeOfString(string value)
-		{
-			string localPath = value;
-
-			try
-			{
-				value = value.Replace("+", "%2b");
-				string uri = HttpUtility.UrlDecode(value);
-				if (uri.StartsWith("file://localhost/"))
-				{
-					uri = uri.Remove(0, 17);
-				}
-
-				localPath = (new Uri(uri, UriKind.Absolute)).LocalPath;
-			}
-			catch (Exception exception)
-			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
-				localPath = null;
-			}
-
-			return localPath;
 		}
 
 		public static Dictionary<string, object> LoadItunesXmlFile(
@@ -143,6 +98,60 @@ namespace MusicUtility
 				strs = null;
 			}
 			return strs;
+		}
+
+		private string GetValue(string key)
+		{
+			string value = null;
+			string expression = "plist/dict/key[.='" + key +
+				"']/following-sibling::string[1]";
+
+			XmlNode location = xmlDocument.SelectSingleNode(expression);
+
+			string innerText = location.InnerText;
+
+			//innerText = xmlNodeList[0].InnerText;
+			if (!string.IsNullOrWhiteSpace(innerText))
+			{
+				log.Info("value: " + innerText);
+
+				value = innerText;
+			}
+
+			return value;
+		}
+
+		private static string GetURLDecodeOfString(string value)
+		{
+			string localPath = value;
+
+			try
+			{
+				value = value.Replace("+", "%2b");
+				string url = HttpUtility.UrlDecode(value);
+
+				if (url.StartsWith(
+					"file://localhost/", StringComparison.InvariantCulture))
+				{
+					url = url.Remove(0, 17);
+				}
+
+				Uri uri = new Uri(url, UriKind.Absolute);
+
+				localPath = uri.LocalPath;
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is ArgumentOutOfRangeException ||
+				exception is UriFormatException)
+			{
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
+				localPath = null;
+			}
+
+			return localPath;
 		}
 
 		private static object ReadKeyAsDictionaryEntry(XmlNode currentElement)

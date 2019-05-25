@@ -88,6 +88,7 @@ Tasks
 	Failed obtaining configuration for Common.Logging from configuration section 'common/logging'	MusicClean.exe.Config line 11
 	Remove sample projects
 	Deal with wma files	System.ArgumentException	"Value does not fall within the expected range." iTunesLib.IITLibraryPlaylist.AddFile(String filePath) MusicUtility.MusicUtility.UpdateItunes(FileInfo file) MusicUtility.cs:line 467 MusicUtility.MusicUtility.CleanFile(FileInfo file) MusicUtility.cs:line 131"
+	Check IITOperationStatus status return from iTunes.LibraryPlaylist.AddFile
 	Not Sure
 		1-05 Do You Know The Way To San Jose.m4a
 		Tangled Up In Blue (2).mp3

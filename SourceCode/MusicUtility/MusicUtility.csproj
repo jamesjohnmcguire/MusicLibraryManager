@@ -3,19 +3,12 @@
     <CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <AssemblyTitle>MusicUtility</AssemblyTitle>
     <Product>MusicUtility</Product>
-    <Copyright>Copyright ©  2016</Copyright>
-  </PropertyGroup>
-  <PropertyGroup>
+    <Copyright>Copyright © 2016 - 2019</Copyright>
     <ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
     <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.*" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
     <PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />

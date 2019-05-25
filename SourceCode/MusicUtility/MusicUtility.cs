@@ -13,27 +13,18 @@ namespace MusicUtility
 {
 	public class MusicUtility : IDisposable
 	{
-		private iTunesApp iTunes = null;
+		private static readonly ILog log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ILog log = LogManager.GetLogger
-			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ResourceManager stringTable =
+			new ResourceManager(
+				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList = null;
 		private readonly string iTunesDirectoryLocation = null;
 
-		private static readonly ResourceManager stringTable =
-			new ResourceManager("MusicUtility.Resources",
-			Assembly.GetExecutingAssembly());
-
+		private iTunesApp iTunes = null;
 		private Tags tags = null;
-
-		public string ITunesLibraryLocation
-		{
-			get
-			{
-				return iTunesDirectoryLocation;
-			}
-		}
 
 		public MusicUtility()
 		{
@@ -46,19 +37,11 @@ namespace MusicUtility
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 		}
 
-		public void Dispose()
+		public string ITunesLibraryLocation
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing)
+			get
 			{
-				// dispose managed resources
-				tags.Dispose();
-				tags = null;
+				return iTunesDirectoryLocation;
 			}
 		}
 
@@ -78,6 +61,32 @@ namespace MusicUtility
 			return 0;
 		}
 
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// dispose managed resources
+				tags.Dispose();
+				tags = null;
+			}
+		}
+
+		private static void CreateDirectoryIfNotExists(string path)
+		{
+			DirectoryInfo directory = new DirectoryInfo(path);
+
+			if (!directory.Exists)
+			{
+				directory.Create();
+			}
+		}
+
 		private bool AreFileAndTrackTheSame(IITTrack track)
 		{
 			bool same = false;
@@ -93,18 +102,20 @@ namespace MusicUtility
 				int year1 = track.Year;
 				int year2 = (int)tags.Year;
 
-				if ((string.Equals(album1, album2,
-					StringComparison.OrdinalIgnoreCase)) &&
-					(string.Equals(artist1, artist2,
-					StringComparison.OrdinalIgnoreCase)) &&
-					(string.Equals(title1, title2,
-					StringComparison.OrdinalIgnoreCase)) &&
+				if (string.Equals(
+					album1, album2, StringComparison.OrdinalIgnoreCase) &&
+					string.Equals(
+						artist1, artist2, StringComparison.OrdinalIgnoreCase) &&
+					string.Equals(
+						title1, title2, StringComparison.OrdinalIgnoreCase) &&
 					(year1 == year2))
 				{
 					same = true;
 				}
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
@@ -145,8 +156,8 @@ namespace MusicUtility
 					".gz", ".htm", ".ini", ".jpeg", ".jpg", ".lit", ".log",
 					".m3u", ".nfo", ".opf", ".pdf", ".plist", ".png", ".psp",
 					".sav", ".sfv", ".txt", ".url", ".xls", ".zip" };
-				string[] includes = { ".aifc", ".flac", ".m4a", ".mp3", ".wav",
-					".wma" };
+				string[] includes = { ".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV",
+					".WMA" };
 
 				if (Directory.Exists(path))
 				{
@@ -156,7 +167,8 @@ namespace MusicUtility
 
 					foreach (FileInfo file in files)
 					{
-						if (includes.Contains(file.Extension.ToLower()))
+						if (includes.Contains(
+							file.Extension.ToUpperInvariant()))
 						{
 							CleanFile(file);
 						}
@@ -189,16 +201,6 @@ namespace MusicUtility
 			}
 		}
 
-		private static void CreateDirectoryIfNotExists(string path)
-		{
-			DirectoryInfo directory = new DirectoryInfo(path);
-
-			if (!directory.Exists)
-			{
-				directory.Create();
-			}
-		}
-
 		private string CreateAlbumPathFromTag(
 			FileInfo file, string currentPath, string albumTag)
 		{
@@ -210,7 +212,7 @@ namespace MusicUtility
 
 			if (Regex.IsMatch(pathPart, pattern))
 			{
-				pathPart = Regex.Replace(pathPart, pattern, @"");
+				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
 			}
 
 			pathPart = pathPart.Trim();
@@ -230,13 +232,13 @@ namespace MusicUtility
 
 			if (Regex.IsMatch(pathPart, pattern))
 			{
-				pathPart = Regex.Replace(pathPart, pattern, @"");
+				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
 			}
 
 			pathPart = pathPart.Trim();
 
-			string path = Path.Combine(iTunesDirectoryLocation,
-					"Music\\" + pathPart);
+			string path = Path.Combine(
+				iTunesDirectoryLocation, "Music\\" + pathPart);
 			CreateDirectoryIfNotExists(path);
 
 			return path;
@@ -445,8 +447,8 @@ namespace MusicUtility
 		{
 			string searchName = Path.GetFileNameWithoutExtension(file.Name);
 
-			IITTrackCollection tracks = playList.Search(searchName,
-				ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+			IITTrackCollection tracks = playList.Search(
+				searchName, ITPlaylistSearchField.ITPlaylistSearchFieldAll);
 
 			if (null == tracks)
 			{
@@ -488,7 +490,7 @@ namespace MusicUtility
 
 				// only update in iTunes,
 				// if the current actual file doesn't exist
-				if ((string.IsNullOrWhiteSpace(fileTrack.Location)) ||
+				if (string.IsNullOrWhiteSpace(fileTrack.Location) ||
 					((!filePath.Equals(fileTrack.Location)) &&
 					(!System.IO.File.Exists(fileTrack.Location))))
 				{
@@ -546,8 +548,8 @@ namespace MusicUtility
 			//IITEncoder encoder = iTunes.CurrentEncoder;
 			//status = iTunes.ConvertFile2(musicFilePath);
 
-			IITTrackCollection tracks = playList.Search(name,
-				ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+			IITTrackCollection tracks = playList.Search(
+				name, ITPlaylistSearchField.ITPlaylistSearchFieldAll);
 
 			if (null != tracks)
 			{

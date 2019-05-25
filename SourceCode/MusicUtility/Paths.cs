@@ -72,7 +72,8 @@ namespace MusicUtility
 				{
 					if (path.Contains(charactor))
 					{
-						path = path.Replace(charactor.ToString(), "");
+						path =
+							path.Replace(charactor.ToString(), string.Empty);
 					}
 				}
 

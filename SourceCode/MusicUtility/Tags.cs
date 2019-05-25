@@ -6,16 +6,8 @@ namespace MusicUtility
 {
 	public class Tags : IDisposable
 	{
-		private string iTunesLocation = null;
+		private readonly string iTunesLocation = null;
 		private TagLib.File tagFile = null;
-
-		public string Album { get; set; }
-
-		public string Artist { get; set; }
-
-		public string Title { get; set; }
-
-		public uint Year { get; set; }
 
 		public Tags(string file, string iTunesLocation)
 		{
@@ -27,6 +19,14 @@ namespace MusicUtility
 
 			tagFile.Dispose();
 		}
+
+		public string Album { get; set; }
+
+		public string Artist { get; set; }
+
+		public string Title { get; set; }
+
+		public uint Year { get; set; }
 
 		public void Dispose()
 		{
@@ -77,18 +77,21 @@ namespace MusicUtility
 					if (Regex.IsMatch(Album, regex, RegexOptions.IgnoreCase))
 					{
 						Album = Regex.Replace(
-							Album, regex, @"", RegexOptions.IgnoreCase);
+							Album,
+							regex,
+							string.Empty,
+							RegexOptions.IgnoreCase);
 					}
 				}
 
 				if (Album.EndsWith(" (Disc 2)"))
 				{
-					Album = Album.Replace(" (Disc 2)", "");
+					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
 				if (Album.EndsWith(" (Disc 2)"))
 				{
-					Album = Album.Replace(" (Disc 2)", "");
+					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
 				string breaker = " - ";
@@ -110,8 +113,10 @@ namespace MusicUtility
 
 					foreach (Match match in matches)
 					{
-						Console.WriteLine("Found '{0}' at position {1}",
-							match.Value, match.Index);
+						Console.WriteLine(
+							"Found '{0}' at position {1}",
+							match.Value,
+							match.Index);
 					}
 				}
 			}
@@ -133,8 +138,8 @@ namespace MusicUtility
 				Artist = tagFile.Tag.AlbumArtists[0];
 			}
 
-			if ((string.IsNullOrWhiteSpace(Artist)) ||
-				(Artist.ToLower().Equals("various artists")))
+			if (string.IsNullOrWhiteSpace(Artist) ||
+				Artist.ToLower().Equals("various artists"))
 			{
 				if (tagFile.Tag.Performers.Length > 0)
 				{
@@ -142,8 +147,8 @@ namespace MusicUtility
 				}
 			}
 
-			if ((string.IsNullOrWhiteSpace(Artist)) ||
-				(Artist.ToLower().Equals("various artists")))
+			if (string.IsNullOrWhiteSpace(Artist) ||
+				Artist.ToLower().Equals("various artists"))
 			{
 				if (tagFile.Tag.Artists.Length > 0)
 				{
@@ -179,7 +184,10 @@ namespace MusicUtility
 					if (Regex.IsMatch(Artist, regex, RegexOptions.IgnoreCase))
 					{
 						Artist = Regex.Replace(
-							Artist, regex, @"", RegexOptions.IgnoreCase);
+							Artist,
+							regex,
+							string.Empty,
+							RegexOptions.IgnoreCase);
 						updated = true;
 					}
 				}
@@ -220,15 +228,15 @@ namespace MusicUtility
 			{
 				if (Regex.IsMatch(Title, regex))
 				{
-					Title = Regex.Replace(Title, regex, @"");
+					Title = Regex.Replace(Title, regex, string.Empty);
 					updated = true;
 				}
 			}
 
 			if ((!string.IsNullOrWhiteSpace(Artist)) &&
-				(Title.Contains(Artist + " - ")))
+				Title.Contains(Artist + " - "))
 			{
-				Title = Title.Replace(Artist + " - ", "");
+				Title = Title.Replace(Artist + " - ", string.Empty);
 				tagFile.Tag.Title = Title;
 				updated = true;
 			}
