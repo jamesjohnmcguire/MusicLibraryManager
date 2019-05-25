@@ -54,15 +54,6 @@ namespace MusicUtility
 			if (string.IsNullOrWhiteSpace(Album))
 			{
 				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
-				//foreach (TagLib.Tag tags in tag.Tags)
-				//{
-				//	album = tags.Album;
-
-				//	if (!string.IsNullOrWhiteSpace(album))
-				//	{
-				//		break;
-				//	}
-				//}
 			}
 
 			if (!string.IsNullOrWhiteSpace(Album))
