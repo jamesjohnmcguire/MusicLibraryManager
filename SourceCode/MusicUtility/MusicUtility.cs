@@ -64,7 +64,11 @@ namespace MusicUtility
 
 		public int CleanMusicLibrary()
 		{
+			// Operate on the actual music files in the file system
 			CleanFiles(iTunesDirectoryLocation);
+
+			// Operate on the iTunes data store
+			DeleteDeadTracks();
 
 			// dispose
 			System.Runtime.InteropServices.Marshal.ReleaseComObject(iTunes);
@@ -250,32 +254,42 @@ namespace MusicUtility
 
 			// set up progress monitor, if needed
 
-			for (int index = 0; index < trackCount; index++)
+			for (int index = 1; index <= trackCount; index++)
 			{
-				// check for cancel
-
-				// only work with files
-				fileTrack = tracks[index] as IITFileOrCDTrack;
-
-				// is this a file track?
-				if ((null != fileTrack) &&
-					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+				try
 				{
-					if (string.IsNullOrWhiteSpace(fileTrack.Location))
-					{
-						numberDeadFound++;
+					// check for cancel
 
-						fileTrack.Delete();
-					}
-					else if (!File.Exists(fileTrack.Location))
+					// only work with files
+					fileTrack = tracks[index] as IITFileOrCDTrack;
+
+					// is this a file track?
+					if ((null != fileTrack) &&
+						(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
 					{
-						numberDeadFound++;
-						fileTrack.Delete();
+						if (string.IsNullOrWhiteSpace(fileTrack.Location))
+						{
+							numberDeadFound++;
+
+							fileTrack.Delete();
+						}
+						else if (!File.Exists(fileTrack.Location))
+						{
+							numberDeadFound++;
+							fileTrack.Delete();
+						}
 					}
+
+					numberChecked++;
+					// increment progress
 				}
-
-				numberChecked++;
-				// increment progress
+				catch (Exception exception) when
+					(exception is ArgumentException ||
+					exception is NullReferenceException)
+				{
+					log.Error(CultureInfo.InvariantCulture, m => m(
+						exception.ToString()));
+				}
 			}
 		}
 
