@@ -1,5 +1,6 @@
 ﻿using Common.Logging;
 using iTunesLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,19 +23,33 @@ namespace MusicUtility
 
 		private readonly IITLibraryPlaylist playList = null;
 		private readonly string iTunesDirectoryLocation = null;
+		private readonly Rules rules;
 
 		private iTunesApp iTunes = null;
 		private Tags tags = null;
 
 		public MusicUtility()
 		{
-			//create a reference to iTunes
+			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
 			ItunesXmlFile iTunesXmlFile =
 				new ItunesXmlFile(iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+		}
+
+		public MusicUtility(Rules rules)
+			: this()
+		{
+			if ((rules == null) || (rules.RulesList == null) ||
+				(rules.RulesList.Count == 0))
+			{
+				string data = GetDefaultRules();
+				rules = new Rules(data);
+			}
+
+			this.rules = rules;
 		}
 
 		public string ITunesLibraryLocation
@@ -47,6 +62,8 @@ namespace MusicUtility
 
 		public int CleanMusicLibrary()
 		{
+			rules.RunRules();
+
 			// Operate on the actual music files in the file system
 			CleanFiles(iTunesDirectoryLocation);
 
@@ -133,7 +150,8 @@ namespace MusicUtility
 					message));
 
 				// get and update tags
-				tags = new Tags(file.FullName, ITunesLibraryLocation);
+				tags = new Tags(file.FullName, ITunesLibraryLocation, rules);
+				tags.Update();
 
 				// update directory and file names
 				file = UpdateFile(file);
@@ -355,6 +373,30 @@ namespace MusicUtility
 			}
 
 			return duplicateTracks;
+		}
+
+		private static string GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName = "MusicUtility.DefaultRules.json";
+			Assembly thisAssembly = Assembly.GetCallingAssembly();
+
+			using (Stream templateObjectStream =
+				thisAssembly.GetManifestResourceStream(resourceName))
+			{
+				if (templateObjectStream != null)
+				{
+					using (StreamReader reader =
+						new StreamReader(templateObjectStream))
+					{
+						contents = reader.ReadToEnd();
+					}
+				}
+
+			}
+
+			return contents;
 		}
 
 		private string GetDulicateLocation(string path)
