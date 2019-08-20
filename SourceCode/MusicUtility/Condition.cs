@@ -10,6 +10,7 @@ namespace MusicUtility
 	{
 		Equals,
 		Matches,
-		Contains
+		Contains,
+		ContainsRegex
 	}
 }
