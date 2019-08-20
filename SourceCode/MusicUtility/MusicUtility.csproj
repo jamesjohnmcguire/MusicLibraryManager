@@ -5,9 +5,10 @@
     <Product>MusicUtility</Product>
     <Copyright>Copyright © 2016 - 2019</Copyright>
     <ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="12.0.2" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
@@ -46,9 +47,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="stylecop.json" />
+	  <EmbeddedResource Include="DefaultRules.json" />
+	  <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

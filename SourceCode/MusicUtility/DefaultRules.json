@@ -1,0 +1,14 @@
+[
+  {
+    "subject": "MusicUtility.Tags.Album",
+    "condition" : "ContainsRegex",
+    "conditional" : "\\(Disc.*?\\)",
+    "operation": "Remove"
+  },
+    {
+      "subject": "MusicUtility.Tags.Artist",
+      "condition": "Equals",
+      "conditional": "Various Artists",
+      "operation": "Replace"
+  }
+]
