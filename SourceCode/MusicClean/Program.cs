@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MusicUtility;
+﻿using MusicUtility;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace MusicClean
 {
@@ -13,8 +11,11 @@ namespace MusicClean
 		{
 			try
 			{
+				string rulesData = GetRulesData(args);
+				Rules rules = new Rules(rulesData);
+
 				MusicUtility.MusicUtility musicUtility =
-					new MusicUtility.MusicUtility();
+					new MusicUtility.MusicUtility(rules);
 
 				musicUtility.CleanMusicLibrary();
 			}
@@ -22,6 +23,47 @@ namespace MusicClean
 			{
 				Console.WriteLine("Exception: " + exception.Message);
 			}
+		}
+
+		private static string GetRulesData(string[] arguments)
+		{
+			string data = null;
+
+			if (arguments.Length > 0)
+			{
+				string fileName = arguments[0];
+				data = File.ReadAllText(fileName);
+			}
+			else
+			{
+				data = GetDefaultRules();
+			}
+
+			return data;
+		}
+
+		private static string GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName = "MusicUtility.DefaultRules.json";
+			Assembly thisAssembly = Assembly.GetCallingAssembly();
+
+			using (Stream templateObjectStream =
+				thisAssembly.GetManifestResourceStream(resourceName))
+			{
+				if (templateObjectStream != null)
+				{
+					using (StreamReader reader =
+						new StreamReader(templateObjectStream))
+					{
+						contents = reader.ReadToEnd();
+					}
+				}
+
+			}
+
+			return contents;
 		}
 	}
 }
