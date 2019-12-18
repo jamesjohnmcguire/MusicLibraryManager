@@ -186,3 +186,50 @@ Resources
 	http://regexstorm.net/tester
 	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
 	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
+
+extract tags into xml files, for backup purposes
+http://meta-extractor.sourceforge.net/
+https://sourceforge.net/projects/meta-extractor/files/
+https://github.com/DIA-NZ/Metadata-Extraction-Tool
+https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
+
+AlbumArtist
+AlbumArtistSort
+Artists	*
+JoinedAlbumArtist
+JoinedArtists	*
+JoinedPerformers	*
+JoinedPerformersSort	*
+Performers	*
+PerformersSort	*
+
+https://github.com/mono/taglib-sharp/blob/master/src/TaglibSharp/Id3v2/Tag.cs
+http://id3.org/id3v2.4.0-frames
+https://taglib.org/api/
+extract tags from mp3 into xml file
+
+https://github.com/Zeugma440/atldotnet
+https://github.com/gitpan/Audio-M4P
+
+Rules
+	https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
+	https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
+	https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
+	https://archive.codeplex.com/?p=rulesengine
+	https://stackoverflow.com/questions/424366/string-representation-of-an-enum
+	If album name contains 'Disc N', remove it
+	Subject	Albun name
+	RunRule(Tag.AlbumName, Condition.ContainsRegex, @" \(Disc.*?\)", Operation.Remove);
+	Update()
+		foreach property
+			Rules.RunRules(typeof + nameof)
+				foreach rule
+					if typeof + nameof == subject
+						RunRule
+	var tester = typeof(Tags);
+	var tester2 = nameof(tags.Album);
+	var tester3 = tags.GetType().GetProperties();
+	var numbers = "anything";
+	Console.WriteLine(nameof(numbers));  // output: numbers
+	https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
+	http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
