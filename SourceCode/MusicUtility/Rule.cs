@@ -15,5 +15,11 @@ namespace MusicUtility
 		public object Conditional { get; set; }
 
 		public Operations Operation { get; set; }
+
+		public object Replacement { get; set; }
+
+		public Chain Chain { get; set; }
+
+		public Rule ChainRule { get; set; }
 	}
 }

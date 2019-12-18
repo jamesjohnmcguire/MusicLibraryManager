@@ -102,27 +102,7 @@ namespace MusicUtility
 
 		public bool Update()
 		{
-			Type classType = typeof(Tags);
-			string className = classType.FullName;
-			string name = nameof(Album);
-			string fullName = string.Format(
-				CultureInfo.InvariantCulture, "{0}.{1}", className, name);
-
-			PropertyInfo[] properties = classType.GetProperties();
-
-			foreach (Rule rule in rules.RulesList)
-			{
-				foreach (PropertyInfo property in properties)
-				{
-					name = property.Name;
-					fullName = string.Format(
-						CultureInfo.InvariantCulture, "{0}.{1}", className, name);
-
-					object source = property.GetValue(this, null);
-
-					source = Rules.RunRule(rule, fullName, source);
-				}
-			}
+			rules.RunRules(this);
 
 			bool artistUpdated = UpdateArtistTag(filePath);
 
@@ -149,6 +129,12 @@ namespace MusicUtility
 				tagFile.Dispose();
 				tagFile = null;
 			}
+		}
+
+		private string GetAssemblyFileContents(string template)
+		{
+
+			return string.Empty;
 		}
 
 		private bool UpdateAlbumTag(string fileName)

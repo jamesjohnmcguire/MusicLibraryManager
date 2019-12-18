@@ -1,10 +1,22 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
+	/////////////////////////////////////////////////////////////////////////
+	/// <summary>
+	/// Represents a method that generates source file contents.
+	/// </summary>
+	/// <param name="template">The template file for this genterator.</param>
+	/// <returns>Returns the source file Contents.</returns>
+	/////////////////////////////////////////////////////////////////////////
+	public delegate string ContentsGenerator(string template);
+
 	public class Rules
 	{
 		private readonly IList<Rule> rules;
@@ -25,15 +37,90 @@ namespace MusicUtility
 			}
 		}
 
+		public static object RunRule(
+			Rule rule,
+			string subject,
+			object content,
+			object replacement,
+			IDictionary<string, string> additionals = null)
+		{
+			string ruleSubject = (string)rule.Subject;
+
+			string text;
+
+			switch (rule.Condition)
+			{
+				case Condition.ContainsRegex:
+					if (ruleSubject.Equals(
+						subject, System.StringComparison.InvariantCulture))
+					{
+						content = RegexReplace(content, rule.Conditional);
+					}
+
+					break;
+
+				case Condition.Equals:
+					content = ConditionEquals(
+						rule, subject, content, replacement, additionals);
+					break;
+
+				case Condition.NotEmpty:
+					if (content is string[] item)
+					{
+						if (item.Length > 0)
+						{
+							text = item[0];
+						}
+					}
+
+					break;
+			}
+
+			return content;
+		}
+
 		public void RunRules()
 		{
 			foreach (Rule rule in rules)
 			{
-				RunRule(rule, null, null);
+				RunRule(rule, null, null, null);
 			}
 		}
 
-		public static object RunRule(Rule rule, string subject, object content)
+		public void RunRules(object item)
+		{
+			Type classType = item.GetType();
+			string className = classType.FullName;
+
+			PropertyInfo[] properties = classType.GetProperties();
+
+			foreach (PropertyInfo property in properties)
+			{
+				string name = property.Name;
+				string fullName = string.Format(
+					CultureInfo.InvariantCulture, "{0}.{1}", className, name);
+
+				object source = property.GetValue(item, null);
+
+				foreach (Rule rule in rules)
+				{
+					object newValue = RunRule(rule, fullName, source, null);
+
+					if (!source.Equals(newValue))
+					{
+						classType.GetProperty(name).SetValue(
+							item, newValue, null);
+					}
+				}
+			}
+		}
+
+		private static object ConditionEquals(
+			Rule rule,
+			string subject,
+			object content,
+			object replacement,
+			IDictionary<string, string> additionals = null)
 		{
 			string ruleSubject = (string)rule.Subject;
 
@@ -41,19 +128,35 @@ namespace MusicUtility
 				subject, System.StringComparison.InvariantCulture))
 			{
 				string text = (string)content;
-
-				switch (rule.Condition)
+				if (text.Equals(rule.Conditional))
 				{
-					case Condition.ContainsRegex:
-						subject = RegexReplace(content, rule.Conditional);
-						break;
-					case Condition.Equals:
-						subject = RegexReplace(content, rule.Conditional);
-						break;
+					if (rule.Chain == Chain.And)
+					{
+						Rule andRule = rule.ChainRule;
+
+						if (additionals != null)
+						{
+							string andSubject;
+							if (additionals.TryGetValue(
+								"subject", out andSubject))
+							{
+								andSubject = additionals["subject"];
+							}
+						}
+
+						RunRule(
+							andRule,
+							subject,
+							content,
+							replacement,
+							additionals);
+					}
 				}
+
+				content = RegexReplace(content, rule.Conditional);
 			}
 
-			return subject;
+			return content;
 		}
 
 		private static string RegexReplace(object content, object conditional)
