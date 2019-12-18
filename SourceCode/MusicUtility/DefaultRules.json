@@ -12,10 +12,17 @@
     "operation": "Replace",
     "chain": "and",
     "chainRule": {
-      "subject": "tagFile.Tag.Performers",
+      "subject": "MusicUtility.Tags.TagFile.Tag.Performers",
       "condition": "NotEmpty",
       "conditional": "",
-      "operation": "Replace"
+      "operation": "Replace",
+      "chain": "and",
+      "chainRule": {
+        "subject": "MusicUtility.Tags.Artist",
+        "condition": "NotEquals",
+        "conditional": "MusicUtility.Tags.TagFile.Tag.Performers",
+        "operation": "Replace"
+      }
     }
   }
 ]

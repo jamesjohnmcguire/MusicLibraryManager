@@ -16,6 +16,6 @@ namespace MusicUtility
 		LessThan,
 		Matches,
 		NotEmpty,
-		NotEqual
+		NotEquals
 	}
 }
