@@ -39,6 +39,7 @@ namespace MusicUtility
 
 		public static object RunRule(
 			Rule rule,
+			object item,
 			string subject,
 			object content,
 			object replacement,
@@ -61,15 +62,23 @@ namespace MusicUtility
 
 				case Condition.Equals:
 					content = ConditionEquals(
-						rule, subject, content, replacement, additionals);
+						rule, item, subject, content, replacement, additionals);
 					break;
 
 				case Condition.NotEmpty:
-					if (content is string[] item)
+					Type thang = item.GetType();
+					PropertyInfo info = thang.GetProperty(ruleSubject);
+
+					if (info != null)
 					{
-						if (item.Length > 0)
+						object tester = info.GetValue(info, null);
+
+						if (tester is string[] thing)
 						{
-							text = item[0];
+							if (thing.Length > 0)
+							{
+								text = thing[0];
+							}
 						}
 					}
 
@@ -83,7 +92,7 @@ namespace MusicUtility
 		{
 			foreach (Rule rule in rules)
 			{
-				RunRule(rule, null, null, null);
+				RunRule(rule, null, null, null, null);
 			}
 		}
 
@@ -104,9 +113,10 @@ namespace MusicUtility
 
 				foreach (Rule rule in rules)
 				{
-					object newValue = RunRule(rule, fullName, source, null);
+					object newValue =
+						RunRule(rule, item, fullName, source, null);
 
-					if (!source.Equals(newValue))
+					if ((source != null) && !source.Equals(newValue))
 					{
 						classType.GetProperty(name).SetValue(
 							item, newValue, null);
@@ -117,6 +127,7 @@ namespace MusicUtility
 
 		private static object ConditionEquals(
 			Rule rule,
+			object item,
 			string subject,
 			object content,
 			object replacement,
@@ -132,24 +143,27 @@ namespace MusicUtility
 				{
 					if (rule.Chain == Chain.And)
 					{
-						Rule andRule = rule.ChainRule;
-
 						if (additionals != null)
 						{
-							string andSubject;
 							if (additionals.TryGetValue(
-								"subject", out andSubject))
+								"subject", out string andSubject))
 							{
 								andSubject = additionals["subject"];
 							}
 						}
 
-						RunRule(
-							andRule,
-							subject,
-							content,
-							replacement,
-							additionals);
+						if (rule.ChainRule != null)
+						{
+							Rule andRule = rule.ChainRule;
+
+							RunRule(
+								andRule,
+								item,
+								subject,
+								content,
+								replacement,
+								additionals);
+						}
 					}
 				}
 
