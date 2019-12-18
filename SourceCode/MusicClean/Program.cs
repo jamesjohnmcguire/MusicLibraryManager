@@ -14,8 +14,7 @@ namespace MusicClean
 				string rulesData = GetRulesData(args);
 				Rules rules = new Rules(rulesData);
 
-				MusicUtility.MusicUtility musicUtility =
-					new MusicUtility.MusicUtility(rules);
+				MusicManager musicUtility = new MusicManager(rules);
 
 				musicUtility.CleanMusicLibrary();
 			}
@@ -27,7 +26,7 @@ namespace MusicClean
 
 		private static string GetRulesData(string[] arguments)
 		{
-			string data = null;
+			string data;
 
 			if (arguments.Length > 0)
 			{

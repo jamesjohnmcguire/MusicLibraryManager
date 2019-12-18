@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
-	public class MusicUtility : IDisposable
+	public class MusicManager : IDisposable
 	{
 		private static readonly ILog log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
@@ -28,7 +28,7 @@ namespace MusicUtility
 		private iTunesApp iTunes = null;
 		private Tags tags = null;
 
-		public MusicUtility()
+		public MusicManager()
 		{
 			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
@@ -39,7 +39,7 @@ namespace MusicUtility
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 		}
 
-		public MusicUtility(Rules rules)
+		public MusicManager(Rules rules)
 			: this()
 		{
 			if ((rules == null) || (rules.RulesList == null) ||
@@ -159,7 +159,12 @@ namespace MusicUtility
 				// update iTunes
 				IITTrackCollection tracks = UpdateItunes(file);
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentNullException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is NullReferenceException ||
+				exception is InvalidOperationException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
@@ -203,7 +208,8 @@ namespace MusicUtility
 					directories = Directory.GetDirectories(path);
 					files = directory.GetFiles();
 
-					if ((files.Length == 0) && (directories.Length == 0))
+					if ((files.Length == 0) && (directories.Length == 0) &&
+						(!path.Contains("Automatically Add to iTunes")))
 					{
 						Directory.Delete(path, false);
 					}
