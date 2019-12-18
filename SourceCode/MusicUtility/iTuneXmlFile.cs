@@ -91,7 +91,15 @@ namespace MusicUtility
 					strs = strs1;
 				}
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentNullException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is InvalidOperationException ||
+				exception is NullReferenceException ||
+				exception is UriFormatException ||
+				exception is WebException ||
+				exception is XmlException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
@@ -162,26 +170,26 @@ namespace MusicUtility
 			{
 				switch (str)
 				{
-				case "plist":
+					case "plist":
 					{
 						return ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
 					}
-				case "integer":
-				case "real":
-				case "data":
-				case "date":
+					case "integer":
+					case "real":
+					case "data":
+					case "date":
 					{
 						return currentElement.InnerText;
 					}
-				case "key":
+					case "key":
 					{
 						return currentElement.InnerText;
 					}
-				case "string":
+					case "string":
 					{
 						return currentElement.InnerText;
 					}
-				case "dict":
+					case "dict":
 					{
 						Dictionary<string, object> strs = new Dictionary<string, object>();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
@@ -192,7 +200,7 @@ namespace MusicUtility
 						}
 						return strs;
 					}
-				case "array":
+					case "array":
 					{
 						ArrayList arrayLists = new ArrayList();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
@@ -201,8 +209,8 @@ namespace MusicUtility
 						}
 						return arrayLists;
 					}
-				case "true":
-				case "false":
+					case "true":
+					case "false":
 					{
 						return currentElement.Name;
 					}
