@@ -13,7 +13,6 @@ namespace MusicUtility
 		private readonly string filePath;
 		private readonly string iTunesLocation = null;
 		private readonly Rules rules = null;
-		private TagLib.File tagFile = null;
 
 		public Tags(string file, string iTunesLocation)
 		{
@@ -21,10 +20,10 @@ namespace MusicUtility
 
 			filePath = file;
 
-			tagFile = TagLib.File.Create(file);
+			TagFile = TagLib.File.Create(file);
 
-			if ((tagFile.Tag.Artists.Length > 1) ||
-				(tagFile.Tag.Performers.Length > 1))
+			if ((TagFile.Tag.Artists.Length > 1) ||
+				(TagFile.Tag.Performers.Length > 1))
 			{
 				throw new NotSupportedException();
 			}
@@ -40,12 +39,12 @@ namespace MusicUtility
 		{
 			get
 			{
-				return tagFile.Tag.Album;
+				return TagFile.Tag.Album;
 			}
 
 			set
 			{
-				tagFile.Tag.Album = value;
+				TagFile.Tag.Album = value;
 			}
 		}
 
@@ -55,24 +54,24 @@ namespace MusicUtility
 			{
 				string artist = null;
 
-				if (tagFile.Tag.AlbumArtists.Length > 0)
+				if (TagFile.Tag.AlbumArtists.Length > 0)
 				{
-					artist = tagFile.Tag.AlbumArtists[0];
+					artist = TagFile.Tag.AlbumArtists[0];
 				}
 
 				if (string.IsNullOrWhiteSpace(artist))
 				{
-					if (tagFile.Tag.Performers.Length > 0)
+					if (TagFile.Tag.Performers.Length > 0)
 					{
-						artist = tagFile.Tag.Performers[0];
+						artist = TagFile.Tag.Performers[0];
 					}
 				}
 
 				if (string.IsNullOrWhiteSpace(artist))
 				{
-					if (tagFile.Tag.Artists.Length > 0)
+					if (TagFile.Tag.Artists.Length > 0)
 					{
-						artist = tagFile.Tag.Artists[0];
+						artist = TagFile.Tag.Artists[0];
 					}
 				}
 
@@ -89,6 +88,8 @@ namespace MusicUtility
 			//	tagFile.Tag.Performers[0] = value;
 			//}
 		}
+
+		public TagLib.File TagFile { get; set; }
 
 		public string Title { get; set; }
 
@@ -110,12 +111,12 @@ namespace MusicUtility
 
 			bool titleUpdated = UpdateTitleTag();
 
-			Year = tagFile.Tag.Year;
+			Year = TagFile.Tag.Year;
 
 			if ((true == updated) || (true == artistUpdated) ||
 				(true == titleUpdated))
 			{
-				tagFile.Save();
+				TagFile.Save();
 			}
 
 			return updated;
@@ -126,22 +127,16 @@ namespace MusicUtility
 			if (disposing)
 			{
 				// dispose managed resources
-				tagFile.Dispose();
-				tagFile = null;
+				TagFile.Dispose();
+				TagFile = null;
 			}
-		}
-
-		private string GetAssemblyFileContents(string template)
-		{
-
-			return string.Empty;
 		}
 
 		private bool UpdateAlbumTag(string fileName)
 		{
 			bool updated = false;
 
-			Album = tagFile.Tag.Album;
+			Album = TagFile.Tag.Album;
 
 			// tags are toast, attempt to get from file name
 			if (string.IsNullOrWhiteSpace(Album))
@@ -205,7 +200,7 @@ namespace MusicUtility
 				}
 			}
 
-			if (!Album.Equals(tagFile.Tag.Album))
+			if (!Album.Equals(TagFile.Tag.Album))
 			{
 				updated = true;
 			}
@@ -217,26 +212,26 @@ namespace MusicUtility
 		{
 			bool updated = false;
 
-			if (tagFile.Tag.AlbumArtists.Length > 0)
+			if (TagFile.Tag.AlbumArtists.Length > 0)
 			{
-				Artist = tagFile.Tag.AlbumArtists[0];
+				Artist = TagFile.Tag.AlbumArtists[0];
 			}
 
 			if (string.IsNullOrWhiteSpace(Artist) ||
 				Artist.ToLower().Equals("various artists"))
 			{
-				if (tagFile.Tag.Performers.Length > 0)
+				if (TagFile.Tag.Performers.Length > 0)
 				{
-					Artist = tagFile.Tag.Performers[0];
+					Artist = TagFile.Tag.Performers[0];
 				}
 			}
 
 			if (string.IsNullOrWhiteSpace(Artist) ||
 				Artist.ToLower().Equals("various artists"))
 			{
-				if (tagFile.Tag.Artists.Length > 0)
+				if (TagFile.Tag.Artists.Length > 0)
 				{
-					Artist = tagFile.Tag.Artists[0];
+					Artist = TagFile.Tag.Artists[0];
 				}
 			}
 
@@ -284,7 +279,7 @@ namespace MusicUtility
 		{
 			bool updated = false;
 
-			Title = tagFile.Tag.Title;
+			Title = TagFile.Tag.Title;
 
 			string[] regexes =
 				new string[] { @" \[.*?\]", @" \(.*?\)"  };
@@ -302,7 +297,7 @@ namespace MusicUtility
 				Title.Contains(Artist + " - "))
 			{
 				Title = Title.Replace(Artist + " - ", string.Empty);
-				tagFile.Tag.Title = Title;
+				TagFile.Tag.Title = Title;
 				updated = true;
 			}
 
