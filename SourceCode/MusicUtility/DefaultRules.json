@@ -1,14 +1,21 @@
 [
   {
     "subject": "MusicUtility.Tags.Album",
-    "condition" : "ContainsRegex",
-    "conditional" : "\\(Disc.*?\\)",
+    "condition": "ContainsRegex",
+    "conditional": "\\(Disc.*?\\)",
     "operation": "Remove"
   },
-    {
-      "subject": "MusicUtility.Tags.Artist",
-      "condition": "Equals",
-      "conditional": "Various Artists",
+  {
+    "subject": "MusicUtility.Tags.Artist",
+    "condition": "Equals",
+    "conditional": "Various Artists",
+    "operation": "Replace",
+    "chain": "and",
+    "chainRule": {
+      "subject": "tagFile.Tag.Performers",
+      "condition": "NotEmpty",
+      "conditional": "",
       "operation": "Replace"
+    }
   }
 ]
