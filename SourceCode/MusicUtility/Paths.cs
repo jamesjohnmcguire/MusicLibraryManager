@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
-	class Paths
+	public class Paths
 	{
 		public static string GetAlbumFromPath(string path, string iTunesPath)
 		{
