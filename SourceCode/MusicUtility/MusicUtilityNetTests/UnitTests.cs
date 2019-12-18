@@ -4,74 +4,41 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
+using MusicUtility;
 using NUnit.Framework;
 using System.IO;
 
-namespace DigitalZenWorks.Common.Utilities.Tests
+namespace MusicUtility.Tests
 {
 	[TestFixture]
-	public static class UnitTests
+	public class UnitTests
 	{
-		/////////////////////////////////////////////////////////////////////
-		/// Method <c>Teardown</c>
-		/// <summary>
-		/// function that is called just after each test method is called.
-		/// </summary>
-		/////////////////////////////////////////////////////////////////////
-		[TearDown]
-		public static void Teardown()
+		[Test]
+		public void ITunesPathLocation()
 		{
-			bool result = File.Exists("test.xml");
-			if (true == result)
-			{
-				File.Delete("test.xml");
-			}
+			MusicManager musicUtility = new MusicManager();
+			string location = musicUtility.ITunesLibraryLocation;
 
-			result = File.Exists("test.xsd");
-			if (true == result)
-			{
-				File.Delete("test.xsd");
-			}
+			Assert.IsNotEmpty(location);
 		}
 
 		[Test]
-		public static void GetEmbeddedResource()
+		public void GetItunesPathDepth()
 		{
-			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.Common.Utilities.Tests.test.xml", "test.xml");
-			Assert.True(result);
+			MusicManager musicUtility = new MusicManager();
+			string location = musicUtility.ITunesLibraryLocation;
+			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
-			result = File.Exists("test.xml");
-			Assert.True(result);
+			Assert.AreEqual(iTunesDepth, 6);
 		}
 
 		[Test]
-		public static void ObjectFromXml()
+		public void GetArtistNameFromPath()
 		{
-			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.Common.Utilities.Tests.test.xsd", "test.xsd");
-			Assert.True(result);
+			MusicManager musicUtility = new MusicManager();
+			string location = musicUtility.ITunesLibraryLocation;
 
-			result = File.Exists("test.xsd");
-			Assert.True(result);
-
-			result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.Common.Utilities.Tests.test.xml", "test.xml");
-			Assert.True(result);
-
-			result = File.Exists("test.xml");
-			Assert.True(result);
-
-			OrderedItem item = (OrderedItem)XmlUtilities.LoadWithValidation(
-				"test.xsd", "test.xml", typeof(OrderedItem));
-
-			Assert.NotNull(item);
-			Assert.AreEqual(item.ItemName, "Widget");
-			Assert.AreEqual(item.Description, "Regular Widget");
-			Assert.AreEqual(item.UnitPrice, 2.3);
-			Assert.AreEqual(item.Quantity, 10);
-			Assert.AreEqual(item.LineTotal, 23);
+			Assert.IsNotEmpty(location);
 		}
 	}
 }

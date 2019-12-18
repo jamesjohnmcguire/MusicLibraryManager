@@ -5,18 +5,13 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>DigitalZenWorks.Common.Utilities.Tests</AssemblyName>
+    <AssemblyName>MusicUtility.Tests</AssemblyName>
 
-    <RootNamespace>DigitalZenWorks.Common.Utilities.Tests</RootNamespace>
+    <RootNamespace>MusicUtility.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UtilitiesNET.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="test.xml" />
-    <EmbeddedResource Include="test.xsd" />
+    <ProjectReference Include="..\MusicUtility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
