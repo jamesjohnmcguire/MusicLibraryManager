@@ -8,6 +8,11 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="MusicUtilityNetTests\**" />
+    <EmbeddedResource Remove="MusicUtilityNetTests\**" />
+    <None Remove="MusicUtilityNetTests\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="newtonsoft.json" Version="12.0.2" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
