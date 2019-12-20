@@ -217,19 +217,5 @@ Rules
 	https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
 	https://archive.codeplex.com/?p=rulesengine
 	https://stackoverflow.com/questions/424366/string-representation-of-an-enum
-	If album name contains 'Disc N', remove it
-	Subject	Albun name
-	RunRule(Tag.AlbumName, Condition.ContainsRegex, @" \(Disc.*?\)", Operation.Remove);
-	Update()
-		foreach property
-			Rules.RunRules(typeof + nameof)
-				foreach rule
-					if typeof + nameof == subject
-						RunRule
-	var tester = typeof(Tags);
-	var tester2 = nameof(tags.Album);
-	var tester3 = tags.GetType().GetProperties();
-	var numbers = "anything";
-	Console.WriteLine(nameof(numbers));  // output: numbers
 	https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
 	http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
