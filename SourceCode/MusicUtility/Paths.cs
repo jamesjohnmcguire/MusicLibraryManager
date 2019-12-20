@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
-	public class Paths
+	public static class Paths
 	{
 		public static string GetAlbumFromPath(string path, string iTunesPath)
 		{
@@ -72,8 +72,9 @@ namespace MusicUtility
 				{
 					if (path.Contains(charactor))
 					{
-						path =
-							path.Replace(charactor.ToString(), string.Empty);
+						path = path.Replace(
+							charactor.ToString(CultureInfo.InvariantCulture),
+							string.Empty);
 					}
 				}
 
@@ -83,7 +84,9 @@ namespace MusicUtility
 				{
 					if (path.Contains(charactor))
 					{
-						path = path.Replace(charactor.ToString(), " - ");
+						path = path.Replace(
+							charactor.ToString(CultureInfo.InvariantCulture),
+							" - ");
 					}
 				}
 
@@ -120,7 +123,9 @@ namespace MusicUtility
 			int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
 			int depth = pathParts.Length - iTunesDepth;
 
-			if ((depth > 4) && pathParts[6].Equals("Music"))
+			if ((depth > 4) && pathParts[6].Equals(
+				"Music",
+				StringComparison.OrdinalIgnoreCase))
 			{
 				// there is an extra intermediary directory, remove it
 				List<string> list = new List<string>(pathParts);

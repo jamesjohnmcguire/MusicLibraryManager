@@ -218,17 +218,14 @@ namespace MusicUtility
 			}
 
 			if (string.IsNullOrWhiteSpace(Artist) ||
-				Artist.ToLower().Equals("various artists"))
+				Artist.ToUpperInvariant().Equals(
+					"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
 			{
 				if (TagFile.Tag.Performers.Length > 0)
 				{
 					Artist = TagFile.Tag.Performers[0];
 				}
-			}
 
-			if (string.IsNullOrWhiteSpace(Artist) ||
-				Artist.ToLower().Equals("various artists"))
-			{
 				if (TagFile.Tag.Artists.Length > 0)
 				{
 					Artist = TagFile.Tag.Artists[0];

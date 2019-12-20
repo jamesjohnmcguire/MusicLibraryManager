@@ -215,13 +215,20 @@ namespace MusicUtility
 					}
 				}
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is InvalidOperationException ||
+				exception is NullReferenceException ||
+				exception is PathTooLongException ||
+				exception is System.Security.SecurityException ||
+				exception is TargetException ||
+				exception is UnauthorizedAccessException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
-			}
-			finally
-			{
 			}
 		}
 
@@ -420,7 +427,8 @@ namespace MusicUtility
 			while (false == locationOk)
 			{
 				int depth = iTunesPathParts.Length - 1;
-				pathParts[depth] = "Music" + tries.ToString();
+				pathParts[depth] = "Music" +
+					tries.ToString(CultureInfo.InvariantCulture);
 
 				List<string> newList = new List<string>(pathParts);
 				while (newList.Count > depth + 1)
@@ -539,7 +547,9 @@ namespace MusicUtility
 				// only update in iTunes,
 				// if the current actual file doesn't exist
 				if (string.IsNullOrWhiteSpace(fileTrack.Location) ||
-					((!filePath.Equals(fileTrack.Location)) &&
+					((!filePath.Equals(
+						fileTrack.Location,
+						StringComparison.OrdinalIgnoreCase)) &&
 					(!System.IO.File.Exists(fileTrack.Location))))
 				{
 					try
