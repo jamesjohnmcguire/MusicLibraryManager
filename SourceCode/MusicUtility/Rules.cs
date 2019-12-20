@@ -66,21 +66,16 @@ namespace MusicUtility
 					break;
 
 				case Condition.NotEmpty:
-					Type thang = item.GetType();
-					PropertyInfo info = thang.GetProperty(ruleSubject);
+					object tester = GetFullPathObject(item, ruleSubject);
 
-					if (info != null)
+					if (tester is string[] conditional)
 					{
-						object tester = info.GetValue(info, null);
-
-						if (tester is string[] thing)
+						if (conditional.Length > 0)
 						{
-							if (thing.Length > 0)
-							{
-								text = thing[0];
-							}
+							text = conditional[0];
 						}
 					}
+					// else test other types
 
 					break;
 			}
@@ -194,6 +189,46 @@ namespace MusicUtility
 			}
 
 			return subject;
+		}
+
+		private static object GetFullPathObject(object item, string subject)
+		{
+			object currentItem = item;
+
+			string[] parts = subject.Split('.');
+
+			string path = string.Empty;
+
+			for (int index = 0; index < parts.Length; index++)
+			{
+				if (index == 0)
+				{
+					// namespace
+					path = parts[0];
+				}
+				else
+				{
+					path += '.' + parts[index];
+
+					Type itemType = currentItem.GetType();
+					if (path.Equals(
+						itemType.FullName, StringComparison.Ordinal))
+					{
+						continue;
+					}
+					else
+					{
+						PropertyInfo propertyInfo =
+							itemType.GetProperty(parts[index]);
+
+						object nextItem =
+							propertyInfo.GetValue(currentItem, null);
+						currentItem = nextItem;
+					}
+				}
+			}
+
+			return currentItem;
 		}
 	}
 }
