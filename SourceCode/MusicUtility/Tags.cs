@@ -14,10 +14,8 @@ namespace MusicUtility
 		private readonly string iTunesLocation = null;
 		private readonly Rules rules = null;
 
-		public Tags(string file, string iTunesLocation)
+		public Tags(string file)
 		{
-			this.iTunesLocation = iTunesLocation;
-
 			filePath = file;
 
 			TagFile = TagLib.File.Create(file);
@@ -27,6 +25,12 @@ namespace MusicUtility
 			{
 				throw new NotSupportedException();
 			}
+		}
+
+		public Tags(string file, string iTunesLocation)
+			: this(file)
+		{
+			this.iTunesLocation = iTunesLocation;
 		}
 
 		public Tags(string file, string iTunesLocation, Rules rules)
