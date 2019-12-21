@@ -1,61 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <AssemblyTitle>MusicUtility</AssemblyTitle>
-    <Product>MusicUtility</Product>
-    <Copyright>Copyright © 2016 - 2019</Copyright>
-    <ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
-    <TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="MusicUtilityNetTests\**" />
-    <EmbeddedResource Remove="MusicUtilityNetTests\**" />
-    <None Remove="MusicUtilityNetTests\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="newtonsoft.json" Version="12.0.2" />
-    <PackageReference Include="System.Net.Http" Version="4.*" />
-    <PackageReference Include="Common.Logging" Version="3.4.1" />
-    <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-    <PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />
-    <PackageReference Include="CSCore" Version="1.2.1.2" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.2" />
-    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.2" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
-    <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.2" />
-    <PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.2" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="taglib" Version="2.1.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="iTunesLib">
-      <Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>13</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-	  <EmbeddedResource Include="DefaultRules.json" />
-	  <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
+	<PropertyGroup>
+		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<AssemblyTitle>MusicUtility</AssemblyTitle>
+		<Product>MusicUtility</Product>
+		<Copyright>Copyright © 2016 - 2019</Copyright>
+		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="MusicUtilityNetTests\**" />
+		<EmbeddedResource Remove="MusicUtilityNetTests\**" />
+		<None Remove="MusicUtilityNetTests\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<COMReference Include="iTunesLib">
+		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
+		<VersionMajor>1</VersionMajor>
+		<VersionMinor>13</VersionMinor>
+		<Lcid>0</Lcid>
+		<WrapperTool>tlbimp</WrapperTool>
+		<Isolated>False</Isolated>
+		<EmbedInteropTypes>True</EmbedInteropTypes>
+		</COMReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Web" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="newtonsoft.json" Version="12.0.2" />
+		<PackageReference Include="System.Net.Http" Version="4.*" />
+		<PackageReference Include="Common.Logging" Version="3.4.1" />
+		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
+		<PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />
+		<PackageReference Include="CSCore" Version="1.2.1.2" />
+		<PackageReference Include="log4net" Version="2.0.8" />
+		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.2" />
+		<PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.2" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
+		<PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.2" />
+		<PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.2" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="taglib" Version="2.1.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources.Designer.cs">
+		<AutoGen>True</AutoGen>
+		<DesignTime>True</DesignTime>
+		<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Include="DefaultRules.json" />
+		<AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
 </Project>
