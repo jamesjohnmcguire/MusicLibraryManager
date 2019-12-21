@@ -11,40 +11,56 @@ Details
 		.wma	Not supported in iTunes
 	ITunes info
 		C:\Users\JamesMc\Music\iTunes
-Process
-	Overall
-		get music library location
-		for each folder
-			for each file
-				Update tags (inside file)
-				Update file information
-					Update directory
-					Update file name
-				Update iTunes
-			Fix file name, if needed
-Process Flow
-	CleanFiles
-		UpdateArtistLocation
-		//UpdateAlbumDirectory
-		CleanFile
-			tags = new Tags(file.FullName);
-			//CleanFileName
-			//	CleanTrackNumbersOutOfFileName
-			IITTrackCollection = GetTracksFromFileName
-				IITTrackCollection playList.Search
-				foreach
-					AreFileAndTrackTheSame
-					// TODO update based on tags
+Design
+	Process
+		Overall
+			get music library location
+			for each folder
+				for each file
+					Update tags (inside file)
+					Update file information
+						Update directory
+						Update file name
+					Update iTunes
+				Fix file name, if needed
+	Process Flow
+		CleanFiles
+			UpdateArtistLocation
+			//UpdateAlbumDirectory
+			CleanFile
+				tags = new Tags(file.FullName);
+				//CleanFileName
+				//	CleanTrackNumbersOutOfFileName
+				IITTrackCollection = GetTracksFromFileName
+					IITTrackCollection playList.Search
+					foreach
+						AreFileAndTrackTheSame
+						// TODO update based on tags
+						MoveFileBasedOnTags
+							File.Move
+						UpdateLocation
+							fileTrack.Location = filePath;
 					MoveFileBasedOnTags
 						File.Move
-					UpdateLocation
-						fileTrack.Location = filePath;
-				MoveFileBasedOnTags
-					File.Move
-				iTunes.LibraryPlaylist.AddFile
-			MoveFileBasedOnTags(file);
-					File.Move
-			iTunes.LibraryPlaylist.AddFile(track);
+					iTunes.LibraryPlaylist.AddFile
+				MoveFileBasedOnTags(file);
+						File.Move
+				iTunes.LibraryPlaylist.AddFile(track);
+	Rules
+		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
+
+		if	artist is 'various artists' and
+			performers not empty and
+			performers is not 'various artists'
+				replace the artist tag with the performers tag
+		Resources
+			https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
+			https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
+			https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
+			https://archive.codeplex.com/?p=rulesengine
+			https://stackoverflow.com/questions/424366/string-representation-of-an-enum
+			https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
+			http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
 Manual Renaming
 	C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
 		FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
@@ -53,6 +69,9 @@ Manual Renaming
 	The Jackson 5 (Soul Source, 2000)
 Tasks
 	Finished
+		System.UnauthorizedAccessException	Access to the path 'C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Automatically Add to iTunes' is denied.
+		FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
+		System.Reflection.TargetException	Object does not match target type.
 		Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)).
 		Exception from HRESULT: 0xA0040203
 		Remove track number from file names
@@ -210,12 +229,3 @@ extract tags from mp3 into xml file
 
 https://github.com/Zeugma440/atldotnet
 https://github.com/gitpan/Audio-M4P
-
-Rules
-	https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
-	https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
-	https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
-	https://archive.codeplex.com/?p=rulesengine
-	https://stackoverflow.com/questions/424366/string-representation-of-an-enum
-	https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
-	http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
