@@ -8,11 +8,6 @@
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Remove="MusicUtilityNetTests\**" />
-		<EmbeddedResource Remove="MusicUtilityNetTests\**" />
-		<None Remove="MusicUtilityNetTests\**" />
-	</ItemGroup>
-	<ItemGroup>
 		<COMReference Include="iTunesLib">
 		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
 		<VersionMajor>1</VersionMajor>
@@ -44,6 +39,11 @@
 		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="taglib" Version="2.1.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="MusicUtilityNetTests\**" />
+		<EmbeddedResource Remove="MusicUtilityNetTests\**" />
+		<None Remove="MusicUtilityNetTests\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">
