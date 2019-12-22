@@ -55,9 +55,9 @@
 		<PackageReference Include="TagLibSharp" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Remove="MusicUtilityNetTests\**" />
-		<EmbeddedResource Remove="MusicUtilityNetTests\**" />
-		<None Remove="MusicUtilityNetTests\**" />
+		<Compile Remove="MusicUtilityTests\**" />
+		<EmbeddedResource Remove="MusicUtilityTests\**" />
+		<None Remove="MusicUtilityTests\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">

@@ -9,6 +9,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Reflection;
+using TagLib;
 
 namespace MusicUtility.Tests
 {
@@ -49,22 +50,28 @@ namespace MusicUtility.Tests
 			Rule rule = new Rule();
 			rule.Subject = "MusicUtility.Tags.Album";
 			rule.Condition = Condition.ContainsRegex;
-			rule.Conditional = @"\s*\(Disc.*?\)";
+			rule.Conditional = @"\s*\(Dis[A-Za-z].*?\)";
 			rule.Operation = Operations.Remove;
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
 			string file = @"C:\Users\JamesMc\Data\External\Entertainment\" +
 				@"Music\6ix\What It Is! Funky Soul And Rare Grooves\" +
 				"Im Just Like You.mp3";
 			Tags tag = new Tags(file);
 
-			Type itemType = tag.GetType();
+			TagSet thang = new TagSet();
+			thang.Album = original;
+
+			Type itemType = thang.GetType();
 			PropertyInfo propertyInfo =
 				itemType.GetProperty("Album");
 
-			object source = propertyInfo.GetValue(tag, null);
+			object source = propertyInfo.GetValue(thang, null);
 
 			object result = Rules.RunRule(
-				rule, tag, "MusicUtility.Tags.Album", source, null);
+				rule, thang, "MusicUtility.Tags.Album", source, null);
 
 			string test = (string)result;
 
