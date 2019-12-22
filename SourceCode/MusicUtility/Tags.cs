@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TagLib;
 
 namespace MusicUtility
 {
@@ -92,6 +93,8 @@ namespace MusicUtility
 			//	tagFile.Tag.Performers[0] = value;
 			//}
 		}
+
+		public Tag TagSet { get; }
 
 		public TagLib.File TagFile { get; set; }
 
