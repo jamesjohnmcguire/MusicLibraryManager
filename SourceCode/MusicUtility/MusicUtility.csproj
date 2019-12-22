@@ -22,23 +22,37 @@
 		<Reference Include="System.Web" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="newtonsoft.json" Version="12.0.2" />
-		<PackageReference Include="System.Net.Http" Version="4.*" />
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />
 		<PackageReference Include="CSCore" Version="1.2.1.2" />
 		<PackageReference Include="log4net" Version="2.0.8" />
-		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2" />
-		<PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.2" />
-		<PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.2" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
-		<PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.2" />
-		<PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 		<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="taglib" Version="2.1.0.0" />
+		<PackageReference Include="TagLibSharp" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="MusicUtilityNetTests\**" />
