@@ -27,14 +27,19 @@ namespace MusicUtility
 
 		public static int GetItunesDirectoryDepth(string iTunesPath)
 		{
-			string[] iTunesPathParts =
-				iTunesPath.Split(Path.DirectorySeparatorChar);
-			int depth = iTunesPathParts.Length;
+			int depth = -1;
 
-			string lastPath = iTunesPathParts[depth - 1];
-			if (string.IsNullOrEmpty(lastPath))
+			if (!string.IsNullOrWhiteSpace(iTunesPath))
 			{
-				depth--;
+				string[] iTunesPathParts =
+					iTunesPath.Split(Path.DirectorySeparatorChar);
+				depth = iTunesPathParts.Length;
+
+				string lastPath = iTunesPathParts[depth - 1];
+				if (string.IsNullOrEmpty(lastPath))
+				{
+					depth--;
+				}
 			}
 
 			return depth;
