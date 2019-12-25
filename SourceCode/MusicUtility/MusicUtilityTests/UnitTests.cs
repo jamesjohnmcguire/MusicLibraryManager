@@ -47,35 +47,29 @@ namespace MusicUtility.Tests
 		[Test]
 		public void RunRuleBasic()
 		{
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			string element = "MusicUtility.Tags.Album";
+
 			Rule rule = new Rule();
-			rule.Subject = "MusicUtility.Tags.Album";
+			rule.Subject = element;
 			rule.Condition = Condition.ContainsRegex;
 			rule.Conditional = @"\s*\(Dis[A-Za-z].*?\)";
 			rule.Operation = Operations.Remove;
 
-			string original =
-				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			TagSet tags = new TagSet();
+			tags.Album = original;
 
-			string file = @"C:\Users\JamesMc\Data\External\Entertainment\" +
-				@"Music\6ix\What It Is! Funky Soul And Rare Grooves\" +
-				"Im Just Like You.mp3";
-			Tags tag = new Tags(file);
-
-			TagSet thang = new TagSet();
-			thang.Album = original;
-
-			Type itemType = thang.GetType();
+			string baseElement = Rule.GetObjectBaseElement(element);
+			Type itemType = tags.GetType();
 			PropertyInfo propertyInfo =
-				itemType.GetProperty("Album");
+				itemType.GetProperty(baseElement);
+			object source = propertyInfo.GetValue(tags, null);
 
-			object source = propertyInfo.GetValue(thang, null);
-
-			object result = Rules.RunRule(
-				rule, thang, "MusicUtility.Tags.Album", source, null);
+			object result = rule.Run(
+				tags, element, source, null);
 
 			string test = (string)result;
-
-			//Assert.IsNotEmpty(rule);
 			Assert.That(test, Is.EqualTo(
 				"What It Is! Funky Soul And Rare Grooves"));
 		}
