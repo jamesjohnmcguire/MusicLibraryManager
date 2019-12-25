@@ -229,3 +229,6 @@ extract tags from mp3 into xml file
 
 https://github.com/Zeugma440/atldotnet
 https://github.com/gitpan/Audio-M4P
+
+https://github.com/mono/taglib-sharp
+https://www.nuget.org/packages/TagLibSharp
