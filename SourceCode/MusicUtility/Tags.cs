@@ -59,16 +59,17 @@ namespace MusicUtility
 			{
 				string artist = null;
 
-				if (TagFile.Tag.AlbumArtists.Length > 0)
+				if ((TagFile.Tag.Performers != null) &&
+					(TagFile.Tag.Performers.Length > 0))
 				{
-					artist = TagFile.Tag.AlbumArtists[0];
+					artist = TagFile.Tag.Performers[0];
 				}
 
 				if (string.IsNullOrWhiteSpace(artist))
 				{
-					if (TagFile.Tag.Performers.Length > 0)
+					if (TagFile.Tag.AlbumArtists.Length > 0)
 					{
-						artist = TagFile.Tag.Performers[0];
+						artist = TagFile.Tag.AlbumArtists[0];
 					}
 				}
 
@@ -85,13 +86,8 @@ namespace MusicUtility
 
 			set
 			{
-
+				TagFile.Tag.Performers[0] = value;
 			}
-
-			//set
-			//{
-			//	tagFile.Tag.Performers[0] = value;
-			//}
 		}
 
 		public Tag TagSet { get; }
