@@ -106,7 +106,7 @@ namespace MusicUtility
 
 		public bool Update()
 		{
-			rules.RunRules(this);
+			bool rulesUpdates = rules.RunRules(this);
 
 			bool artistUpdated = UpdateArtistTag(filePath);
 
@@ -117,7 +117,7 @@ namespace MusicUtility
 			Year = TagFile.Tag.Year;
 
 			if ((true == updated) || (true == artistUpdated) ||
-				(true == titleUpdated))
+				(true == titleUpdated) || (rulesUpdates == true))
 			{
 				TagFile.Save();
 			}
