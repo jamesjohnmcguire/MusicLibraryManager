@@ -18,6 +18,12 @@
 		<BuildTarget>$(Target)</BuildTarget>
 	</PropertyGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)0\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(OS)' == 'Windows_NT'" />
+	<ItemGroup>
+	  <None Remove="stylecop.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
