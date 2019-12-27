@@ -104,6 +104,30 @@ namespace MusicUtility
 			}
 		}
 
+		private static string GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName = "MusicUtility.DefaultRules.json";
+			Assembly thisAssembly = Assembly.GetCallingAssembly();
+
+			using (Stream templateObjectStream =
+				thisAssembly.GetManifestResourceStream(resourceName))
+			{
+				if (templateObjectStream != null)
+				{
+					using (StreamReader reader =
+						new StreamReader(templateObjectStream))
+					{
+						contents = reader.ReadToEnd();
+					}
+				}
+
+			}
+
+			return contents;
+		}
+
 		private bool AreFileAndTrackTheSame(IITTrack track)
 		{
 			bool same = false;
@@ -388,30 +412,6 @@ namespace MusicUtility
 			return duplicateTracks;
 		}
 
-		private static string GetDefaultRules()
-		{
-			string contents = null;
-
-			string resourceName = "MusicUtility.DefaultRules.json";
-			Assembly thisAssembly = Assembly.GetCallingAssembly();
-
-			using (Stream templateObjectStream =
-				thisAssembly.GetManifestResourceStream(resourceName))
-			{
-				if (templateObjectStream != null)
-				{
-					using (StreamReader reader =
-						new StreamReader(templateObjectStream))
-					{
-						contents = reader.ReadToEnd();
-					}
-				}
-
-			}
-
-			return contents;
-		}
-
 		private string GetDulicateLocation(string path)
 		{
 			bool locationOk = false;
@@ -602,9 +602,6 @@ namespace MusicUtility
 
 			IITOperationStatus status =
 				iTunes.LibraryPlaylist.AddFile(musicFilePath);
-
-			//IITEncoder encoder = iTunes.CurrentEncoder;
-			//status = iTunes.ConvertFile2(musicFilePath);
 
 			IITTrackCollection tracks = playList.Search(
 				name, ITPlaylistSearchField.ITPlaylistSearchFieldAll);

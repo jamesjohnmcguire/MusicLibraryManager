@@ -18,7 +18,7 @@ namespace MusicClean
 
 				musicUtility.CleanMusicLibrary();
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				Console.WriteLine("Exception: " + exception.Message);
 			}

@@ -282,7 +282,7 @@ namespace MusicUtility
 			Title = TagFile.Tag.Title;
 
 			string[] regexes =
-				new string[] { @" \[.*?\]", @" \(.*?\)"  };
+				new string[] { @" \[.*?\]", @" \(.*?\)" };
 
 			foreach (string regex in regexes)
 			{

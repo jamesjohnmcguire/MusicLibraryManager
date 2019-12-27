@@ -24,6 +24,20 @@ namespace MusicUtility
 
 		public Rule ChainRule { get; set; }
 
+		public static string GetObjectBaseElement(string element)
+		{
+			string baseElement = null;
+
+			if (!string.IsNullOrEmpty(element))
+			{
+				string[] parts = element.Split('.');
+
+				baseElement = parts[parts.Length - 1];
+			}
+
+			return baseElement;
+		}
+
 		public object Run(
 			object item,
 			string subject,
@@ -41,8 +55,6 @@ namespace MusicUtility
 				PropertyInfo propertyInfo =
 					itemType.GetProperty(baseElement);
 				content = propertyInfo.GetValue(item, null);
-
-				string text;
 
 				switch (this.Condition)
 				{
@@ -117,16 +129,6 @@ namespace MusicUtility
 			}
 
 			return currentItem;
-		}
-
-		public static string GetObjectBaseElement(string element)
-		{
-			string baseElement = null;
-			string[] parts = element.Split('.');
-
-			baseElement = parts[parts.Length - 1];
-
-			return baseElement;
 		}
 
 		private static string RegexReplace(object content, object conditional)

@@ -14,10 +14,10 @@ namespace MusicUtility
 {
 	public class ItunesXmlFile
 	{
-		private static readonly ILog log = LogManager.GetLogger(
+		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ResourceManager stringTable =
+		private static readonly ResourceManager StringTable =
 			new ResourceManager(
 				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
@@ -101,32 +101,11 @@ namespace MusicUtility
 				exception is WebException ||
 				exception is XmlException)
 			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
+				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 				strs = null;
 			}
 			return strs;
-		}
-
-		private string GetValue(string key)
-		{
-			string value = null;
-			string expression = "plist/dict/key[.='" + key +
-				"']/following-sibling::string[1]";
-
-			XmlNode location = xmlDocument.SelectSingleNode(expression);
-
-			string innerText = location.InnerText;
-
-			//innerText = xmlNodeList[0].InnerText;
-			if (!string.IsNullOrWhiteSpace(innerText))
-			{
-				log.Info("value: " + innerText);
-
-				value = innerText;
-			}
-
-			return value;
 		}
 
 		private static string GetURLDecodeOfString(string value)
@@ -154,7 +133,7 @@ namespace MusicUtility
 				exception is ArgumentOutOfRangeException ||
 				exception is UriFormatException)
 			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
+				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 				localPath = null;
 			}
@@ -233,6 +212,26 @@ namespace MusicUtility
 			{
 				thisDict[key] = ItunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
 			}
+		}
+
+		private string GetValue(string key)
+		{
+			string value = null;
+			string expression = "plist/dict/key[.='" + key +
+				"']/following-sibling::string[1]";
+
+			XmlNode location = xmlDocument.SelectSingleNode(expression);
+
+			string innerText = location.InnerText;
+
+			if (!string.IsNullOrWhiteSpace(innerText))
+			{
+				Log.Info("value: " + innerText);
+
+				value = innerText;
+			}
+
+			return value;
 		}
 	}
 }

@@ -50,16 +50,19 @@ namespace MusicUtility
 		{
 			string part = string.Empty;
 
-			string cleanPath = RemoveIntermediaryPath(path, iTunesPath);
-
-			string[] pathParts =
-				cleanPath.Split(Path.DirectorySeparatorChar);
-			int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
-			int position = iTunesDepth + index;
-
-			if (pathParts.Length > position)
+			if (!string.IsNullOrWhiteSpace(path))
 			{
-				part = pathParts[position];
+				string cleanPath = RemoveIntermediaryPath(path, iTunesPath);
+
+				string[] pathParts =
+					cleanPath.Split(Path.DirectorySeparatorChar);
+				int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
+				int position = iTunesDepth + index;
+
+				if (pathParts.Length > position)
+				{
+					part = pathParts[position];
+				}
 			}
 
 			return part;

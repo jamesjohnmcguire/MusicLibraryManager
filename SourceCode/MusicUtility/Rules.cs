@@ -49,32 +49,41 @@ namespace MusicUtility
 		{
 			bool changed = false;
 
-			Type classType = item.GetType();
-			string className = classType.FullName;
-
-			PropertyInfo[] properties = classType.GetProperties();
-
-			foreach (PropertyInfo property in properties)
+			if (item != null)
 			{
-				string name = property.Name;
-				string fullName = string.Format(
-					CultureInfo.InvariantCulture, "{0}.{1}", className, name);
+				Type classType = item.GetType();
+				string className = classType.FullName;
 
-				object source = property.GetValue(item, null);
+				PropertyInfo[] properties = classType.GetProperties();
 
-				foreach (Rule rule in rules)
+				foreach (PropertyInfo property in properties)
 				{
-					object newValue = rule.Run(item, fullName, source, null);
+					string name = property.Name;
+					string fullName = string.Format(
+						CultureInfo.InvariantCulture,
+						"{0}.{1}",
+						className,
+						name);
 
-					if ((source != null) && !source.Equals(newValue))
+					object source = property.GetValue(item, null);
+
+					foreach (Rule rule in rules)
 					{
-						classType.GetProperty(name).SetValue(
-							item, newValue, null);
+						object newValue =
+							rule.Run(item, fullName, source, null);
 
-						changed = true;
+						if ((source != null) && !source.Equals(newValue))
+						{
+							classType.GetProperty(name).SetValue(
+								item, newValue, null);
+
+							changed = true;
+						}
 					}
 				}
 			}
+
+			return changed;
 		}
 	}
 }
