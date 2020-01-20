@@ -48,7 +48,7 @@ namespace MusicUtility
 
 			if (item != null)
 			{
-				string ruleSubject = (string)this.Subject;
+				string ruleSubject = GetStringFromStringOrArray(this.Subject);
 				string baseElement = GetObjectBaseElement(subject);
 
 				Type itemType = item.GetType();
@@ -75,15 +75,7 @@ namespace MusicUtility
 					case Condition.NotEmpty:
 						object tester = GetFullPathObject(item, ruleSubject);
 
-						if (tester is string[] conditional)
-						{
-							if (conditional.Length > 0)
-							{
-								content = conditional[0];
-							}
-						}
-						// else test other types
-
+						content = GetStringFromStringOrArray(tester);
 						break;
 				}
 			}
@@ -131,6 +123,25 @@ namespace MusicUtility
 			return currentItem;
 		}
 
+		private static string GetStringFromStringOrArray(object subject)
+		{
+			string result = null;
+
+			if (subject is string[] subjectObject)
+			{
+				if (subjectObject.Length > 0)
+				{
+					result = subjectObject[0];
+				}
+			}
+			else if (subject is string ruleObject)
+			{
+				result = (string)subject;
+			}
+
+			return result;
+		}
+
 		private static string RegexReplace(object content, object conditional)
 		{
 			string subject = null;
@@ -161,15 +172,15 @@ namespace MusicUtility
 			object replacement,
 			IDictionary<string, string> additionals = null)
 		{
-			string ruleSubject = (string)this.Subject;
+			string ruleSubject = GetStringFromStringOrArray(this.Subject);
 
 			if (ruleSubject.Equals(
 				subject, System.StringComparison.InvariantCulture))
 			{
-				string text = (string)content;
+				string text = GetStringFromStringOrArray(content);
 				if (text.Equals(this.Conditional))
 				{
-					if (this.Chain == Chain.And)
+					if ((this.ChainRule != null) && (this.Chain == Chain.And))
 					{
 						if (additionals != null)
 						{
@@ -180,20 +191,20 @@ namespace MusicUtility
 							}
 						}
 
-						if (this.ChainRule != null)
-						{
-							Rule andRule = this.ChainRule;
+						Rule andRule = this.ChainRule;
 
-							content = andRule.Run(
-								item,
-								subject,
-								replacement,
-								additionals);
-						}
+						content = andRule.Run(
+							item, subject, replacement, additionals);
 					}
 				}
 
-				content = RegexReplace(content, this.Conditional);
+				if ((this.ChainRule != null) && (this.Chain == Chain.Or))
+				{
+					Rule orRule = this.ChainRule;
+
+					content = orRule.Run(
+						item, subject, replacement, additionals);
+				}
 			}
 
 			return content;

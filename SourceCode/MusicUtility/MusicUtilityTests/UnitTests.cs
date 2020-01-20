@@ -45,7 +45,7 @@ namespace MusicUtility.Tests
 		}
 
 		[Test]
-		public void RunRuleBasic()
+		public void RunRuleDiscCheck()
 		{
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -60,18 +60,51 @@ namespace MusicUtility.Tests
 			TagSet tags = new TagSet();
 			tags.Album = original;
 
-			string baseElement = Rule.GetObjectBaseElement(element);
-			Type itemType = tags.GetType();
-			PropertyInfo propertyInfo =
-				itemType.GetProperty(baseElement);
-			object source = propertyInfo.GetValue(tags, null);
-
 			object result = rule.Run(
-				tags, element, source, null);
+				tags, element, null, null);
 
 			string test = (string)result;
 			Assert.That(test, Is.EqualTo(
 				"What It Is! Funky Soul And Rare Grooves"));
+		}
+
+		[Test]
+		public void RunRuleVariousArtistsCheck()
+		{
+			string original = "Various Artists";
+			string element = "Artists";
+
+			Rule rule = new Rule();
+			rule.Subject = element;
+			rule.Condition = Condition.Equals;
+			rule.Conditional = original;
+			rule.Chain = Chain.And;
+
+			Rule chainRule = new Rule();
+			chainRule.Subject = "Performers";
+			chainRule.Condition = Condition.NotEmpty;
+			chainRule.Chain = Chain.And;
+			rule.ChainRule = chainRule;
+
+			Rule nextChainRule = new Rule();
+			nextChainRule.Subject = "Artists";
+			nextChainRule.Condition = Condition.NotEquals;
+			nextChainRule.Conditional = "Performers";
+			nextChainRule.Operation = Operations.Replace;
+			chainRule.ChainRule = nextChainRule;
+
+			TagSet tags = new TagSet();
+			tags.Artists = new string[1];
+			tags.Performers = new string[1];
+			tags.Artists[0] = original;
+			tags.Performers[0] = "The Solos";
+
+			object result = rule.Run(
+				tags, element, null, null);
+
+			string test = (string)result;
+			Assert.That(test, Is.EqualTo(
+				"The Solos"));
 		}
 	}
 }
