@@ -81,7 +81,7 @@ namespace MusicUtility.Tests
 			rule.Chain = Chain.And;
 
 			Rule chainRule = new Rule();
-			chainRule.Subject = "Performers";
+			chainRule.Subject = "MusicUtility.Tags.TagFile.Tag.Performers";
 			chainRule.Condition = Condition.NotEmpty;
 			chainRule.Chain = Chain.And;
 			rule.ChainRule = chainRule;
@@ -89,7 +89,8 @@ namespace MusicUtility.Tests
 			Rule nextChainRule = new Rule();
 			nextChainRule.Subject = "Artists";
 			nextChainRule.Condition = Condition.NotEquals;
-			nextChainRule.Conditional = "Performers";
+			nextChainRule.Conditional =
+				"MusicUtility.Tags.TagFile.Tag.Performers";
 			nextChainRule.Operation = Operations.Replace;
 			chainRule.ChainRule = nextChainRule;
 
