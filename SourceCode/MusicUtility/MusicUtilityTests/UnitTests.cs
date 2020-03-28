@@ -74,23 +74,28 @@ namespace MusicUtility.Tests
 			string original = "Various Artists";
 			string element = "Artists";
 
+			// Set up initial rule - if artists tag equal 'Various Artists'
 			Rule rule = new Rule();
 			rule.Subject = element;
 			rule.Condition = Condition.Equals;
 			rule.Conditional = original;
 			rule.Chain = Chain.And;
 
+			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new Rule();
 			chainRule.Subject = "MusicUtility.Tags.TagFile.Tag.Performers";
 			chainRule.Condition = Condition.NotEmpty;
 			chainRule.Chain = Chain.And;
 			rule.ChainRule = chainRule;
 
+			// Set up final rule - and if artists not equal performers,
+			// replace artists with performers
 			Rule nextChainRule = new Rule();
 			nextChainRule.Subject = "Artists";
 			nextChainRule.Condition = Condition.NotEquals;
 			nextChainRule.Conditional =
-				"MusicUtility.Tags.TagFile.Tag.Performers";
+				"Performers";
+			nextChainRule.ConditionalType = ConditionalType.Property;
 			nextChainRule.Operation = Operations.Replace;
 			chainRule.ChainRule = nextChainRule;
 
