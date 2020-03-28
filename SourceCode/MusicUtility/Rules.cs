@@ -8,15 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
-	/////////////////////////////////////////////////////////////////////////
-	/// <summary>
-	/// Represents a method that generates source file contents.
-	/// </summary>
-	/// <param name="template">The template file for this genterator.</param>
-	/// <returns>Returns the source file Contents.</returns>
-	/////////////////////////////////////////////////////////////////////////
-	public delegate string ContentsGenerator(string template);
-
 	public class Rules
 	{
 		private readonly IList<Rule> rules;
