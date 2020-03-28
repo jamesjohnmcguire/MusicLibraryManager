@@ -88,6 +88,7 @@ namespace MusicUtility
 						ItunesXmlFile.SetToURLDecode("Location", ref strs2);
 						ItunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
 					}
+
 					strs = strs1;
 				}
 			}
@@ -105,6 +106,7 @@ namespace MusicUtility
 					exception.ToString()));
 				strs = null;
 			}
+
 			return strs;
 		}
 
@@ -150,26 +152,17 @@ namespace MusicUtility
 				switch (str)
 				{
 					case "plist":
-					{
 						return ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
-					}
 					case "integer":
 					case "real":
 					case "data":
 					case "date":
-					{
 						return currentElement.InnerText;
-					}
 					case "key":
-					{
 						return currentElement.InnerText;
-					}
 					case "string":
-					{
 						return currentElement.InnerText;
-					}
 					case "dict":
-					{
 						Dictionary<string, object> strs = new Dictionary<string, object>();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
@@ -177,24 +170,22 @@ namespace MusicUtility
 							object obj = ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
 							strs.Add(str1, obj);
 						}
+
 						return strs;
-					}
 					case "array":
-					{
 						ArrayList arrayLists = new ArrayList();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
 							arrayLists.Add(ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
 						}
+
 						return arrayLists;
-					}
 					case "true":
 					case "false":
-					{
 						return currentElement.Name;
-					}
 				}
 			}
+
 			return null;
 		}
 

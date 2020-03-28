@@ -166,12 +166,12 @@ namespace MusicUtility
 					}
 				}
 
-				if (Album.EndsWith(" (Disc 2)"))
+				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
 				{
 					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
-				if (Album.EndsWith(" (Disc 2)"))
+				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
 				{
 					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
@@ -203,7 +203,7 @@ namespace MusicUtility
 				}
 			}
 
-			if (!Album.Equals(TagFile.Tag.Album))
+			if (!Album.Equals(TagFile.Tag.Album, StringComparison.Ordinal))
 			{
 				updated = true;
 			}

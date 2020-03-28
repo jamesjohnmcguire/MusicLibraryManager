@@ -59,7 +59,6 @@ namespace MusicClean
 						contents = reader.ReadToEnd();
 					}
 				}
-
 			}
 
 			return contents;

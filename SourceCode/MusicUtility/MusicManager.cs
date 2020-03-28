@@ -199,12 +199,18 @@ namespace MusicUtility
 		{
 			try
 			{
-				string[] excludes = { ".crd", ".cue", ".doc", ".gif",
-					".gz", ".htm", ".ini", ".jpeg", ".jpg", ".lit", ".log",
-					".m3u", ".nfo", ".opf", ".pdf", ".plist", ".png", ".psp",
-					".sav", ".sfv", ".txt", ".url", ".xls", ".zip" };
-				string[] includes = { ".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV",
-					".WMA" };
+				string[] excludes =
+				{
+					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
+					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
+					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
+					".url", ".xls", ".zip"
+				};
+
+				string[] includes = 
+				{
+					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
+				};
 
 				if (Directory.Exists(path))
 				{

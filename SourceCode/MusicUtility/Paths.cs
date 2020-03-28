@@ -74,7 +74,9 @@ namespace MusicUtility
 			{
 				path = tag;
 				char[] illegalCharactors = new char[]
-					{ '<', '>', '"', '?', '*', '\'' };
+				{
+					'<', '>', '"', '?', '*', '\''
+				};
 
 				foreach (char charactor in illegalCharactors)
 				{
