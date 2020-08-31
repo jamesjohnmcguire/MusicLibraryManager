@@ -1,5 +1,6 @@
 ﻿using Common.Logging;
 using iTunesLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
-	public class MusicUtility : IDisposable
+	public class MusicManager : IDisposable
 	{
 		private static readonly ILog log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
@@ -22,19 +23,37 @@ namespace MusicUtility
 
 		private readonly IITLibraryPlaylist playList = null;
 		private readonly string iTunesDirectoryLocation = null;
+		private readonly string librarySkeletonDirectoryLocation = null;
+		private readonly Rules rules;
 
 		private iTunesApp iTunes = null;
 		private Tags tags = null;
 
-		public MusicUtility()
+		public MusicManager()
 		{
-			//create a reference to iTunes
+			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
 			ItunesXmlFile iTunesXmlFile =
 				new ItunesXmlFile(iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+
+			string temp = iTunesDirectoryLocation.Trim('\\');
+			librarySkeletonDirectoryLocation = temp + "Skeleton\\";
+		}
+
+		public MusicManager(Rules rules)
+			: this()
+		{
+			if ((rules == null) || (rules.RulesList == null) ||
+				(rules.RulesList.Count == 0))
+			{
+				string data = GetDefaultRules();
+				rules = new Rules(data);
+			}
+
+			this.rules = rules;
 		}
 
 		public string ITunesLibraryLocation
@@ -47,6 +66,8 @@ namespace MusicUtility
 
 		public int CleanMusicLibrary()
 		{
+			rules.RunRules();
+
 			// Operate on the actual music files in the file system
 			CleanFiles(iTunesDirectoryLocation);
 
@@ -67,6 +88,11 @@ namespace MusicUtility
 			GC.SuppressFinalize(this);
 		}
 
+		public void GetLibrarySkeleton()
+		{
+
+		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -85,6 +111,30 @@ namespace MusicUtility
 			{
 				directory.Create();
 			}
+		}
+
+		private static string GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName = "MusicUtility.DefaultRules.json";
+			Assembly thisAssembly = Assembly.GetCallingAssembly();
+
+			using (Stream templateObjectStream =
+				thisAssembly.GetManifestResourceStream(resourceName))
+			{
+				if (templateObjectStream != null)
+				{
+					using (StreamReader reader =
+						new StreamReader(templateObjectStream))
+					{
+						contents = reader.ReadToEnd();
+					}
+				}
+
+			}
+
+			return contents;
 		}
 
 		private bool AreFileAndTrackTheSame(IITTrack track)
@@ -133,7 +183,8 @@ namespace MusicUtility
 					message));
 
 				// get and update tags
-				tags = new Tags(file.FullName, ITunesLibraryLocation);
+				tags = new Tags(file.FullName, ITunesLibraryLocation, rules);
+				tags.Update();
 
 				// update directory and file names
 				file = UpdateFile(file);
@@ -141,7 +192,16 @@ namespace MusicUtility
 				// update iTunes
 				IITTrackCollection tracks = UpdateItunes(file);
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentNullException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is IOException ||
+				exception is NullReferenceException ||
+				exception is IndexOutOfRangeException ||
+				exception is InvalidOperationException ||
+				exception is TagLib.CorruptFileException ||
+				exception is TagLib.UnsupportedFormatException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
@@ -152,12 +212,18 @@ namespace MusicUtility
 		{
 			try
 			{
-				string[] excludes = { ".crd", ".cue", ".doc", ".gif",
-					".gz", ".htm", ".ini", ".jpeg", ".jpg", ".lit", ".log",
-					".m3u", ".nfo", ".opf", ".pdf", ".plist", ".png", ".psp",
-					".sav", ".sfv", ".txt", ".url", ".xls", ".zip" };
-				string[] includes = { ".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV",
-					".WMA" };
+				string[] excludes =
+				{
+					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
+					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
+					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
+					".url", ".xls", ".zip"
+				};
+
+				string[] includes = 
+				{
+					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
+				};
 
 				if (Directory.Exists(path))
 				{
@@ -185,19 +251,29 @@ namespace MusicUtility
 					directories = Directory.GetDirectories(path);
 					files = directory.GetFiles();
 
-					if ((files.Length == 0) && (directories.Length == 0))
+					if ((files.Length == 0) && (directories.Length == 0) &&
+						(!path.Contains("Automatically Add to iTunes")))
 					{
 						Directory.Delete(path, false);
 					}
 				}
 			}
-			catch (Exception exception)
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is IndexOutOfRangeException ||
+				exception is InvalidOperationException ||
+				exception is NullReferenceException ||
+				exception is IOException ||
+				exception is PathTooLongException ||
+				exception is System.Security.SecurityException ||
+				exception is TargetException ||
+				exception is UnauthorizedAccessException)
 			{
 				log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
-			}
-			finally
-			{
 			}
 		}
 
@@ -372,7 +448,8 @@ namespace MusicUtility
 			while (false == locationOk)
 			{
 				int depth = iTunesPathParts.Length - 1;
-				pathParts[depth] = "Music" + tries.ToString();
+				pathParts[depth] = "Music" +
+					tries.ToString(CultureInfo.InvariantCulture);
 
 				List<string> newList = new List<string>(pathParts);
 				while (newList.Count > depth + 1)
@@ -491,7 +568,9 @@ namespace MusicUtility
 				// only update in iTunes,
 				// if the current actual file doesn't exist
 				if (string.IsNullOrWhiteSpace(fileTrack.Location) ||
-					((!filePath.Equals(fileTrack.Location)) &&
+					((!filePath.Equals(
+						fileTrack.Location,
+						StringComparison.OrdinalIgnoreCase)) &&
 					(!System.IO.File.Exists(fileTrack.Location))))
 				{
 					try
@@ -544,9 +623,6 @@ namespace MusicUtility
 
 			IITOperationStatus status =
 				iTunes.LibraryPlaylist.AddFile(musicFilePath);
-
-			//IITEncoder encoder = iTunes.CurrentEncoder;
-			//status = iTunes.ConvertFile2(musicFilePath);
 
 			IITTrackCollection tracks = playList.Search(
 				name, ITPlaylistSearchField.ITPlaylistSearchFieldAll);

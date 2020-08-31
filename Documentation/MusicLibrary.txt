@@ -11,40 +11,56 @@ Details
 		.wma	Not supported in iTunes
 	ITunes info
 		C:\Users\JamesMc\Music\iTunes
-Process
-	Overall
-		get music library location
-		for each folder
-			for each file
-				Update tags (inside file)
-				Update file information
-					Update directory
-					Update file name
-				Update iTunes
-			Fix file name, if needed
-Process Flow
-	CleanFiles
-		UpdateArtistLocation
-		//UpdateAlbumDirectory
-		CleanFile
-			tags = new Tags(file.FullName);
-			//CleanFileName
-			//	CleanTrackNumbersOutOfFileName
-			IITTrackCollection = GetTracksFromFileName
-				IITTrackCollection playList.Search
-				foreach
-					AreFileAndTrackTheSame
-					// TODO update based on tags
+Design
+	Process
+		Overall
+			get music library location
+			for each folder
+				for each file
+					Update tags (inside file)
+					Update file information
+						Update directory
+						Update file name
+					Update iTunes
+				Fix file name, if needed
+	Process Flow
+		CleanFiles
+			UpdateArtistLocation
+			//UpdateAlbumDirectory
+			CleanFile
+				tags = new Tags(file.FullName);
+				//CleanFileName
+				//	CleanTrackNumbersOutOfFileName
+				IITTrackCollection = GetTracksFromFileName
+					IITTrackCollection playList.Search
+					foreach
+						AreFileAndTrackTheSame
+						// TODO update based on tags
+						MoveFileBasedOnTags
+							File.Move
+						UpdateLocation
+							fileTrack.Location = filePath;
 					MoveFileBasedOnTags
 						File.Move
-					UpdateLocation
-						fileTrack.Location = filePath;
-				MoveFileBasedOnTags
-					File.Move
-				iTunes.LibraryPlaylist.AddFile
-			MoveFileBasedOnTags(file);
-					File.Move
-			iTunes.LibraryPlaylist.AddFile(track);
+					iTunes.LibraryPlaylist.AddFile
+				MoveFileBasedOnTags(file);
+						File.Move
+				iTunes.LibraryPlaylist.AddFile(track);
+	Rules
+		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
+
+		if	artist is 'various artists' and
+			performers not empty and
+			performers is not 'various artists'
+				replace the artist tag with the performers tag
+		Resources
+			https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
+			https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
+			https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
+			https://archive.codeplex.com/?p=rulesengine
+			https://stackoverflow.com/questions/424366/string-representation-of-an-enum
+			https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
+			http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
 Manual Renaming
 	C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
 		FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
@@ -53,6 +69,9 @@ Manual Renaming
 	The Jackson 5 (Soul Source, 2000)
 Tasks
 	Finished
+		System.UnauthorizedAccessException	Access to the path 'C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Automatically Add to iTunes' is denied.
+		FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
+		System.Reflection.TargetException	Object does not match target type.
 		Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)).
 		Exception from HRESULT: 0xA0040203
 		Remove track number from file names
@@ -186,3 +205,73 @@ Resources
 	http://regexstorm.net/tester
 	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
 	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
+
+extract tags into xml files, for backup purposes
+http://meta-extractor.sourceforge.net/
+https://sourceforge.net/projects/meta-extractor/files/
+https://github.com/DIA-NZ/Metadata-Extraction-Tool
+https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
+
+AlbumArtist
+AlbumArtistSort
+Artists	*
+JoinedAlbumArtist
+JoinedArtists	*
+JoinedPerformers	*
+JoinedPerformersSort	*
+Performers	*
+PerformersSort	*
+
+https://github.com/mono/taglib-sharp/blob/master/src/TaglibSharp/Id3v2/Tag.cs
+http://id3.org/id3v2.4.0-frames
+https://taglib.org/api/
+extract tags from mp3 into xml file
+
+https://github.com/Zeugma440/atldotnet
+https://github.com/gitpan/Audio-M4P
+
+https://github.com/mono/taglib-sharp
+https://www.nuget.org/packages/TagLibSharp
+
+Music
+MusicManager
+	https://github.com/jiixyj/loudness-scanner
+	Change DLL names to match the following pattern: <Company>.<Component>.dll
+	https://support.google.com/googleplaymusic/answer/1075570?hl=en
+	https://www.blisshq.com/music-library-management-blog/2010/10/12/how-to-use-album_artist/
+	Consider when the file isn't just a song, could be a medley, or a collection, and album side.  Maybe not music at all, not even audio
+	TagFile	A file with tags
+		AudioTagFile
+			MusicTagFile
+				Song
+	//IITEncoder encoder = iTunes.CurrentEncoder;
+	//status = iTunes.ConvertFile2(musicFilePath);
+
+	https://github.com/mono/taglib-sharp/issues/192
+	TagLib
+		## Installation
+
+		Xamarin.Essentials is available via NuGet & is included in every template:
+
+		* NuGet Official Releases: [![NuGet](https://img.shields.io/nuget/vpre/Xamarin.Essentials.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Essentials)
+	https://kworb.net/faq.html
+	https://github.com/jiixyj/loudness-scanner
+
+	github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
+	origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
+	"Frame data incomplete."	TagLib.CorruptFileException
+Rules
+	Change DLL names to match the following pattern: <Company>.<Component>.dll
+	CleanFile
+		Tags.Update
+			rules.RunRules
+				foreach (PropertyInfo property in properties)
+					foreach (Rule rule in rules)
+						object newValue = rule.Run(item, fullName, source, null);
+	Album	"The Very Best Of 10cc"
+		Rule1 (album / disks)
+		Rule2 (artist / various artists)
+	will need to specify whether to ignore case sensitivity or not in rules	for that matter, whether ordinal values matter or not
+	handle actions if no more rules chained
+	Need to fix replacement, especially as a property.
+	Get other unit test in line with new approach
