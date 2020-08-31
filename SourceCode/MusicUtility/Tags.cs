@@ -1,28 +1,98 @@
 ﻿#pragma warning disable CS0618 // Type or member is obsolete
+using Newtonsoft.Json;
 using System;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using TagLib;
 
 namespace MusicUtility
 {
 	public class Tags : IDisposable
 	{
+		private readonly string filePath;
 		private readonly string iTunesLocation = null;
-		private TagLib.File tagFile = null;
+		private readonly Rules rules = null;
 
-		public Tags(string file, string iTunesLocation)
+		public Tags(string file)
 		{
-			this.iTunesLocation = iTunesLocation;
+			filePath = file;
 
-			tagFile = TagLib.File.Create(file);
+			TagFile = TagLib.File.Create(file);
 
-			UpdateFileTags(file);
-
-			tagFile.Dispose();
+			if ((TagFile.Tag.Artists.Length > 1) ||
+				(TagFile.Tag.Performers.Length > 1))
+			{
+				throw new NotSupportedException();
+			}
 		}
 
-		public string Album { get; set; }
+		public Tags(string file, string iTunesLocation)
+			: this(file)
+		{
+			this.iTunesLocation = iTunesLocation;
+		}
 
-		public string Artist { get; set; }
+		public Tags(string file, string iTunesLocation, Rules rules)
+			: this(file, iTunesLocation)
+		{
+			this.rules = rules;
+		}
+
+		public string Album
+		{
+			get
+			{
+				return TagFile.Tag.Album;
+			}
+
+			set
+			{
+				TagFile.Tag.Album = value;
+			}
+		}
+
+		public string Artist
+		{
+			get
+			{
+				string artist = null;
+
+				if ((TagFile.Tag.Performers != null) &&
+					(TagFile.Tag.Performers.Length > 0))
+				{
+					artist = TagFile.Tag.Performers[0];
+				}
+
+				if (string.IsNullOrWhiteSpace(artist))
+				{
+					if (TagFile.Tag.AlbumArtists.Length > 0)
+					{
+						artist = TagFile.Tag.AlbumArtists[0];
+					}
+				}
+
+				if (string.IsNullOrWhiteSpace(artist))
+				{
+					if (TagFile.Tag.Artists.Length > 0)
+					{
+						artist = TagFile.Tag.Artists[0];
+					}
+				}
+
+				return artist;
+			}
+
+			set
+			{
+				TagFile.Tag.Performers[0] = value;
+			}
+		}
+
+		public Tag TagSet { get; }
+
+		public TagLib.File TagFile { get; set; }
 
 		public string Title { get; set; }
 
@@ -34,13 +104,34 @@ namespace MusicUtility
 			GC.SuppressFinalize(this);
 		}
 
+		public bool Update()
+		{
+			bool rulesUpdates = rules.RunRules(this);
+
+			bool artistUpdated = UpdateArtistTag(filePath);
+
+			bool updated = UpdateAlbumTag(filePath);
+
+			bool titleUpdated = UpdateTitleTag();
+
+			Year = TagFile.Tag.Year;
+
+			if ((true == updated) || (true == artistUpdated) ||
+				(true == titleUpdated) || (rulesUpdates == true))
+			{
+				TagFile.Save();
+			}
+
+			return updated;
+		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
 				// dispose managed resources
-				tagFile.Dispose();
-				tagFile = null;
+				TagFile.Dispose();
+				TagFile = null;
 			}
 		}
 
@@ -48,7 +139,7 @@ namespace MusicUtility
 		{
 			bool updated = false;
 
-			Album = tagFile.Tag.Album;
+			Album = TagFile.Tag.Album;
 
 			// tags are toast, attempt to get from file name
 			if (string.IsNullOrWhiteSpace(Album))
@@ -75,12 +166,12 @@ namespace MusicUtility
 					}
 				}
 
-				if (Album.EndsWith(" (Disc 2)"))
+				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
 				{
 					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
-				if (Album.EndsWith(" (Disc 2)"))
+				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
 				{
 					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
@@ -112,7 +203,7 @@ namespace MusicUtility
 				}
 			}
 
-			if (!Album.Equals(tagFile.Tag.Album))
+			if (!Album.Equals(TagFile.Tag.Album, StringComparison.Ordinal))
 			{
 				updated = true;
 			}
@@ -124,26 +215,23 @@ namespace MusicUtility
 		{
 			bool updated = false;
 
-			if (tagFile.Tag.AlbumArtists.Length > 0)
+			if (TagFile.Tag.AlbumArtists.Length > 0)
 			{
-				Artist = tagFile.Tag.AlbumArtists[0];
+				Artist = TagFile.Tag.AlbumArtists[0];
 			}
 
 			if (string.IsNullOrWhiteSpace(Artist) ||
-				Artist.ToLower().Equals("various artists"))
+				Artist.ToUpperInvariant().Equals(
+					"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
 			{
-				if (tagFile.Tag.Performers.Length > 0)
+				if (TagFile.Tag.Performers.Length > 0)
 				{
-					Artist = tagFile.Tag.Performers[0];
+					Artist = TagFile.Tag.Performers[0];
 				}
-			}
 
-			if (string.IsNullOrWhiteSpace(Artist) ||
-				Artist.ToLower().Equals("various artists"))
-			{
-				if (tagFile.Tag.Artists.Length > 0)
+				if (TagFile.Tag.Artists.Length > 0)
 				{
-					Artist = tagFile.Tag.Artists[0];
+					Artist = TagFile.Tag.Artists[0];
 				}
 			}
 
@@ -187,33 +275,14 @@ namespace MusicUtility
 			return updated;
 		}
 
-		private bool UpdateFileTags(string fileName)
-		{
-			bool artistUpdated = UpdateArtistTag(fileName);
-
-			bool updated = UpdateAlbumTag(fileName);
-
-			bool titleUpdated = UpdateTitleTag();
-
-			Year = tagFile.Tag.Year;
-
-			if ((true == updated) || (true == artistUpdated) ||
-				(true == titleUpdated))
-			{
-				tagFile.Save();
-			}
-
-			return updated;
-		}
-
 		private bool UpdateTitleTag()
 		{
 			bool updated = false;
 
-			Title = tagFile.Tag.Title;
+			Title = TagFile.Tag.Title;
 
 			string[] regexes =
-				new string[] { @" \[.*?\]", @" \(.*?\)"  };
+				new string[] { @" \[.*?\]", @" \(.*?\)" };
 
 			foreach (string regex in regexes)
 			{
@@ -228,7 +297,7 @@ namespace MusicUtility
 				Title.Contains(Artist + " - "))
 			{
 				Title = Title.Replace(Artist + " - ", string.Empty);
-				tagFile.Tag.Title = Title;
+				TagFile.Tag.Title = Title;
 				updated = true;
 			}
 

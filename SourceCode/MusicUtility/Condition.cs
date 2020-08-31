@@ -8,8 +8,14 @@ namespace MusicUtility
 {
 	public enum Condition
 	{
+		Contains,
+		ContainsRegex,
+		Empty,
 		Equals,
+		GreaterThan,
+		LessThan,
 		Matches,
-		Contains
+		NotEmpty,
+		NotEquals
 	}
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
-	class Paths
+	public static class Paths
 	{
 		public static string GetAlbumFromPath(string path, string iTunesPath)
 		{
@@ -27,14 +27,19 @@ namespace MusicUtility
 
 		public static int GetItunesDirectoryDepth(string iTunesPath)
 		{
-			string[] iTunesPathParts =
-				iTunesPath.Split(Path.DirectorySeparatorChar);
-			int depth = iTunesPathParts.Length;
+			int depth = -1;
 
-			string lastPath = iTunesPathParts[depth - 1];
-			if (string.IsNullOrEmpty(lastPath))
+			if (!string.IsNullOrWhiteSpace(iTunesPath))
 			{
-				depth--;
+				string[] iTunesPathParts =
+					iTunesPath.Split(Path.DirectorySeparatorChar);
+				depth = iTunesPathParts.Length;
+
+				string lastPath = iTunesPathParts[depth - 1];
+				if (string.IsNullOrEmpty(lastPath))
+				{
+					depth--;
+				}
 			}
 
 			return depth;
@@ -45,16 +50,19 @@ namespace MusicUtility
 		{
 			string part = string.Empty;
 
-			string cleanPath = RemoveIntermediaryPath(path, iTunesPath);
-
-			string[] pathParts =
-				cleanPath.Split(Path.DirectorySeparatorChar);
-			int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
-			int position = iTunesDepth + index;
-
-			if (pathParts.Length > position)
+			if (!string.IsNullOrWhiteSpace(path))
 			{
-				part = pathParts[position];
+				string cleanPath = RemoveIntermediaryPath(path, iTunesPath);
+
+				string[] pathParts =
+					cleanPath.Split(Path.DirectorySeparatorChar);
+				int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
+				int position = iTunesDepth + index;
+
+				if (pathParts.Length > position)
+				{
+					part = pathParts[position];
+				}
 			}
 
 			return part;
@@ -66,14 +74,17 @@ namespace MusicUtility
 			{
 				path = tag;
 				char[] illegalCharactors = new char[]
-					{ '<', '>', '"', '?', '*', '\'' };
+				{
+					'<', '>', '"', '?', '*', '\''
+				};
 
 				foreach (char charactor in illegalCharactors)
 				{
 					if (path.Contains(charactor))
 					{
-						path =
-							path.Replace(charactor.ToString(), string.Empty);
+						path = path.Replace(
+							charactor.ToString(CultureInfo.InvariantCulture),
+							string.Empty);
 					}
 				}
 
@@ -83,7 +94,9 @@ namespace MusicUtility
 				{
 					if (path.Contains(charactor))
 					{
-						path = path.Replace(charactor.ToString(), " - ");
+						path = path.Replace(
+							charactor.ToString(CultureInfo.InvariantCulture),
+							" - ");
 					}
 				}
 
@@ -120,7 +133,9 @@ namespace MusicUtility
 			int iTunesDepth = GetItunesDirectoryDepth(iTunesPath);
 			int depth = pathParts.Length - iTunesDepth;
 
-			if ((depth > 4) && pathParts[6].Equals("Music"))
+			if ((depth > 4) && pathParts[6].Equals(
+				"Music",
+				StringComparison.OrdinalIgnoreCase))
 			{
 				// there is an extra intermediary directory, remove it
 				List<string> list = new List<string>(pathParts);
