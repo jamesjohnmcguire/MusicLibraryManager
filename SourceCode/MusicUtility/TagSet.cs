@@ -26,31 +26,31 @@ namespace MusicUtility
 		public virtual string[] Artists { get; set; }
 #pragma warning restore CA1819 // Properties should not return arrays
 
-		public string FirstArtist { get; }
+		public string FirstArtist { get; set; }
 
-		public string FirstAlbumArtist { get; }
+		public string FirstAlbumArtist { get; set; }
 
-		public string FirstAlbumArtistSort { get; }
+		public string FirstAlbumArtistSort { get; set; }
 
-		public string FirstPerformer { get; }
+		public string FirstPerformer { get; set; }
 
-		public string FirstPerformerSort { get; }
+		public string FirstPerformerSort { get; set; }
 
-		public string FirstComposerSort { get; }
+		public string FirstComposerSort { get; set; }
 
-		public string FirstComposer { get; }
+		public string FirstComposer { get; set; }
 
-		public string FirstGenre { get; }
+		public string FirstGenre { get; set; }
 
-		public string JoinedArtists { get; }
+		public string JoinedArtists { get; set; }
 
-		public string JoinedAlbumArtists { get; }
+		public string JoinedAlbumArtists { get; set; }
 
-		public string JoinedPerformers { get; }
+		public string JoinedPerformers { get; set; }
 
-		public string JoinedPerformersSort { get; }
+		public string JoinedPerformersSort { get; set; }
 
-		public string JoinedComposers { get; }
+		public string JoinedComposers { get; set; }
 
 		public virtual string MusicBrainzReleaseId { get; set; }
 
@@ -60,7 +60,7 @@ namespace MusicUtility
 
 		public virtual string Conductor { get; set; }
 
-		public TagTypes TagTypes { get; }
+		public TagTypes TagTypes { get; set; }
 
 		public virtual string Title { get; set; }
 
@@ -76,7 +76,7 @@ namespace MusicUtility
 
 		public virtual string[] Composers { get; set; }
 
-		public string JoinedGenres { get; }
+		public string JoinedGenres { get; set; }
 
 		public virtual string Album { get; set; }
 
@@ -104,6 +104,6 @@ namespace MusicUtility
 
 		public virtual string AlbumSort { get; set; }
 
-		public virtual bool IsEmpty { get; }
+		public virtual bool IsEmpty { get; set; }
 	}
 }

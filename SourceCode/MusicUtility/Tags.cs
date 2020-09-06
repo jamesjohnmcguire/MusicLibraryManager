@@ -90,7 +90,31 @@ namespace MusicUtility
 			}
 		}
 
-		public Tag TagSet { get; }
+		public TagSet TagSet
+		{
+			get
+			{
+				TagSet tagSet = new TagSet();
+				Type test = tagSet.GetType();
+				PropertyInfo[] properties = test.GetProperties();
+
+				foreach (PropertyInfo propertyInfo in properties)
+				{
+					string name = propertyInfo.Name;
+
+					test = TagFile.Tag.GetType();
+					PropertyInfo tagFileInfo = test.GetProperty(name);
+					var value = tagFileInfo.GetValue(TagFile.Tag);
+
+					if (propertyInfo.CanWrite)
+					{
+						propertyInfo.SetValue(tagSet, value);
+					}
+				}
+
+				return tagSet;
+			}
+		}
 
 		public TagLib.File TagFile { get; set; }
 

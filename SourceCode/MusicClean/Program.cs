@@ -16,6 +16,7 @@ namespace MusicClean
 
 				MusicManager musicUtility = new MusicManager(rules);
 
+				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
 			}
 			catch (Exception exception)
