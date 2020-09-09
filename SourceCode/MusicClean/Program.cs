@@ -1,20 +1,32 @@
-﻿using MusicUtility;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Program.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using MusicUtility;
 using System;
 using System.IO;
 using System.Reflection;
 
 namespace MusicClean
 {
-	public class Program
+	public static class Program
 	{
 		public static void Main(string[] args)
 		{
 			try
 			{
-				string rulesData = GetRulesData(args);
+				string rulesData = null;
+
+				if (args != null)
+				{
+					rulesData = GetRulesData(args);
+				}
+
 				Rules rules = new Rules(rulesData);
 
-				MusicManager musicUtility = new MusicManager(rules);
+				using MusicManager musicUtility = new MusicManager(rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();

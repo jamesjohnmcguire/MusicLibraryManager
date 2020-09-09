@@ -56,46 +56,52 @@ namespace MusicUtility
 		public static Dictionary<string, object> LoadItunesXmlFile(
 			string iTunesMusicLibXMLPath)
 		{
-			Dictionary<string, object> strs;
+			Dictionary<string, object> iTunesInformation = null;
+
 			try
 			{
-				XmlTextReader xmlTextReader = new XmlTextReader(iTunesMusicLibXMLPath)
-				{
-					XmlResolver = null
-				};
-				XmlReaderSettings xmlReaderSetting = new XmlReaderSettings()
-				{
-					DtdProcessing = DtdProcessing.Ignore,
-					ValidationType = ValidationType.None,
-					XmlResolver = null
-				};
-				XmlReader xmlReader = XmlReader.Create(xmlTextReader, xmlReaderSetting);
-				xmlReader.ReadStartElement("plist");
-				if (!(!object.ReferenceEquals(xmlReader, "None") & xmlReader != null))
-				{
-					strs = null;
-				}
-				else
-				{
-					XmlDocument xmlDocument = new XmlDocument();
-					xmlDocument.Load(xmlReader);
-					Dictionary<string, object> strs1 =
-						(Dictionary<string, object>)ITunesXmlFile.
-						ReadKeyAsDictionaryEntry(xmlDocument.ChildNodes[0]);
-					xmlReader.Close();
-					foreach (Dictionary<string, object> value in ((Dictionary<string, object>)strs1["Tracks"]).Values)
-					{
-						Dictionary<string, object> strs2 = value;
-						ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
-						ITunesXmlFile.SetToURLDecode("Location", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
-					}
+				XmlReaderSettings settings = new XmlReaderSettings();
+				settings.XmlResolver = null;
+				settings.DtdProcessing = DtdProcessing.Ignore;
+				settings.ValidationType = ValidationType.None;
 
-					strs = strs1;
+				using XmlReader xmlReader =
+					XmlReader.Create(iTunesMusicLibXMLPath, settings);
+
+				xmlReader.ReadStartElement("plist");
+
+				if (xmlReader != null)
+				{
+					if (!object.ReferenceEquals(xmlReader, "None"))
+					{
+						XmlDocument xmlDocument = new XmlDocument();
+						xmlDocument.Load(xmlReader);
+
+						Dictionary<string, object> preInfo =
+							(Dictionary<string, object>)ReadKeyAsDictionaryEntry(
+								xmlDocument.ChildNodes[0]);
+						xmlReader.Close();
+
+						object tracks = preInfo["Tracks"];
+						var tracksDictionary =
+							(Dictionary<string, object>)tracks;
+						Dictionary<string, object>.ValueCollection values =
+								tracksDictionary.Values;
+
+						foreach (Dictionary<string, object> value in values)
+						{
+							Dictionary<string, object> strs2 = value;
+							ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
+							ITunesXmlFile.SetToURLDecode("Location", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
+						}
+
+						iTunesInformation = preInfo;
+					}
 				}
 			}
 			catch (Exception exception) when
@@ -110,10 +116,9 @@ namespace MusicUtility
 			{
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
-				strs = null;
 			}
 
-			return strs;
+			return iTunesInformation;
 		}
 
 		private static string GetURLDecodeOfString(string value)

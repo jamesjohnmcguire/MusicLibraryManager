@@ -452,14 +452,10 @@ namespace MusicUtility
 			int numberChecked = 0;
 			int numberDeadFound = 0;
 
-			// set up progress monitor, if needed
-
 			for (int index = 1; index <= trackCount; index++)
 			{
 				try
 				{
-					// check for cancel
-
 					// only work with files
 					fileTrack = tracks[index] as IITFileOrCDTrack;
 
@@ -481,7 +477,6 @@ namespace MusicUtility
 					}
 
 					numberChecked++;
-					// increment progress
 				}
 				catch (Exception exception) when
 					(exception is ArgumentException ||
@@ -505,8 +500,6 @@ namespace MusicUtility
 			int trackCount = tracks.Count;
 			int numberChecked = 0;
 			int duplicatesFound = 0;
-
-			// set up progress monitor, if needed
 
 			for (int index = 0; index < trackCount; index++)
 			{
@@ -549,7 +542,6 @@ namespace MusicUtility
 				}
 
 				numberChecked++;
-				// increment progress
 			}
 
 			return duplicateTracks;
@@ -630,7 +622,6 @@ namespace MusicUtility
 				else
 				{
 					// a file is already there, move into duplicates
-
 					filePath = GetDulicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}

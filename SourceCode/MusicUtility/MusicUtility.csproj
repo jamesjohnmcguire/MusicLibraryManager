@@ -21,6 +21,7 @@
 		<EmbedInteropTypes>True</EmbedInteropTypes>
 		</COMReference>
 	</ItemGroup>
+
 	<ItemGroup>
 		<Reference Include="System.Web" />
 	</ItemGroup>
