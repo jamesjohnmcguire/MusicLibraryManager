@@ -88,6 +88,38 @@ namespace MusicUtility
 			GC.SuppressFinalize(this);
 		}
 
+		public void SaveTagsToJsonFile(
+			FileInfo sourceFile, string destinationPath)
+		{
+			try
+			{
+				string destinationFile =
+					destinationPath + "\\" + sourceFile.Name + ".json";
+
+				tags = new Tags(
+					sourceFile.FullName, ITunesLibraryLocation, rules);
+
+				TagSet tagSet = tags.TagSet;
+
+				JsonSerializerSettings jsonSettings =
+					new JsonSerializerSettings();
+				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+
+				string json = JsonConvert.SerializeObject(
+					tagSet, Formatting.Indented, jsonSettings);
+
+				File.WriteAllText(destinationFile, json);
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is TagLib.CorruptFileException ||
+				exception is TagLib.UnsupportedFormatException)
+			{
+				log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
+			}
+		}
+
 		public void UpdateLibrarySkeleton()
 		{
 			UpdateLibrarySkeleton(
@@ -124,7 +156,7 @@ namespace MusicUtility
 						if (includes.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
-							SaveSkeletonFile(file, skeletonPath);
+							SaveTagsToJsonFile(file, skeletonPath);
 						}
 					}
 
@@ -562,38 +594,6 @@ namespace MusicUtility
 			}
 
 			return destinationPath;
-		}
-
-		private void SaveSkeletonFile(
-			FileInfo sourceFile, string destinationPath)
-		{
-			try
-			{
-				string destinationFile =
-					destinationPath + "\\" + sourceFile.Name + ".json";
-
-				tags = new Tags(
-					sourceFile.FullName, ITunesLibraryLocation, rules);
-
-				TagSet tagSet = tags.TagSet;
-
-				JsonSerializerSettings jsonSettings =
-					new JsonSerializerSettings();
-				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-
-				string json = JsonConvert.SerializeObject(
-					tagSet, Formatting.Indented, jsonSettings);
-
-				File.WriteAllText(destinationFile, json);
-			}
-			catch (Exception exception) when
-				(exception is ArgumentException ||
-				exception is TagLib.CorruptFileException ||
-				exception is TagLib.UnsupportedFormatException)
-			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
-			}
 		}
 
 		private FileInfo UpdateFile(FileInfo file)
