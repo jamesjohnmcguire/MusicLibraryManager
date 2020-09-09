@@ -1,4 +1,10 @@
-﻿using Common.Logging;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="MusicManager.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Common.Logging;
 using iTunesLib;
 using Newtonsoft.Json;
 using System;

@@ -1,4 +1,10 @@
-﻿using Common.Logging;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="ItunesXmlFile.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Common.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;

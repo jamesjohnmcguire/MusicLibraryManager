@@ -1,4 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Rules.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

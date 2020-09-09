@@ -1,4 +1,11 @@
-﻿#pragma warning disable CS0618 // Type or member is obsolete
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Tags.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+#pragma warning disable CS0618 // Type or member is obsolete
+
 using Newtonsoft.Json;
 using System;
 using System.Globalization;
