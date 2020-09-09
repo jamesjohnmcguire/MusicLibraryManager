@@ -61,6 +61,19 @@ Design
 			https://stackoverflow.com/questions/424366/string-representation-of-an-enum
 			https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
 			http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
+		CleanFile
+			Tags.Update
+				rules.RunRules
+					foreach (PropertyInfo property in properties)
+						foreach (Rule rule in rules)
+							object newValue = rule.Run(item, fullName, source, null);
+		Album	"The Very Best Of 10cc"
+			Rule1 (album / disks)
+			Rule2 (artist / various artists)
+		will need to specify whether to ignore case sensitivity or not in rules	for that matter, whether ordinal values matter or not
+		handle actions if no more rules chained
+		Need to fix replacement, especially as a property.
+		Get other unit test in line with new approach
 Manual Renaming
 	C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
 		FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
@@ -68,7 +81,40 @@ Manual Renaming
 	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
 	The Jackson 5 (Soul Source, 2000)
 Tasks
+	Add build command, complete with running unit tests
+	Change DLL names to match the following pattern: <Company>.<Component>.dll
+	Rename skeleton methods
+	Exclude non music directories
+	Remove null fields from json files
+	Add snapshot of each directory as csv
+	Failed obtaining configuration for Common.Logging from configuration section 'common/logging'	MusicClean.exe.Config line 11
+	Code analysis fixes
+	Stop hyper version updating
+	Check complete list of audio files
+	Move all files when moving album files
+	extended unit tests to test tag rules
+	change rules to actual rules
+	test remove extra tracks that point to the same file
+	test updating itunes when removing duplicates
+	Music5 instead of Music4
+	fix "best hits of...", Compilations, Great Rock Hits lame tags
+	often wrong year
+	what about votes and stuff?
+	mp4 file diffs almost same... same?
+	deal with album artwork
+	Deal with wma files	ArgumentException	"Value does not fall within the expected range." IITLibraryPlaylist.AddFile(String filePath) MusicUtility.MusicUtility.UpdateItunes(FileInfo file) MusicUtility.cs:line 467 CleanFile(FileInfo file) MusicUtility.cs:line 131"
+	Check IITOperationStatus status return from iTunes.LibraryPlaylist.AddFile
+	Consider when the file isn't just a song, could be a medley, or a collection, and album side.  Maybe not music at all, not even audio
+	Merge tags from previous libraries	?
 	Finished
+		Remove sample projects
+		mvhd box not found.	TagLib.CorruptFileException}
+		iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
+		Property set method not found.
+		Formatting.Indented
+		Frame data incomplete.	TagLib.CorruptFileException
+		Error getting value from 'ReadTimeout' on 'System.IO.FileStream'.
+		extract tags into xml files, for backup purposes
 		System.UnauthorizedAccessException	Access to the path 'C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Automatically Add to iTunes' is denied.
 		FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
 		System.Reflection.TargetException	Object does not match target type.
@@ -88,26 +134,11 @@ Tasks
 		Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
 		deal with ' - ' split rules
 		remove dead tracks
-	change rules to actual rules
-	extended unit tests to test tag rules
-	updating itunes on duplicates
-	Music5 instead of Music4
-	Merge tags from previous libraries	?
-	remove extra tracks that point to the same file
-	Code analysis fixes
-	Stop hyper version updating
-	fix "best hits of...", Compilations, Great Rock Hits lame tags
-	often wrong year
-	what about votes and stuff?
-	mp4 file diffs almost same... same?
-	mp3 extract metadata
-	deal with album artwork
-	mvhd box not found.	TagLib.CorruptFileException}
-	iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
-	Failed obtaining configuration for Common.Logging from configuration section 'common/logging'	MusicClean.exe.Config line 11
-	Remove sample projects
-	Deal with wma files	System.ArgumentException	"Value does not fall within the expected range." iTunesLib.IITLibraryPlaylist.AddFile(String filePath) MusicUtility.MusicUtility.UpdateItunes(FileInfo file) MusicUtility.cs:line 467 MusicUtility.MusicUtility.CleanFile(FileInfo file) MusicUtility.cs:line 131"
-	Check IITOperationStatus status return from iTunes.LibraryPlaylist.AddFile
+		InnerException	{"Timeouts are not supported on this stream."}	System.Exception {System.InvalidOperationException}
+		Newtonsoft.Json.JsonSerializationException Timeouts are not supported on this stream.
+		https://stackoverflow.com/questions/30331027/newtonsoft-json-net-how-to-serialize-content-of-a-stream
+		"Frame data incomplete."	TagLib.CorruptFileException
+		https://github.com/mono/taglib-sharp/issues/192
 	Not Sure
 		1-05 Do You Know The Way To San Jose.m4a
 		Tangled Up In Blue (2).mp3
@@ -116,6 +147,15 @@ Tasks
 		Compilations\\P.S. I Love You\\Everything We Had.mp3
 		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
 		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
+Notes
+	Source Code notes
+		TagSet based on public abstract class Tag
+	Locations
+		iTunes.LibraryXMLPath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Music Library.xml"
+		iTunesDirectoryLocation	ItunesXmlFile.ITunesFolderLocation	"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\"
+	Repositories
+		github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
+		origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
 Issues
 	Duplicate files (exact)
 		DoubleKiller.exe
@@ -161,8 +201,16 @@ Issues
 Resources
 	https://github.com/filoe/cscore
 	Tags
-		https://github.com/mono/taglib-sharp
 		http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
+		Tag stats	https://kworb.net/faq.html
+		Tagging info
+			http://id3.org/id3v2.4.0-frames
+			https://taglib.org/api/
+			https://www.blisshq.com/music-library-management-blog/2010/10/12/how-to-use-album_artist/
+		Libraries
+			https://github.com/mono/taglib-sharp	https://www.nuget.org/packages/TagLibSharp
+			Alternate Tagging libraries
+				Audio Tools Library (ATL) for .NET	https://github.com/Zeugma440/atldotnet
 	c# itunes api
 		http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
 		http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
@@ -202,76 +250,24 @@ Resources
 			https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
 			https://picard.musicbrainz.org/docs/development/
 		https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3
+	extract tagsinto other file
+		http://meta-extractor.sourceforge.net/
+		https://sourceforge.net/projects/meta-extractor/files/
+		https://github.com/DIA-NZ/Metadata-Extraction-Tool
+		https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
+	Packages
+		https://github.com/JamesNK/Newtonsoft.Json
 	http://regexstorm.net/tester
 	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
 	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
+	QuickTime Decrypt Library	https://github.com/gitpan/Audio-M4P
 
-extract tags into xml files, for backup purposes
-http://meta-extractor.sourceforge.net/
-https://sourceforge.net/projects/meta-extractor/files/
-https://github.com/DIA-NZ/Metadata-Extraction-Tool
-https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
+https://github.com/jiixyj/loudness-scanner
+https://support.google.com/googleplaymusic/answer/1075570?hl=en
 
-AlbumArtist
-AlbumArtistSort
-Artists	*
-JoinedAlbumArtist
-JoinedArtists	*
-JoinedPerformers	*
-JoinedPerformersSort	*
-Performers	*
-PerformersSort	*
-
-https://github.com/mono/taglib-sharp/blob/master/src/TaglibSharp/Id3v2/Tag.cs
-http://id3.org/id3v2.4.0-frames
-https://taglib.org/api/
-extract tags from mp3 into xml file
-
-https://github.com/Zeugma440/atldotnet
-https://github.com/gitpan/Audio-M4P
-
-https://github.com/mono/taglib-sharp
-https://www.nuget.org/packages/TagLibSharp
-
-Music
-MusicManager
-	https://github.com/jiixyj/loudness-scanner
-	Change DLL names to match the following pattern: <Company>.<Component>.dll
-	https://support.google.com/googleplaymusic/answer/1075570?hl=en
-	https://www.blisshq.com/music-library-management-blog/2010/10/12/how-to-use-album_artist/
-	Consider when the file isn't just a song, could be a medley, or a collection, and album side.  Maybe not music at all, not even audio
-	TagFile	A file with tags
-		AudioTagFile
-			MusicTagFile
-				Song
-	//IITEncoder encoder = iTunes.CurrentEncoder;
-	//status = iTunes.ConvertFile2(musicFilePath);
-
-	https://github.com/mono/taglib-sharp/issues/192
-	TagLib
-		## Installation
-
-		Xamarin.Essentials is available via NuGet & is included in every template:
-
-		* NuGet Official Releases: [![NuGet](https://img.shields.io/nuget/vpre/Xamarin.Essentials.svg?label=NuGet)](https://www.nuget.org/packages/Xamarin.Essentials)
-	https://kworb.net/faq.html
-	https://github.com/jiixyj/loudness-scanner
-
-	github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
-	origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
-	"Frame data incomplete."	TagLib.CorruptFileException
-Rules
-	Change DLL names to match the following pattern: <Company>.<Component>.dll
-	CleanFile
-		Tags.Update
-			rules.RunRules
-				foreach (PropertyInfo property in properties)
-					foreach (Rule rule in rules)
-						object newValue = rule.Run(item, fullName, source, null);
-	Album	"The Very Best Of 10cc"
-		Rule1 (album / disks)
-		Rule2 (artist / various artists)
-	will need to specify whether to ignore case sensitivity or not in rules	for that matter, whether ordinal values matter or not
-	handle actions if no more rules chained
-	Need to fix replacement, especially as a property.
-	Get other unit test in line with new approach
+TagFile	A file with tags
+	AudioTagFile
+		MusicTagFile
+			Song
+//IITEncoder encoder = iTunes.CurrentEncoder;
+//status = iTunes.ConvertFile2(musicFilePath);
