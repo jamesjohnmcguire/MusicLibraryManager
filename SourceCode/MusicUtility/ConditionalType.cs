@@ -14,7 +14,14 @@ namespace MusicUtility
 {
 	public enum ConditionalType
 	{
+		/// <summary>
+		/// ConditionalType literal.
+		/// </summary>
 		Literal,
+
+		/// <summary>
+		/// ConditionalType property.
+		/// </summary>
 		Property
 	}
 }
