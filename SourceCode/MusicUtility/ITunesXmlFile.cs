@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="ItunesXmlFile.cs" company="Digital Zen Works">
+// <copyright file="ITunesXmlFile.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ using System.Xml;
 
 namespace MusicUtility
 {
-	public class ItunesXmlFile
+	public class ITunesXmlFile
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
@@ -29,7 +29,7 @@ namespace MusicUtility
 
 		private readonly XmlDocument xmlDocument = null;
 
-		public ItunesXmlFile(string filePath)
+		public ITunesXmlFile(string filePath)
 		{
 			xmlDocument = new XmlDocument();
 			xmlDocument.Load(filePath);
@@ -80,19 +80,19 @@ namespace MusicUtility
 					XmlDocument xmlDocument = new XmlDocument();
 					xmlDocument.Load(xmlReader);
 					Dictionary<string, object> strs1 =
-						(Dictionary<string, object>)ItunesXmlFile.
+						(Dictionary<string, object>)ITunesXmlFile.
 						ReadKeyAsDictionaryEntry(xmlDocument.ChildNodes[0]);
 					xmlReader.Close();
 					foreach (Dictionary<string, object> value in ((Dictionary<string, object>)strs1["Tracks"]).Values)
 					{
 						Dictionary<string, object> strs2 = value;
-						ItunesXmlFile.SetToHTMLDecode("Name", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Album", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
-						ItunesXmlFile.SetToURLDecode("Location", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
+						ITunesXmlFile.SetToURLDecode("Location", ref strs2);
+						ITunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
 					}
 
 					strs = strs1;
@@ -158,7 +158,7 @@ namespace MusicUtility
 				switch (str)
 				{
 					case "plist":
-						return ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
+						return ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
 					case "integer":
 					case "real":
 					case "data":
@@ -172,8 +172,8 @@ namespace MusicUtility
 						Dictionary<string, object> strs = new Dictionary<string, object>();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
-							string str1 = (string)ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
-							object obj = ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
+							string str1 = (string)ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
+							object obj = ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
 							strs.Add(str1, obj);
 						}
 
@@ -182,7 +182,7 @@ namespace MusicUtility
 						ArrayList arrayLists = new ArrayList();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
-							arrayLists.Add(ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
+							arrayLists.Add(ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
 						}
 
 						return arrayLists;
@@ -207,7 +207,7 @@ namespace MusicUtility
 		{
 			if (thisDict.ContainsKey(key))
 			{
-				thisDict[key] = ItunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
+				thisDict[key] = ITunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
 			}
 		}
 

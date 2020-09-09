@@ -41,8 +41,8 @@ namespace MusicUtility
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
-			ItunesXmlFile iTunesXmlFile =
-				new ItunesXmlFile(iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile =
+				new ITunesXmlFile(iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
