@@ -572,10 +572,17 @@ namespace MusicUtility
 				string destinationFile =
 					destinationPath + "\\" + sourceFile.Name + ".json";
 
-				tags = new Tags(sourceFile.FullName, ITunesLibraryLocation, rules);
+				tags = new Tags(
+					sourceFile.FullName, ITunesLibraryLocation, rules);
 
 				TagSet tagSet = tags.TagSet;
-				string json = JsonConvert.SerializeObject(tagSet, Formatting.Indented);
+
+				JsonSerializerSettings jsonSettings =
+					new JsonSerializerSettings();
+				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+
+				string json = JsonConvert.SerializeObject(
+					tagSet, Formatting.Indented, jsonSettings);
 
 				File.WriteAllText(destinationFile, json);
 			}
