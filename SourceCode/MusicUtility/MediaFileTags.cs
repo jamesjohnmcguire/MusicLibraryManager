@@ -11,6 +11,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Text.RegularExpressions;
 using TagLib;
 
@@ -18,9 +19,13 @@ namespace MusicUtility
 {
 	public class MediaFileTags : IDisposable
 	{
+		private static readonly ResourceManager StringTable =
+			new ResourceManager(
+				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+
 		private readonly string filePath;
-		private readonly string iTunesLocation = null;
-		private readonly Rules rules = null;
+		private readonly string iTunesLocation;
+		private readonly Rules rules;
 
 		public MediaFileTags(string file)
 		{
@@ -181,9 +186,12 @@ namespace MusicUtility
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string[] regexes =
-					new string[] { @" \[.*?\]", @" \(Disc.*?Side\)",
+					new string[]
+					{
+						@" \[.*?\]", @" \(Disc.*?Side\)",
 						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
-						@" \(disc \d+\)" };
+						@" \(disc \d+\)"
+					};
 
 				foreach (string regex in regexes)
 				{
@@ -226,8 +234,12 @@ namespace MusicUtility
 
 					foreach (Match match in matches)
 					{
+						string foundAtPosition = StringTable.GetString(
+								"FOUND_AT_POSITION",
+								CultureInfo.InvariantCulture);
+
 						Console.WriteLine(
-							"Found '{0}' at position {1}",
+							foundAtPosition,
 							match.Value,
 							match.Index);
 					}

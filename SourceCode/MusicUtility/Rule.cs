@@ -236,9 +236,9 @@ namespace MusicUtility
 		{
 			string subject = null;
 
-			if (content is string)
+			if (content is string @string)
 			{
-				subject = (string)content;
+				subject = @string;
 
 				string find = (string)conditional;
 
@@ -257,9 +257,7 @@ namespace MusicUtility
 
 		private object Action(object item, string subject)
 		{
-			object content = null;
-
-			content = GetItemSubject(item, subject);
+			object content = GetItemSubject(item, subject);
 
 			switch (this.Operation)
 			{

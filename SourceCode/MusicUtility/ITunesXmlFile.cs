@@ -27,7 +27,7 @@ namespace MusicUtility
 			new ResourceManager(
 				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
-		private readonly XmlDocument xmlDocument = null;
+		private readonly XmlDocument xmlDocument;
 
 		public ITunesXmlFile(string filePath)
 		{
