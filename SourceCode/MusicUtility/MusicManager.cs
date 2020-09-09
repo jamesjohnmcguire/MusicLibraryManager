@@ -33,7 +33,7 @@ namespace MusicUtility
 		private readonly Rules rules;
 
 		private iTunesApp iTunes = null;
-		private Tags tags = null;
+		private MediaFileTags tags = null;
 
 		public MusicManager()
 		{
@@ -102,7 +102,7 @@ namespace MusicUtility
 				string destinationFile =
 					destinationPath + "\\" + sourceFile.Name + ".json";
 
-				tags = new Tags(
+				tags = new MediaFileTags(
 					sourceFile.FullName, ITunesLibraryLocation, rules);
 
 				TagSet tagSet = tags.TagSet;
@@ -300,7 +300,7 @@ namespace MusicUtility
 					message));
 
 				// get and update tags
-				tags = new Tags(file.FullName, ITunesLibraryLocation, rules);
+				tags = new MediaFileTags(file.FullName, ITunesLibraryLocation, rules);
 				tags.Update();
 
 				// update directory and file names

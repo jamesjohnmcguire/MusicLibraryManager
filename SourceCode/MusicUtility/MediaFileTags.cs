@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="Tags.cs" company="Digital Zen Works">
+// <copyright file="MediaFileTags.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -16,13 +16,13 @@ using TagLib;
 
 namespace MusicUtility
 {
-	public class Tags : IDisposable
+	public class MediaFileTags : IDisposable
 	{
 		private readonly string filePath;
 		private readonly string iTunesLocation = null;
 		private readonly Rules rules = null;
 
-		public Tags(string file)
+		public MediaFileTags(string file)
 		{
 			filePath = file;
 
@@ -35,13 +35,13 @@ namespace MusicUtility
 			}
 		}
 
-		public Tags(string file, string iTunesLocation)
+		public MediaFileTags(string file, string iTunesLocation)
 			: this(file)
 		{
 			this.iTunesLocation = iTunesLocation;
 		}
 
-		public Tags(string file, string iTunesLocation, Rules rules)
+		public MediaFileTags(string file, string iTunesLocation, Rules rules)
 			: this(file, iTunesLocation)
 		{
 			this.rules = rules;
