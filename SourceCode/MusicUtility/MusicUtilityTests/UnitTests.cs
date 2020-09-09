@@ -55,7 +55,7 @@ namespace MusicUtility.Tests
 			rule.Subject = element;
 			rule.Condition = Condition.ContainsRegex;
 			rule.Conditional = @"\s*\(Dis[A-Za-z].*?\)";
-			rule.Operation = Operations.Remove;
+			rule.Operation = Operation.Remove;
 
 			TagSet tags = new TagSet();
 			tags.Album = original;
@@ -96,7 +96,7 @@ namespace MusicUtility.Tests
 			nextChainRule.Conditional =
 				"Performers";
 			nextChainRule.ConditionalType = ConditionalType.Property;
-			nextChainRule.Operation = Operations.Replace;
+			nextChainRule.Operation = Operation.Replace;
 			chainRule.ChainRule = nextChainRule;
 
 			TagSet tags = new TagSet();

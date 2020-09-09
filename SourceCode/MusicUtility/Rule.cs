@@ -48,7 +48,7 @@ namespace MusicUtility
 			set { conditionalType = value; }
 		}
 
-		public Operations Operation { get; set; }
+		public Operation Operation { get; set; }
 
 		public object Replacement { get; set; }
 
@@ -104,7 +104,6 @@ namespace MusicUtility
 					case Condition.NotEmpty:
 						// object tester = GetFullPathObject(item, ruleSubject);
 						// content = GetStringFromStringOrArray(tester);
-
 						test = new CheckCondition(ConditionNotEmptyTest);
 
 						matching = test(item, content, this.Conditional);
@@ -261,9 +260,9 @@ namespace MusicUtility
 
 			switch (this.Operation)
 			{
-				case Operations.Remove:
+				case Operation.Remove:
 					break;
-				case Operations.Replace:
+				case Operation.Replace:
 					SetItemSubject(item, subject, this.Replacement);
 					break;
 			}

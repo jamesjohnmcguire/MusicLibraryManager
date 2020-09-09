@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="Operations.cs" company="Digital Zen Works">
+// <copyright file="Operation.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -12,9 +12,16 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
-	public enum Operations
+	public enum Operation
 	{
+		/// <summary>
+		/// Operation remove.
+		/// </summary>
 		Remove,
+
+		/// <summary>
+		/// Operation replace.
+		/// </summary>
 		Replace
 	}
 }
