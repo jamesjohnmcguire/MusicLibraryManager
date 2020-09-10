@@ -93,8 +93,8 @@ namespace MusicUtility.Tests
 			Rule nextChainRule = new Rule();
 			nextChainRule.Subject = "Artists";
 			nextChainRule.Condition = Condition.NotEquals;
-			nextChainRule.Conditional =
-				"Performers";
+			nextChainRule.Conditional = "Performers";
+			nextChainRule.Replacement = "Performers";
 			nextChainRule.ConditionalType = ConditionalType.Property;
 			nextChainRule.Operation = Operation.Replace;
 			chainRule.ChainRule = nextChainRule;
@@ -108,7 +108,18 @@ namespace MusicUtility.Tests
 			object result = rule.Run(
 				tags, element, null, null);
 
-			string test = (string)result;
+			string test = null;
+
+			if (result is string[] subjectObject)
+			{
+				string[] temp = (string [])result;
+				test = temp[0];
+			}
+			else if (result is string ruleObject)
+			{
+				test = (string)result;
+			}
+
 			Assert.That(test, Is.EqualTo(
 				"The Solos"));
 		}
