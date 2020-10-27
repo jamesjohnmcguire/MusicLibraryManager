@@ -81,6 +81,14 @@ Manual Renaming
 	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
 	The Jackson 5 (Soul Source, 2000)
 Tasks
+	DeleteDeadTracks	set up progress monitor, if needed
+	DeleteDeadTracks	// check for cancel
+	DeleteDeadTracks	// increment progress
+	FindDuplicates	set up progress monitor, if needed
+	FindDuplicates	// check for cancel
+	FindDuplicates	// increment progress
+	git remote add origin https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/musiclibrary.git
+	Create regex in msbuild for <NUnitConsolePath>$(NuGetPackageRoot)\NUnit.ConsoleRunner\(\d+)\.(\d+)\.(\d+).$(NUnitConsoleVersion)\tools</NUnitConsolePath>
 	Add build command, complete with running unit tests
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
 	Rename skeleton methods
@@ -107,6 +115,8 @@ Tasks
 	Consider when the file isn't just a song, could be a medley, or a collection, and album side.  Maybe not music at all, not even audio
 	Merge tags from previous libraries	?
 	Finished
+		MSB3030: Could  not copy the file "NUnitTestDebugger\app.config" because it was not found.
+		MSB6004: The specified task executable location "MusicLibraryManager\SourceCode\packages\NUnit.ConsoleRunner.\tools\nunit3-console.exe" is invalid.
 		Remove sample projects
 		mvhd box not found.	TagLib.CorruptFileException}
 		iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
@@ -261,8 +271,8 @@ Resources
 	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
 	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
 	QuickTime Decrypt Library	https://github.com/gitpan/Audio-M4P
+	https://github.com/jiixyj/loudness-scanner
 
-https://github.com/jiixyj/loudness-scanner
 https://support.google.com/googleplaymusic/answer/1075570?hl=en
 
 TagFile	A file with tags
@@ -271,3 +281,65 @@ TagFile	A file with tags
 			Song
 //IITEncoder encoder = iTunes.CurrentEncoder;
 //status = iTunes.ConvertFile2(musicFilePath);
+
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+
+Rules
+		if (propertyInfo.PropertyType.IsArray)
+		{
+			Array a = (Array)propertyInfo.GetValue(item);
+			Array b = (Array)propertyInfo.GetValue(item, null);
+			var tester = propertyInfo.GetValue(item);
+			var tester2 = propertyInfo.GetValue(item, null);
+			object[] test = (object[])propertyInfo.GetValue(item);
+			object[] test1 = (object[])propertyInfo.GetValue(item, null);
+			string[] test2 = (string[])propertyInfo.GetValue(item, null);
+			// var test3 = propertyInfo.GetValue(item, new object[] { 1 });
+			itemSubject = propertyInfo.GetValue(item, null);
+		}
+
+Unit Testings
+	https://github.com/nunit/nunit/issues/2480
+	nuget install NUnit.Console -ExcludeVersion -OutputDirectory tools
+	https://docs.nunit.org/articles/nunit/getting-started/dotnet-core-and-dotnet-standard.html
+	https://alteridem.net/2017/05/04/test-net-core-nunit-vs2017/
+
+	1) Invalid : C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\bin\Release\netcoreapp2.2\MusicUtility.Tests.dll
+	File not found: C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\bin\Release\netcoreapp2.2\MusicUtility.Tests.dll
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\bin\Release\netcoreapp2.2\MusicUtility.Tests.dll
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\bin\x86\Release\netcoreapp2.2
+
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\Bin\Release\x64\MusicUtility.Tests.dll
+
+	1) Invalid : C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManage   r\SourceCode\MusicUtility\MusicUtilityTests\Bin\x64\Release\MusicUtility.Test   s.dll
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\Bin\x64\Release\MusicUtility.Tests.dll
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\Bin\x86\Release\MusicUtility.Tests.dll
+
+	NUNIT3 : 1) error :  [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibrar yManager\SourceCode\DevelopmentTools\Commmands\MusicLibrary.msbuild.xml]          NUnit.Engine.NUnitEngineException : An exception occurred in the driver while    loading tests.                                                                   ----> 
+	System.IO.FileNotFoundException : 
+	Could not load file or assembly 'nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb' or one of its dependencies.  --NUnitEngineException
+	 An exception occurred in the driver while loading tests.                      
+
+	C:\Microsoft\Xamarin\NuGet\nunit\3.12.0\lib\netstandard2.0\nunit.framework.dll
+
+
+	"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\Tools\Commands\TimeT racker.msbuild" (BuildAll target) (1) ->                                        "C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\SourceCode\Product\T imeTrackerCoreLib\TimeTrackerCoreLib.vcxproj" (Rebuild target) (4) ->           (PostBuildEvent target) ->                                                        C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microso ft\VC\v160\Microsoft.CppCommon.targets(149,5): 
+
+	error MSB3073: The command "copy  /Y "C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\SourceCode\Bin\Release\x86\TimeTrackerCoreLib.dll" "C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\SourceCodebin\Release\Win32\netcoreapp3.1\TimeTrackerCoreLib.dll " 
+
+	[C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\SourceCode\Product \TimeTrackerCoreLib\TimeTrackerCoreLib.vcxproj]
+
+									 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft \VC\v160\Microsoft.CppCommon.targets(149,5): error MSB3073: :VCEnd" exited with  code 1. [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\TimeTracker\SourceCode\ Product\TimeTrackerCoreLib\TimeTrackerCoreLib.vcxproj]                                                                                                          
+	\netcoreapp3.1\
+
+	%USERPROFILE%\.nuget\packages\NUnit.ConsoleRunner\3.11.1\tools\nunit3-console.exe
+
+	1) Error : C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj               NUnit.Engine.NUnitEngineException : The NUnit 3 driver encountered an error while executing reflected code.                                                       ----> System.InvalidCastException : Unable to cast transparent proxy to type 'System.Web.UI.ICallbackEventHandler'.                                           --NUnitEngineException                                                          The NUnit 3 driver encountered an error while executing reflected code. 
+
+	Could not load file or assembly 'nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb' or one of its dependencies. --NUnitEngineException
+	https://github.com/nunit/nunit3-vs-adapter/issues/573
+
+	NUNIT Unable to cast transparent proxy to type 'System.Web.UI.ICallbackEventHandler'
