@@ -4,7 +4,7 @@
 		<RootNamespace>MusicClean</RootNamespace>
 		<AssemblyName>MusicClean</AssemblyName>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>

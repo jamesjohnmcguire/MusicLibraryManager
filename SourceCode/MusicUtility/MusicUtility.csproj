@@ -5,7 +5,7 @@
 		<Product>MusicUtility</Product>
 		<Copyright>Copyright © 2019 - 2020</Copyright>
 		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<Authors>James John McGuire</Authors>
 		<Company>Digital Zen Works</Company>
 		<NeutralLanguage>en</NeutralLanguage>
