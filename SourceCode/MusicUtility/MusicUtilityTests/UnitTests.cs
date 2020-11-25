@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="UnitTests.cs" company="James John McGuire">
-// Copyright © 2006 - 2019 James John McGuire. All Rights Reserved.
+// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -112,12 +112,12 @@ namespace MusicUtility.Tests
 
 			if (result is string[] subjectObject)
 			{
-				string[] temp = (string [])result;
+				string[] temp = subjectObject;
 				test = temp[0];
 			}
 			else if (result is string ruleObject)
 			{
-				test = (string)result;
+				test = ruleObject;
 			}
 
 			Assert.That(test, Is.EqualTo(
