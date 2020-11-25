@@ -31,8 +31,14 @@ namespace MusicUtility
 
 		public ITunesXmlFile(string filePath)
 		{
+			XmlReaderSettings settings = new XmlReaderSettings();
+			settings.XmlResolver = null;
+
 			xmlDocument = new XmlDocument();
-			xmlDocument.Load(filePath);
+			xmlDocument.XmlResolver = null;
+			StringReader stringReader = new StringReader(filePath);
+			using XmlReader reader = XmlReader.Create(stringReader, settings);
+			xmlDocument.Load(reader);
 		}
 
 		public string ITunesFolderLocation

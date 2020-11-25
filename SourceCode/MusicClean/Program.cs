@@ -66,11 +66,9 @@ namespace MusicClean
 			{
 				if (templateObjectStream != null)
 				{
-					using (StreamReader reader =
-						new StreamReader(templateObjectStream))
-					{
-						contents = reader.ReadToEnd();
-					}
+					using StreamReader reader =
+						new StreamReader(templateObjectStream);
+					contents = reader.ReadToEnd();
 				}
 			}
 
