@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="AssemblyInfo.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2020 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -12,9 +12,9 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("James John McGuire")]
-[assembly: AssemblyCopyright("Copyright © 2019 - 2020")]
+[assembly: AssemblyCopyright("Copyright © 2019 - 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
 
-[assembly: AssemblyVersion("1.0.0.190")]
+[assembly: AssemblyVersion("1.0.0.194")]

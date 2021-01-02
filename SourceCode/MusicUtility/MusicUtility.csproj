@@ -3,7 +3,7 @@
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<AssemblyTitle>MusicUtility</AssemblyTitle>
 		<Product>MusicUtility</Product>
-		<Copyright>Copyright © 2019 - 2020</Copyright>
+		<Copyright>Copyright © 2019 - 2021</Copyright>
 		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
 		<TargetFramework>net48</TargetFramework>
 		<Authors>James John McGuire</Authors>
