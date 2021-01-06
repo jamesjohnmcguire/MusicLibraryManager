@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-		<IsPackable>false</IsPackable>
 		<AssemblyName>MusicUtility.Tests</AssemblyName>
-		<RootNamespace>MusicUtility.Tests</RootNamespace>
+		<IsPackable>false</IsPackable>
 		<OutputType>Library</OutputType>
+		<RootNamespace>MusicUtility.Tests</RootNamespace>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,10 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Common.Logging" Version="3.4.1" />
-		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-		<PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />
-		<PackageReference Include="log4net" Version="2.0.12" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
 		<PackageReference Include="NUnit" Version="3.12.0" />
 		<PackageReference Include="NUnit.Console" Version="3.11.1" />
