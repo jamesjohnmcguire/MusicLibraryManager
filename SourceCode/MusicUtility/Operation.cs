@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="ConditionalType.cs" company="Digital Zen Works">
+// <copyright file="Operation.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -12,16 +12,16 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
-	public enum ConditionalType
+	public enum Operation
 	{
 		/// <summary>
-		/// ConditionalType literal.
+		/// Operation remove.
 		/// </summary>
-		Literal,
+		Remove,
 
 		/// <summary>
-		/// ConditionalType property.
+		/// Operation replace.
 		/// </summary>
-		Property
+		Replace
 	}
 }

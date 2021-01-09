@@ -1,20 +1,48 @@
-﻿using MusicUtility;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Program.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Common.Logging;
+using MusicUtility;
+using Serilog;
+using Serilog.Configuration;
+using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
 
 namespace MusicClean
 {
-	class Program
+	public static class Program
 	{
-		static void Main(string[] args)
+		private const string LogFilePath = "MusicMan.log";
+		private const string OutputTemplate =
+			"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
+			"{Message:lj}{NewLine}{Exception}";
+
+		private static readonly ILog Log = LogManager.GetLogger(
+			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+		public static void Main(string[] args)
 		{
 			try
 			{
-				string rulesData = GetRulesData(args);
+				StartUp();
+
+				Log.Info("Starting Music Manager");
+
+				string rulesData = null;
+
+				if (args != null)
+				{
+					rulesData = GetRulesData(args);
+				}
+
 				Rules rules = new Rules(rulesData);
 
-				MusicManager musicUtility = new MusicManager(rules);
+				using MusicManager musicUtility = new MusicManager(rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
@@ -54,15 +82,26 @@ namespace MusicClean
 			{
 				if (templateObjectStream != null)
 				{
-					using (StreamReader reader =
-						new StreamReader(templateObjectStream))
-					{
-						contents = reader.ReadToEnd();
-					}
+					using StreamReader reader =
+						new StreamReader(templateObjectStream);
+					contents = reader.ReadToEnd();
 				}
 			}
 
 			return contents;
+		}
+
+		private static void StartUp()
+		{
+			LoggerConfiguration configuration = new LoggerConfiguration();
+			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
+			sinkConfiguration.Console(LogEventLevel.Verbose, OutputTemplate);
+			sinkConfiguration.File(
+				LogFilePath, LogEventLevel.Verbose, OutputTemplate);
+			Serilog.Log.Logger = configuration.CreateLogger();
+
+			LogManager.Adapter =
+				new Common.Logging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }

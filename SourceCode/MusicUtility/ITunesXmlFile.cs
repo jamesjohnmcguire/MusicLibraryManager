@@ -1,4 +1,10 @@
-﻿using Common.Logging;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="ITunesXmlFile.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Common.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +18,7 @@ using System.Xml;
 
 namespace MusicUtility
 {
-	public class ItunesXmlFile
+	public class ITunesXmlFile
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
@@ -21,12 +27,18 @@ namespace MusicUtility
 			new ResourceManager(
 				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
-		private readonly XmlDocument xmlDocument = null;
+		private readonly XmlDocument xmlDocument;
 
-		public ItunesXmlFile(string filePath)
+		public ITunesXmlFile(string filePath)
 		{
+			XmlReaderSettings settings = new XmlReaderSettings();
+			settings.XmlResolver = null;
+
 			xmlDocument = new XmlDocument();
-			xmlDocument.Load(filePath);
+			xmlDocument.XmlResolver = null;
+			StringReader stringReader = new StringReader(filePath);
+			using XmlReader reader = XmlReader.Create(stringReader, settings);
+			xmlDocument.Load(reader);
 		}
 
 		public string ITunesFolderLocation
@@ -50,46 +62,52 @@ namespace MusicUtility
 		public static Dictionary<string, object> LoadItunesXmlFile(
 			string iTunesMusicLibXMLPath)
 		{
-			Dictionary<string, object> strs;
+			Dictionary<string, object> iTunesInformation = null;
+
 			try
 			{
-				XmlTextReader xmlTextReader = new XmlTextReader(iTunesMusicLibXMLPath)
-				{
-					XmlResolver = null
-				};
-				XmlReaderSettings xmlReaderSetting = new XmlReaderSettings()
-				{
-					DtdProcessing = DtdProcessing.Ignore,
-					ValidationType = ValidationType.None,
-					XmlResolver = null
-				};
-				XmlReader xmlReader = XmlReader.Create(xmlTextReader, xmlReaderSetting);
-				xmlReader.ReadStartElement("plist");
-				if (!(!object.ReferenceEquals(xmlReader, "None") & xmlReader != null))
-				{
-					strs = null;
-				}
-				else
-				{
-					XmlDocument xmlDocument = new XmlDocument();
-					xmlDocument.Load(xmlReader);
-					Dictionary<string, object> strs1 =
-						(Dictionary<string, object>)ItunesXmlFile.
-						ReadKeyAsDictionaryEntry(xmlDocument.ChildNodes[0]);
-					xmlReader.Close();
-					foreach (Dictionary<string, object> value in ((Dictionary<string, object>)strs1["Tracks"]).Values)
-					{
-						Dictionary<string, object> strs2 = value;
-						ItunesXmlFile.SetToHTMLDecode("Name", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Album", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
-						ItunesXmlFile.SetToURLDecode("Location", ref strs2);
-						ItunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
-					}
+				XmlReaderSettings settings = new XmlReaderSettings();
+				settings.XmlResolver = null;
+				settings.DtdProcessing = DtdProcessing.Ignore;
+				settings.ValidationType = ValidationType.None;
 
-					strs = strs1;
+				using XmlReader xmlReader =
+					XmlReader.Create(iTunesMusicLibXMLPath, settings);
+
+				xmlReader.ReadStartElement("plist");
+
+				if (xmlReader != null)
+				{
+					if (!object.ReferenceEquals(xmlReader, "None"))
+					{
+						XmlDocument xmlDocument = new XmlDocument();
+						xmlDocument.Load(xmlReader);
+
+						Dictionary<string, object> preInfo =
+							(Dictionary<string, object>)ReadKeyAsDictionaryEntry(
+								xmlDocument.ChildNodes[0]);
+						xmlReader.Close();
+
+						object tracks = preInfo["Tracks"];
+						var tracksDictionary =
+							(Dictionary<string, object>)tracks;
+						Dictionary<string, object>.ValueCollection values =
+								tracksDictionary.Values;
+
+						foreach (Dictionary<string, object> value in values)
+						{
+							Dictionary<string, object> strs2 = value;
+							ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
+							ITunesXmlFile.SetToURLDecode("Location", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
+						}
+
+						iTunesInformation = preInfo;
+					}
 				}
 			}
 			catch (Exception exception) when
@@ -104,10 +122,9 @@ namespace MusicUtility
 			{
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
-				strs = null;
 			}
 
-			return strs;
+			return iTunesInformation;
 		}
 
 		private static string GetURLDecodeOfString(string value)
@@ -152,7 +169,7 @@ namespace MusicUtility
 				switch (str)
 				{
 					case "plist":
-						return ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
+						return ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.FirstChild);
 					case "integer":
 					case "real":
 					case "data":
@@ -166,8 +183,8 @@ namespace MusicUtility
 						Dictionary<string, object> strs = new Dictionary<string, object>();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
-							string str1 = (string)ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
-							object obj = ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
+							string str1 = (string)ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
+							object obj = ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i + 1]);
 							strs.Add(str1, obj);
 						}
 
@@ -176,7 +193,7 @@ namespace MusicUtility
 						ArrayList arrayLists = new ArrayList();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
-							arrayLists.Add(ItunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
+							arrayLists.Add(ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
 						}
 
 						return arrayLists;
@@ -201,7 +218,7 @@ namespace MusicUtility
 		{
 			if (thisDict.ContainsKey(key))
 			{
-				thisDict[key] = ItunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
+				thisDict[key] = ITunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
 			}
 		}
 

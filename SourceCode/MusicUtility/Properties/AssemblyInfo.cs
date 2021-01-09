@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="AssemblyInfo.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

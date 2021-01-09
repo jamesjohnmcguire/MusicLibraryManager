@@ -1,21 +1,33 @@
-﻿#pragma warning disable CS0618 // Type or member is obsolete
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="MediaFileTags.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+#pragma warning disable CS0618 // Type or member is obsolete
+
 using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Text.RegularExpressions;
 using TagLib;
 
 namespace MusicUtility
 {
-	public class Tags : IDisposable
+	public class MediaFileTags : IDisposable
 	{
-		private readonly string filePath;
-		private readonly string iTunesLocation = null;
-		private readonly Rules rules = null;
+		private static readonly ResourceManager StringTable =
+			new ResourceManager(
+				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
-		public Tags(string file)
+		private readonly string filePath;
+		private readonly string iTunesLocation;
+		private readonly Rules rules;
+
+		public MediaFileTags(string file)
 		{
 			filePath = file;
 
@@ -28,13 +40,13 @@ namespace MusicUtility
 			}
 		}
 
-		public Tags(string file, string iTunesLocation)
+		public MediaFileTags(string file, string iTunesLocation)
 			: this(file)
 		{
 			this.iTunesLocation = iTunesLocation;
 		}
 
-		public Tags(string file, string iTunesLocation, Rules rules)
+		public MediaFileTags(string file, string iTunesLocation, Rules rules)
 			: this(file, iTunesLocation)
 		{
 			this.rules = rules;
@@ -174,9 +186,12 @@ namespace MusicUtility
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string[] regexes =
-					new string[] { @" \[.*?\]", @" \(Disc.*?Side\)",
+					new string[]
+					{
+						@" \[.*?\]", @" \(Disc.*?Side\)",
 						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
-						@" \(disc \d+\)" };
+						@" \(disc \d+\)"
+					};
 
 				foreach (string regex in regexes)
 				{
@@ -219,8 +234,12 @@ namespace MusicUtility
 
 					foreach (Match match in matches)
 					{
+						string foundAtPosition = StringTable.GetString(
+								"FOUND_AT_POSITION",
+								CultureInfo.InvariantCulture);
+
 						Console.WriteLine(
-							"Found '{0}' at position {1}",
+							foundAtPosition,
 							match.Value,
 							match.Index);
 					}
