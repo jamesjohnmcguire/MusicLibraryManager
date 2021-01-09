@@ -1,16 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>MusicUtility</AssemblyTitle>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2021</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Product>MusicUtility</Product>
 		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
 		<NeutralLanguage>en</NeutralLanguage>
 		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
+
+	<!-- Set up versioning with T4 text templating-->
+	<PropertyGroup>
+		<TransformOnBuild>true</TransformOnBuild>
+		<OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+		<TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+		<Pattern>(\d+)\.</Pattern>
+		<VisualStudioVersion>$([System.Text.RegularExpressions.Regex]::Match($(MSBuildVersion), $(Pattern)))</VisualStudioVersion>
+		<BuildTarget>$(Target)</BuildTarget>
+	</PropertyGroup>
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)0\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(OS)' == 'Windows_NT'" />
+
+	<!-- T4 Templates -->
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<COMReference Include="iTunesLib">
@@ -57,7 +76,9 @@
 		<EmbeddedResource Include="DefaultRules.json" />
 		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
-	<ItemGroup>
-	  <None Include="..\.editorconfig" Link=".editorconfig" />
-	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Release' AND $(SetVersion) != true ">
+		<Exec Command="&quot;$(DevEnvDir)TextTransform.exe&quot; Properties\AssemblyInfo.tt" />
+	</Target>
+
 </Project>

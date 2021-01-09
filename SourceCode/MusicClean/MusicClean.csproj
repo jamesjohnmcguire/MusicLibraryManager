@@ -1,34 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicClean</AssemblyName>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>MusicClean</RootNamespace>
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<TransformOnBuild>true</TransformOnBuild>
-		<OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
-		<TransformOutOfDateOnly>false</TransformOutOfDateOnly>
-		<Pattern>(\d+)\.</Pattern>
-		<VisualStudioVersion>$([System.Text.RegularExpressions.Regex]::Match($(MSBuildVersion), $(Pattern)))</VisualStudioVersion>
-		<BuildTarget>$(Target)</BuildTarget>
-	</PropertyGroup>
-
-	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)0\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(OS)' == 'Windows_NT'" />
-
-	<!-- T4 Text Template -->
-	<ItemGroup>
-		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
+		<PackageReference Include="MSBuildTasks" Version="1.5.0.235">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Serilog" Version="2.10.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
@@ -44,26 +34,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Properties\AssemblyInfo.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>AssemblyInfo.cs</LastGenOutput>
-		</None>
-		<Compile Update="Properties\AssemblyInfo.cs">
-			<DependentUpon>AssemblyInfo.tt</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="App.config">
 			<SubType>Designer</SubType>
 		</None>
 		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Release' AND $(SetVersion) != true ">
-		<Exec Command="&quot;$(DevEnvDir)TextTransform.exe&quot; Properties\AssemblyInfo.tt" />
+	<Target Name="PreBuild" AfterTargets="PreBuildEvent">
+
+		<GetAssemblyIdentity AssemblyFiles="$(SolutionDir)\Bin\$(Configuration)\$(Platform)\MusicUtility.dll">
+			<Output TaskParameter="Assemblies" ItemName="Targets" />
+		</GetAssemblyIdentity>
+
+		<ItemGroup>
+			<VersionNumber Include="@(Targets->'%(Version)')" />
+		</ItemGroup>
+
+		<AssemblyInfo
+			CodeLanguage="CS"
+			OutputFile="%(AssemblyVersionFiles.FullPath)"
+			AssemblyVersion="@(VersionNumber)"
+			AssemblyFileVersion="@(VersionNumber)">
+			<Output TaskParameter="OutputFile"
+				ItemName="UpdatedAssemblyVersionFiles"/>
+		</AssemblyInfo>
+
+		<Message Text="Version = @(VersionNumber)" Importance="high" />
 	</Target>
 
 </Project>
