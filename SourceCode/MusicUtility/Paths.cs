@@ -1,4 +1,10 @@
-﻿using System;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Paths.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;

@@ -1,12 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>MusicUtility</AssemblyTitle>
+		<Authors>James John McGuire</Authors>
+		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<Company>Digital Zen Works</Company>
+		<Copyright>Copyright © 2019 - 2021</Copyright>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Product>MusicUtility</Product>
-		<Copyright>Copyright © 2016 - 2019</Copyright>
 		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
-		<TargetFramework>net472</TargetFramework>
+		<NeutralLanguage>en</NeutralLanguage>
+		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
+
+	<!-- Set up versioning with T4 text templating-->
+	<PropertyGroup>
+		<TransformOnBuild>true</TransformOnBuild>
+		<OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+		<TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+		<Pattern>(\d+)\.</Pattern>
+		<VisualStudioVersion>$([System.Text.RegularExpressions.Regex]::Match($(MSBuildVersion), $(Pattern)))</VisualStudioVersion>
+		<BuildTarget>$(Target)</BuildTarget>
+	</PropertyGroup>
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)0\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(OS)' == 'Windows_NT'" />
+
+	<!-- T4 Templates -->
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<COMReference Include="iTunesLib">
 		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
@@ -18,42 +42,26 @@
 		<EmbedInteropTypes>True</EmbedInteropTypes>
 		</COMReference>
 	</ItemGroup>
+
 	<ItemGroup>
 		<Reference Include="System.Web" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-		<PackageReference Include="Common.Logging.Log4Net208" Version="3.4.1" />
+		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
 		<PackageReference Include="CSCore" Version="1.2.1.2" />
-		<PackageReference Include="log4net" Version="2.0.8" />
-		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.VersionCheckAnalyzer" Version="2.9.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.8">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Serilog" Version="2.10.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		<PrivateAssets>all</PrivateAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="TagLibSharp" Version="2.2.0" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<Compile Remove="MusicUtilityTests\**" />
 		<EmbeddedResource Remove="MusicUtilityTests\**" />
@@ -68,4 +76,9 @@
 		<EmbeddedResource Include="DefaultRules.json" />
 		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Release' AND $(SetVersion) != true ">
+		<Exec Command="&quot;$(DevEnvDir)TextTransform.exe&quot; Properties\AssemblyInfo.tt" />
+	</Target>
+
 </Project>

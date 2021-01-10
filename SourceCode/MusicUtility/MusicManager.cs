@@ -1,4 +1,10 @@
-﻿using Common.Logging;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="MusicManager.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using Common.Logging;
 using iTunesLib;
 using Newtonsoft.Json;
 using System;
@@ -14,19 +20,20 @@ namespace MusicUtility
 {
 	public class MusicManager : IDisposable
 	{
-		private static readonly ILog log = LogManager.GetLogger(
+		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ResourceManager stringTable =
+		private static readonly ResourceManager StringTable =
 			new ResourceManager(
 				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
-		private readonly IITLibraryPlaylist playList = null;
-		private readonly string iTunesDirectoryLocation = null;
+		private readonly IITLibraryPlaylist playList;
+		private readonly string iTunesDirectoryLocation;
+		private readonly string librarySkeletonDirectoryLocation;
 		private readonly Rules rules;
 
-		private iTunesApp iTunes = null;
-		private Tags tags = null;
+		private iTunesApp iTunes;
+		private MediaFileTags tags;
 
 		public MusicManager()
 		{
@@ -34,9 +41,12 @@ namespace MusicUtility
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
-			ItunesXmlFile iTunesXmlFile =
-				new ItunesXmlFile(iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile =
+				new ITunesXmlFile(iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+
+			string temp = iTunesDirectoryLocation.Trim('\\');
+			librarySkeletonDirectoryLocation = temp + "Skeleton";
 		}
 
 		public MusicManager(Rules rules)
@@ -84,6 +94,125 @@ namespace MusicUtility
 			GC.SuppressFinalize(this);
 		}
 
+		public void SaveTagsToJsonFile(
+			FileInfo sourceFile, string destinationPath)
+		{
+			try
+			{
+				if (sourceFile != null)
+				{
+					string destinationFile =
+						destinationPath + "\\" + sourceFile.Name + ".json";
+
+					tags = new MediaFileTags(
+						sourceFile.FullName, ITunesLibraryLocation, rules);
+
+					TagSet tagSet = tags.TagSet;
+
+					JsonSerializerSettings jsonSettings =
+						new JsonSerializerSettings();
+					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+
+					string json = JsonConvert.SerializeObject(
+						tagSet, Formatting.Indented, jsonSettings);
+
+					File.WriteAllText(destinationFile, json);
+				}
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is TagLib.CorruptFileException ||
+				exception is TagLib.UnsupportedFormatException)
+			{
+				Log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
+			}
+		}
+
+		public void UpdateLibrarySkeleton()
+		{
+			UpdateLibrarySkeleton(
+				iTunesDirectoryLocation, librarySkeletonDirectoryLocation);
+		}
+
+		public void UpdateLibrarySkeleton(string path, string skeletonPath)
+		{
+			try
+			{
+				string[] excludes =
+				{
+					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
+					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
+					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
+					".url", ".xls", ".zip"
+				};
+
+				string[] includes =
+				{
+					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
+				};
+
+				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+				{
+					CreateDirectoryIfNotExists(skeletonPath);
+
+					DirectoryInfo directory = new DirectoryInfo(path);
+
+					FileInfo[] files = directory.GetFiles();
+
+					foreach (FileInfo file in files)
+					{
+						if (includes.Contains(
+							file.Extension.ToUpperInvariant()))
+						{
+							SaveTagsToJsonFile(file, skeletonPath);
+						}
+					}
+
+					string[] directories = Directory.GetDirectories(path);
+
+					foreach (string subDirectory in directories)
+					{
+						DirectoryInfo subDirectoryInfo =
+							new DirectoryInfo(subDirectory);
+						string nextSkeletonPath =
+							skeletonPath + "\\" + subDirectoryInfo.Name;
+
+						UpdateLibrarySkeleton(subDirectory, nextSkeletonPath);
+					}
+
+					// refresh
+					directories = Directory.GetDirectories(path);
+					files = directory.GetFiles();
+
+					if ((files.Length == 0) && (directories.Length == 0) &&
+						(!path.Contains("Automatically Add to iTunes")))
+					{
+						Directory.Delete(path, false);
+					}
+				}
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is TagLib.CorruptFileException ||
+				exception is DirectoryNotFoundException ||
+				exception is FileNotFoundException ||
+				exception is IndexOutOfRangeException ||
+				exception is InvalidOperationException ||
+				exception is NullReferenceException ||
+				exception is IOException ||
+				exception is PathTooLongException ||
+				exception is System.Security.SecurityException ||
+				exception is TargetException ||
+				exception is UnauthorizedAccessException ||
+				exception is TagLib.UnsupportedFormatException)
+			{
+				Log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
+			}
+		}
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -116,13 +245,10 @@ namespace MusicUtility
 			{
 				if (templateObjectStream != null)
 				{
-					using (StreamReader reader =
-						new StreamReader(templateObjectStream))
-					{
-						contents = reader.ReadToEnd();
-					}
+					using StreamReader reader =
+						new StreamReader(templateObjectStream);
+					contents = reader.ReadToEnd();
 				}
-
 			}
 
 			return contents;
@@ -158,7 +284,7 @@ namespace MusicUtility
 				(exception is ArgumentException ||
 				exception is ArgumentNullException)
 			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
+				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
 
@@ -170,11 +296,11 @@ namespace MusicUtility
 			try
 			{
 				string message = "Checking: " + file.FullName;
-				log.Info(CultureInfo.InvariantCulture, m => m(
+				Log.Info(CultureInfo.InvariantCulture, m => m(
 					message));
 
 				// get and update tags
-				tags = new Tags(file.FullName, ITunesLibraryLocation, rules);
+				tags = new MediaFileTags(file.FullName, ITunesLibraryLocation, rules);
 				tags.Update();
 
 				// update directory and file names
@@ -185,12 +311,17 @@ namespace MusicUtility
 			}
 			catch (Exception exception) when
 				(exception is ArgumentNullException ||
+				exception is TagLib.CorruptFileException ||
 				exception is DirectoryNotFoundException ||
 				exception is FileNotFoundException ||
+				exception is IOException ||
 				exception is NullReferenceException ||
-				exception is InvalidOperationException)
+				exception is IndexOutOfRangeException ||
+				exception is InvalidOperationException ||
+				exception is UnauthorizedAccessException ||
+				exception is TagLib.UnsupportedFormatException)
 			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
+				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
 		}
@@ -207,7 +338,7 @@ namespace MusicUtility
 					".url", ".xls", ".zip"
 				};
 
-				string[] includes = 
+				string[] includes =
 				{
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
 				};
@@ -248,16 +379,20 @@ namespace MusicUtility
 			catch (Exception exception) when
 				(exception is ArgumentException ||
 				exception is ArgumentNullException ||
+				exception is TagLib.CorruptFileException ||
 				exception is DirectoryNotFoundException ||
 				exception is FileNotFoundException ||
+				exception is IndexOutOfRangeException ||
 				exception is InvalidOperationException ||
 				exception is NullReferenceException ||
+				exception is IOException ||
 				exception is PathTooLongException ||
 				exception is System.Security.SecurityException ||
 				exception is TargetException ||
-				exception is UnauthorizedAccessException)
+				exception is UnauthorizedAccessException ||
+				exception is TagLib.UnsupportedFormatException)
 			{
-				log.Error(CultureInfo.InvariantCulture, m => m(
+				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
 		}
@@ -315,14 +450,10 @@ namespace MusicUtility
 			int numberChecked = 0;
 			int numberDeadFound = 0;
 
-			// set up progress monitor, if needed
-
 			for (int index = 1; index <= trackCount; index++)
 			{
 				try
 				{
-					// check for cancel
-
 					// only work with files
 					fileTrack = tracks[index] as IITFileOrCDTrack;
 
@@ -344,13 +475,12 @@ namespace MusicUtility
 					}
 
 					numberChecked++;
-					// increment progress
 				}
 				catch (Exception exception) when
 					(exception is ArgumentException ||
 					exception is NullReferenceException)
 				{
-					log.Error(CultureInfo.InvariantCulture, m => m(
+					Log.Error(CultureInfo.InvariantCulture, m => m(
 						exception.ToString()));
 				}
 			}
@@ -368,8 +498,6 @@ namespace MusicUtility
 			int trackCount = tracks.Count;
 			int numberChecked = 0;
 			int duplicatesFound = 0;
-
-			// set up progress monitor, if needed
 
 			for (int index = 0; index < trackCount; index++)
 			{
@@ -412,7 +540,6 @@ namespace MusicUtility
 				}
 
 				numberChecked++;
-				// increment progress
 			}
 
 			return duplicateTracks;
@@ -441,6 +568,7 @@ namespace MusicUtility
 				{
 					newList.RemoveAt(newList.Count - 1);
 				}
+
 				string[] newParts = newList.ToArray();
 				string newPath = string.Join("\\", newParts);
 
@@ -461,6 +589,7 @@ namespace MusicUtility
 				{
 					locationOk = true;
 				}
+
 				tries++;
 			}
 
@@ -491,7 +620,6 @@ namespace MusicUtility
 				else
 				{
 					// a file is already there, move into duplicates
-
 					filePath = GetDulicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}
@@ -567,7 +695,7 @@ namespace MusicUtility
 						// TODO:  If you get here, find out why the exception,
 						// the actual type of exception, then find out if the
 						// below code makes any sense
-						log.Error(CultureInfo.InvariantCulture, m => m(
+						Log.Error(CultureInfo.InvariantCulture, m => m(
 							exception.ToString()));
 
 						result = UpdateTrackFromLocation(track, filePath);
@@ -631,7 +759,7 @@ namespace MusicUtility
 							}
 							catch (Exception exception)
 							{
-								log.Error(CultureInfo.InvariantCulture, m => m(
+								Log.Error(CultureInfo.InvariantCulture, m => m(
 									exception.ToString()));
 							}
 

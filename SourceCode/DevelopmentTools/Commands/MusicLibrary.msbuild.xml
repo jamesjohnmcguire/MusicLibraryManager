@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="15.0" DefaultTargets="BuildAll">
+
+	<PropertyGroup Condition="'$(Configuration)'==''">
+		<Configuration>Release</Configuration>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(BuildType)'==''">
+		<Configuration>Rebuild</Configuration>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+		<ProjectName>MusicManager</ProjectName>
+		<SolutionDir>$([System.IO.Path]::GetFullPath($(SolutionPath)))</SolutionDir>
+
+		<MSBuildCommunityTasksPath>$(NuGetPackageRoot)msbuildtasks\1.5.0.235\tools</MSBuildCommunityTasksPath>
+		<NUnitConsolePath>$(NuGetPackageRoot)\NUnit.ConsoleRunner\3.11.1\tools</NUnitConsolePath>
+		<OutDir>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutDir>
+	</PropertyGroup>
+
+	<Import
+		Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"
+	/>
+
+	<ItemGroup>
+		<ProjectsToBuild Include="**\*proj" Exclude="$(MSBuildProjectFile)"/>
+	</ItemGroup>
+
+	<Target Name="Clean" Condition="(Configuration)=='Rebuild'">
+		<MSBuild Targets="Clean" Projects="@(Solution)" />
+	</Target>
+
+	<Target Name="RestorePackages">
+		<Exec Command="NuGet.exe restore $(SolutionDir)\$(ProjectName).sln" />
+	</Target>
+
+	<Target Name="Buildx86Dependencies" DependsOnTargets="RestorePackages">
+		<Message Text="Building Buildx86Dependencies"/>
+		<MSBuild
+			Projects="$(SolutionDir)\MusicUtility\MusicUtility.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
+		/>
+	</Target>
+
+	<Target Name="Buildx86" DependsOnTargets="Buildx86Dependencies">
+		<Message Text="Building Buildx86"/>
+		<MSBuild
+			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
+		/>
+	</Target>
+
+	<Target Name="Buildx64Dependencies" DependsOnTargets="RestorePackages">
+		<Message Text="Building Buildx64Dependencies"/>
+		<MSBuild
+			Projects="$(SolutionDir)\MusicUtility\MusicUtility.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x64"
+		/>
+	</Target>
+
+	<Target Name="Buildx64" DependsOnTargets="Buildx64Dependencies">
+		<Message Text="Building Buildx64"/>
+		<MSBuild
+			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x64"
+		/>
+	</Target>
+
+	<Target Name="BuildTestx86" DependsOnTargets="Buildx86">
+		<Message Text="Building BuildTestx86"/>
+		<MSBuild
+			Projects="$(SolutionDir)\MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
+		/>
+	</Target>
+
+	<Target Name="BuildTestx64" DependsOnTargets="Buildx64">
+		<MSBuild
+			Projects="$(SolutionDir)\MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x64"
+		/>
+	</Target>
+
+	<Target Name="Testx86" DependsOnTargets="BuildTestx86" >
+		<Message Text="Testing x86: $(SolutionDir)\Bin\$(Configuration)\x86\MusicUtility.Tests.dll"/>
+
+		<PropertyGroup>
+			<TargetFramework Condition=" '$(TargetFramework)' == '' ">netcoreapp2.2</TargetFramework>
+			<NUnitResultsFile>$(OutDir)\nunit-result.x86.xml</NUnitResultsFile>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<NUnitProject Include = "$(SolutionDir)\Bin\$(Configuration)\x86\MusicUtility.Tests.dll"/>
+		</ItemGroup>
+
+		<Message Text="NUnitProject: @(NUnitProject)"/>
+		<NUnit3 Assemblies="@(NUnitProject)" Force32Bit="true"
+			OutputXmlFile="$(NUnitResultsFile)" Process="Separate"
+			ProjectConfiguration="$(Configuration)" ShowLabels="Before"
+			ToolPath="$(NUnitConsolePath)" />
+			<!-- EnableShadowCopy="true" Framework="v4.0" NoHeader="true"
+				NoColor="true" TestTimeout="2000" WorkingDirectory="./"
+				Workers="10" Verbose="true" -->
+	</Target>
+
+	<Target Name="Testx64" DependsOnTargets="BuildTestx64">
+		<Message Text="Testing x64: $(SolutionDir)\Bin\$(Configuration)\x64\MusicUtility.Tests.dll"/>
+
+		<PropertyGroup>
+			<TargetFramework Condition=" '$(TargetFramework)' == '' ">netcoreapp2.2</TargetFramework>
+			<NUnitResultsFile>$(OutDir)\nunit-result.x64.xml</NUnitResultsFile>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<NUnitProject Include = "$(SolutionDir)\Bin\$(Configuration)\x64\MusicUtility.Tests.dll"/>
+		</ItemGroup>
+
+		<Message Text="NUnitProject: @(NUnitProject)"/>
+		<NUnit3 Assemblies="@(NUnitProject)" Domain="Single"
+			EnableShadowCopy="false" OutputXmlFile="$(NUnitResultsFile)"
+			Process="Multiple" ProjectConfiguration="$(Configuration)"
+			ShowLabels="Before" TestTimeout="300000"
+			ToolPath="$(NUnitConsolePath)"
+		/>
+	</Target>
+
+	<Target Name="TestAll" DependsOnTargets="Testx86;Testx64" >
+		<Message Text="Testing: $(SolutionDir)\$(ProjectName)"/>
+	</Target>
+
+	<Target Name="Publishx86" DependsOnTargets="Testx86">
+		<Message Text="Publishing x86 Installer"/>
+	</Target>
+
+	<Target Name="Publishx64" DependsOnTargets="Testx64">
+		<Message Text="Publishing x64 Installer"/>
+	</Target>
+
+	<Target Name="BuildAllx86"
+		DependsOnTargets="Publishx86">
+	</Target>
+
+	<Target Name="BuildAllx64"
+		DependsOnTargets="Publishx64">
+	</Target>
+
+	<Target Name="BuildAll"
+		DependsOnTargets="TestAll">
+	</Target>
+
+</Project>

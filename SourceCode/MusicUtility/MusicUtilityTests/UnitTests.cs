@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="UnitTests.cs" company="James John McGuire">
-// Copyright © 2006 - 2019 James John McGuire. All Rights Reserved.
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +55,7 @@ namespace MusicUtility.Tests
 			rule.Subject = element;
 			rule.Condition = Condition.ContainsRegex;
 			rule.Conditional = @"\s*\(Dis[A-Za-z].*?\)";
-			rule.Operation = Operations.Remove;
+			rule.Operation = Operation.Remove;
 
 			TagSet tags = new TagSet();
 			tags.Album = original;
@@ -93,10 +93,10 @@ namespace MusicUtility.Tests
 			Rule nextChainRule = new Rule();
 			nextChainRule.Subject = "Artists";
 			nextChainRule.Condition = Condition.NotEquals;
-			nextChainRule.Conditional =
-				"Performers";
+			nextChainRule.Conditional = "Performers";
+			nextChainRule.Replacement = "Performers";
 			nextChainRule.ConditionalType = ConditionalType.Property;
-			nextChainRule.Operation = Operations.Replace;
+			nextChainRule.Operation = Operation.Replace;
 			chainRule.ChainRule = nextChainRule;
 
 			TagSet tags = new TagSet();
@@ -108,7 +108,18 @@ namespace MusicUtility.Tests
 			object result = rule.Run(
 				tags, element, null, null);
 
-			string test = (string)result;
+			string test = null;
+
+			if (result is string[] subjectObject)
+			{
+				string[] temp = subjectObject;
+				test = temp[0];
+			}
+			else if (result is string ruleObject)
+			{
+				test = ruleObject;
+			}
+
 			Assert.That(test, Is.EqualTo(
 				"The Solos"));
 		}

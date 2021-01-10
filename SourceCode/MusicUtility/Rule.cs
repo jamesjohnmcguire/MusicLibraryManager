@@ -1,4 +1,10 @@
-﻿using System;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="Rule.cs" company="Digital Zen Works">
+// Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -42,7 +48,7 @@ namespace MusicUtility
 			set { conditionalType = value; }
 		}
 
-		public Operations Operation { get; set; }
+		public Operation Operation { get; set; }
 
 		public object Replacement { get; set; }
 
@@ -98,7 +104,6 @@ namespace MusicUtility
 					case Condition.NotEmpty:
 						// object tester = GetFullPathObject(item, ruleSubject);
 						// content = GetStringFromStringOrArray(tester);
-
 						test = new CheckCondition(ConditionNotEmptyTest);
 
 						matching = test(item, content, this.Conditional);
@@ -117,7 +122,7 @@ namespace MusicUtility
 
 				if (this.ChainRule == null)
 				{
-					Action(item, subject);
+					content = Action(item, subject, content);
 				}
 			}
 
@@ -230,9 +235,9 @@ namespace MusicUtility
 		{
 			string subject = null;
 
-			if (content is string)
+			if (content is string @string)
 			{
-				subject = (string)content;
+				subject = @string;
 
 				string find = (string)conditional;
 
@@ -249,22 +254,30 @@ namespace MusicUtility
 			return subject;
 		}
 
-		private object Action(object item, string subject)
+		private object Action(object item, string subject, object content)
 		{
-			object content = null;
-
-			content = GetItemSubject(item, subject);
-
 			switch (this.Operation)
 			{
-				case Operations.Remove:
-					break;
-				case Operations.Replace:
+				case Operation.Replace:
+					if (this.ConditionalType == ConditionalType.Literal)
+					{
+						this.Replacement = this.Conditional;
+					}
+					else
+					{
+						// need to get the value of the property
+						this.Replacement =
+							GetItemSubject(item, (string)this.Conditional);
+					}
+
 					SetItemSubject(item, subject, this.Replacement);
+					content = GetItemSubject(item, subject);
+					break;
+				default:
 					break;
 			}
 
-			return null;
+			return content;
 		}
 
 		private object CheckNextRule(
