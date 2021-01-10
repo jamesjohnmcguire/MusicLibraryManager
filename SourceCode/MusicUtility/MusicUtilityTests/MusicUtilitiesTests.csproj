@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicUtility.Tests</AssemblyName>
 		<IsPackable>false</IsPackable>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<RootNamespace>MusicUtility.Tests</RootNamespace>
 		<TargetFramework>net5.0</TargetFramework>
