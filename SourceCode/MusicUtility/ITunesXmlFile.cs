@@ -13,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Resources;
+using System.Text;
 using System.Web;
 using System.Xml;
 
@@ -31,14 +32,8 @@ namespace MusicUtility
 
 		public ITunesXmlFile(string filePath)
 		{
-			XmlReaderSettings settings = new XmlReaderSettings();
-			settings.XmlResolver = null;
-
-			xmlDocument = new XmlDocument();
-			xmlDocument.XmlResolver = null;
-			StringReader stringReader = new StringReader(filePath);
-			using XmlReader reader = XmlReader.Create(stringReader, settings);
-			xmlDocument.Load(reader);
+			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
+			xmlDocument.LoadXml(fileText);
 		}
 
 		public string ITunesFolderLocation
