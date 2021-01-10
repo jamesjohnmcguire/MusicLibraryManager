@@ -72,7 +72,6 @@ namespace MusicUtility
 
 		public object Run(
 			object item,
-			string subject,
 			object replacement,
 			IDictionary<string, string> additionals = null)
 		{
@@ -82,19 +81,15 @@ namespace MusicUtility
 			{
 				bool matching = false;
 				CheckCondition test;
-				content = GetItemSubject(item, subject);
 
-				string ruleSubject = GetStringFromStringOrArray(this.Subject);
+				string subject = Subject as string;
+
+				content = GetItemSubject(item, subject);
 
 				switch (this.Condition)
 				{
 					case Condition.ContainsRegex:
-						if (ruleSubject.Equals(
-							subject, System.StringComparison.InvariantCulture))
-						{
-							content = RegexReplace(content, this.Conditional);
-						}
-
+						content = RegexReplace(content, this.Conditional);
 						break;
 					case Condition.Equals:
 						test = new CheckCondition(ConditionEqualsTest);
@@ -117,7 +112,7 @@ namespace MusicUtility
 
 				if (matching == true)
 				{
-					content = CheckNextRule(item, subject, content, replacement, additionals);
+					content = CheckNextRule(item, content, replacement, additionals);
 				}
 
 				if (this.ChainRule == null)
@@ -282,7 +277,6 @@ namespace MusicUtility
 
 		private object CheckNextRule(
 			object item,
-			string subject,
 			object content,
 			object replacement,
 			IDictionary<string, string> additionals = null)
@@ -312,8 +306,7 @@ namespace MusicUtility
 
 				if (nextRule != null)
 				{
-					content = nextRule.Run(
-						item, subject, replacement, additionals);
+					content = nextRule.Run(item, replacement, additionals);
 				}
 			}
 
