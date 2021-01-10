@@ -122,7 +122,7 @@ namespace MusicUtility
 
 				if (this.ChainRule == null)
 				{
-					content = Action(item, subject);
+					content = Action(item, subject, content);
 				}
 			}
 
@@ -254,14 +254,10 @@ namespace MusicUtility
 			return subject;
 		}
 
-		private object Action(object item, string subject)
+		private object Action(object item, string subject, object content)
 		{
-			object content = GetItemSubject(item, subject);
-
 			switch (this.Operation)
 			{
-				case Operation.Remove:
-					break;
 				case Operation.Replace:
 					if (this.ConditionalType == ConditionalType.Literal)
 					{
@@ -276,6 +272,8 @@ namespace MusicUtility
 
 					SetItemSubject(item, subject, this.Replacement);
 					content = GetItemSubject(item, subject);
+					break;
+				default:
 					break;
 			}
 

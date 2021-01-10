@@ -4,10 +4,11 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicUtility.Tests</AssemblyName>
 		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<RootNamespace>MusicUtility.Tests</RootNamespace>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
