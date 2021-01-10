@@ -15,7 +15,7 @@
 		<ProjectName>MusicManager</ProjectName>
 		<SolutionDir>$([System.IO.Path]::GetFullPath($(SolutionPath)))</SolutionDir>
 
-		<MSBuildCommunityTasksPath>$(SolutionDir)\.build</MSBuildCommunityTasksPath>
+		<MSBuildCommunityTasksPath>$(NuGetPackageRoot)msbuildtasks\1.5.0.235\tools</MSBuildCommunityTasksPath>
 		<NUnitConsolePath>$(NuGetPackageRoot)\NUnit.ConsoleRunner\3.11.1\tools</NUnitConsolePath>
 		<OutDir>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutDir>
 	</PropertyGroup>
@@ -33,14 +33,21 @@
 	</Target>
 
 	<Target Name="Buildx86">
+		<Message Text="Building Buildx86"/>
 		<MSBuild
-			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
+			Projects="$(SolutionDir)\MusicUtility\MusicUtility.csproj"
 			Targets="$(BuildType)"
 			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
 		/>
+		<!--MSBuild
+			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
+			Targets="$(BuildType)"
+			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
+		/-->
 	</Target>
 
 	<Target Name="Buildx64">
+		<Message Text="Building Buildx64"/>
 		<MSBuild
 			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
 			Targets="$(BuildType)"
@@ -66,7 +73,7 @@
 	</Target>
 
 	<Target Name="Testx86" DependsOnTargets="BuildTestx86" >
-		<Message Text="Testing: $(SolutionDir)\MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj"/>
+		<Message Text="Testing x86: $(SolutionDir)\Bin\$(Configuration)\x86\MusicUtility.Tests.dll"/>
 
 		<PropertyGroup>
 			<TargetFramework Condition=" '$(TargetFramework)' == '' ">netcoreapp2.2</TargetFramework>
@@ -74,7 +81,7 @@
 		</PropertyGroup>
 
 		<ItemGroup>
-			<NUnitProject Include = "$(SolutionDir)\MusicUtility\MusicUtilityTests\Bin\x86\$(Configuration)\$(TargetFramework)\MusicUtility.Tests.dll;C:\Microsoft\Xamarin\NuGet\nunit\3.12.0\lib\netstandard2.0\nunit.framework.dll"/>
+			<NUnitProject Include = "$(SolutionDir)\Bin\$(Configuration)\x86\MusicUtility.Tests.dll"/>
 		</ItemGroup>
 
 		<Message Text="NUnitProject: @(NUnitProject)"/>
@@ -88,7 +95,7 @@
 	</Target>
 
 	<Target Name="Testx64" DependsOnTargets="BuildTestx64">
-		<Message Text="Testing: $(SolutionDir)\MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj"/>
+		<Message Text="Testing x64: $(SolutionDir)\Bin\$(Configuration)\x64\MusicUtility.Tests.dll"/>
 
 		<PropertyGroup>
 			<TargetFramework Condition=" '$(TargetFramework)' == '' ">netcoreapp2.2</TargetFramework>
@@ -96,7 +103,7 @@
 		</PropertyGroup>
 
 		<ItemGroup>
-			<NUnitProject Include = "$(SolutionDir)\MusicUtility\MusicUtilityTests\Bin\x64\$(Configuration)\$(TargetFramework)\MusicUtility.Tests.dll"/>
+			<NUnitProject Include = "$(SolutionDir)\Bin\$(Configuration)\x64\MusicUtility.Tests.dll"/>
 		</ItemGroup>
 
 		<Message Text="NUnitProject: @(NUnitProject)"/>
