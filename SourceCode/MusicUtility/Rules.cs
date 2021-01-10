@@ -38,7 +38,7 @@ namespace MusicUtility
 		{
 			foreach (Rule rule in rules)
 			{
-				rule.Run(null, null, null, null);
+				rule.Run(null, null, null);
 			}
 		}
 
@@ -66,8 +66,7 @@ namespace MusicUtility
 
 					foreach (Rule rule in rules)
 					{
-						object newValue =
-							rule.Run(item, fullName, source, null);
+						object newValue = rule.Run(item, source, null);
 
 						if ((source != null) && !source.Equals(newValue))
 						{
