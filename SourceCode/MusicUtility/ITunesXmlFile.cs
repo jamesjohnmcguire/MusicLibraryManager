@@ -33,6 +33,7 @@ namespace MusicUtility
 		public ITunesXmlFile(string filePath)
 		{
 			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
+			xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(fileText);
 		}
 
