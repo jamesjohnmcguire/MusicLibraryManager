@@ -81,8 +81,6 @@ Manual Renaming
 	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
 	The Jackson 5 (Soul Source, 2000)
 Tasks
-	Add build command, complete with running unit tests
-	SourceCode\DevelopmentTools\Commands\build.cmd Fails	References SourceCode\.build directory which doesn't exist
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
 	Rename skeleton methods
 	Exclude non music directories
@@ -116,6 +114,8 @@ Tasks
 	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
 
 	Finished
+		Add build command, complete with running unit tests
+		SourceCode\DevelopmentTools\Commands\build.cmd Fails	References SourceCode\.build directory which doesn't exist
 		Stop hyper version updating
 		MSB3030: Could  not copy the file "NUnitTestDebugger\app.config" because it was not found.
 		MSB6004: The specified task executable location "MusicLibraryManager\SourceCode\packages\NUnit.ConsoleRunner.\tools\nunit3-console.exe" is invalid.
