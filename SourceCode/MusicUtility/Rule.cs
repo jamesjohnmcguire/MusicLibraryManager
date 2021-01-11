@@ -18,16 +18,20 @@ namespace MusicUtility
 	/// <summary>
 	/// Represents a method that generates source file contents.
 	/// </summary>
-	/// <param name="condition">The template file for this genterator.</param>
+	/// <param name="item">The item to be checked.</param>
+	/// <param name="itemSubject">The item subject to evaluate.</param>
+	/// <param name="conditional">The value to compare with.</param>
 	/// <returns>Returns the source file Contents.</returns>
 	/////////////////////////////////////////////////////////////////////////
-	public delegate bool CheckCondition(object item, object itemSubject, object conditional);
+	public delegate bool CheckCondition(
+		object item, object itemSubject, object conditional);
 
 	/////////////////////////////////////////////////////////////////////////
 	/// <summary>
 	/// Represents a method that generates source file contents.
 	/// </summary>
-	/// <param name="condition">The template file for this genterator.</param>
+	/// <param name="ruleSubject">The subject within the rule to evaluate.</param>
+	/// <param name="subject">The subject value to compare.</param>
 	/// <returns>Returns the source file Contents.</returns>
 	/////////////////////////////////////////////////////////////////////////
 	public delegate bool CheckSubject(string ruleSubject, string subject);
@@ -207,25 +211,6 @@ namespace MusicUtility
 			return result;
 		}
 
-		private static string GetStringFromStringOrArray(object subject)
-		{
-			string result = null;
-
-			if (subject is string[] subjectObject)
-			{
-				if (subjectObject.Length > 0)
-				{
-					result = subjectObject[0];
-				}
-			}
-			else if (subject is string ruleObject)
-			{
-				result = ruleObject;
-			}
-
-			return result;
-		}
-
 		private static string RegexReplace(object content, object conditional)
 		{
 			string subject = null;
@@ -288,15 +273,6 @@ namespace MusicUtility
 				switch (this.Chain)
 				{
 					case Chain.And:
-						if (additionals != null)
-						{
-							if (additionals.TryGetValue(
-								"subject", out string andSubject))
-							{
-								andSubject = additionals["subject"];
-							}
-						}
-
 						nextRule = this.ChainRule;
 						break;
 					case Chain.Or:
@@ -422,7 +398,7 @@ namespace MusicUtility
 
 		private object GetConditionalValue(object item, object conditional)
 		{
-			object objectValue = null;
+			object objectValue;
 
 			if (this.ConditionalType == ConditionalType.Literal)
 			{

@@ -8,10 +8,10 @@
 		<Copyright>Copyright © 2019 - 2021</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Product>MusicUtility</Product>
 		<ProjectGuid>{A056FC65-FA91-4581-8852-126B70FBC564}</ProjectGuid>
-		<NeutralLanguage>en</NeutralLanguage>
 		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
 
