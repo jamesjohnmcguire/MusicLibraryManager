@@ -112,6 +112,8 @@ namespace MusicUtility
 					JsonSerializerSettings jsonSettings =
 						new JsonSerializerSettings();
 					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+					jsonSettings.ContractResolver =
+						new OrderedContractResolver();
 
 					string json = JsonConvert.SerializeObject(
 						tagSet, Formatting.Indented, jsonSettings);
