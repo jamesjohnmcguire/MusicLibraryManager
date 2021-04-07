@@ -70,8 +70,13 @@ namespace MusicUtility
 
 						if ((source != null) && !source.Equals(newValue))
 						{
-							classType.GetProperty(name).SetValue(
-								item, newValue, null);
+							PropertyInfo propertyInfo =
+								classType.GetProperty(name);
+
+							if (propertyInfo.CanWrite)
+							{
+								propertyInfo.SetValue(item, newValue, null);
+							}
 
 							changed = true;
 						}
