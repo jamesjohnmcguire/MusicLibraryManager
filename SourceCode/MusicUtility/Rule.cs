@@ -40,11 +40,11 @@ namespace MusicUtility
 	{
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
-		public object Subject { get; set; }
+		public string Subject { get; set; }
 
 		public Condition Condition { get; set; }
 
-		public object Conditional { get; set; }
+		public string Conditional { get; set; }
 
 		public ConditionalType ConditionalType
 		{
@@ -86,9 +86,7 @@ namespace MusicUtility
 				bool matching = false;
 				CheckCondition test;
 
-				string subject = Subject as string;
-
-				content = GetItemSubject(item, subject);
+				content = GetItemSubject(item, Subject);
 
 				switch (this.Condition)
 				{
@@ -121,11 +119,24 @@ namespace MusicUtility
 
 				if (this.ChainRule == null)
 				{
-					content = Action(item, subject, content);
+					content = Action(item, Subject, content);
 				}
 			}
 
 			return content;
+		}
+
+		private static bool ConditionRegexMatch(
+			string content, string conditional)
+		{
+			bool conditionMet = false;
+
+			if (Regex.IsMatch(content, conditional, RegexOptions.IgnoreCase))
+			{
+				conditionMet = true;
+			}
+
+			return conditionMet;
 		}
 
 		private static object GetFullPathObject(object item, string subject)
@@ -410,6 +421,38 @@ namespace MusicUtility
 			}
 
 			return objectValue;
+		}
+
+		private bool IsConditionMet(object item, object content)
+		{
+			bool conditionMet = false;
+			CheckCondition test;
+
+			switch (Condition)
+			{
+				case Condition.ContainsRegex:
+					string contentText = (string)content;
+					conditionMet =
+						ConditionRegexMatch(contentText, Conditional);
+					break;
+				case Condition.Equals:
+					test = new CheckCondition(ConditionEqualsTest);
+
+					conditionMet = test(item, content, this.Conditional);
+					break;
+				case Condition.NotEmpty:
+					test = new CheckCondition(ConditionNotEmptyTest);
+
+					conditionMet = test(item, content, this.Conditional);
+					break;
+				case Condition.NotEquals:
+					test = new CheckCondition(ConditionNotEqualsTest);
+
+					conditionMet = test(item, content, this.Conditional);
+					break;
+			}
+
+			return conditionMet;
 		}
 	}
 }
