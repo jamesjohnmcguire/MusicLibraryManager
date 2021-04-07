@@ -142,7 +142,8 @@ namespace MusicUtility
 
 		public bool Update()
 		{
-			bool rulesUpdates = rules.RunRules(this);
+			// bool rulesUpdates = rules.RunRules(this);
+			bool rulesUpdates = true;
 
 			bool artistUpdated = UpdateArtistTag(filePath);
 
