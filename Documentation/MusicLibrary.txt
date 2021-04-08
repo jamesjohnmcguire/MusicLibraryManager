@@ -405,6 +405,8 @@ Rules
 
 	https://tenmilesquare.com/basic-rules-engine-design-pattern/
 	https://yiniski.medium.com/rule-engine-pattern-8a3f0e0c2d81
+
+	https://nrules.net/
 Issues
 	System.Web
 		Warning	MSB3245	Could not resolve this reference. Could not locate the assembly "System.Web". Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors.	MusicUtility
