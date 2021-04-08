@@ -83,36 +83,20 @@ namespace MusicUtility
 
 			if (item != null)
 			{
-				bool matching = false;
-				CheckCondition test;
-
 				content = GetItemSubject(item, Subject);
+
+				bool conditionMet = IsConditionMet(item, content);
 
 				switch (this.Condition)
 				{
 					case Condition.ContainsRegex:
 						content = RegexReplace(content, this.Conditional);
 						break;
-					case Condition.Equals:
-						test = new CheckCondition(ConditionEqualsTest);
-
-						matching = test(item, content, this.Conditional);
-						break;
-					case Condition.NotEmpty:
-						// object tester = GetFullPathObject(item, ruleSubject);
-						// content = GetStringFromStringOrArray(tester);
-						test = new CheckCondition(ConditionNotEmptyTest);
-
-						matching = test(item, content, this.Conditional);
-						break;
-					case Condition.NotEquals:
-						test = new CheckCondition(ConditionNotEqualsTest);
-
-						matching = test(item, content, this.Conditional);
+					default:
 						break;
 				}
 
-				if (matching == true)
+				if (conditionMet == true)
 				{
 					content = CheckNextRule(item, content, replacement, additionals);
 				}
@@ -124,19 +108,6 @@ namespace MusicUtility
 			}
 
 			return content;
-		}
-
-		private static bool ConditionRegexMatch(
-			string content, string conditional)
-		{
-			bool conditionMet = false;
-
-			if (Regex.IsMatch(content, conditional, RegexOptions.IgnoreCase))
-			{
-				conditionMet = true;
-			}
-
-			return conditionMet;
 		}
 
 		private static object GetFullPathObject(object item, string subject)
@@ -182,9 +153,9 @@ namespace MusicUtility
 			return currentItem;
 		}
 
-		private static object GetItemSubject(object item, string subject)
+		private static string GetItemSubject(object item, string subject)
 		{
-			object itemSubject = null;
+			string itemSubject = null;
 			string baseElement = GetObjectBaseElement(subject);
 
 			// Get the property info of the 'subject' from
@@ -195,7 +166,23 @@ namespace MusicUtility
 
 			if (propertyInfo != null)
 			{
-				itemSubject = propertyInfo.GetValue(item, null);
+				object propertyValue = propertyInfo.GetValue(item, null);
+
+				if (propertyValue is string propertyText)
+				{
+					itemSubject = propertyText;
+				}
+				else if (propertyValue is string[] propertyArray)
+				{
+					foreach (string nextSubject in propertyArray)
+					{
+						if (!string.IsNullOrWhiteSpace(nextSubject))
+						{
+							itemSubject = nextSubject;
+							break;
+						}
+					}
+				}
 			}
 
 			return itemSubject;
@@ -215,8 +202,21 @@ namespace MusicUtility
 
 			if (propertyInfo != null)
 			{
-				propertyInfo.SetValue(item, newValue, null);
-				result = true;
+				object propertyValue = propertyInfo.GetValue(item, null);
+
+				if (propertyValue is string propertyText)
+				{
+					propertyInfo.SetValue(item, newValue, null);
+					result = true;
+				}
+				else if (propertyValue is string[] propertyArray)
+				{
+					string[] newValueArray = new string[1];
+					newValueArray[0] = (string)newValue;
+
+					propertyInfo.SetValue(item, newValueArray, null);
+					result = true;
+				}
 			}
 
 			return result;
@@ -258,7 +258,7 @@ namespace MusicUtility
 					{
 						// need to get the value of the property
 						this.Replacement =
-							GetItemSubject(item, (string)this.Conditional);
+							GetItemSubject(item, (string)this.Replacement);
 					}
 
 					SetItemSubject(item, subject, this.Replacement);
@@ -300,10 +300,10 @@ namespace MusicUtility
 			return content;
 		}
 
-		private bool ConditionEqualsTest(object item, object itemSubject, object conditional)
+		private bool ConditionEqualsTest(object itemSubject)
 		{
 			bool success = false;
-			string testing = (string)conditional;
+			string testing = (string)Conditional;
 
 			if (itemSubject is string subject)
 			{
@@ -327,7 +327,7 @@ namespace MusicUtility
 			return success;
 		}
 
-		private bool ConditionNotEmptyTest(object item, object itemSubject, object conditional)
+		private bool ConditionNotEmptyTest(object itemSubject)
 		{
 			bool success = false;
 
@@ -353,53 +353,25 @@ namespace MusicUtility
 			return success;
 		}
 
-		private bool ConditionNotEqualsTest(object item, object itemSubject, object conditional)
+		private bool ConditionNotEqualsTest(object item, object itemSubject)
 		{
 			bool success = false;
-			conditional = GetConditionalValue(item, conditional);
+			Conditional = GetConditionalValue(item);
 
 			if (itemSubject is string subject)
 			{
-				if (conditional is string conditionalTest)
+				if (!subject.Equals(Conditional, StringComparison.Ordinal))
 				{
-					if (!subject.Equals(conditionalTest, StringComparison.Ordinal))
-					{
-						success = true;
-					}
-				}
-				else if (conditional is string[] conditionalObject)
-				{
-					foreach (string nextConditional in conditionalObject)
-					{
-						if (!subject.Equals(nextConditional, StringComparison.Ordinal))
-						{
-							success = true;
-							break;
-						}
-					}
+					success = true;
 				}
 			}
 			else if (itemSubject is string[] subjectObject)
 			{
 				foreach (string nextSubject in subjectObject)
 				{
-					if (conditional is string conditionalTest)
+					if (!nextSubject.Equals(Conditional, StringComparison.Ordinal))
 					{
-						if (!nextSubject.Equals(conditionalTest, StringComparison.Ordinal))
-						{
-							success = true;
-						}
-					}
-					else if (conditional is string[] conditionalObject)
-					{
-						foreach (string nextConditional in conditionalObject)
-						{
-							if (!nextSubject.Equals(nextConditional, StringComparison.Ordinal))
-							{
-								success = true;
-								break;
-							}
-						}
+						success = true;
 					}
 				}
 			}
@@ -407,17 +379,29 @@ namespace MusicUtility
 			return success;
 		}
 
-		private object GetConditionalValue(object item, object conditional)
+		private bool ConditionRegexMatch(string content)
 		{
-			object objectValue;
+			bool conditionMet = false;
+
+			if (Regex.IsMatch(content, Conditional, RegexOptions.IgnoreCase))
+			{
+				conditionMet = true;
+			}
+
+			return conditionMet;
+		}
+
+		private string GetConditionalValue(object item)
+		{
+			string objectValue;
 
 			if (this.ConditionalType == ConditionalType.Literal)
 			{
-				objectValue = conditional;
+				objectValue = Conditional;
 			}
 			else
 			{
-				objectValue = GetItemSubject(item, (string)conditional);
+				objectValue = GetItemSubject(item, Conditional);
 			}
 
 			return objectValue;
@@ -426,29 +410,21 @@ namespace MusicUtility
 		private bool IsConditionMet(object item, object content)
 		{
 			bool conditionMet = false;
-			CheckCondition test;
 
 			switch (Condition)
 			{
 				case Condition.ContainsRegex:
 					string contentText = (string)content;
-					conditionMet =
-						ConditionRegexMatch(contentText, Conditional);
+					conditionMet = ConditionRegexMatch(contentText);
 					break;
 				case Condition.Equals:
-					test = new CheckCondition(ConditionEqualsTest);
-
-					conditionMet = test(item, content, this.Conditional);
+					conditionMet = ConditionEqualsTest(content);
 					break;
 				case Condition.NotEmpty:
-					test = new CheckCondition(ConditionNotEmptyTest);
-
-					conditionMet = test(item, content, this.Conditional);
+					conditionMet = ConditionNotEmptyTest(content);
 					break;
 				case Condition.NotEquals:
-					test = new CheckCondition(ConditionNotEqualsTest);
-
-					conditionMet = test(item, content, this.Conditional);
+					conditionMet = ConditionNotEqualsTest(item, content);
 					break;
 			}
 
