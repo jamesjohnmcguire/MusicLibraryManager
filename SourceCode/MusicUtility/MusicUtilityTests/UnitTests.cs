@@ -32,7 +32,7 @@ namespace MusicUtility.Tests
 			string location = musicUtility.ITunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
-			Assert.AreEqual(iTunesDepth, 6);
+			Assert.GreaterOrEqual(iTunesDepth, 6);
 		}
 
 		[Test]
