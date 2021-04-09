@@ -76,8 +76,7 @@ namespace MusicUtility
 
 		public object Run(
 			object item,
-			object replacement,
-			IDictionary<string, string> additionals = null)
+			object replacement)
 		{
 			object content = null;
 
@@ -98,7 +97,7 @@ namespace MusicUtility
 
 				if (conditionMet == true)
 				{
-					content = CheckNextRule(item, content, replacement, additionals);
+					content = CheckNextRule(item, content, replacement);
 				}
 
 				if (this.ChainRule == null)
@@ -274,8 +273,7 @@ namespace MusicUtility
 		private object CheckNextRule(
 			object item,
 			object content,
-			object replacement,
-			IDictionary<string, string> additionals = null)
+			object replacement)
 		{
 			if (this.ChainRule != null)
 			{
@@ -293,7 +291,7 @@ namespace MusicUtility
 
 				if (nextRule != null)
 				{
-					content = nextRule.Run(item, replacement, additionals);
+					content = nextRule.Run(item, replacement);
 				}
 			}
 

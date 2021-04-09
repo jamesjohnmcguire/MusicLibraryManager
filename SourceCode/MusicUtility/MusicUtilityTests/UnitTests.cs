@@ -60,7 +60,7 @@ namespace MusicUtility.Tests
 			TagSet tags = new TagSet();
 			tags.Album = original;
 
-			object result = rule.Run(tags, null, null);
+			object result = rule.Run(tags, null);
 
 			string test = (string)result;
 			Assert.That(test, Is.EqualTo(
@@ -102,9 +102,10 @@ namespace MusicUtility.Tests
 			tags.Artists = new string[1];
 			tags.Performers = new string[1];
 			tags.Artists[0] = original;
+
 			tags.Performers[0] = "The Solos";
 
-			object result = rule.Run(tags, null, null);
+			object result = rule.Run(tags, null);
 
 			string test = null;
 
