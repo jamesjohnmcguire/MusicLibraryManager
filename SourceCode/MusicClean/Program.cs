@@ -40,9 +40,9 @@ namespace MusicClean
 					rulesData = GetRulesData(args);
 				}
 
-				Rules rules = new Rules(rulesData);
+				Rules rules = new (rulesData);
 
-				using MusicManager musicUtility = new MusicManager(rules);
+				using MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
@@ -82,8 +82,7 @@ namespace MusicClean
 			{
 				if (templateObjectStream != null)
 				{
-					using StreamReader reader =
-						new StreamReader(templateObjectStream);
+					using StreamReader reader = new (templateObjectStream);
 					contents = reader.ReadToEnd();
 				}
 			}
@@ -93,7 +92,7 @@ namespace MusicClean
 
 		private static void StartUp()
 		{
-			LoggerConfiguration configuration = new LoggerConfiguration();
+			LoggerConfiguration configuration = new ();
 			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
 			sinkConfiguration.Console(LogEventLevel.Verbose, OutputTemplate);
 			sinkConfiguration.File(

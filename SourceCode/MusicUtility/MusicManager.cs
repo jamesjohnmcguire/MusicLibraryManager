@@ -24,8 +24,7 @@ namespace MusicUtility
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ResourceManager(
-				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
@@ -41,8 +40,7 @@ namespace MusicUtility
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
-			ITunesXmlFile iTunesXmlFile =
-				new ITunesXmlFile(iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile = new (iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
@@ -109,8 +107,7 @@ namespace MusicUtility
 
 					TagSet tagSet = tags.TagSet;
 
-					JsonSerializerSettings jsonSettings =
-						new JsonSerializerSettings();
+					JsonSerializerSettings jsonSettings = new ();
 					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
 					jsonSettings.ContractResolver =
 						new OrderedContractResolver();
@@ -158,7 +155,7 @@ namespace MusicUtility
 				{
 					CreateDirectoryIfNotExists(skeletonPath);
 
-					DirectoryInfo directory = new DirectoryInfo(path);
+					DirectoryInfo directory = new (path);
 
 					FileInfo[] files = directory.GetFiles();
 
@@ -175,8 +172,7 @@ namespace MusicUtility
 
 					foreach (string subDirectory in directories)
 					{
-						DirectoryInfo subDirectoryInfo =
-							new DirectoryInfo(subDirectory);
+						DirectoryInfo subDirectoryInfo = new (subDirectory);
 						string nextSkeletonPath =
 							skeletonPath + "\\" + subDirectoryInfo.Name;
 
@@ -227,7 +223,7 @@ namespace MusicUtility
 
 		private static void CreateDirectoryIfNotExists(string path)
 		{
-			DirectoryInfo directory = new DirectoryInfo(path);
+			DirectoryInfo directory = new (path);
 
 			if (!directory.Exists)
 			{
@@ -247,8 +243,7 @@ namespace MusicUtility
 			{
 				if (templateObjectStream != null)
 				{
-					using StreamReader reader =
-						new StreamReader(templateObjectStream);
+					using StreamReader reader = new (templateObjectStream);
 					contents = reader.ReadToEnd();
 				}
 			}
@@ -347,7 +342,7 @@ namespace MusicUtility
 
 				if (Directory.Exists(path))
 				{
-					DirectoryInfo directory = new DirectoryInfo(path);
+					DirectoryInfo directory = new (path);
 
 					FileInfo[] files = directory.GetFiles();
 
@@ -492,9 +487,8 @@ namespace MusicUtility
 		{
 			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
 			IITTrackCollection tracks = mainLibrary.Tracks;
-			Dictionary<string, IITTrack> trackCollection =
-				new Dictionary<string, IITTrack>();
-			List<IITTrack> duplicateTracks = new List<IITTrack>();
+			Dictionary<string, IITTrack> trackCollection = new ();
+			List<IITTrack> duplicateTracks = new ();
 			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
@@ -565,7 +559,7 @@ namespace MusicUtility
 				pathParts[depth] = "Music" +
 					tries.ToString(CultureInfo.InvariantCulture);
 
-				List<string> newList = new List<string>(pathParts);
+				List<string> newList = new (pathParts);
 				while (newList.Count > depth + 1)
 				{
 					newList.RemoveAt(newList.Count - 1);

@@ -15,6 +15,11 @@ namespace MusicUtility
 	public enum Operation
 	{
 		/// <summary>
+		/// Operation none.
+		/// </summary>
+		None,
+
+		/// <summary>
 		/// Operation remove.
 		/// </summary>
 		Remove,

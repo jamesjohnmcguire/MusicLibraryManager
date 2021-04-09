@@ -25,8 +25,7 @@ namespace MusicUtility
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ResourceManager(
-				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly XmlDocument xmlDocument;
 
@@ -43,7 +42,8 @@ namespace MusicUtility
 			{
 				string path = null;
 				string value = GetValue("Music Folder");
-				Uri uri = new Uri(value);
+				Uri uri = new (value);
+
 				if (uri.IsFile)
 				{
 					path =
@@ -62,7 +62,7 @@ namespace MusicUtility
 
 			try
 			{
-				XmlReaderSettings settings = new XmlReaderSettings();
+				XmlReaderSettings settings = new ();
 				settings.XmlResolver = null;
 				settings.DtdProcessing = DtdProcessing.Ignore;
 				settings.ValidationType = ValidationType.None;
@@ -76,7 +76,7 @@ namespace MusicUtility
 				{
 					if (!object.ReferenceEquals(xmlReader, "None"))
 					{
-						XmlDocument xmlDocument = new XmlDocument();
+						XmlDocument xmlDocument = new ();
 						xmlDocument.Load(xmlReader);
 
 						Dictionary<string, object> preInfo =
@@ -138,7 +138,7 @@ namespace MusicUtility
 					url = url.Remove(0, 17);
 				}
 
-				Uri uri = new Uri(url, UriKind.Absolute);
+				Uri uri = new (url, UriKind.Absolute);
 
 				localPath = uri.LocalPath;
 			}
@@ -176,7 +176,7 @@ namespace MusicUtility
 					case "string":
 						return currentElement.InnerText;
 					case "dict":
-						Dictionary<string, object> strs = new Dictionary<string, object>();
+						Dictionary<string, object> strs = new ();
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
 							string str1 = (string)ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
@@ -186,7 +186,7 @@ namespace MusicUtility
 
 						return strs;
 					case "array":
-						ArrayList arrayLists = new ArrayList();
+						ArrayList arrayLists = new ();
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
 							arrayLists.Add(ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));

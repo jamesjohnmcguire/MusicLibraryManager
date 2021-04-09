@@ -20,8 +20,7 @@ namespace MusicUtility
 	public class MediaFileTags : IDisposable
 	{
 		private static readonly ResourceManager StringTable =
-			new ResourceManager(
-				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly string filePath;
 		private readonly string iTunesLocation;
@@ -106,7 +105,7 @@ namespace MusicUtility
 		{
 			get
 			{
-				TagSet tagSet = new TagSet();
+				TagSet tagSet = new ();
 				Type test = tagSet.GetType();
 				PropertyInfo[] properties = test.GetProperties();
 
@@ -230,7 +229,7 @@ namespace MusicUtility
 
 				if (Regex.IsMatch(Album, pattern))
 				{
-					Regex regex = new Regex(pattern);
+					Regex regex = new (pattern);
 					MatchCollection matches = regex.Matches(pattern);
 
 					foreach (Match match in matches)

@@ -40,6 +40,33 @@ namespace MusicUtility
 	{
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
+		public Rule() { }
+
+		public Rule(
+			string subject,
+			Condition condition,
+			string conditional,
+			Operation operation)
+		{
+			Subject = subject;
+			Condition = condition;
+			Conditional = conditional;
+			Operation = operation;
+		}
+
+		public Rule(
+			string subject,
+			Condition condition,
+			string conditional,
+			Operation operation,
+			Chain chain,
+			Rule chainRule)
+			: this(subject, condition, conditional, operation)
+		{
+			Chain = chain;
+			ChainRule = chainRule;
+		}
+
 		public string Subject { get; set; }
 
 		public Condition Condition { get; set; }
@@ -107,6 +134,32 @@ namespace MusicUtility
 			}
 
 			return content;
+		}
+
+		private static bool ConditionNotEmptyTest(object itemSubject)
+		{
+			bool success = false;
+
+			if (itemSubject is string subject)
+			{
+				if (!string.IsNullOrWhiteSpace(subject))
+				{
+					success = true;
+				}
+			}
+			else if (itemSubject is string[] subjectObject)
+			{
+				foreach (string nextSubject in subjectObject)
+				{
+					if (!string.IsNullOrWhiteSpace(nextSubject))
+					{
+						success = true;
+						break;
+					}
+				}
+			}
+
+			return success;
 		}
 
 		private static object GetFullPathObject(object item, string subject)
@@ -203,12 +256,12 @@ namespace MusicUtility
 			{
 				object propertyValue = propertyInfo.GetValue(item, null);
 
-				if (propertyValue is string propertyText)
+				if (propertyValue is string)
 				{
 					propertyInfo.SetValue(item, newValue, null);
 					result = true;
 				}
-				else if (propertyValue is string[] propertyArray)
+				else if (propertyValue is string[])
 				{
 					string[] newValueArray = new string[1];
 					newValueArray[0] = (string)newValue;
@@ -315,32 +368,6 @@ namespace MusicUtility
 				foreach (string nextSubject in subjectObject)
 				{
 					if (nextSubject.Equals(testing, StringComparison.Ordinal))
-					{
-						success = true;
-						break;
-					}
-				}
-			}
-
-			return success;
-		}
-
-		private bool ConditionNotEmptyTest(object itemSubject)
-		{
-			bool success = false;
-
-			if (itemSubject is string subject)
-			{
-				if (!string.IsNullOrWhiteSpace(subject))
-				{
-					success = true;
-				}
-			}
-			else if (itemSubject is string[] subjectObject)
-			{
-				foreach (string nextSubject in subjectObject)
-				{
-					if (!string.IsNullOrWhiteSpace(nextSubject))
 					{
 						success = true;
 						break;
