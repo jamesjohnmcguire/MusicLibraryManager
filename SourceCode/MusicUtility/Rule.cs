@@ -46,12 +46,14 @@ namespace MusicUtility
 			string subject,
 			Condition condition,
 			string conditional,
-			Operation operation)
+			Operation operation,
+			object replacement = null)
 		{
 			Subject = subject;
 			Condition = condition;
 			Conditional = conditional;
 			Operation = operation;
+			Replacement = replacement;
 		}
 
 		public Rule(
@@ -59,9 +61,10 @@ namespace MusicUtility
 			Condition condition,
 			string conditional,
 			Operation operation,
+			object replacement,
 			Chain chain,
 			Rule chainRule)
-			: this(subject, condition, conditional, operation)
+			: this(subject, condition, conditional, operation, replacement)
 		{
 			Chain = chain;
 			ChainRule = chainRule;
@@ -101,9 +104,7 @@ namespace MusicUtility
 			return baseElement;
 		}
 
-		public object Run(
-			object item,
-			object replacement)
+		public object Run(object item)
 		{
 			object content = null;
 
@@ -124,7 +125,7 @@ namespace MusicUtility
 
 				if (conditionMet == true)
 				{
-					content = CheckNextRule(item, content, replacement);
+					content = CheckNextRule(item, content);
 				}
 
 				if (this.ChainRule == null)
@@ -323,10 +324,7 @@ namespace MusicUtility
 			return content;
 		}
 
-		private object CheckNextRule(
-			object item,
-			object content,
-			object replacement)
+		private object CheckNextRule(object item, object content)
 		{
 			if (this.ChainRule != null)
 			{
@@ -344,7 +342,7 @@ namespace MusicUtility
 
 				if (nextRule != null)
 				{
-					content = nextRule.Run(item, replacement);
+					content = nextRule.Run(item);
 				}
 			}
 

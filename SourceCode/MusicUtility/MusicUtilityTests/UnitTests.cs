@@ -60,7 +60,7 @@ namespace MusicUtility.Tests
 			TagSet tags = new ();
 			tags.Album = original;
 
-			object result = rule.Run(tags, null);
+			object result = rule.Run(tags);
 
 			string test = (string)result;
 			Assert.That(test, Is.EqualTo(
@@ -79,8 +79,9 @@ namespace MusicUtility.Tests
 				"Artists",
 				Condition.NotEquals,
 				"Performers",
-				Operation.Replace);
-			nextChainRule.Replacement = "Performers";
+				Operation.Replace,
+				"Performers");
+
 			nextChainRule.ConditionalType = ConditionalType.Property;
 
 			// Set up additional rule - and if performers tag is not empty,
@@ -89,6 +90,7 @@ namespace MusicUtility.Tests
 				Condition.NotEmpty,
 				original,
 				Operation.None,
+				null,
 				Chain.And,
 				nextChainRule);
 
@@ -98,6 +100,7 @@ namespace MusicUtility.Tests
 				Condition.Equals,
 				original,
 				Operation.None,
+				null,
 				Chain.And,
 				chainRule);
 
@@ -108,7 +111,7 @@ namespace MusicUtility.Tests
 
 			tags.Performers[0] = "The Solos";
 
-			object result = rule.Run(tags, null);
+			object result = rule.Run(tags);
 
 			string test = null;
 
