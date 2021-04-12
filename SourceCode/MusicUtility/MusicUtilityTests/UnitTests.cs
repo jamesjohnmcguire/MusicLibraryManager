@@ -60,9 +60,11 @@ namespace MusicUtility.Tests
 			TagSet tags = new ();
 			tags.Album = original;
 
-			object result = rule.Run(tags);
+			bool result = rule.Run(tags);
 
-			string test = (string)result;
+			Assert.True(result);
+
+			string test = tags.Album;
 			Assert.That(test, Is.EqualTo(
 				"What It Is! Funky Soul And Rare Grooves"));
 		}
@@ -111,19 +113,11 @@ namespace MusicUtility.Tests
 
 			tags.Performers[0] = "The Solos";
 
-			object result = rule.Run(tags);
+			bool result = rule.Run(tags);
 
-			string test = null;
+			Assert.True(result);
 
-			if (result is string[] subjectObject)
-			{
-				string[] temp = subjectObject;
-				test = temp[0];
-			}
-			else if (result is string ruleObject)
-			{
-				test = ruleObject;
-			}
+			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo(
 				"The Solos"));

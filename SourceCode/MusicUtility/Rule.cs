@@ -104,37 +104,28 @@ namespace MusicUtility
 			return baseElement;
 		}
 
-		public object Run(object item)
+		public bool Run(object item)
 		{
-			object content = null;
+			bool changed = false;
 
 			if (item != null)
 			{
-				content = GetItemSubject(item, Subject);
+				object content = GetItemSubject(item, Subject);
 
 				bool conditionMet = IsConditionMet(item, content);
 
-				switch (this.Condition)
-				{
-					case Condition.ContainsRegex:
-						content = RegexReplace(content, this.Conditional);
-						break;
-					default:
-						break;
-				}
-
 				if (conditionMet == true)
 				{
-					content = CheckNextRule(item, content);
+					changed = CheckNextRule(item, content);
 				}
 
 				if (this.ChainRule == null)
 				{
-					content = Action(item, Subject, content);
+					changed = Action(item, Subject, content);
 				}
 			}
 
-			return content;
+			return changed;
 		}
 
 		private static bool ConditionNotEmptyTest(object itemSubject)
@@ -298,8 +289,20 @@ namespace MusicUtility
 			return subject;
 		}
 
-		private object Action(object item, string subject, object content)
+		private bool Action(object item, string subject, object content)
 		{
+			bool result = false;
+
+			switch (this.Condition)
+			{
+				case Condition.ContainsRegex:
+					content = RegexReplace(content, this.Conditional);
+					result = SetItemSubject(item, subject, content);
+					break;
+				default:
+					break;
+			}
+
 			switch (this.Operation)
 			{
 				case Operation.Replace:
@@ -314,18 +317,19 @@ namespace MusicUtility
 							GetItemSubject(item, (string)this.Replacement);
 					}
 
-					SetItemSubject(item, subject, this.Replacement);
-					content = GetItemSubject(item, subject);
+					result = SetItemSubject(item, subject, this.Replacement);
 					break;
 				default:
 					break;
 			}
 
-			return content;
+			return result;
 		}
 
-		private object CheckNextRule(object item, object content)
+		private bool CheckNextRule(object item, object content)
 		{
+			bool changed = false;
+
 			if (this.ChainRule != null)
 			{
 				Rule nextRule = null;
@@ -342,11 +346,11 @@ namespace MusicUtility
 
 				if (nextRule != null)
 				{
-					content = nextRule.Run(item);
+					changed = nextRule.Run(item);
 				}
 			}
 
-			return content;
+			return changed;
 		}
 
 		private bool ConditionEqualsTest(object itemSubject)

@@ -70,8 +70,6 @@ namespace MusicUtility
 
 		public int CleanMusicLibrary()
 		{
-			rules.RunRules();
-
 			// Operate on the actual music files in the file system
 			CleanFiles(iTunesDirectoryLocation);
 
