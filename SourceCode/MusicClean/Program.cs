@@ -34,13 +34,17 @@ namespace MusicClean
 				Log.Info("Starting Music Manager");
 
 				string rulesData = null;
+				Rules rules = null;
 
-				if (args != null)
+				if ((args != null) && (args.Length > 0))
 				{
-					rulesData = GetRulesData(args);
+					rulesData = GetRulesData(args[0]);
 				}
 
-				Rules rules = new (rulesData);
+				if (!string.IsNullOrWhiteSpace(rulesData))
+				{
+					rules = new (rulesData);
+				}
 
 				using MusicManager musicUtility = new (rules);
 
@@ -53,41 +57,11 @@ namespace MusicClean
 			}
 		}
 
-		private static string GetRulesData(string[] arguments)
+		private static string GetRulesData(string fileName)
 		{
-			string data;
-
-			if (arguments.Length > 0)
-			{
-				string fileName = arguments[0];
-				data = File.ReadAllText(fileName);
-			}
-			else
-			{
-				data = GetDefaultRules();
-			}
+			string data = File.ReadAllText(fileName);
 
 			return data;
-		}
-
-		private static string GetDefaultRules()
-		{
-			string contents = null;
-
-			string resourceName = "MusicUtility.DefaultRules.json";
-			Assembly thisAssembly = Assembly.GetCallingAssembly();
-
-			using (Stream templateObjectStream =
-				thisAssembly.GetManifestResourceStream(resourceName))
-			{
-				if (templateObjectStream != null)
-				{
-					using StreamReader reader = new (templateObjectStream);
-					contents = reader.ReadToEnd();
-				}
-			}
-
-			return contents;
 		}
 
 		private static void StartUp()
