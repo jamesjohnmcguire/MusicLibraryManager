@@ -16,6 +16,25 @@ namespace MusicUtility.Tests
 	[TestFixture]
 	public class UnitTests
 	{
+		private TagSet tags;
+
+		public UnitTests() { }
+
+		[SetUp]
+		public void OneTimeSetUp()
+		{
+			tags = new ();
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Album = original;
+
+			tags.Artists = new string[1];
+			tags.Performers = new string[1];
+			tags.Artists[0] = "Various Artists";
+			tags.Performers[0] = "The Solos";
+		}
+
 		[Test]
 		public void ITunesPathLocation()
 		{
@@ -45,10 +64,49 @@ namespace MusicUtility.Tests
 		}
 
 		[Test]
+		public void GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName = "MusicUtility.DefaultRules.json";
+			Assembly assembly = typeof(MusicManager).Assembly;
+
+			using Stream templateObjectStream =
+				assembly.GetManifestResourceStream(resourceName);
+
+			Assert.NotNull(templateObjectStream);
+
+			using StreamReader reader = new(templateObjectStream);
+			contents = reader.ReadToEnd();
+
+			Rules rules = new (contents);
+
+			for (int index = 0; index < rules.RulesList.Count; index++)
+			{
+				Rule rule = rules.RulesList[index];
+
+				bool result = rule.Run(tags);
+
+				Assert.True(result);
+
+				if (index == 0)
+				{
+					string test = tags.Album;
+					Assert.That(test, Is.EqualTo(
+						"What It Is! Funky Soul And Rare Grooves"));
+				}
+				else
+				{
+					string test = tags.Artists[0];
+
+					Assert.That(test, Is.EqualTo("The Solos"));
+				}
+			}
+		}
+
+		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string original =
-				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
 			string element = "MusicUtility.Tags.Album";
 
 			Rule rule = new (
@@ -56,9 +114,6 @@ namespace MusicUtility.Tests
 				Condition.ContainsRegex,
 				@"\s*\(Dis[A-Za-z].*?\)",
 				Operation.Remove);
-
-			TagSet tags = new ();
-			tags.Album = original;
 
 			bool result = rule.Run(tags);
 
@@ -106,21 +161,13 @@ namespace MusicUtility.Tests
 				Chain.And,
 				chainRule);
 
-			TagSet tags = new ();
-			tags.Artists = new string[1];
-			tags.Performers = new string[1];
-			tags.Artists[0] = original;
-
-			tags.Performers[0] = "The Solos";
-
 			bool result = rule.Run(tags);
 
 			Assert.True(result);
 
 			string test = tags.Artists[0];
 
-			Assert.That(test, Is.EqualTo(
-				"The Solos"));
+			Assert.That(test, Is.EqualTo("The Solos"));
 		}
 	}
 }
