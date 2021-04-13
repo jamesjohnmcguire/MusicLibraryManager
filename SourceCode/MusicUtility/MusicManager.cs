@@ -45,19 +45,19 @@ namespace MusicUtility
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
 			librarySkeletonDirectoryLocation = temp + "Skeleton";
+
+			string data = GetDefaultRules();
+			rules = new Rules(data);
 		}
 
 		public MusicManager(Rules rules)
 			: this()
 		{
-			if ((rules == null) || (rules.RulesList == null) ||
-				(rules.RulesList.Count == 0))
+			if ((rules != null) && (rules.RulesList != null) &&
+				(rules.RulesList.Count > 0))
 			{
-				string data = GetDefaultRules();
-				rules = new Rules(data);
+				this.rules = rules;
 			}
-
-			this.rules = rules;
 		}
 
 		public string ITunesLibraryLocation
