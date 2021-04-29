@@ -4,25 +4,34 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using MusicUtility;
+using Common.Logging;
 using NUnit.Framework;
+using Serilog;
+using Serilog.Configuration;
+using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
-using TagLib;
 
 namespace MusicUtility.Tests
 {
 	[TestFixture]
 	public class UnitTests
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private TagSet tags;
 
-		public UnitTests() { }
+		public UnitTests()
+		{
+		}
 
 		[SetUp]
 		public void OneTimeSetUp()
 		{
+			LogInitialization();
+
 			tags = new ();
 
 			string original =
@@ -41,6 +50,7 @@ namespace MusicUtility.Tests
 			MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
+			Log.Info("ITunesPathLocation: " + location);
 			Assert.IsNotEmpty(location);
 		}
 
@@ -66,8 +76,6 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string contents = null;
-
 			string resourceName = "MusicUtility.DefaultRules.json";
 			Assembly assembly = typeof(MusicManager).Assembly;
 
@@ -77,7 +85,7 @@ namespace MusicUtility.Tests
 			Assert.NotNull(templateObjectStream);
 
 			using StreamReader reader = new(templateObjectStream);
-			contents = reader.ReadToEnd();
+			string contents = reader.ReadToEnd();
 
 			Rules rules = new (contents);
 
@@ -168,6 +176,35 @@ namespace MusicUtility.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		private void LogInitialization()
+		{
+			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
+			string baseDataDirectory = Environment.GetFolderPath(
+				Environment.SpecialFolder.ApplicationData,
+				Environment.SpecialFolderOption.Create) + @"\" +
+				applicationDataDirectory;
+
+			string logFilePath = baseDataDirectory + @"\MusicManager.log";
+			const string outputTemplate =
+				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
+				"{Message:lj}{NewLine}{Exception}";
+
+			LoggerConfiguration configuration = new();
+			configuration = configuration.MinimumLevel.Verbose();
+
+			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
+			sinkConfiguration.Console(LogEventLevel.Verbose, outputTemplate);
+			sinkConfiguration.File(
+				logFilePath,
+				LogEventLevel.Verbose,
+				outputTemplate,
+				flushToDiskInterval: TimeSpan.FromSeconds(1));
+			Serilog.Log.Logger = configuration.CreateLogger();
+
+			LogManager.Adapter =
+				new Common.Logging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }
