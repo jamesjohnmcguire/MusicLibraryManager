@@ -17,11 +17,6 @@ namespace MusicClean
 {
 	public static class Program
 	{
-		private const string LogFilePath = "MusicMan.log";
-		private const string OutputTemplate =
-			"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
-			"{Message:lj}{NewLine}{Exception}";
-
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -29,7 +24,7 @@ namespace MusicClean
 		{
 			try
 			{
-				StartUp();
+				LogInitialization();
 
 				Log.Info("Starting Music Manager");
 
@@ -64,13 +59,29 @@ namespace MusicClean
 			return data;
 		}
 
-		private static void StartUp()
+		private static void LogInitialization()
 		{
+			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
+			string baseDataDirectory = Environment.GetFolderPath(
+				Environment.SpecialFolder.ApplicationData,
+				Environment.SpecialFolderOption.Create) + @"\" +
+				applicationDataDirectory;
+
+			string logFilePath = baseDataDirectory + @"\MusicManager.log";
+			const string outputTemplate =
+				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
+				"{Message:lj}{NewLine}{Exception}";
+
 			LoggerConfiguration configuration = new ();
+			configuration = configuration.MinimumLevel.Verbose();
+
 			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
-			sinkConfiguration.Console(LogEventLevel.Verbose, OutputTemplate);
+			sinkConfiguration.Console(LogEventLevel.Verbose, outputTemplate);
 			sinkConfiguration.File(
-				LogFilePath, LogEventLevel.Verbose, OutputTemplate);
+				logFilePath,
+				LogEventLevel.Verbose,
+				outputTemplate,
+				flushToDiskInterval: TimeSpan.FromSeconds(1));
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =
