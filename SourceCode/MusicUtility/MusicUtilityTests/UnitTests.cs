@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="UnitTests.cs" company="James John McGuire">
+// <copyright file="UnitTests.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2021 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ namespace MusicUtility.Tests
 
 			Assert.NotNull(templateObjectStream);
 
-			using StreamReader reader = new(templateObjectStream);
+			using StreamReader reader = new (templateObjectStream);
 			string contents = reader.ReadToEnd();
 
 			Rules rules = new (contents);
@@ -178,7 +178,7 @@ namespace MusicUtility.Tests
 			Assert.That(test, Is.EqualTo("The Solos"));
 		}
 
-		private void LogInitialization()
+		private static void LogInitialization()
 		{
 			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
 			string baseDataDirectory = Environment.GetFolderPath(
@@ -191,7 +191,7 @@ namespace MusicUtility.Tests
 				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
 				"{Message:lj}{NewLine}{Exception}";
 
-			LoggerConfiguration configuration = new();
+			LoggerConfiguration configuration = new ();
 			configuration = configuration.MinimumLevel.Verbose();
 
 			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;

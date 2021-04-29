@@ -116,7 +116,7 @@ namespace MusicUtility
 
 				if (conditionMet == true)
 				{
-					changed = CheckNextRule(item, content);
+					changed = CheckNextRule(item);
 				}
 
 				if (this.ChainRule == null)
@@ -326,7 +326,7 @@ namespace MusicUtility
 			return result;
 		}
 
-		private bool CheckNextRule(object item, object content)
+		private bool CheckNextRule(object item)
 		{
 			bool changed = false;
 
