@@ -3,14 +3,23 @@ Music Files
 Library
 Details
 	FileTypes
-		.m3u
-		.m4a
-		.mp3
 		.aifc
+		.flac	lossless	Not supported in iTunes
+		.m3u
+		.m4a	lossless
+		.mp3
 		.wav	Not supported in iTunes
 		.wma	Not supported in iTunes
-	ITunes info
-		C:\Users\JamesMc\Music\iTunes
+	Locations
+		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes	Not changed for quite a while
+		C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes	Not changed for quite a while
+		ITunes info	C:\Users\JamesMc\Music\iTunes	Not changed for quite a while
+		iTunes.LibraryXMLPath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Music Library.xml"
+		iTunesDirectoryLocation	ItunesXmlFile.ITunesFolderLocation	"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\"
+		C:\Users\JamesMc\Data\External\Entertainment\Music\iTunes Media	Can't change - bug
+	Repositories
+		github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
+		origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
 Design
 	Process
 		Overall
@@ -181,12 +190,6 @@ Tasks
 Notes
 	Source Code notes
 		TagSet based on public abstract class Tag
-	Locations
-		iTunes.LibraryXMLPath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Music Library.xml"
-		iTunesDirectoryLocation	ItunesXmlFile.ITunesFolderLocation	"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\"
-	Repositories
-		github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
-		origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
 	Snippets
 		//IITEncoder encoder = iTunes.CurrentEncoder;
 		//status = iTunes.ConvertFile2(musicFilePath);
