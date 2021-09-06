@@ -3,7 +3,8 @@ Music Files
 Library
 Details
 	FileTypes
-		.aifc
+		.aifc	Apple
+		.alac	Apple Lossless Audio Codec
 		.flac	lossless	Not supported in iTunes
 		.m3u
 		.m4a	lossless
