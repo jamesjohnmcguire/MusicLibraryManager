@@ -3,8 +3,8 @@ Music Files
 Library
 Details
 	FileTypes
-		.aifc	Apple
-		.alac	Apple Lossless Audio Codec
+		.aifc		Apple
+		.alac	lossless	Apple Lossless Audio Codec
 		.flac	lossless	Not supported in iTunes
 		.m3u
 		.m4a	lossless
@@ -12,12 +12,14 @@ Details
 		.wav	Not supported in iTunes
 		.wma	Not supported in iTunes
 	Locations
+		C:\Users\JamesMc\Music\iTunes
 		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes	Not changed for quite a while
 		C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes	Not changed for quite a while
+		C:\Users\JamesMc\Data\External\Entertainment
+		C:\Users\JamesMc\Data\External\Entertainment\Videos\Movies
 		ITunes info	C:\Users\JamesMc\Music\iTunes	Not changed for quite a while
 		iTunes.LibraryXMLPath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Music Library.xml"
 		iTunesDirectoryLocation	ItunesXmlFile.ITunesFolderLocation	"C:\\Users\\JamesMc\\Data\\External\\Entertainment\\"
-		C:\Users\JamesMc\Data\External\Entertainment\Music\iTunes Media	Can't change - bug
 	Repositories
 		github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
 		origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
@@ -91,6 +93,13 @@ Manual Renaming
 	ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
 	The Jackson 5 (Soul Source, 2000)
 Tasks
+	many "* 1".* songs
+	convert flac files
+	https://github.com/josephw/titl
+	Many almost duplicates
+	Missing Artwork   Neil Young & Crazy Horse Rust Never Sleeps [320 Kbps]\AlbumArt_{5E574596-5561-4491-9CB4-3E5C7BFD6945}_Large.jpg
+	System.IO.FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
+
 	Replace all Console.WriteLine	with logging
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
 	Rename skeleton methods
