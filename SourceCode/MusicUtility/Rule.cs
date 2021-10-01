@@ -36,12 +36,26 @@ namespace MusicUtility
 	/////////////////////////////////////////////////////////////////////////
 	public delegate bool CheckSubject(string ruleSubject, string subject);
 
+	/// <summary>
+	/// Rules class.
+	/// </summary>
 	public class Rule
 	{
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
 		public Rule() { }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
+		/// <param name="subject">The rule subject.</param>
+		/// <param name="condition">The rule condition.</param>
+		/// <param name="conditional">The rule conditional.</param>
+		/// <param name="operation">The rule operation.</param>
+		/// <param name="replacement">The rule replacement.</param>
 		public Rule(
 			string subject,
 			Condition condition,
@@ -56,6 +70,16 @@ namespace MusicUtility
 			Replacement = replacement;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
+		/// <param name="subject">The rule subject.</param>
+		/// <param name="condition">The rule condition.</param>
+		/// <param name="conditional">The rule conditional.</param>
+		/// <param name="operation">The rule operation.</param>
+		/// <param name="replacement">The rule replacement.</param>
+		/// <param name="chain">The rule chain type.</param>
+		/// <param name="chainRule">The rule next chain.</param>
 		public Rule(
 			string subject,
 			Condition condition,
@@ -70,26 +94,63 @@ namespace MusicUtility
 			ChainRule = chainRule;
 		}
 
+		/// <summary>
+		/// Gets or sets the subject.
+		/// </summary>
+		/// <value>The subject.</value>
 		public string Subject { get; set; }
 
+		/// <summary>
+		/// Gets or sets the condidtion.
+		/// </summary>
+		/// <value>The condidtion.</value>
 		public Condition Condition { get; set; }
 
+		/// <summary>
+		/// Gets or sets the condidtional.
+		/// </summary>
+		/// <value>The condidtional.</value>
 		public string Conditional { get; set; }
 
+		/// <summary>
+		/// Gets or sets the conditional type.
+		/// </summary>
+		/// <value>The conditional type.</value>
 		public ConditionalType ConditionalType
 		{
 			get { return conditionalType; }
 			set { conditionalType = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the operation.
+		/// </summary>
+		/// <value>The operation.</value>
 		public Operation Operation { get; set; }
 
+		/// <summary>
+		/// Gets or sets the replacement.
+		/// </summary>
+		/// <value>The replacement.</value>
 		public object Replacement { get; set; }
 
+		/// <summary>
+		/// Gets or sets the chain.
+		/// </summary>
+		/// <value>The chain.</value>
 		public Chain Chain { get; set; }
 
+		/// <summary>
+		/// Gets or sets the chain rule.
+		/// </summary>
+		/// <value>The chain rule.</value>
 		public Rule ChainRule { get; set; }
 
+		/// <summary>
+		/// Get object base element method.
+		/// </summary>
+		/// <param name="element">The element to check.</param>
+		/// <returns>The base element.</returns>
 		public static string GetObjectBaseElement(string element)
 		{
 			string baseElement = null;
@@ -104,6 +165,11 @@ namespace MusicUtility
 			return baseElement;
 		}
 
+		/// <summary>
+		/// Run method.
+		/// </summary>
+		/// <param name="item">The object to process.</param>
+		/// <returns>A value indicating success or not.</returns>
 		public bool Run(object item)
 		{
 			bool changed = false;

@@ -19,6 +19,9 @@ using System.Xml;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// iTunes xml file class.
+	/// </summary>
 	public class ITunesXmlFile
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
@@ -29,6 +32,10 @@ namespace MusicUtility
 
 		private readonly XmlDocument xmlDocument;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ITunesXmlFile"/> class.
+		/// </summary>
+		/// <param name="filePath">The path to iTunes xml file.</param>
 		public ITunesXmlFile(string filePath)
 		{
 			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
@@ -36,6 +43,10 @@ namespace MusicUtility
 			xmlDocument.LoadXml(fileText);
 		}
 
+		/// <summary>
+		/// Gets the iTunes folder location.
+		/// </summary>
+		/// <value>The iTunes folder location.</value>
 		public string ITunesFolderLocation
 		{
 			get
@@ -55,6 +66,11 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Load iTunes xml file.
+		/// </summary>
+		/// <param name="iTunesMusicLibXMLPath">Path to the xml file.</param>
+		/// <returns>A dictionary of values from the xml file.</returns>
 		public static Dictionary<string, object> LoadItunesXmlFile(
 			string iTunesMusicLibXMLPath)
 		{

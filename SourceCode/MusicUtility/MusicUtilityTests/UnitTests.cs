@@ -13,8 +13,13 @@ using System;
 using System.IO;
 using System.Reflection;
 
+[assembly: CLSCompliant(true)]
+
 namespace MusicUtility.Tests
 {
+	/// <summary>
+	/// Unit tests class.
+	/// </summary>
 	[TestFixture]
 	public class UnitTests
 	{
@@ -23,10 +28,16 @@ namespace MusicUtility.Tests
 
 		private TagSet tags;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UnitTests"/> class.
+		/// </summary>
 		public UnitTests()
 		{
 		}
 
+		/// <summary>
+		/// The one time setup method.
+		/// </summary>
 		[SetUp]
 		public void OneTimeSetUp()
 		{
@@ -44,6 +55,9 @@ namespace MusicUtility.Tests
 			tags.Performers[0] = "The Solos";
 		}
 
+		/// <summary>
+		/// ITunes path location method test.
+		/// </summary>
 		[Test]
 		public void ITunesPathLocation()
 		{
@@ -54,6 +68,9 @@ namespace MusicUtility.Tests
 			Assert.IsNotEmpty(location);
 		}
 
+		/// <summary>
+		/// The get itunes path depth method test.
+		/// </summary>
 		[Test]
 		public void GetItunesPathDepth()
 		{
@@ -64,6 +81,9 @@ namespace MusicUtility.Tests
 			Assert.GreaterOrEqual(iTunesDepth, 6);
 		}
 
+		/// <summary>
+		/// The get artist name from path method test.
+		/// </summary>
 		[Test]
 		public void GetArtistNameFromPath()
 		{
@@ -73,6 +93,9 @@ namespace MusicUtility.Tests
 			Assert.IsNotEmpty(location);
 		}
 
+		/// <summary>
+		/// The get default rules method test.
+		/// </summary>
 		[Test]
 		public void GetDefaultRules()
 		{
@@ -112,6 +135,9 @@ namespace MusicUtility.Tests
 			}
 		}
 
+		/// <summary>
+		/// The run rule disc check method.
+		/// </summary>
 		[Test]
 		public void RunRuleDiscCheck()
 		{
@@ -132,6 +158,9 @@ namespace MusicUtility.Tests
 				"What It Is! Funky Soul And Rare Grooves"));
 		}
 
+		/// <summary>
+		/// The run rule various artists check method test.
+		/// </summary>
 		[Test]
 		public void RunRuleVariousArtistsCheck()
 		{

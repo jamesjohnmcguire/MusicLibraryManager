@@ -17,6 +17,9 @@ using TagLib;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Media file tags class.
+	/// </summary>
 	public class MediaFileTags : IDisposable
 	{
 		private static readonly ResourceManager StringTable =
@@ -26,6 +29,10 @@ namespace MusicUtility
 		private readonly string iTunesLocation;
 		private readonly Rules rules;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
 		public MediaFileTags(string file)
 		{
 			filePath = file;
@@ -39,18 +46,33 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
+		/// <param name="iTunesLocation">The iTunes location.</param>
 		public MediaFileTags(string file, string iTunesLocation)
 			: this(file)
 		{
 			this.iTunesLocation = iTunesLocation;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
+		/// <param name="iTunesLocation">The iTunes location.</param>
+		/// <param name="rules">The rules to use.</param>
 		public MediaFileTags(string file, string iTunesLocation, Rules rules)
 			: this(file, iTunesLocation)
 		{
 			this.rules = rules;
 		}
 
+		/// <summary>
+		/// Gets or sets the album.
+		/// </summary>
+		/// <value>The album.</value>
 		public string Album
 		{
 			get
@@ -64,6 +86,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the artist.
+		/// </summary>
+		/// <value>The artist.</value>
 		public string Artist
 		{
 			get
@@ -101,6 +127,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the tag set.
+		/// </summary>
+		/// <value>The tag set.</value>
 		public TagSet TagSet
 		{
 			get
@@ -127,18 +157,37 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the tag file.
+		/// </summary>
+		/// <value>The tag file.</value>
 		public TagLib.File TagFile { get; set; }
 
+		/// <summary>
+		/// Gets or sets the title.
+		/// </summary>
+		/// <value>The title.</value>
 		public string Title { get; set; }
 
+		/// <summary>
+		/// Gets or sets the year.
+		/// </summary>
+		/// <value>The year.</value>
 		public uint Year { get; set; }
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Update method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
 		public bool Update()
 		{
 			rules.RunRules(this);
@@ -161,6 +210,11 @@ namespace MusicUtility
 			return updated;
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		/// <param name="disposing">Indicates whether currently disposing
+		/// or not.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)

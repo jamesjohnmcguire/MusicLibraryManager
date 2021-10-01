@@ -13,13 +13,23 @@ using System;
 using System.IO;
 using System.Reflection;
 
+[assembly: CLSCompliant(true)]
+
 namespace MusicClean
 {
+	/// <summary>
+	/// The main program class.
+	/// </summary>
 	public static class Program
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		/// <param name="args">An array of arguments passed to
+		/// the program.</param>
 		public static void Main(string[] args)
 		{
 			try

@@ -16,8 +16,13 @@ using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 
+[assembly: CLSCompliant(false)]
+
 namespace MusicUtility
 {
+	/// <summary>
+	/// Music manager class.
+	/// </summary>
 	public class MusicManager : IDisposable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
@@ -34,6 +39,9 @@ namespace MusicUtility
 		private iTunesApp iTunes;
 		private MediaFileTags tags;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MusicManager"/> class.
+		/// </summary>
 		public MusicManager()
 		{
 			// Create a reference to iTunes
@@ -50,6 +58,10 @@ namespace MusicUtility
 			rules = new Rules(data);
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MusicManager"/> class.
+		/// </summary>
+		/// <param name="rules">The rules to use.</param>
 		public MusicManager(Rules rules)
 			: this()
 		{
@@ -60,6 +72,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the iTunes libary location.
+		/// </summary>
+		/// <value>The iTunes libary location.</value>
 		public string ITunesLibraryLocation
 		{
 			get
@@ -68,6 +84,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Clean music library method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
 		public int CleanMusicLibrary()
 		{
 			// Operate on the actual music files in the file system
@@ -84,12 +104,20 @@ namespace MusicUtility
 			return 0;
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Save tags to json file method.
+		/// </summary>
+		/// <param name="sourceFile">The source file.</param>
+		/// <param name="destinationPath">The destination path.</param>
 		public void SaveTagsToJsonFile(
 			FileInfo sourceFile, string destinationPath)
 		{
@@ -126,12 +154,20 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Update library skeleton method.
+		/// </summary>
 		public void UpdateLibrarySkeleton()
 		{
 			UpdateLibrarySkeleton(
 				iTunesDirectoryLocation, librarySkeletonDirectoryLocation);
 		}
 
+		/// <summary>
+		/// Update library skeleton method.
+		/// </summary>
+		/// <param name="path">The path of the source files.</param>
+		/// <param name="skeletonPath">The path of skeleton files.</param>
 		public void UpdateLibrarySkeleton(string path, string skeletonPath)
 		{
 			try
@@ -209,6 +245,11 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		/// <param name="disposing">Indicates whether currently disposing
+		/// or not.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)

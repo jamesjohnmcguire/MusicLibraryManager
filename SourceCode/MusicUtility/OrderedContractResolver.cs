@@ -12,8 +12,17 @@ using System.Linq;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Ordered contract resolver class.
+	/// </summary>
 	public class OrderedContractResolver : DefaultContractResolver
 	{
+		/// <summary>
+		/// Create properties method.
+		/// </summary>
+		/// <param name="type">Property type.</param>
+		/// <param name="memberSerialization">Member serialization object.</param>
+		/// <returns>A list of properties.</returns>
 		protected override IList<JsonProperty> CreateProperties(
 			Type type, MemberSerialization memberSerialization)
 		{

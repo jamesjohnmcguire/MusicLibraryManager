@@ -12,10 +12,17 @@ using System.Reflection;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Rules class.
+	/// </summary>
 	public class Rules
 	{
 		private readonly IList<Rule> rules;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rules"/> class.
+		/// </summary>
+		/// <param name="data">The serialized rules data.</param>
 		public Rules(string data)
 		{
 			if (!string.IsNullOrEmpty(data))
@@ -24,6 +31,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the rule list.
+		/// </summary>
+		/// <value>The rule list.</value>
 		public IList<Rule> RulesList
 		{
 			get
@@ -32,6 +43,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Run rules method.
+		/// </summary>
+		/// <param name="item">The object to process.</param>
 		public void RunRules(object item)
 		{
 			if (item != null)
