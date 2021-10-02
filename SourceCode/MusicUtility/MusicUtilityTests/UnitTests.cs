@@ -76,19 +76,6 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
-		/// ITunes path location method test.
-		/// </summary>
-		[Test]
-		public void ITunesPathLocation()
-		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-
-			Log.Info("ITunesPathLocation: " + location);
-			Assert.IsNotEmpty(location);
-		}
-
-		/// <summary>
 		/// The get itunes path depth method test.
 		/// </summary>
 		[Test]
@@ -153,6 +140,19 @@ namespace MusicUtility.Tests
 					Assert.That(test, Is.EqualTo("The Solos"));
 				}
 			}
+		}
+
+		/// <summary>
+		/// ITunes path location method test.
+		/// </summary>
+		[Test]
+		public void ITunesPathLocation()
+		{
+			using MusicManager musicUtility = new();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			Log.Info("ITunesPathLocation: " + location);
+			Assert.IsNotEmpty(location);
 		}
 
 		/// <summary>
