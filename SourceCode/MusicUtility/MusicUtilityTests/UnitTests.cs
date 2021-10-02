@@ -56,6 +56,25 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// Album empty get from path method test.
+		/// </summary>
+		[Test]
+		public void AlbumEmptyGetFromPath()
+		{
+			using MusicManager musicUtility = new ();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName = @"C:\Users\JamesMc\Data\External\Entertainment" +
+				@"\Music\10cc\The Very Best Of 10cc\" +
+				@"The Things We Do For Love.mp3";
+
+			string album = Paths.GetAlbumFromPath(fileName, location);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+		}
+
+		/// <summary>
 		/// ITunes path location method test.
 		/// </summary>
 		[Test]
