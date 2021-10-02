@@ -2,3 +2,6 @@
 
 # IDE0017: Simplify object initialization
 dotnet_style_object_initializer = false:suggestion
+
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = none

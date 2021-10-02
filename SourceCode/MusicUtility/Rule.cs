@@ -198,12 +198,9 @@ namespace MusicUtility
 		{
 			bool success = false;
 
-			if (itemSubject is string subject)
+			if (itemSubject is string)
 			{
-				if (!string.IsNullOrWhiteSpace(subject))
-				{
-					success = true;
-				}
+				success = true;
 			}
 			else if (itemSubject is string[] subjectObject)
 			{

@@ -61,7 +61,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void ITunesPathLocation()
 		{
-			MusicManager musicUtility = new ();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
 			Log.Info("ITunesPathLocation: " + location);
@@ -74,7 +74,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			MusicManager musicUtility = new ();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
@@ -87,7 +87,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetArtistNameFromPath()
 		{
-			MusicManager musicUtility = new ();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
 			Assert.IsNotEmpty(location);
