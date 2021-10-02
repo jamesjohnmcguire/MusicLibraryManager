@@ -18,6 +18,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="netstandard" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
