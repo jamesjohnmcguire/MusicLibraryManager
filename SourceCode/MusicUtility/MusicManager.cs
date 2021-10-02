@@ -255,8 +255,11 @@ namespace MusicUtility
 			if (disposing)
 			{
 				// dispose managed resources
-				tags.Dispose();
-				tags = null;
+				if (tags != null)
+				{
+					tags.Dispose();
+					tags = null;
+				}
 			}
 		}
 
@@ -646,7 +649,7 @@ namespace MusicUtility
 			// windows will treat different cases as same file names,
 			// so need to compensate
 			if (!filePath.Equals(
-				file.FullName, StringComparison.InvariantCultureIgnoreCase))
+				file.FullName, StringComparison.Ordinal))
 			{
 				if (!System.IO.File.Exists(filePath))
 				{
