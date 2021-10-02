@@ -161,7 +161,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void RegexRemoveDisc()
 		{
-			string regex = @" \(dis(c|k) \d+\)";
+			string regex = @" \(dis(c|k).*?\)";
 			string album = tags.Album;
 
 			if (Regex.IsMatch(album, regex, RegexOptions.IgnoreCase))
