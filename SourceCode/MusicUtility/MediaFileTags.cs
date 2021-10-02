@@ -243,7 +243,7 @@ namespace MusicUtility
 					{
 						@" \[.*?\]", @" \(Disc.*?Side\)",
 						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
-						@" \(disc \d+\)"
+						@" \(dis(c|k) \d+\)"
 					};
 
 				foreach (string regex in regexes)
