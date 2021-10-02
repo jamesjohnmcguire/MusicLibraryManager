@@ -242,8 +242,7 @@ namespace MusicUtility
 					new string[]
 					{
 						@" \[.*?\]", @" \(Disc.*?Side\)",
-						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
-						@" \(dis(c|k) \d+\)"
+						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*"
 					};
 
 				foreach (string regex in regexes)
@@ -256,16 +255,6 @@ namespace MusicUtility
 							string.Empty,
 							RegexOptions.IgnoreCase);
 					}
-				}
-
-				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
-				{
-					Album = Album.Replace(" (Disc 2)", string.Empty);
-				}
-
-				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
-				{
-					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
 				string breaker = " - ";
