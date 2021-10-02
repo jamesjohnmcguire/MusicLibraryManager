@@ -12,6 +12,7 @@ using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(true)]
 
@@ -152,6 +153,28 @@ namespace MusicUtility.Tests
 					Assert.That(test, Is.EqualTo("The Solos"));
 				}
 			}
+		}
+
+		/// <summary>
+		/// Regex remove disc method test.
+		/// </summary>
+		[Test]
+		public void RegexRemoveDisc()
+		{
+			string regex = @" \(dis(c|k) \d+\)";
+			string album = tags.Album;
+
+			if (Regex.IsMatch(album, regex, RegexOptions.IgnoreCase))
+			{
+				album = Regex.Replace(
+					album, regex, string.Empty, RegexOptions.IgnoreCase);
+			}
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "What It Is! Funky Soul And Rare Grooves";
+			Assert.That(album, Is.EqualTo(expected));
 		}
 
 		/// <summary>
