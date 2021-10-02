@@ -14,6 +14,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
+		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net48</TargetFramework>
 		<Version>0.1.0.173</Version>
 	</PropertyGroup>
