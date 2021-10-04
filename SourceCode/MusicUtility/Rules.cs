@@ -44,6 +44,28 @@ namespace MusicUtility
 		}
 
 		/// <summary>
+		/// Get rule by name method.
+		/// </summary>
+		/// <param name="name">The name of the rule to get.</param>
+		/// <returns>The rule with matching name.</returns>
+		public Rule GetRuleByName(string name)
+		{
+			Rule rule = null;
+
+			foreach (Rule checkRule in rules)
+			{
+				if (checkRule.Name.Equals(
+					name, StringComparison.OrdinalIgnoreCase))
+				{
+					rule = checkRule;
+					break;
+				}
+			}
+
+			return rule;
+		}
+
+		/// <summary>
 		/// Run rules method.
 		/// </summary>
 		/// <param name="item">The object to process.</param>

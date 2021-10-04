@@ -1,11 +1,13 @@
 [
   {
+    "name": "RemoveDiscFromAlbum",
     "subject": "MusicUtility.Tags.Album",
     "condition": "ContainsRegex",
     "conditional": "\\s*\\(Dis[A-Za-z].*?\\)",
     "operation": "Remove"
   },
   {
+    "name": "ReplaceVariousArtists",
     "subject": "MusicUtility.Tags.Artists",
     "condition": "Equals",
     "conditional": "Various Artists",
