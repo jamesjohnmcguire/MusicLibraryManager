@@ -34,9 +34,9 @@ namespace MusicUtility
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
 		private readonly string librarySkeletonDirectoryLocation;
-		private readonly Rules rules;
 
 		private iTunesApp iTunes;
+		private Rules rules;
 		private MediaFileTags tags;
 
 		/// <summary>
@@ -54,8 +54,7 @@ namespace MusicUtility
 			string temp = iTunesDirectoryLocation.Trim('\\');
 			librarySkeletonDirectoryLocation = temp + "Skeleton";
 
-			string data = GetDefaultRules();
-			rules = new Rules(data);
+			GetDefaultRules();
 		}
 
 		/// <summary>
@@ -83,6 +82,12 @@ namespace MusicUtility
 				return iTunesDirectoryLocation;
 			}
 		}
+
+		/// <summary>
+		/// Gets the rules.
+		/// </summary>
+		/// <value>The rules.</value>
+		public Rules Rules { get { return rules; } }
 
 		/// <summary>
 		/// Clean music library method.
@@ -273,7 +278,7 @@ namespace MusicUtility
 			}
 		}
 
-		private static string GetDefaultRules()
+		private Rules GetDefaultRules()
 		{
 			string contents = null;
 
@@ -290,7 +295,9 @@ namespace MusicUtility
 				}
 			}
 
-			return contents;
+			rules = new Rules(contents);
+
+			return rules;
 		}
 
 		private bool AreFileAndTrackTheSame(IITTrack track)
