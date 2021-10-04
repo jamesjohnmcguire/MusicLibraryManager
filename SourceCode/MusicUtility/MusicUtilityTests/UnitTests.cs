@@ -58,10 +58,10 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
-		/// Album empty get from path method test.
+		/// Album name get from path method test.
 		/// </summary>
 		[Test]
-		public void AlbumEmptyGetFromPath()
+		public void AlbumNameGetFromPath()
 		{
 			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
@@ -93,15 +93,27 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
-		/// The get artist name from path method test.
+		/// The artist name get from path method test.
 		/// </summary>
 		[Test]
-		public void GetArtistNameFromPath()
+		public void ArtistNameGetFromPath()
 		{
 			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
 			Assert.IsNotEmpty(location);
+
+			string fileName =
+				location + @"Music\10cc\The Very Best Of 10cc\" +
+				@"The Things We Do For Love.mp3";
+
+			string artist = Paths.GetArtistFromPath(fileName, location);
+
+			Log.Info("artist: " + artist);
+			Assert.IsNotEmpty(artist);
+
+			string expected = "10cc";
+			Assert.That(artist, Is.EqualTo(expected));
 		}
 
 		/// <summary>
