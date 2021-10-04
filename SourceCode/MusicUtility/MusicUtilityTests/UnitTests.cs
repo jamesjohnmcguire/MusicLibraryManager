@@ -80,16 +80,21 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
-		/// The get itunes path depth method test.
+		/// Regex remove cd method test.
 		/// </summary>
 		[Test]
-		public void GetItunesPathDepth()
+		public void AlbumRemoveFlac()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
+			string album = "Talking Heads - Brick(2005)[FLAC]";
 
-			Assert.GreaterOrEqual(iTunesDepth, 6);
+			album = album.Replace(
+				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Talking Heads - Brick(2005)";
+			Assert.That(album, Is.EqualTo(expected));
 		}
 
 		/// <summary>
@@ -159,6 +164,19 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// The get itunes path depth method test.
+		/// </summary>
+		[Test]
+		public void GetItunesPathDepth()
+		{
+			using MusicManager musicUtility = new();
+			string location = musicUtility.ITunesLibraryLocation;
+			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
+
+			Assert.GreaterOrEqual(iTunesDepth, 6);
+		}
+
+		/// <summary>
 		/// The get rules list method test.
 		/// </summary>
 		[Test]
@@ -219,24 +237,6 @@ namespace MusicUtility.Tests
 			Assert.IsNotEmpty(album);
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Regex remove cd method test.
-		/// </summary>
-		[Test]
-		public void AlbumRemoveFlac()
-		{
-			string album = "Talking Heads - Brick(2005)[FLAC]";
-
-			album = album.Replace(
-				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
-
-			Log.Info("album: " + album);
-			Assert.IsNotEmpty(album);
-
-			string expected = "Talking Heads - Brick(2005)";
 			Assert.That(album, Is.EqualTo(expected));
 		}
 
