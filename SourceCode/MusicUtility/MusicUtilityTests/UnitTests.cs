@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -146,12 +147,29 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// The get rules list method test.
+		/// </summary>
+		[Test]
+		public void GetRulesList()
+		{
+			using MusicManager musicUtility = new ();
+
+			Rules rules = musicUtility.Rules;
+			Assert.NotNull(rules);
+
+			IList<Rule> rulesList = rules.RulesList;
+			int count = rulesList.Count;
+
+			Assert.GreaterOrEqual(count, 1);
+		}
+
+		/// <summary>
 		/// ITunes path location method test.
 		/// </summary>
 		[Test]
 		public void ITunesPathLocation()
 		{
-			using MusicManager musicUtility = new();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
 			Log.Info("ITunesPathLocation: " + location);
