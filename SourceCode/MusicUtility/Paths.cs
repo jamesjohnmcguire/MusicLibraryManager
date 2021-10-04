@@ -27,8 +27,16 @@ namespace MusicUtility
 		/// <returns>The album part of the path.</returns>
 		public static string GetAlbumFromPath(string path, string iTunesPath)
 		{
+			Dictionary<string, string> exceptions = new ();
+			exceptions.Add("10Cc", "10cc");
+
 			string album = GetPathPart(path, iTunesPath, 2);
 			album = GetTitleCase(album);
+
+			foreach (KeyValuePair<string, string> exception in exceptions)
+			{
+				album = album.Replace(exception.Key, exception.Value);
+			}
 
 			return album;
 		}
