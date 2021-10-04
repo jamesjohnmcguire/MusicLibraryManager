@@ -285,6 +285,29 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// The run rule disc check by name method.
+		/// </summary>
+		[Test]
+		public void RunRuleDiscCheckByName()
+		{
+			using MusicManager musicUtility = new ();
+
+			Rules rules = musicUtility.Rules;
+			Assert.NotNull(rules);
+
+			Rule rule = rules.GetRuleByName("RemoveDiscFromAlbum");
+			Assert.NotNull(rule);
+
+			bool result = rule.Run(tags);
+
+			Assert.True(result);
+
+			string test = tags.Album;
+			Assert.That(test, Is.EqualTo(
+				"What It Is! Funky Soul And Rare Grooves"));
+		}
+
+		/// <summary>
 		/// The run rule various artists check method test.
 		/// </summary>
 		[Test]
@@ -323,6 +346,29 @@ namespace MusicUtility.Tests
 				null,
 				Chain.And,
 				chainRule);
+
+			bool result = rule.Run(tags);
+
+			Assert.True(result);
+
+			string test = tags.Artists[0];
+
+			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		/// <summary>
+		/// The run rule various artists check by name method test.
+		/// </summary>
+		[Test]
+		public void RunRuleVariousArtistsCheckByName()
+		{
+			using MusicManager musicUtility = new ();
+
+			Rules rules = musicUtility.Rules;
+			Assert.NotNull(rules);
+
+			Rule rule = rules.GetRuleByName("ReplaceVariousArtists");
+			Assert.NotNull(rule);
 
 			bool result = rule.Run(tags);
 
