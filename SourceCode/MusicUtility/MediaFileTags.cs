@@ -176,6 +176,73 @@ namespace MusicUtility
 		public uint Year { get; set; }
 
 		/// <summary>
+		/// Album remove cd method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumRemoveCd(string album)
+		{
+			string pattern = @" cd.*?\d";
+			album = RegexRemove(pattern, album);
+
+			return album;
+		}
+
+		/// <summary>
+		/// Album remove disc method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumRemoveDisc(string album)
+		{
+			string pattern = @" \(dis(c|k).*?\)";
+			album = RegexRemove(pattern, album);
+
+			return album;
+		}
+
+		/// <summary>
+		/// Regex remove method.
+		/// </summary>
+		/// <param name="pattern">The pattern to match.</param>
+		/// <param name="content">The content to search.</param>
+		/// <returns>An updated album string.</returns>
+		public static string RegexRemove(string pattern, string content)
+		{
+			string output = string.Empty;
+
+			if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+			{
+				output = Regex.Replace(
+					content, pattern, string.Empty, RegexOptions.IgnoreCase);
+			}
+
+			return output;
+		}
+
+		/// <summary>
+		/// Album remove cd method.
+		/// </summary>
+		/// <returns>An updated album string.</returns>
+		public string AlbumRemoveCd()
+		{
+			Album = AlbumRemoveCd(Album);
+
+			return Album;
+		}
+
+		/// <summary>
+		/// Album remove disc method.
+		/// </summary>
+		/// <returns>An updated album string.</returns>
+		public string AlbumRemoveDisc()
+		{
+			Album = AlbumRemoveDisc(Album);
+
+			return Album;
+		}
+
+		/// <summary>
 		/// Dispose method.
 		/// </summary>
 		public void Dispose()
@@ -236,13 +303,16 @@ namespace MusicUtility
 				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
 			}
 
+			Album = AlbumRemoveCd();
+			Album = AlbumRemoveDisc();
+			Album = Album.Replace("[FLAC]", string.Empty);
+
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string[] regexes =
 					new string[]
 					{
-						@" \[.*?\]", @" \(Disc.*?Side\)",
-						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*"
+						@" \[.*?\]", @" \(Dis(c|k).*?\)", @" cd.*?\d"
 					};
 
 				foreach (string regex in regexes)
