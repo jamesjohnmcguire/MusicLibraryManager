@@ -65,14 +65,17 @@ namespace MusicUtility.Tests
 			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
-			string fileName = @"C:\Users\JamesMc\Data\External\Entertainment" +
-				@"\Music\10cc\The Very Best Of 10cc\" +
+			string fileName =
+				location + @"Music\10cc\The Very Best Of 10cc\" +
 				@"The Things We Do For Love.mp3";
 
 			string album = Paths.GetAlbumFromPath(fileName, location);
 
 			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
+
+			string expected = "The Very Best Of 10cc";
+			Assert.That(album, Is.EqualTo(expected));
 		}
 
 		/// <summary>
@@ -156,25 +159,76 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// Regex remove cd method test.
+		/// </summary>
+		[Test]
+		public void RegexRemoveCd()
+		{
+			string album = "Den Bosh cd 1";
+
+			album = MediaFileTags.AlbumRemoveCd(album);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Den Bosh";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// Regex remove disc method test.
 		/// </summary>
 		[Test]
 		public void RegexRemoveDisc()
 		{
-			string regex = @" \(dis(c|k).*?\)";
-			string album = tags.Album;
+			string album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
-			if (Regex.IsMatch(album, regex, RegexOptions.IgnoreCase))
-			{
-				album = Regex.Replace(
-					album, regex, string.Empty, RegexOptions.IgnoreCase);
-			}
+			album = MediaFileTags.AlbumRemoveDisc(album);
 
 			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Regex remove cd method test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveFlac()
+		{
+			string album = "Talking Heads - Brick(2005)[FLAC]";
+
+			album = album.Replace(
+				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Talking Heads - Brick(2005)";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Regex remove disc method test.
+		/// </summary>
+		[Test]
+		public void RegexTest()
+		{
+			string pattern = @"\p{Sc}*(\s?\d+[.,]?\d*)\p{Sc}*";
+			string input = "$16.32 12.19 £16.29 €18.29  €18,29";
+			string result = string.Empty;
+
+			if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
+			{
+				string replacement = "$1";
+				result = Regex.Replace(
+					input, pattern, replacement, RegexOptions.IgnoreCase);
+			}
+
+			string expected = "16.32 12.19 16.29 18.29  18,29";
+			Assert.That(result, Is.EqualTo(expected));
 		}
 
 		/// <summary>
