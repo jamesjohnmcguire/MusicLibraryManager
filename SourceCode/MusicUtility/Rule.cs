@@ -95,10 +95,16 @@ namespace MusicUtility
 		}
 
 		/// <summary>
-		/// Gets or sets the subject.
+		/// Gets or sets the chain.
 		/// </summary>
-		/// <value>The subject.</value>
-		public string Subject { get; set; }
+		/// <value>The chain.</value>
+		public Chain Chain { get; set; }
+
+		/// <summary>
+		/// Gets or sets the chain rule.
+		/// </summary>
+		/// <value>The chain rule.</value>
+		public Rule ChainRule { get; set; }
 
 		/// <summary>
 		/// Gets or sets the condidtion.
@@ -135,16 +141,10 @@ namespace MusicUtility
 		public object Replacement { get; set; }
 
 		/// <summary>
-		/// Gets or sets the chain.
+		/// Gets or sets the subject.
 		/// </summary>
-		/// <value>The chain.</value>
-		public Chain Chain { get; set; }
-
-		/// <summary>
-		/// Gets or sets the chain rule.
-		/// </summary>
-		/// <value>The chain rule.</value>
-		public Rule ChainRule { get; set; }
+		/// <value>The subject.</value>
+		public string Subject { get; set; }
 
 		/// <summary>
 		/// Get object base element method.
