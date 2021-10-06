@@ -189,13 +189,29 @@ namespace MusicUtility
 		}
 
 		/// <summary>
+		/// Album replace curly braces method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumReplaceCurlyBraces(string album)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = album.Replace('{', '[');
+				album = album.Replace('}', ']');
+			}
+
+			return album;
+		}
+
+		/// <summary>
 		/// Album remove disc method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
 		public static string AlbumRemoveDisc(string album)
 		{
-			string pattern = @" \(dis(c|k).*?\)";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
 			album = RegexRemove(pattern, album);
 
 			return album;
@@ -306,27 +322,10 @@ namespace MusicUtility
 			Album = AlbumRemoveCd();
 			Album = AlbumRemoveDisc();
 			Album = Album.Replace("[FLAC]", string.Empty);
+			Album = AlbumReplaceCurlyBraces(Album);
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				string[] regexes =
-					new string[]
-					{
-						@" \[.*?\]", @" \(Dis(c|k).*?\)", @" cd.*?\d"
-					};
-
-				foreach (string regex in regexes)
-				{
-					if (Regex.IsMatch(Album, regex, RegexOptions.IgnoreCase))
-					{
-						Album = Regex.Replace(
-							Album,
-							regex,
-							string.Empty,
-							RegexOptions.IgnoreCase);
-					}
-				}
-
 				string breaker = " - ";
 				if (Album.Contains(breaker))
 				{
