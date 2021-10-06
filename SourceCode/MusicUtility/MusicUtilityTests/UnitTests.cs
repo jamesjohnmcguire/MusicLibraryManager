@@ -255,6 +255,26 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// Load iTunes XML file method test.
+		/// </summary>
+		[Test]
+		public void LoadiTunesXmlFile()
+		{
+			using MusicManager musicUtility = new();
+			string location = musicUtility.ITunesLibraryLocation;
+			string xmlFilePath = location + "iTunes Library.xml";
+
+			Dictionary<string, object> result =
+				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
+
+			Log.Info("ITunesPathLocation: " + location);
+			Assert.IsNotEmpty(location);
+
+			int count = result.Count;
+			Assert.GreaterOrEqual(count, 1);
+		}
+
+		/// <summary>
 		/// The run rule disc check method.
 		/// </summary>
 		[Test]
