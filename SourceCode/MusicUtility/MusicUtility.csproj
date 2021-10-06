@@ -13,6 +13,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
+		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net5.0-windows</TargetFramework>

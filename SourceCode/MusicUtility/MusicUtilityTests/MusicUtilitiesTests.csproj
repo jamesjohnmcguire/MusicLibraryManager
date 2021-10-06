@@ -10,6 +10,7 @@
 		<FileVersion>0.1.0.173</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
+		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<Platforms>x86;x64</Platforms>
