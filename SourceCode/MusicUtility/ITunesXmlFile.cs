@@ -14,7 +14,6 @@ using System.Net;
 using System.Reflection;
 using System.Resources;
 using System.Text;
-using System.Web;
 using System.Xml;
 
 namespace MusicUtility
@@ -22,6 +21,20 @@ namespace MusicUtility
 	/// <summary>
 	/// iTunes xml file class.
 	/// </summary>
+	/// <remarks>
+	/// The itunes xml file appears to be longer maintained by iTunes.
+	/// Although it might be present, it will likely not contain the latest
+	/// library information.
+	///
+	/// Thus, this class is no longer used.  But kept as it might sometime be
+	/// useful.
+	///
+	/// Furthermore, some web oriented URI decoding was required that put an
+	/// usual dependency on System.Web, which is usually only used in web
+	/// applications.  If this is ever needed again, add <ItemGroup><Reference
+	/// Include = "System.Web" /></ItemGroup> to your csproj file and enable
+	/// the code in USE_SYSTEMWEB.
+	/// </remarks>
 	public class ITunesXmlFile
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
@@ -78,45 +91,51 @@ namespace MusicUtility
 
 			try
 			{
-				XmlReaderSettings settings = new ();
-				settings.XmlResolver = null;
-				settings.DtdProcessing = DtdProcessing.Ignore;
-				settings.ValidationType = ValidationType.None;
-
-				using XmlReader xmlReader =
-					XmlReader.Create(iTunesMusicLibXMLPath, settings);
-
-				xmlReader.ReadStartElement("plist");
-
-				if (!object.ReferenceEquals(xmlReader, "None"))
+				if (File.Exists(iTunesMusicLibXMLPath))
 				{
-					XmlDocument xmlDocument = new ();
-					xmlDocument.Load(xmlReader);
+					XmlReaderSettings settings = new ();
+					settings.XmlResolver = null;
+					settings.DtdProcessing = DtdProcessing.Ignore;
+					settings.ValidationType = ValidationType.None;
 
-					Dictionary<string, object> preInfo =
-						(Dictionary<string, object>)ReadKeyAsDictionaryEntry(
-							xmlDocument.ChildNodes[0]);
-					xmlReader.Close();
+					using XmlReader xmlReader =
+						XmlReader.Create(iTunesMusicLibXMLPath, settings);
 
-					object tracks = preInfo["Tracks"];
-					var tracksDictionary =
-						(Dictionary<string, object>)tracks;
-					Dictionary<string, object>.ValueCollection values =
-							tracksDictionary.Values;
+					xmlReader.ReadStartElement("plist");
 
-					foreach (Dictionary<string, object> value in values)
+					if (!object.ReferenceEquals(xmlReader, "None"))
 					{
-						Dictionary<string, object> strs2 = value;
-						ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
-						ITunesXmlFile.SetToURLDecode("Location", ref strs2);
-						ITunesXmlFile.SetToHTMLDecode("Comments", ref strs2);
-					}
+						XmlDocument xmlDocument = new ();
+						xmlDocument.Load(xmlReader);
 
-					iTunesInformation = preInfo;
+						Dictionary<string, object> preInfo =
+							(Dictionary<string, object>)
+							ReadKeyAsDictionaryEntry(
+								xmlDocument.ChildNodes[0]);
+						xmlReader.Close();
+
+						object tracks = preInfo["Tracks"];
+						var tracksDictionary =
+							(Dictionary<string, object>)tracks;
+						Dictionary<string, object>.ValueCollection values =
+								tracksDictionary.Values;
+
+						foreach (Dictionary<string, object> value in values)
+						{
+							Dictionary<string, object> strs2 = value;
+							ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Artist", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Album", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Genre", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode("Kind", ref strs2);
+							ITunesXmlFile.SetToURLDecode(
+								"Location", ref strs2);
+							ITunesXmlFile.SetToHTMLDecode(
+								"Comments", ref strs2);
+						}
+
+						iTunesInformation = preInfo;
+					}
 				}
 			}
 			catch (Exception exception) when
@@ -143,8 +162,10 @@ namespace MusicUtility
 			try
 			{
 				value = value.Replace("+", "%2b");
-				string url = HttpUtility.UrlDecode(value);
-
+				string url = value;
+#if USE_SYSTEMWEB
+				url = System.Web.HttpUtility.UrlDecode(value);
+#endif
 				if (url.StartsWith(
 					"file://localhost/", StringComparison.InvariantCulture))
 				{
