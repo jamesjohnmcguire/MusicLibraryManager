@@ -1,27 +1,31 @@
 [
   {
+    "name": "RemoveDiscFromAlbum",
     "subject": "MusicUtility.Tags.Album",
     "condition": "ContainsRegex",
-    "conditional": "\\(Dis[A-Za-z].*?\\)",
+    "conditional": "\\s*\\(Dis[A-Za-z].*?\\)",
     "operation": "Remove"
   },
   {
-    "subject": "MusicUtility.Tags.Artist",
+    "name": "ReplaceVariousArtists",
+    "subject": "MusicUtility.Tags.Artists",
     "condition": "Equals",
     "conditional": "Various Artists",
     "operation": "Replace",
     "chain": "and",
     "chainRule": {
-      "subject": "MusicUtility.Tags.TagFile.Tag.Performers",
+      "subject": "MusicUtility.Tags.Performers",
       "condition": "NotEmpty",
       "conditional": "",
       "operation": "Replace",
       "chain": "and",
       "chainRule": {
-        "subject": "MusicUtility.Tags.Artist",
+        "subject": "MusicUtility.Tags.Artists",
         "condition": "NotEquals",
-        "conditional": "MusicUtility.Tags.TagFile.Tag.Performers",
-        "operation": "Replace"
+        "conditional": "MusicUtility.Tags.Performers",
+        "operation": "Replace",
+        "replacement": "MusicUtility.Tags.Performers",
+        "conditionalType": "Property"
       }
     }
   }

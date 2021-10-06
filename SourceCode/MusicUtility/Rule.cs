@@ -36,30 +36,127 @@ namespace MusicUtility
 	/////////////////////////////////////////////////////////////////////////
 	public delegate bool CheckSubject(string ruleSubject, string subject);
 
+	/// <summary>
+	/// Rules class.
+	/// </summary>
 	public class Rule
 	{
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
-		public object Subject { get; set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
+		public Rule() { }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
+		/// <param name="subject">The rule subject.</param>
+		/// <param name="condition">The rule condition.</param>
+		/// <param name="conditional">The rule conditional.</param>
+		/// <param name="operation">The rule operation.</param>
+		/// <param name="replacement">The rule replacement.</param>
+		public Rule(
+			string subject,
+			Condition condition,
+			string conditional,
+			Operation operation,
+			object replacement = null)
+		{
+			Subject = subject;
+			Condition = condition;
+			Conditional = conditional;
+			Operation = operation;
+			Replacement = replacement;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rule"/> class.
+		/// </summary>
+		/// <param name="subject">The rule subject.</param>
+		/// <param name="condition">The rule condition.</param>
+		/// <param name="conditional">The rule conditional.</param>
+		/// <param name="operation">The rule operation.</param>
+		/// <param name="replacement">The rule replacement.</param>
+		/// <param name="chain">The rule chain type.</param>
+		/// <param name="chainRule">The rule next chain.</param>
+		public Rule(
+			string subject,
+			Condition condition,
+			string conditional,
+			Operation operation,
+			object replacement,
+			Chain chain,
+			Rule chainRule)
+			: this(subject, condition, conditional, operation, replacement)
+		{
+			Chain = chain;
+			ChainRule = chainRule;
+		}
+
+		/// <summary>
+		/// Gets or sets the chain.
+		/// </summary>
+		/// <value>The chain.</value>
+		public Chain Chain { get; set; }
+
+		/// <summary>
+		/// Gets or sets the chain rule.
+		/// </summary>
+		/// <value>The chain rule.</value>
+		public Rule ChainRule { get; set; }
+
+		/// <summary>
+		/// Gets or sets the condidtion.
+		/// </summary>
+		/// <value>The condidtion.</value>
 		public Condition Condition { get; set; }
 
-		public object Conditional { get; set; }
+		/// <summary>
+		/// Gets or sets the condidtional.
+		/// </summary>
+		/// <value>The condidtional.</value>
+		public string Conditional { get; set; }
 
+		/// <summary>
+		/// Gets or sets the conditional type.
+		/// </summary>
+		/// <value>The conditional type.</value>
 		public ConditionalType ConditionalType
 		{
 			get { return conditionalType; }
 			set { conditionalType = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets or sets the operation.
+		/// </summary>
+		/// <value>The operation.</value>
 		public Operation Operation { get; set; }
 
+		/// <summary>
+		/// Gets or sets the replacement.
+		/// </summary>
+		/// <value>The replacement.</value>
 		public object Replacement { get; set; }
 
-		public Chain Chain { get; set; }
+		/// <summary>
+		/// Gets or sets the subject.
+		/// </summary>
+		/// <value>The subject.</value>
+		public string Subject { get; set; }
 
-		public Rule ChainRule { get; set; }
-
+		/// <summary>
+		/// Get object base element method.
+		/// </summary>
+		/// <param name="element">The element to check.</param>
+		/// <returns>The base element.</returns>
 		public static string GetObjectBaseElement(string element)
 		{
 			string baseElement = null;
@@ -74,58 +171,56 @@ namespace MusicUtility
 			return baseElement;
 		}
 
-		public object Run(
-			object item,
-			object replacement,
-			IDictionary<string, string> additionals = null)
+		/// <summary>
+		/// Run method.
+		/// </summary>
+		/// <param name="item">The object to process.</param>
+		/// <returns>A value indicating success or not.</returns>
+		public bool Run(object item)
 		{
-			object content = null;
+			bool changed = false;
 
 			if (item != null)
 			{
-				bool matching = false;
-				CheckCondition test;
+				object content = GetItemSubject(item, Subject);
 
-				string subject = Subject as string;
+				bool conditionMet = IsConditionMet(item, content);
 
-				content = GetItemSubject(item, subject);
-
-				switch (this.Condition)
+				if (conditionMet == true)
 				{
-					case Condition.ContainsRegex:
-						content = RegexReplace(content, this.Conditional);
-						break;
-					case Condition.Equals:
-						test = new CheckCondition(ConditionEqualsTest);
-
-						matching = test(item, content, this.Conditional);
-						break;
-					case Condition.NotEmpty:
-						// object tester = GetFullPathObject(item, ruleSubject);
-						// content = GetStringFromStringOrArray(tester);
-						test = new CheckCondition(ConditionNotEmptyTest);
-
-						matching = test(item, content, this.Conditional);
-						break;
-					case Condition.NotEquals:
-						test = new CheckCondition(ConditionNotEqualsTest);
-
-						matching = test(item, content, this.Conditional);
-						break;
-				}
-
-				if (matching == true)
-				{
-					content = CheckNextRule(item, content, replacement, additionals);
+					changed = CheckNextRule(item);
 				}
 
 				if (this.ChainRule == null)
 				{
-					content = Action(item, subject, content);
+					changed = Action(item, Subject, content);
 				}
 			}
 
-			return content;
+			return changed;
+		}
+
+		private static bool ConditionNotEmptyTest(object itemSubject)
+		{
+			bool success = false;
+
+			if (itemSubject is string)
+			{
+				success = true;
+			}
+			else if (itemSubject is string[] subjectObject)
+			{
+				foreach (string nextSubject in subjectObject)
+				{
+					if (!string.IsNullOrWhiteSpace(nextSubject))
+					{
+						success = true;
+						break;
+					}
+				}
+			}
+
+			return success;
 		}
 
 		private static object GetFullPathObject(object item, string subject)
@@ -171,9 +266,9 @@ namespace MusicUtility
 			return currentItem;
 		}
 
-		private static object GetItemSubject(object item, string subject)
+		private static string GetItemSubject(object item, string subject)
 		{
-			object itemSubject = null;
+			string itemSubject = null;
 			string baseElement = GetObjectBaseElement(subject);
 
 			// Get the property info of the 'subject' from
@@ -184,7 +279,23 @@ namespace MusicUtility
 
 			if (propertyInfo != null)
 			{
-				itemSubject = propertyInfo.GetValue(item, null);
+				object propertyValue = propertyInfo.GetValue(item, null);
+
+				if (propertyValue is string propertyText)
+				{
+					itemSubject = propertyText;
+				}
+				else if (propertyValue is string[] propertyArray)
+				{
+					foreach (string nextSubject in propertyArray)
+					{
+						if (!string.IsNullOrWhiteSpace(nextSubject))
+						{
+							itemSubject = nextSubject;
+							break;
+						}
+					}
+				}
 			}
 
 			return itemSubject;
@@ -204,8 +315,21 @@ namespace MusicUtility
 
 			if (propertyInfo != null)
 			{
-				propertyInfo.SetValue(item, newValue, null);
-				result = true;
+				object propertyValue = propertyInfo.GetValue(item, null);
+
+				if (propertyValue is string)
+				{
+					propertyInfo.SetValue(item, newValue, null);
+					result = true;
+				}
+				else if (propertyValue is string[])
+				{
+					string[] newValueArray = new string[1];
+					newValueArray[0] = (string)newValue;
+
+					propertyInfo.SetValue(item, newValueArray, null);
+					result = true;
+				}
 			}
 
 			return result;
@@ -234,8 +358,20 @@ namespace MusicUtility
 			return subject;
 		}
 
-		private object Action(object item, string subject, object content)
+		private bool Action(object item, string subject, object content)
 		{
+			bool result = false;
+
+			switch (this.Condition)
+			{
+				case Condition.ContainsRegex:
+					content = RegexReplace(content, this.Conditional);
+					result = SetItemSubject(item, subject, content);
+					break;
+				default:
+					break;
+			}
+
 			switch (this.Operation)
 			{
 				case Operation.Replace:
@@ -247,25 +383,22 @@ namespace MusicUtility
 					{
 						// need to get the value of the property
 						this.Replacement =
-							GetItemSubject(item, (string)this.Conditional);
+							GetItemSubject(item, (string)this.Replacement);
 					}
 
-					SetItemSubject(item, subject, this.Replacement);
-					content = GetItemSubject(item, subject);
+					result = SetItemSubject(item, subject, this.Replacement);
 					break;
 				default:
 					break;
 			}
 
-			return content;
+			return result;
 		}
 
-		private object CheckNextRule(
-			object item,
-			object content,
-			object replacement,
-			IDictionary<string, string> additionals = null)
+		private bool CheckNextRule(object item)
 		{
+			bool changed = false;
+
 			if (this.ChainRule != null)
 			{
 				Rule nextRule = null;
@@ -282,17 +415,17 @@ namespace MusicUtility
 
 				if (nextRule != null)
 				{
-					content = nextRule.Run(item, replacement, additionals);
+					changed = nextRule.Run(item);
 				}
 			}
 
-			return content;
+			return changed;
 		}
 
-		private bool ConditionEqualsTest(object item, object itemSubject, object conditional)
+		private bool ConditionEqualsTest(object itemSubject)
 		{
 			bool success = false;
-			string testing = (string)conditional;
+			string testing = (string)Conditional;
 
 			if (itemSubject is string subject)
 			{
@@ -316,13 +449,14 @@ namespace MusicUtility
 			return success;
 		}
 
-		private bool ConditionNotEmptyTest(object item, object itemSubject, object conditional)
+		private bool ConditionNotEqualsTest(object item, object itemSubject)
 		{
 			bool success = false;
+			Conditional = GetConditionalValue(item);
 
 			if (itemSubject is string subject)
 			{
-				if (!string.IsNullOrWhiteSpace(subject))
+				if (!subject.Equals(Conditional, StringComparison.Ordinal))
 				{
 					success = true;
 				}
@@ -331,10 +465,9 @@ namespace MusicUtility
 			{
 				foreach (string nextSubject in subjectObject)
 				{
-					if (!string.IsNullOrWhiteSpace(nextSubject))
+					if (!nextSubject.Equals(Conditional, StringComparison.Ordinal))
 					{
 						success = true;
-						break;
 					}
 				}
 			}
@@ -342,74 +475,56 @@ namespace MusicUtility
 			return success;
 		}
 
-		private bool ConditionNotEqualsTest(object item, object itemSubject, object conditional)
+		private bool ConditionRegexMatch(string content)
 		{
-			bool success = false;
-			conditional = GetConditionalValue(item, conditional);
+			bool conditionMet = false;
 
-			if (itemSubject is string subject)
+			if (Regex.IsMatch(content, Conditional, RegexOptions.IgnoreCase))
 			{
-				if (conditional is string conditionalTest)
-				{
-					if (!subject.Equals(conditionalTest, StringComparison.Ordinal))
-					{
-						success = true;
-					}
-				}
-				else if (conditional is string[] conditionalObject)
-				{
-					foreach (string nextConditional in conditionalObject)
-					{
-						if (!subject.Equals(nextConditional, StringComparison.Ordinal))
-						{
-							success = true;
-							break;
-						}
-					}
-				}
-			}
-			else if (itemSubject is string[] subjectObject)
-			{
-				foreach (string nextSubject in subjectObject)
-				{
-					if (conditional is string conditionalTest)
-					{
-						if (!nextSubject.Equals(conditionalTest, StringComparison.Ordinal))
-						{
-							success = true;
-						}
-					}
-					else if (conditional is string[] conditionalObject)
-					{
-						foreach (string nextConditional in conditionalObject)
-						{
-							if (!nextSubject.Equals(nextConditional, StringComparison.Ordinal))
-							{
-								success = true;
-								break;
-							}
-						}
-					}
-				}
+				conditionMet = true;
 			}
 
-			return success;
+			return conditionMet;
 		}
 
-		private object GetConditionalValue(object item, object conditional)
+		private string GetConditionalValue(object item)
 		{
-			object objectValue;
+			string objectValue;
 
 			if (this.ConditionalType == ConditionalType.Literal)
 			{
-				objectValue = conditional;
+				objectValue = Conditional;
 			}
 			else
 			{
-				objectValue = GetItemSubject(item, (string)conditional);
+				objectValue = GetItemSubject(item, Conditional);
 			}
 
 			return objectValue;
+		}
+
+		private bool IsConditionMet(object item, object content)
+		{
+			bool conditionMet = false;
+
+			switch (Condition)
+			{
+				case Condition.ContainsRegex:
+					string contentText = (string)content;
+					conditionMet = ConditionRegexMatch(contentText);
+					break;
+				case Condition.Equals:
+					conditionMet = ConditionEqualsTest(content);
+					break;
+				case Condition.NotEmpty:
+					conditionMet = ConditionNotEmptyTest(content);
+					break;
+				case Condition.NotEquals:
+					conditionMet = ConditionNotEqualsTest(item, content);
+					break;
+			}
+
+			return conditionMet;
 		}
 	}
 }

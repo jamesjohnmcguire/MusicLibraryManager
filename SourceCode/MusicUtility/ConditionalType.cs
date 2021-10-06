@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Conditional types enum.
+	/// </summary>
 	public enum ConditionalType
 	{
 		/// <summary>

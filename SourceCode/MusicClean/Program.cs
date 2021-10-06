@@ -13,36 +13,45 @@ using System;
 using System.IO;
 using System.Reflection;
 
+[assembly: CLSCompliant(true)]
+
 namespace MusicClean
 {
+	/// <summary>
+	/// The main program class.
+	/// </summary>
 	public static class Program
 	{
-		private const string LogFilePath = "MusicMan.log";
-		private const string OutputTemplate =
-			"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
-			"{Message:lj}{NewLine}{Exception}";
-
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		/// <param name="args">An array of arguments passed to
+		/// the program.</param>
 		public static void Main(string[] args)
 		{
 			try
 			{
-				StartUp();
+				LogInitialization();
 
 				Log.Info("Starting Music Manager");
 
 				string rulesData = null;
+				Rules rules = null;
 
-				if (args != null)
+				if ((args != null) && (args.Length > 0))
 				{
-					rulesData = GetRulesData(args);
+					rulesData = GetRulesData(args[0]);
 				}
 
-				Rules rules = new Rules(rulesData);
+				if (!string.IsNullOrWhiteSpace(rulesData))
+				{
+					rules = new (rulesData);
+				}
 
-				using MusicManager musicUtility = new MusicManager(rules);
+				using MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
@@ -53,51 +62,36 @@ namespace MusicClean
 			}
 		}
 
-		private static string GetRulesData(string[] arguments)
+		private static string GetRulesData(string fileName)
 		{
-			string data;
-
-			if (arguments.Length > 0)
-			{
-				string fileName = arguments[0];
-				data = File.ReadAllText(fileName);
-			}
-			else
-			{
-				data = GetDefaultRules();
-			}
+			string data = File.ReadAllText(fileName);
 
 			return data;
 		}
 
-		private static string GetDefaultRules()
+		private static void LogInitialization()
 		{
-			string contents = null;
+			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
+			string baseDataDirectory = Environment.GetFolderPath(
+				Environment.SpecialFolder.ApplicationData,
+				Environment.SpecialFolderOption.Create) + @"\" +
+				applicationDataDirectory;
 
-			string resourceName = "MusicUtility.DefaultRules.json";
-			Assembly thisAssembly = Assembly.GetCallingAssembly();
+			string logFilePath = baseDataDirectory + @"\MusicManager.log";
+			const string outputTemplate =
+				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
+				"{Message:lj}{NewLine}{Exception}";
 
-			using (Stream templateObjectStream =
-				thisAssembly.GetManifestResourceStream(resourceName))
-			{
-				if (templateObjectStream != null)
-				{
-					using StreamReader reader =
-						new StreamReader(templateObjectStream);
-					contents = reader.ReadToEnd();
-				}
-			}
+			LoggerConfiguration configuration = new ();
+			configuration = configuration.MinimumLevel.Verbose();
 
-			return contents;
-		}
-
-		private static void StartUp()
-		{
-			LoggerConfiguration configuration = new LoggerConfiguration();
 			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
-			sinkConfiguration.Console(LogEventLevel.Verbose, OutputTemplate);
+			sinkConfiguration.Console(LogEventLevel.Verbose, outputTemplate);
 			sinkConfiguration.File(
-				LogFilePath, LogEventLevel.Verbose, OutputTemplate);
+				logFilePath,
+				LogEventLevel.Verbose,
+				outputTemplate,
+				flushToDiskInterval: TimeSpan.FromSeconds(1));
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =

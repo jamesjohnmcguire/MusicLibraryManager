@@ -17,16 +17,22 @@ using TagLib;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Media file tags class.
+	/// </summary>
 	public class MediaFileTags : IDisposable
 	{
 		private static readonly ResourceManager StringTable =
-			new ResourceManager(
-				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly string filePath;
 		private readonly string iTunesLocation;
 		private readonly Rules rules;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
 		public MediaFileTags(string file)
 		{
 			filePath = file;
@@ -40,18 +46,33 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
+		/// <param name="iTunesLocation">The iTunes location.</param>
 		public MediaFileTags(string file, string iTunesLocation)
 			: this(file)
 		{
 			this.iTunesLocation = iTunesLocation;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
+		/// </summary>
+		/// <param name="file">The media file.</param>
+		/// <param name="iTunesLocation">The iTunes location.</param>
+		/// <param name="rules">The rules to use.</param>
 		public MediaFileTags(string file, string iTunesLocation, Rules rules)
 			: this(file, iTunesLocation)
 		{
 			this.rules = rules;
 		}
 
+		/// <summary>
+		/// Gets or sets the album.
+		/// </summary>
+		/// <value>The album.</value>
 		public string Album
 		{
 			get
@@ -65,6 +86,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the artist.
+		/// </summary>
+		/// <value>The artist.</value>
 		public string Artist
 		{
 			get
@@ -102,11 +127,15 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the tag set.
+		/// </summary>
+		/// <value>The tag set.</value>
 		public TagSet TagSet
 		{
 			get
 			{
-				TagSet tagSet = new TagSet();
+				TagSet tagSet = new ();
 				Type test = tagSet.GetType();
 				PropertyInfo[] properties = test.GetProperties();
 
@@ -128,21 +157,107 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the tag file.
+		/// </summary>
+		/// <value>The tag file.</value>
 		public TagLib.File TagFile { get; set; }
 
+		/// <summary>
+		/// Gets or sets the title.
+		/// </summary>
+		/// <value>The title.</value>
 		public string Title { get; set; }
 
+		/// <summary>
+		/// Gets or sets the year.
+		/// </summary>
+		/// <value>The year.</value>
 		public uint Year { get; set; }
 
+		/// <summary>
+		/// Album remove cd method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumRemoveCd(string album)
+		{
+			string pattern = @" cd.*?\d";
+			album = RegexRemove(pattern, album);
+
+			return album;
+		}
+
+		/// <summary>
+		/// Album remove disc method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumRemoveDisc(string album)
+		{
+			string pattern = @" \(dis(c|k).*?\)";
+			album = RegexRemove(pattern, album);
+
+			return album;
+		}
+
+		/// <summary>
+		/// Regex remove method.
+		/// </summary>
+		/// <param name="pattern">The pattern to match.</param>
+		/// <param name="content">The content to search.</param>
+		/// <returns>An updated album string.</returns>
+		public static string RegexRemove(string pattern, string content)
+		{
+			string output = string.Empty;
+
+			if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+			{
+				output = Regex.Replace(
+					content, pattern, string.Empty, RegexOptions.IgnoreCase);
+			}
+
+			return output;
+		}
+
+		/// <summary>
+		/// Album remove cd method.
+		/// </summary>
+		/// <returns>An updated album string.</returns>
+		public string AlbumRemoveCd()
+		{
+			Album = AlbumRemoveCd(Album);
+
+			return Album;
+		}
+
+		/// <summary>
+		/// Album remove disc method.
+		/// </summary>
+		/// <returns>An updated album string.</returns>
+		public string AlbumRemoveDisc()
+		{
+			Album = AlbumRemoveDisc(Album);
+
+			return Album;
+		}
+
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Update method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
 		public bool Update()
 		{
-			bool rulesUpdates = rules.RunRules(this);
+			rules.RunRules(this);
 
 			bool artistUpdated = UpdateArtistTag(filePath);
 
@@ -153,7 +268,7 @@ namespace MusicUtility
 			Year = TagFile.Tag.Year;
 
 			if ((true == updated) || (true == artistUpdated) ||
-				(true == titleUpdated) || (rulesUpdates == true))
+				(true == titleUpdated))
 			{
 				TagFile.Save();
 			}
@@ -161,6 +276,11 @@ namespace MusicUtility
 			return updated;
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		/// <param name="disposing">Indicates whether currently disposing
+		/// or not.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -183,14 +303,16 @@ namespace MusicUtility
 				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
 			}
 
+			Album = AlbumRemoveCd();
+			Album = AlbumRemoveDisc();
+			Album = Album.Replace("[FLAC]", string.Empty);
+
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string[] regexes =
 					new string[]
 					{
-						@" \[.*?\]", @" \(Disc.*?Side\)",
-						@" \(Disc.*?Res\)", @" \(Disc.*?\)", @" Cd.*",
-						@" \(disc \d+\)"
+						@" \[.*?\]", @" \(Dis(c|k).*?\)", @" cd.*?\d"
 					};
 
 				foreach (string regex in regexes)
@@ -203,16 +325,6 @@ namespace MusicUtility
 							string.Empty,
 							RegexOptions.IgnoreCase);
 					}
-				}
-
-				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
-				{
-					Album = Album.Replace(" (Disc 2)", string.Empty);
-				}
-
-				if (Album.EndsWith(" (Disc 2)", StringComparison.Ordinal))
-				{
-					Album = Album.Replace(" (Disc 2)", string.Empty);
 				}
 
 				string breaker = " - ";
@@ -229,7 +341,7 @@ namespace MusicUtility
 
 				if (Regex.IsMatch(Album, pattern))
 				{
-					Regex regex = new Regex(pattern);
+					Regex regex = new (pattern);
 					MatchCollection matches = regex.Matches(pattern);
 
 					foreach (Match match in matches)

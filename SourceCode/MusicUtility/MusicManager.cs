@@ -16,52 +16,65 @@ using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 
+[assembly: CLSCompliant(false)]
+
 namespace MusicUtility
 {
+	/// <summary>
+	/// Music manager class.
+	/// </summary>
 	public class MusicManager : IDisposable
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ResourceManager(
-				"MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
 		private readonly string librarySkeletonDirectoryLocation;
-		private readonly Rules rules;
 
 		private iTunesApp iTunes;
+		private Rules rules;
 		private MediaFileTags tags;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MusicManager"/> class.
+		/// </summary>
 		public MusicManager()
 		{
 			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
 
-			ITunesXmlFile iTunesXmlFile =
-				new ITunesXmlFile(iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile = new (iTunes.LibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
 			librarySkeletonDirectoryLocation = temp + "Skeleton";
+
+			GetDefaultRules();
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MusicManager"/> class.
+		/// </summary>
+		/// <param name="rules">The rules to use.</param>
 		public MusicManager(Rules rules)
 			: this()
 		{
-			if ((rules == null) || (rules.RulesList == null) ||
-				(rules.RulesList.Count == 0))
+			if ((rules != null) && (rules.RulesList != null) &&
+				(rules.RulesList.Count > 0))
 			{
-				string data = GetDefaultRules();
-				rules = new Rules(data);
+				this.rules = rules;
 			}
-
-			this.rules = rules;
 		}
 
+		/// <summary>
+		/// Gets the iTunes libary location.
+		/// </summary>
+		/// <value>The iTunes libary location.</value>
 		public string ITunesLibraryLocation
 		{
 			get
@@ -70,10 +83,18 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the rules.
+		/// </summary>
+		/// <value>The rules.</value>
+		public Rules Rules { get { return rules; } }
+
+		/// <summary>
+		/// Clean music library method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
 		public int CleanMusicLibrary()
 		{
-			rules.RunRules();
-
 			// Operate on the actual music files in the file system
 			CleanFiles(iTunesDirectoryLocation);
 
@@ -88,12 +109,20 @@ namespace MusicUtility
 			return 0;
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Save tags to json file method.
+		/// </summary>
+		/// <param name="sourceFile">The source file.</param>
+		/// <param name="destinationPath">The destination path.</param>
 		public void SaveTagsToJsonFile(
 			FileInfo sourceFile, string destinationPath)
 		{
@@ -109,9 +138,10 @@ namespace MusicUtility
 
 					TagSet tagSet = tags.TagSet;
 
-					JsonSerializerSettings jsonSettings =
-						new JsonSerializerSettings();
+					JsonSerializerSettings jsonSettings = new ();
 					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+					jsonSettings.ContractResolver =
+						new OrderedContractResolver();
 
 					string json = JsonConvert.SerializeObject(
 						tagSet, Formatting.Indented, jsonSettings);
@@ -129,12 +159,20 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Update library skeleton method.
+		/// </summary>
 		public void UpdateLibrarySkeleton()
 		{
 			UpdateLibrarySkeleton(
 				iTunesDirectoryLocation, librarySkeletonDirectoryLocation);
 		}
 
+		/// <summary>
+		/// Update library skeleton method.
+		/// </summary>
+		/// <param name="path">The path of the source files.</param>
+		/// <param name="skeletonPath">The path of skeleton files.</param>
 		public void UpdateLibrarySkeleton(string path, string skeletonPath)
 		{
 			try
@@ -156,7 +194,7 @@ namespace MusicUtility
 				{
 					CreateDirectoryIfNotExists(skeletonPath);
 
-					DirectoryInfo directory = new DirectoryInfo(path);
+					DirectoryInfo directory = new (path);
 
 					FileInfo[] files = directory.GetFiles();
 
@@ -173,8 +211,7 @@ namespace MusicUtility
 
 					foreach (string subDirectory in directories)
 					{
-						DirectoryInfo subDirectoryInfo =
-							new DirectoryInfo(subDirectory);
+						DirectoryInfo subDirectoryInfo = new (subDirectory);
 						string nextSkeletonPath =
 							skeletonPath + "\\" + subDirectoryInfo.Name;
 
@@ -213,19 +250,27 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		/// <param name="disposing">Indicates whether currently disposing
+		/// or not.</param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
 				// dispose managed resources
-				tags.Dispose();
-				tags = null;
+				if (tags != null)
+				{
+					tags.Dispose();
+					tags = null;
+				}
 			}
 		}
 
 		private static void CreateDirectoryIfNotExists(string path)
 		{
-			DirectoryInfo directory = new DirectoryInfo(path);
+			DirectoryInfo directory = new (path);
 
 			if (!directory.Exists)
 			{
@@ -233,7 +278,7 @@ namespace MusicUtility
 			}
 		}
 
-		private static string GetDefaultRules()
+		private Rules GetDefaultRules()
 		{
 			string contents = null;
 
@@ -245,13 +290,14 @@ namespace MusicUtility
 			{
 				if (templateObjectStream != null)
 				{
-					using StreamReader reader =
-						new StreamReader(templateObjectStream);
+					using StreamReader reader = new (templateObjectStream);
 					contents = reader.ReadToEnd();
 				}
 			}
 
-			return contents;
+			rules = new Rules(contents);
+
+			return rules;
 		}
 
 		private bool AreFileAndTrackTheSame(IITTrack track)
@@ -345,7 +391,7 @@ namespace MusicUtility
 
 				if (Directory.Exists(path))
 				{
-					DirectoryInfo directory = new DirectoryInfo(path);
+					DirectoryInfo directory = new (path);
 
 					FileInfo[] files = directory.GetFiles();
 
@@ -490,9 +536,8 @@ namespace MusicUtility
 		{
 			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
 			IITTrackCollection tracks = mainLibrary.Tracks;
-			Dictionary<string, IITTrack> trackCollection =
-				new Dictionary<string, IITTrack>();
-			List<IITTrack> duplicateTracks = new List<IITTrack>();
+			Dictionary<string, IITTrack> trackCollection = new ();
+			List<IITTrack> duplicateTracks = new ();
 			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
@@ -563,7 +608,7 @@ namespace MusicUtility
 				pathParts[depth] = "Music" +
 					tries.ToString(CultureInfo.InvariantCulture);
 
-				List<string> newList = new List<string>(pathParts);
+				List<string> newList = new (pathParts);
 				while (newList.Count > depth + 1)
 				{
 					newList.RemoveAt(newList.Count - 1);
@@ -611,7 +656,7 @@ namespace MusicUtility
 			// windows will treat different cases as same file names,
 			// so need to compensate
 			if (!filePath.Equals(
-				file.FullName, StringComparison.InvariantCultureIgnoreCase))
+				file.FullName, StringComparison.Ordinal))
 			{
 				if (!System.IO.File.Exists(filePath))
 				{

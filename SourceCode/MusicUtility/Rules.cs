@@ -8,16 +8,21 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Rules class.
+	/// </summary>
 	public class Rules
 	{
 		private readonly IList<Rule> rules;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Rules"/> class.
+		/// </summary>
+		/// <param name="data">The serialized rules data.</param>
 		public Rules(string data)
 		{
 			if (!string.IsNullOrEmpty(data))
@@ -26,6 +31,10 @@ namespace MusicUtility
 			}
 		}
 
+		/// <summary>
+		/// Gets the rule list.
+		/// </summary>
+		/// <value>The rule list.</value>
 		public IList<Rule> RulesList
 		{
 			get
@@ -34,52 +43,41 @@ namespace MusicUtility
 			}
 		}
 
-		public void RunRules()
+		/// <summary>
+		/// Get rule by name method.
+		/// </summary>
+		/// <param name="name">The name of the rule to get.</param>
+		/// <returns>The rule with matching name.</returns>
+		public Rule GetRuleByName(string name)
 		{
-			foreach (Rule rule in rules)
+			Rule rule = null;
+
+			foreach (Rule checkRule in rules)
 			{
-				rule.Run(null, null, null);
-			}
-		}
-
-		public bool RunRules(object item)
-		{
-			bool changed = false;
-
-			if (item != null)
-			{
-				Type classType = item.GetType();
-				string className = classType.FullName;
-
-				PropertyInfo[] properties = classType.GetProperties();
-
-				foreach (PropertyInfo property in properties)
+				if (checkRule.Name.Equals(
+					name, StringComparison.OrdinalIgnoreCase))
 				{
-					string name = property.Name;
-					string fullName = string.Format(
-						CultureInfo.InvariantCulture,
-						"{0}.{1}",
-						className,
-						name);
-
-					object source = property.GetValue(item, null);
-
-					foreach (Rule rule in rules)
-					{
-						object newValue = rule.Run(item, source, null);
-
-						if ((source != null) && !source.Equals(newValue))
-						{
-							classType.GetProperty(name).SetValue(
-								item, newValue, null);
-
-							changed = true;
-						}
-					}
+					rule = checkRule;
+					break;
 				}
 			}
 
-			return changed;
+			return rule;
+		}
+
+		/// <summary>
+		/// Run rules method.
+		/// </summary>
+		/// <param name="item">The object to process.</param>
+		public void RunRules(object item)
+		{
+			if (item != null)
+			{
+				foreach (Rule rule in rules)
+				{
+					rule.Run(item);
+				}
+			}
 		}
 	}
 }

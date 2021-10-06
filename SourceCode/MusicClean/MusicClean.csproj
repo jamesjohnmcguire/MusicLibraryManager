@@ -1,14 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicClean</AssemblyName>
+		<AssemblyVersion>0.1.0.173</AssemblyVersion>
+		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<Company>Digital Zen Works</Company>
+		<Copyright>Copyright © 2019 - 2021</Copyright>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<FileVersion>0.1.0.173</FileVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
-		<RootNamespace>MusicClean</RootNamespace>
+		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net5.0</TargetFramework>
+		<Version>0.1.0.173</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -39,27 +49,5 @@
 		</None>
 		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
-
-	<Target Name="PreBuild" AfterTargets="PreBuildEvent">
-
-		<GetAssemblyIdentity AssemblyFiles="$(SolutionDir)\Bin\$(Configuration)\$(Platform)\MusicUtility.dll">
-			<Output TaskParameter="Assemblies" ItemName="Targets" />
-		</GetAssemblyIdentity>
-
-		<ItemGroup>
-			<VersionNumber Include="@(Targets->'%(Version)')" />
-		</ItemGroup>
-
-		<AssemblyInfo
-			CodeLanguage="CS"
-			OutputFile="%(AssemblyVersionFiles.FullPath)"
-			AssemblyVersion="@(VersionNumber)"
-			AssemblyFileVersion="@(VersionNumber)">
-			<Output TaskParameter="OutputFile"
-				ItemName="UpdatedAssemblyVersionFiles"/>
-		</AssemblyInfo>
-
-		<Message Text="Version = @(VersionNumber)" Importance="high" />
-	</Target>
 
 </Project>

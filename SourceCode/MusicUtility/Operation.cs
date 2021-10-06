@@ -12,8 +12,16 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Operation types enum.
+	/// </summary>
 	public enum Operation
 	{
+		/// <summary>
+		/// Operation none.
+		/// </summary>
+		None,
+
 		/// <summary>
 		/// Operation remove.
 		/// </summary>

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace MusicUtility
 {
+	/// <summary>
+	/// Chain types enum.
+	/// </summary>
 	public enum Chain
 	{
 		/// <summary>
