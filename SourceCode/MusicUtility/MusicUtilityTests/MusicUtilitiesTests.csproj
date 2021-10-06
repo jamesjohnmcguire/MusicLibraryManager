@@ -4,29 +4,27 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicUtility.Tests</AssemblyName>
+		<AssemblyVersion>0.1.0.173</AssemblyVersion>
 		<CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<FileVersion>0.1.0.173</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<Platforms>x86;x64</Platforms>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<Version>0.1.0.173</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\MusicUtility.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="netstandard" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
-		<PackageReference Include="CSCore" Version="1.2.1.2" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="NUnit" Version="3.13.2" />
