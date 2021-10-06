@@ -12,6 +12,7 @@ using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
@@ -30,6 +31,7 @@ namespace MusicClean
 		/// </summary>
 		/// <param name="args">An array of arguments passed to
 		/// the program.</param>
+		[SupportedOSPlatform("windows")]
 		public static void Main(string[] args)
 		{
 			try

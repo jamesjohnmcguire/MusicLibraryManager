@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(false)]
@@ -93,6 +94,7 @@ namespace MusicUtility
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
+		[SupportedOSPlatform("windows")]
 		public int CleanMusicLibrary()
 		{
 			// Operate on the actual music files in the file system
@@ -223,7 +225,9 @@ namespace MusicUtility
 					files = directory.GetFiles();
 
 					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains("Automatically Add to iTunes")))
+						(!path.Contains(
+							"Automatically Add to iTunes",
+							StringComparison.OrdinalIgnoreCase)))
 					{
 						Directory.Delete(path, false);
 					}
@@ -416,7 +420,9 @@ namespace MusicUtility
 					files = directory.GetFiles();
 
 					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains("Automatically Add to iTunes")))
+						(!path.Contains(
+							"Automatically Add to iTunes",
+							StringComparison.OrdinalIgnoreCase)))
 					{
 						Directory.Delete(path, false);
 					}

@@ -321,13 +321,15 @@ namespace MusicUtility
 
 			Album = AlbumRemoveCd();
 			Album = AlbumRemoveDisc();
-			Album = Album.Replace("[FLAC]", string.Empty);
+			Album = Album.Replace(
+				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
 			Album = AlbumReplaceCurlyBraces(Album);
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				string breaker = " - ";
-				if (Album.Contains(breaker))
+				if (Album.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
 				{
 					string[] separators = new string[] { breaker };
 					string[] parts = Album.Split(
@@ -399,7 +401,8 @@ namespace MusicUtility
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
 				string breaker = " - ";
-				if (Artist.Contains(breaker))
+				if (Artist.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
 				{
 					string[] separators = new string[] { breaker };
 					string[] parts = Artist.Split(
@@ -448,9 +451,13 @@ namespace MusicUtility
 			}
 
 			if ((!string.IsNullOrWhiteSpace(Artist)) &&
-				Title.Contains(Artist + " - "))
+				Title.Contains(
+					Artist + " - ", StringComparison.OrdinalIgnoreCase))
 			{
-				Title = Title.Replace(Artist + " - ", string.Empty);
+				Title = Title.Replace(
+					Artist + " - ",
+					string.Empty,
+					StringComparison.OrdinalIgnoreCase);
 				TagFile.Tag.Title = Title;
 				updated = true;
 			}

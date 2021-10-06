@@ -35,7 +35,10 @@ namespace MusicUtility
 
 			foreach (KeyValuePair<string, string> exception in exceptions)
 			{
-				album = album.Replace(exception.Key, exception.Value);
+				album = album.Replace(
+					exception.Key,
+					exception.Value,
+					StringComparison.OrdinalIgnoreCase);
 			}
 
 			return album;
@@ -127,11 +130,13 @@ namespace MusicUtility
 
 				foreach (char charactor in illegalCharactors)
 				{
-					if (path.Contains(charactor))
+					if (path.Contains(
+						charactor, StringComparison.OrdinalIgnoreCase))
 					{
 						path = path.Replace(
 							charactor.ToString(CultureInfo.InvariantCulture),
-							string.Empty);
+							string.Empty,
+							StringComparison.OrdinalIgnoreCase);
 					}
 				}
 
@@ -139,15 +144,18 @@ namespace MusicUtility
 
 				foreach (char charactor in illegalCharactors)
 				{
-					if (path.Contains(charactor))
+					if (path.Contains(
+						charactor, StringComparison.OrdinalIgnoreCase))
 					{
 						path = path.Replace(
 							charactor.ToString(CultureInfo.InvariantCulture),
-							" - ");
+							" - ",
+							StringComparison.OrdinalIgnoreCase);
 					}
 				}
 
-				path = path.Replace("  ", " ");
+				path = path.Replace(
+					"  ", " ", StringComparison.OrdinalIgnoreCase);
 			}
 
 			return path;

@@ -71,7 +71,10 @@ namespace MusicUtility
 				if (uri.IsFile)
 				{
 					path =
-						uri.LocalPath.Replace("\\\\localhost\\", string.Empty);
+						uri.LocalPath.Replace(
+							"\\\\localhost\\",
+							string.Empty,
+							StringComparison.OrdinalIgnoreCase);
 					path = Path.GetFullPath(path);
 				}
 
@@ -105,14 +108,8 @@ namespace MusicUtility
 
 					if (!object.ReferenceEquals(xmlReader, "None"))
 					{
-						XmlDocument xmlDocument = new ();
-						xmlDocument.Load(xmlReader);
-
 						Dictionary<string, object> preInfo =
-							(Dictionary<string, object>)
-							ReadKeyAsDictionaryEntry(
-								xmlDocument.ChildNodes[0]);
-						xmlReader.Close();
+							GetXmlInformation(xmlReader);
 
 						object tracks = preInfo["Tracks"];
 						var tracksDictionary =
@@ -155,13 +152,28 @@ namespace MusicUtility
 			return iTunesInformation;
 		}
 
+		private static Dictionary<string, object> GetXmlInformation(
+			XmlReader xmlReader)
+		{
+			XmlDocument xmlDocument = new ();
+			xmlDocument.Load(xmlReader);
+
+			Dictionary<string, object> preInfo =
+				(Dictionary<string, object>)ReadKeyAsDictionaryEntry(
+					xmlDocument.ChildNodes[0]);
+			xmlReader.Close();
+
+			return preInfo;
+		}
+
 		private static string GetURLDecodeOfString(string value)
 		{
 			string localPath = value;
 
 			try
 			{
-				value = value.Replace("+", "%2b");
+				value = value.Replace(
+					"+", "%2b", StringComparison.OrdinalIgnoreCase);
 				string url = value;
 #if USE_SYSTEMWEB
 				url = System.Web.HttpUtility.UrlDecode(value);

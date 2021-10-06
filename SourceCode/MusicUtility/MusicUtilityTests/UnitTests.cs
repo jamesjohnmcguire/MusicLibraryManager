@@ -260,7 +260,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void LoadiTunesXmlFile()
 		{
-			using MusicManager musicUtility = new();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 			string xmlFilePath = location + "iTunes Library.xml";
 
