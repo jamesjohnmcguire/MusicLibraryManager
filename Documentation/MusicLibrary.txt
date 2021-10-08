@@ -134,6 +134,9 @@ Tasks
 	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
 
 	Finished
+		Project '..\MusicUtility\MusicUtility.csproj' targets 'net5.0-windows'. It cannot be referenced by a project that targets '.NETCoreApp,Version=v5.0'.	MusicClean
+		NUnit.Engine.NUnitEngineException : An exception occurred in the driver while loading tests.  ----> System.IO.FileNotFoundException : Could not load file or assembly 'MusicUtility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203	
 		https://github.com/jamesjohnmcguire/MusicLibraryManager/security/dependabot/SourceCode/MusicClean/packages.config/log4net/open
 		Add build command, complete with running unit tests
 		SourceCode\DevelopmentTools\Commands\build.cmd Fails	References SourceCode\.build directory which doesn't exist
@@ -456,3 +459,12 @@ Testing
 		Logging
 			{"Unable to create type 'Common.Logging.Serilog.SerilogLoggerFactoryAdapter, Common.Logging.Serilog'"}
 			{"Could not load type 'Common.Logging.Serilog.SerilogLoggerFactoryAdapter' from assembly 'Common.Logging.Serilog'.":"Common.Logging.Serilog.SerilogLoggerFactoryAdapter"}	System.Exception {System.TypeLoadException}
+Music Manager
+	c# regex replace backets
+		https://stackoverflow.com/questions/26984428/how-to-replace-a-matched-group-value-with-regex/26984540
+	/MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
+	UrlDecode
+		Before UrlDecode
+			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes%20Media/Music/iTunes%20Media/Music/Aaron%20Goldberg/Worlds/1-07%20OAM's%20Blues%201.m4a"
+		After UrlDecode
+			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes Media/Music/iTunes Media/Music/Aaron Goldberg/Worlds/1-07 OAM's Blues 1.m4a"	string
