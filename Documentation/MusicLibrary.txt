@@ -468,3 +468,7 @@ Music Manager
 			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes%20Media/Music/iTunes%20Media/Music/Aaron%20Goldberg/Worlds/1-07%20OAM's%20Blues%201.m4a"
 		After UrlDecode
 			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes Media/Music/iTunes Media/Music/Aaron Goldberg/Worlds/1-07 OAM's Blues 1.m4a"	string
+iTunes
+	C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes
+	C:\Users\JamesMc\AppData\Roaming\Apple Computer\Preferences\com.apple.iTunes.plist
+	C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes
