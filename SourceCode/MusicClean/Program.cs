@@ -31,7 +31,6 @@ namespace MusicClean
 		/// </summary>
 		/// <param name="args">An array of arguments passed to
 		/// the program.</param>
-		[SupportedOSPlatform("windows")]
 		public static void Main(string[] args)
 		{
 			try
@@ -61,6 +60,8 @@ namespace MusicClean
 			catch (Exception exception)
 			{
 				Console.WriteLine("Exception: " + exception.Message);
+
+				throw;
 			}
 		}
 
