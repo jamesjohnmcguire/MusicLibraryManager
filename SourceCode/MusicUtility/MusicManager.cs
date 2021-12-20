@@ -633,8 +633,7 @@ namespace MusicUtility
 					CreateDirectoryIfNotExists(newPath);
 				}
 
-				destinationPath =
-					newPath + "\\" + pathParts[pathParts.Length - 1];
+				destinationPath = newPath + "\\" + pathParts[^1];
 
 				if (!System.IO.File.Exists(destinationPath))
 				{
