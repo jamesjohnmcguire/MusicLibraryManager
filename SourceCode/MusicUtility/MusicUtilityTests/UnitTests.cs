@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(true)]
 
-namespace MusicUtility.Tests
+namespace DigitalZenWorks.MusicUtility.Tests
 {
 	/// <summary>
 	/// Unit tests class.
@@ -175,7 +175,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
 			Assembly assembly = typeof(MusicManager).Assembly;
 
 			using Stream templateObjectStream =
@@ -280,7 +280,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string element = "MusicUtility.Tags.Album";
+			string element = "DigitalZenWorks.MusicUtility.Tags.Album";
 
 			Rule rule = new (
 				element,
@@ -342,7 +342,7 @@ namespace MusicUtility.Tests
 
 			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new (
-				"MusicUtility.Tags.TagFile.Tag.Performers",
+				"DigitalZenWorks.MusicUtility.Tags.TagFile.Tag.Performers",
 				Condition.NotEmpty,
 				original,
 				Operation.None,

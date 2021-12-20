@@ -15,7 +15,7 @@ using System.Resources;
 using System.Text.RegularExpressions;
 using TagLib;
 
-namespace MusicUtility
+namespace DigitalZenWorks.MusicUtility
 {
 	/// <summary>
 	/// Media file tags class.
@@ -23,7 +23,7 @@ namespace MusicUtility
 	public class MediaFileTags : IDisposable
 	{
 		private static readonly ResourceManager StringTable =
-			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly string filePath;
 		private readonly string iTunesLocation;
