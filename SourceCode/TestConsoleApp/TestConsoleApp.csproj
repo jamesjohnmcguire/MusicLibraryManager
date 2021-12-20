@@ -1,11 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AssemblyName>TestConsoleApp</AssemblyName>
+		<AssemblyVersion>0.1.0.173</AssemblyVersion>
+		<Authors>James John McGuire</Authors>
+		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<Company>Digital Zen Works</Company>
+		<Copyright>Copyright © 2019 - 2021</Copyright>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<FileVersion>0.1.0.173</FileVersion>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<NeutralLanguage>en</NeutralLanguage>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Platforms>AnyCPU;x64;x86</Platforms>
+		<Platforms>x64;x86</Platforms>
+		<Version>0.1.0.173</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -24,6 +38,17 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\MusicUtility\MusicUtility.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="App.config">
+			<SubType>Designer</SubType>
+		</None>
+		<AdditionalFiles Include="stylecop.json" />
 	</ItemGroup>
 
 </Project>
