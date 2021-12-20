@@ -4,17 +4,17 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicUtility.Tests</AssemblyName>
-		<AssemblyVersion>0.1.0.173</AssemblyVersion>
+		<AssemblyVersion>0.1.0.176</AssemblyVersion>
 		<CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.1.0.173</FileVersion>
+		<FileVersion>0.1.0.176</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Version>0.1.0.173</Version>
+		<Version>0.1.0.176</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
