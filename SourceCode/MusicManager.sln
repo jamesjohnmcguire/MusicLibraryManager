@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicClean", "MusicClean\MusicClean.csproj", "{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicManager", "MusicManager\MusicManager.csproj", "{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicUtility", "MusicUtility\MusicUtility.csproj", "{A056FC65-FA91-4581-8852-126B70FBC564}"
 EndProject

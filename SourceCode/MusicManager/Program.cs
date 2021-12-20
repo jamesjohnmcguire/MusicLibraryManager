@@ -16,7 +16,7 @@ using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
-namespace MusicClean
+namespace MusicManager
 {
 	/// <summary>
 	/// The main program class.
@@ -52,7 +52,7 @@ namespace MusicClean
 					rules = new (rulesData);
 				}
 
-				using MusicManager musicUtility = new (rules);
+				using MusicUtility.MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
