@@ -22,6 +22,10 @@ namespace Music
 			"Globalization",
 			"CA1303:Do not pass literals as localized parameters",
 			Justification = "It is just a test application.")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Style",
+			"IDE0060:Remove unused parameter",
+			Justification = "It is just a test application.")]
 		public static int Main(string[] arguments)
 		{
 			int result = 0;
