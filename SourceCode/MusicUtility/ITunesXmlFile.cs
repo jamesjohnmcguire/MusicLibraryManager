@@ -40,9 +40,6 @@ namespace MusicUtility
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ResourceManager StringTable =
-			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
-
 		private readonly XmlDocument xmlDocument;
 
 		/// <summary>
