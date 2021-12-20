@@ -3,20 +3,21 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>MusicUtility</AssemblyTitle>
-		<AssemblyVersion>0.1.0.173</AssemblyVersion>
+		<AssemblyVersion>0.1.0.176</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2021</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.1.0.173</FileVersion>
+		<FileVersion>0.1.0.176</FileVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
+		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Platforms>x86;x64</Platforms>
-		<TargetFramework>net48</TargetFramework>
-		<Version>0.1.0.173</Version>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Version>0.1.0.176</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -32,17 +33,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="System.Web" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
 		<PackageReference Include="CSCore" Version="1.2.1.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Serilog" Version="2.10.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-		<PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

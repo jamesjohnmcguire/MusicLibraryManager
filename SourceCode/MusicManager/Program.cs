@@ -5,17 +5,18 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using MusicUtility;
+using DigitalZenWorks.MusicUtility;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
-namespace MusicClean
+namespace MusicManager
 {
 	/// <summary>
 	/// The main program class.
@@ -51,7 +52,7 @@ namespace MusicClean
 					rules = new (rulesData);
 				}
 
-				using MusicManager musicUtility = new (rules);
+				using DigitalZenWorks.MusicUtility.MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();
@@ -59,6 +60,8 @@ namespace MusicClean
 			catch (Exception exception)
 			{
 				Console.WriteLine("Exception: " + exception.Message);
+
+				throw;
 			}
 		}
 

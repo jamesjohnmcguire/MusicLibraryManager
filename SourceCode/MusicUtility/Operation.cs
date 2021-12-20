@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicUtility
+namespace DigitalZenWorks.MusicUtility
 {
 	/// <summary>
 	/// Operation types enum.

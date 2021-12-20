@@ -3,7 +3,7 @@
     "name": "RemoveDiscFromAlbum",
     "subject": "MusicUtility.Tags.Album",
     "condition": "ContainsRegex",
-    "conditional": "\\s*\\(Dis[A-Za-z].*?\\)",
+    "conditional": "\\s*\\(Dis(c|k).*?\\)",
     "operation": "Remove"
   },
   {

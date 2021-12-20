@@ -14,11 +14,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(false)]
 
-namespace MusicUtility
+namespace DigitalZenWorks.MusicUtility
 {
 	/// <summary>
 	/// Music manager class.
@@ -29,7 +30,7 @@ namespace MusicUtility
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
@@ -93,6 +94,7 @@ namespace MusicUtility
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
+		[SupportedOSPlatform("windows")]
 		public int CleanMusicLibrary()
 		{
 			// Operate on the actual music files in the file system
@@ -223,7 +225,9 @@ namespace MusicUtility
 					files = directory.GetFiles();
 
 					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains("Automatically Add to iTunes")))
+						(!path.Contains(
+							"Automatically Add to iTunes",
+							StringComparison.OrdinalIgnoreCase)))
 					{
 						Directory.Delete(path, false);
 					}
@@ -282,7 +286,7 @@ namespace MusicUtility
 		{
 			string contents = null;
 
-			string resourceName = "MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
 			Assembly thisAssembly = Assembly.GetCallingAssembly();
 
 			using (Stream templateObjectStream =
@@ -416,7 +420,9 @@ namespace MusicUtility
 					files = directory.GetFiles();
 
 					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains("Automatically Add to iTunes")))
+						(!path.Contains(
+							"Automatically Add to iTunes",
+							StringComparison.OrdinalIgnoreCase)))
 					{
 						Directory.Delete(path, false);
 					}
@@ -627,8 +633,7 @@ namespace MusicUtility
 					CreateDirectoryIfNotExists(newPath);
 				}
 
-				destinationPath =
-					newPath + "\\" + pathParts[pathParts.Length - 1];
+				destinationPath = newPath + "\\" + pathParts[^1];
 
 				if (!System.IO.File.Exists(destinationPath))
 				{

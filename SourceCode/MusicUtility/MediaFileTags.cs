@@ -15,7 +15,7 @@ using System.Resources;
 using System.Text.RegularExpressions;
 using TagLib;
 
-namespace MusicUtility
+namespace DigitalZenWorks.MusicUtility
 {
 	/// <summary>
 	/// Media file tags class.
@@ -23,7 +23,7 @@ namespace MusicUtility
 	public class MediaFileTags : IDisposable
 	{
 		private static readonly ResourceManager StringTable =
-			new ("MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicUtility.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly string filePath;
 		private readonly string iTunesLocation;
@@ -189,13 +189,29 @@ namespace MusicUtility
 		}
 
 		/// <summary>
+		/// Album replace curly braces method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumReplaceCurlyBraces(string album)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = album.Replace('{', '[');
+				album = album.Replace('}', ']');
+			}
+
+			return album;
+		}
+
+		/// <summary>
 		/// Album remove disc method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
 		public static string AlbumRemoveDisc(string album)
 		{
-			string pattern = @" \(dis(c|k).*?\)";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
 			album = RegexRemove(pattern, album);
 
 			return album;
@@ -305,30 +321,15 @@ namespace MusicUtility
 
 			Album = AlbumRemoveCd();
 			Album = AlbumRemoveDisc();
-			Album = Album.Replace("[FLAC]", string.Empty);
+			Album = Album.Replace(
+				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+			Album = AlbumReplaceCurlyBraces(Album);
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				string[] regexes =
-					new string[]
-					{
-						@" \[.*?\]", @" \(Dis(c|k).*?\)", @" cd.*?\d"
-					};
-
-				foreach (string regex in regexes)
-				{
-					if (Regex.IsMatch(Album, regex, RegexOptions.IgnoreCase))
-					{
-						Album = Regex.Replace(
-							Album,
-							regex,
-							string.Empty,
-							RegexOptions.IgnoreCase);
-					}
-				}
-
 				string breaker = " - ";
-				if (Album.Contains(breaker))
+				if (Album.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
 				{
 					string[] separators = new string[] { breaker };
 					string[] parts = Album.Split(
@@ -400,7 +401,8 @@ namespace MusicUtility
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
 				string breaker = " - ";
-				if (Artist.Contains(breaker))
+				if (Artist.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
 				{
 					string[] separators = new string[] { breaker };
 					string[] parts = Artist.Split(
@@ -449,9 +451,13 @@ namespace MusicUtility
 			}
 
 			if ((!string.IsNullOrWhiteSpace(Artist)) &&
-				Title.Contains(Artist + " - "))
+				Title.Contains(
+					Artist + " - ", StringComparison.OrdinalIgnoreCase))
 			{
-				Title = Title.Replace(Artist + " - ", string.Empty);
+				Title = Title.Replace(
+					Artist + " - ",
+					string.Empty,
+					StringComparison.OrdinalIgnoreCase);
 				TagFile.Tag.Title = Title;
 				updated = true;
 			}

@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(true)]
 
-namespace MusicUtility.Tests
+namespace DigitalZenWorks.MusicUtility.Tests
 {
 	/// <summary>
 	/// Unit tests class.
@@ -80,6 +80,40 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
+		/// Album remove cd method test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveCd()
+		{
+			string album = "Den Bosh cd 1";
+
+			album = MediaFileTags.AlbumRemoveCd(album);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Den Bosh";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album remove disc method test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveDisc()
+		{
+			string album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
+
+			album = MediaFileTags.AlbumRemoveDisc(album);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "What It Is! Funky Soul And Rare Grooves";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// Regex remove cd method test.
 		/// </summary>
 		[Test]
@@ -94,6 +128,20 @@ namespace MusicUtility.Tests
 			Assert.IsNotEmpty(album);
 
 			string expected = "Talking Heads - Brick(2005)";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album replace curly braces method test.
+		/// </summary>
+		[Test]
+		public void AlbumReplaceCurlyBraces()
+		{
+			string album = "Something {In Heaven}";
+
+			album = MediaFileTags.AlbumReplaceCurlyBraces(album);
+
+			string expected = "Something [In Heaven]";
 			Assert.That(album, Is.EqualTo(expected));
 		}
 
@@ -127,7 +175,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
 			Assembly assembly = typeof(MusicManager).Assembly;
 
 			using Stream templateObjectStream =
@@ -169,7 +217,7 @@ namespace MusicUtility.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			using MusicManager musicUtility = new();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
@@ -207,58 +255,23 @@ namespace MusicUtility.Tests
 		}
 
 		/// <summary>
-		/// Regex remove cd method test.
+		/// Load iTunes XML file method test.
 		/// </summary>
 		[Test]
-		public void RegexRemoveCd()
+		public void LoadiTunesXmlFile()
 		{
-			string album = "Den Bosh cd 1";
+			using MusicManager musicUtility = new ();
+			string location = musicUtility.ITunesLibraryLocation;
+			string xmlFilePath = location + "iTunes Library.xml";
 
-			album = MediaFileTags.AlbumRemoveCd(album);
+			Dictionary<string, object> result =
+				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
 
-			Log.Info("album: " + album);
-			Assert.IsNotEmpty(album);
+			Log.Info("ITunesPathLocation: " + location);
+			Assert.IsNotEmpty(location);
 
-			string expected = "Den Bosh";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Regex remove disc method test.
-		/// </summary>
-		[Test]
-		public void RegexRemoveDisc()
-		{
-			string album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
-
-			album = MediaFileTags.AlbumRemoveDisc(album);
-
-			Log.Info("album: " + album);
-			Assert.IsNotEmpty(album);
-
-			string expected = "What It Is! Funky Soul And Rare Grooves";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Regex remove disc method test.
-		/// </summary>
-		[Test]
-		public void RegexTest()
-		{
-			string pattern = @"\p{Sc}*(\s?\d+[.,]?\d*)\p{Sc}*";
-			string input = "$16.32 12.19 £16.29 €18.29  €18,29";
-			string result = string.Empty;
-
-			if (Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase))
-			{
-				string replacement = "$1";
-				result = Regex.Replace(
-					input, pattern, replacement, RegexOptions.IgnoreCase);
-			}
-
-			string expected = "16.32 12.19 16.29 18.29  18,29";
-			Assert.That(result, Is.EqualTo(expected));
+			int count = result.Count;
+			Assert.GreaterOrEqual(count, 1);
 		}
 
 		/// <summary>
@@ -267,12 +280,12 @@ namespace MusicUtility.Tests
 		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string element = "MusicUtility.Tags.Album";
+			string element = "DigitalZenWorks.MusicUtility.Tags.Album";
 
 			Rule rule = new (
 				element,
 				Condition.ContainsRegex,
-				@"\s*\(Dis[A-Za-z].*?\)",
+				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
 			bool result = rule.Run(tags);
@@ -329,7 +342,7 @@ namespace MusicUtility.Tests
 
 			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new (
-				"MusicUtility.Tags.TagFile.Tag.Performers",
+				"DigitalZenWorks.MusicUtility.Tags.TagFile.Tag.Performers",
 				Condition.NotEmpty,
 				original,
 				Operation.None,
