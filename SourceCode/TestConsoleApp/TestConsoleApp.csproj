@@ -8,7 +8,7 @@
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
-		<Copyright>Copyright © 2019 - 2021</Copyright>
+		<Copyright>Copyright © 2019 - 2022</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<FileVersion>0.1.0.176</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
