@@ -48,7 +48,7 @@
 	<Target Name="Buildx86" DependsOnTargets="Buildx86Dependencies">
 		<Message Text="Building Buildx86"/>
 		<MSBuild
-			Projects="$(SolutionDir)\MusicClean\MusicClean.csproj"
+			Projects="$(SolutionDir)\MusicManager\MusicManager.csproj"
 			Targets="$(BuildType)"
 			Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);Platform=x86"
 		/>
