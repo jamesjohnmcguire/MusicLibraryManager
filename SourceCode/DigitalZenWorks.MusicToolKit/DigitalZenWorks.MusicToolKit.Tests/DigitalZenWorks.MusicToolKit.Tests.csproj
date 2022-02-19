@@ -17,10 +17,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DigitalZenWorks.MusicUtility.csproj" />
-	</ItemGroup>
-	
-	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
@@ -41,6 +37,10 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="TagLibSharp" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DigitalZenWorks.MusicToolKit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -40,7 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MusicUtility\MusicUtility.csproj" />
+		<ProjectReference Include="..\DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

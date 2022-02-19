@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AssemblyTitle>DigitalZenWorks.MusicUtility</AssemblyTitle>
+		<AssemblyTitle>DigitalZenWorks.MusicToolKit</AssemblyTitle>
 		<AssemblyVersion>0.1.0.176</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
@@ -48,9 +48,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="MusicUtilityTests\**" />
-		<EmbeddedResource Remove="MusicUtilityTests\**" />
-		<None Remove="MusicUtilityTests\**" />
+		<Compile Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
+		<EmbeddedResource Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
+		<None Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">

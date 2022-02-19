@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicManager", "MusicManager\MusicManager.csproj", "{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalZenWorks.MusicUtility", "DigitalZenWorks.MusicUtility\DigitalZenWorks.MusicUtility.csproj", "{A056FC65-FA91-4581-8852-126B70FBC564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalZenWorks.MusicToolKit", "DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj", "{A056FC65-FA91-4581-8852-126B70FBC564}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicUtilitiesTests", "DigitalZenWorks.MusicUtility\MusicUtilityTests\MusicUtilitiesTests.csproj", "{0DCEE9BF-890E-4191-A627-A68C711C30CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalZenWorks.MusicToolKit.Tests", "DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj", "{0DCEE9BF-890E-4191-A627-A68C711C30CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D7E22C6-786C-4E14-A23D-A538207DBC49}"
 	ProjectSection(SolutionItems) = preProject
