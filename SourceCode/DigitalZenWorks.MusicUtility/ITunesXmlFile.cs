@@ -40,6 +40,7 @@ namespace DigitalZenWorks.MusicUtility
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
+		private readonly string libraryXMLPath;
 		private readonly XmlDocument xmlDocument;
 
 		/// <summary>
@@ -48,6 +49,8 @@ namespace DigitalZenWorks.MusicUtility
 		/// <param name="filePath">The path to iTunes xml file.</param>
 		public ITunesXmlFile(string filePath)
 		{
+			libraryXMLPath = filePath;
+
 			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
 			xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(fileText);
@@ -78,6 +81,12 @@ namespace DigitalZenWorks.MusicUtility
 				return path;
 			}
 		}
+
+		/// <summary>
+		/// Gets the library XML path.
+		/// </summary>
+		/// <value>The library XML path.</value>
+		public string LibraryXMLPath { get { return libraryXMLPath; } }
 
 		/// <summary>
 		/// Load iTunes xml file.

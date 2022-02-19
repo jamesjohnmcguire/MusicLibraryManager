@@ -34,6 +34,7 @@ namespace DigitalZenWorks.MusicUtility
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
+		private readonly string iTunesLibraryXMLPath;
 		private readonly string librarySkeletonDirectoryLocation;
 
 		private iTunesApp iTunes;
@@ -48,8 +49,9 @@ namespace DigitalZenWorks.MusicUtility
 			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
+			iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
 
-			ITunesXmlFile iTunesXmlFile = new (iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
@@ -82,6 +84,15 @@ namespace DigitalZenWorks.MusicUtility
 			{
 				return iTunesDirectoryLocation;
 			}
+		}
+
+		/// <summary>
+		/// Gets the iTunes library XML path.
+		/// </summary>
+		/// <value>The iTunes library XML path.</value>
+		public string ITunesLibraryXMLPath
+		{
+			get { return iTunesLibraryXMLPath; }
 		}
 
 		/// <summary>
