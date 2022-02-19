@@ -18,7 +18,6 @@
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Platforms>x64;x86</Platforms>
 		<Version>0.1.0.176</Version>
 	</PropertyGroup>
 
@@ -41,7 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MusicUtility\MusicUtility.csproj" />
+		<ProjectReference Include="..\DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -6,7 +6,7 @@
 
 using TagLib;
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// Tag set class.

@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(true)]
 
-namespace DigitalZenWorks.MusicUtility.Tests
+namespace DigitalZenWorks.MusicToolKit.Tests
 {
 	/// <summary>
 	/// Unit tests class.
@@ -175,7 +175,7 @@ namespace DigitalZenWorks.MusicUtility.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicToolKit.DefaultRules.json";
 			Assembly assembly = typeof(MusicManager).Assembly;
 
 			using Stream templateObjectStream =
@@ -261,14 +261,12 @@ namespace DigitalZenWorks.MusicUtility.Tests
 		public void LoadiTunesXmlFile()
 		{
 			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-			string xmlFilePath = location + "iTunes Library.xml";
+			string xmlFilePath = musicUtility.ITunesLibraryXMLPath;
 
 			Dictionary<string, object> result =
 				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
 
-			Log.Info("ITunesPathLocation: " + location);
-			Assert.IsNotEmpty(location);
+			Assert.NotNull(result);
 
 			int count = result.Count;
 			Assert.GreaterOrEqual(count, 1);
@@ -280,7 +278,7 @@ namespace DigitalZenWorks.MusicUtility.Tests
 		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string element = "DigitalZenWorks.MusicUtility.Tags.Album";
+			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
 
 			Rule rule = new (
 				element,
@@ -342,7 +340,7 @@ namespace DigitalZenWorks.MusicUtility.Tests
 
 			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new (
-				"DigitalZenWorks.MusicUtility.Tags.TagFile.Tag.Performers",
+				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
 				Condition.NotEmpty,
 				original,
 				Operation.None,

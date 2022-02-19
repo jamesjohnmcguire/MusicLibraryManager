@@ -2,22 +2,21 @@
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AssemblyTitle>MusicUtility</AssemblyTitle>
-		<AssemblyVersion>0.1.0.176</AssemblyVersion>
+		<AssemblyTitle>DigitalZenWorks.MusicToolKit</AssemblyTitle>
+		<AssemblyVersion>0.2.0.177</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2022</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.1.0.176</FileVersion>
+		<FileVersion>0.2.0.177</FileVersion>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
-		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Version>0.1.0.176</Version>
+		<Version>0.2.0.177</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -49,9 +48,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="MusicUtilityTests\**" />
-		<EmbeddedResource Remove="MusicUtilityTests\**" />
-		<None Remove="MusicUtilityTests\**" />
+		<Compile Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
+		<EmbeddedResource Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
+		<None Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">

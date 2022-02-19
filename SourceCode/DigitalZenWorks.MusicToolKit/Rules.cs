@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// Rules class.

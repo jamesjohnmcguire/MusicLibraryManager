@@ -3,21 +3,20 @@
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AssemblyName>MusicClean</AssemblyName>
-		<AssemblyVersion>0.1.0.176</AssemblyVersion>
+		<AssemblyName>MusicManager</AssemblyName>
+		<AssemblyVersion>0.2.0.177</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2022</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.1.0.176</FileVersion>
+		<FileVersion>0.2.0.177</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
-		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Version>0.1.0.176</Version>
+		<Version>0.2.0.177</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -39,7 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MusicUtility\MusicUtility.csproj" />
+		<ProjectReference Include="..\DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

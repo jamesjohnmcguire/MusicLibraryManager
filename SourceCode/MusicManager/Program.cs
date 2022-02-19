@@ -5,14 +5,12 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using DigitalZenWorks.MusicUtility;
+using DigitalZenWorks.MusicToolKit;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
@@ -52,7 +50,7 @@ namespace MusicManager
 					rules = new (rulesData);
 				}
 
-				using DigitalZenWorks.MusicUtility.MusicManager musicUtility = new (rules);
+				using DigitalZenWorks.MusicToolKit.MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();

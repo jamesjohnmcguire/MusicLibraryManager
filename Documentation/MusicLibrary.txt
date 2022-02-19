@@ -472,3 +472,5 @@ iTunes
 	C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes
 	C:\Users\JamesMc\AppData\Roaming\Apple Computer\Preferences\com.apple.iTunes.plist
 	C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes
+Music Manager
+	Program has more than one entry point defined. Compile with /main to specify the type that contains the entry point.	MusicClean

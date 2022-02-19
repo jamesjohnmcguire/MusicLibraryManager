@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(false)]
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// Music manager class.
@@ -30,10 +30,11 @@ namespace DigitalZenWorks.MusicUtility
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
+		private readonly string iTunesLibraryXMLPath;
 		private readonly string librarySkeletonDirectoryLocation;
 
 		private iTunesApp iTunes;
@@ -48,8 +49,9 @@ namespace DigitalZenWorks.MusicUtility
 			// Create a reference to iTunes
 			iTunes = new iTunesLib.iTunesApp();
 			playList = iTunes.LibraryPlaylist;
+			iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
 
-			ITunesXmlFile iTunesXmlFile = new (iTunes.LibraryXMLPath);
+			ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
 			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
@@ -82,6 +84,15 @@ namespace DigitalZenWorks.MusicUtility
 			{
 				return iTunesDirectoryLocation;
 			}
+		}
+
+		/// <summary>
+		/// Gets the iTunes library XML path.
+		/// </summary>
+		/// <value>The iTunes library XML path.</value>
+		public string ITunesLibraryXMLPath
+		{
+			get { return iTunesLibraryXMLPath; }
 		}
 
 		/// <summary>
@@ -286,7 +297,7 @@ namespace DigitalZenWorks.MusicUtility
 		{
 			string contents = null;
 
-			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicToolKit.DefaultRules.json";
 			Assembly thisAssembly = Assembly.GetCallingAssembly();
 
 			using (Stream templateObjectStream =
