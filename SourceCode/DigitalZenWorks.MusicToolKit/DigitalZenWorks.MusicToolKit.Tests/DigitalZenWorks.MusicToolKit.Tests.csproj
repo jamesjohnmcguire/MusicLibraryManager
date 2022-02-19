@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AssemblyName>MusicUtility.Tests</AssemblyName>
+		<AssemblyName>DigitalZenWorks.MusicToolKit.Tests</AssemblyName>
 		<AssemblyVersion>0.2.0.177</AssemblyVersion>
 		<CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
