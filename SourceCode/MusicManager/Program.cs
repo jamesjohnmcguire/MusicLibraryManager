@@ -11,8 +11,6 @@ using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Versioning;
 
 [assembly: CLSCompliant(true)]
 
