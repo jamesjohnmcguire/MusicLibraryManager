@@ -17,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MusicUtility.csproj" />
+		<ProjectReference Include="..\DigitalZenWorks.MusicUtility.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>

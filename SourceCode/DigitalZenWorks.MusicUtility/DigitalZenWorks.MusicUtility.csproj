@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AssemblyTitle>MusicUtility</AssemblyTitle>
+		<AssemblyTitle>DigitalZenWorks.MusicUtility</AssemblyTitle>
 		<AssemblyVersion>0.1.0.176</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>

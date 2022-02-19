@@ -38,7 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MusicUtility\MusicUtility.csproj" />
+		<ProjectReference Include="..\DigitalZenWorks.MusicUtility\DigitalZenWorks.MusicUtility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -175,7 +175,7 @@ namespace DigitalZenWorks.MusicUtility.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
 			Assembly assembly = typeof(MusicManager).Assembly;
 
 			using Stream templateObjectStream =
