@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(false)]
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// Music manager class.
@@ -30,7 +30,7 @@ namespace DigitalZenWorks.MusicUtility
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicUtility.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
@@ -297,7 +297,7 @@ namespace DigitalZenWorks.MusicUtility
 		{
 			string contents = null;
 
-			string resourceName = "DigitalZenWorks.MusicUtility.DefaultRules.json";
+			string resourceName = "DigitalZenWorks.MusicToolKit.DefaultRules.json";
 			Assembly thisAssembly = Assembly.GetCallingAssembly();
 
 			using (Stream templateObjectStream =

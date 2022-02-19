@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// Ordered contract resolver class.

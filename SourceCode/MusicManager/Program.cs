@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using DigitalZenWorks.MusicUtility;
+using DigitalZenWorks.MusicToolKit;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
@@ -50,7 +50,7 @@ namespace MusicManager
 					rules = new (rulesData);
 				}
 
-				using DigitalZenWorks.MusicUtility.MusicManager musicUtility = new (rules);
+				using DigitalZenWorks.MusicToolKit.MusicManager musicUtility = new (rules);
 
 				musicUtility.UpdateLibrarySkeleton();
 				musicUtility.CleanMusicLibrary();

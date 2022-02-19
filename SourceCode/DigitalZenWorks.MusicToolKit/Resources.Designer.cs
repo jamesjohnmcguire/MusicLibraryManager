@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DigitalZenWorks.MusicUtility {
+namespace DigitalZenWorks.MusicToolKit {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace DigitalZenWorks.MusicUtility {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DigitalZenWorks.MusicUtility.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DigitalZenWorks.MusicToolKit.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

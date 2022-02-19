@@ -16,7 +16,7 @@ using System.Resources;
 using System.Text;
 using System.Xml;
 
-namespace DigitalZenWorks.MusicUtility
+namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
 	/// iTunes xml file class.
