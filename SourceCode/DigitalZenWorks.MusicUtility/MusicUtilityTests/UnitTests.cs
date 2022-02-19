@@ -261,14 +261,12 @@ namespace DigitalZenWorks.MusicUtility.Tests
 		public void LoadiTunesXmlFile()
 		{
 			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-			string xmlFilePath = location + "iTunes Library.xml";
+			string xmlFilePath = musicUtility.ITunesLibraryXMLPath;
 
 			Dictionary<string, object> result =
 				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
 
-			Log.Info("ITunesPathLocation: " + location);
-			Assert.IsNotEmpty(location);
+			Assert.NotNull(result);
 
 			int count = result.Count;
 			Assert.GreaterOrEqual(count, 1);
