@@ -5,8 +5,6 @@ GOTO default
 @ECHO OFF
 @ECHO usage: Build ^<target type (BuildAll, Test, Publish)^> ^<Configuration (Debug, Release)^> ^<build type (Rebuild, Build, Clean)^>
 @ECHO defaults: Rebuild Release
-@ECHO.
-@ECHO You will need to have msbuild.exe on your path.  You can use the "Developer Command Prompt for VSXXXX" or add "%ProgramFiles(x86)%\MSBuild\XX.0\bin" to your path.
 
 CD %~dp0
 
@@ -35,7 +33,7 @@ REM IF "%1"=="release" CALL VersionUpdate BackUpManager\BackupManager.csproj
 
 IF EXIST Bin\Release\AnyCPU\NUL DEL /Q Bin\Release\AnyCPU\*.*
 
-CALL msbuild -property:Configuration=Release;Platform="Any CPU"
+CALL msbuild -property:Configuration=Release;Platform="Any CPU";Runtimeidentifier=win-x64 /restore
 
 IF "%1"=="release" GOTO release
 GOTO end
