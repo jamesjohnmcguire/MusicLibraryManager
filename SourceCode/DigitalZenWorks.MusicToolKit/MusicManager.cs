@@ -29,9 +29,6 @@ namespace DigitalZenWorks.MusicToolKit
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
-
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
 		private readonly string iTunesLibraryXMLPath;
