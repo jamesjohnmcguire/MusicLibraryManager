@@ -175,18 +175,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "DigitalZenWorks.MusicToolKit.DefaultRules.json";
-			Assembly assembly = typeof(MusicManager).Assembly;
-
-			using Stream templateObjectStream =
-				assembly.GetManifestResourceStream(resourceName);
-
-			Assert.NotNull(templateObjectStream);
-
-			using StreamReader reader = new (templateObjectStream);
-			string contents = reader.ReadToEnd();
-
-			Rules rules = new (contents);
+			Rules rules = GetRules();
 
 			for (int index = 0; index < rules.RulesList.Count; index++)
 			{
@@ -388,6 +377,25 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		private static Rules GetRules()
+		{
+			string resourceName =
+				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
+			Assembly assembly = typeof(MusicManager).Assembly;
+
+			using Stream templateObjectStream =
+				assembly.GetManifestResourceStream(resourceName);
+
+			Assert.NotNull(templateObjectStream);
+
+			using StreamReader reader = new (templateObjectStream);
+			string contents = reader.ReadToEnd();
+
+			Rules rules = new (contents);
+
+			return rules;
 		}
 
 		private static void LogInitialization()
