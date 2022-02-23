@@ -6,14 +6,11 @@
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
-using Newtonsoft.Json;
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
-using TagLib;
 
 namespace DigitalZenWorks.MusicToolKit
 {
