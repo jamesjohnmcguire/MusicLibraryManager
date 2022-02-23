@@ -102,7 +102,6 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
-		[SupportedOSPlatform("windows")]
 		public int CleanMusicLibrary()
 		{
 			// Operate on the actual music files in the file system
