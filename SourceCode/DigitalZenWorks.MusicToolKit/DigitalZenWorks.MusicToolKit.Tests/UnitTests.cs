@@ -265,6 +265,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The run rule disc check method.
 		/// </summary>
 		[Test]
+		public void MediaFileTagsCheck()
+		{
+			using MusicManager musicUtility = new();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName =
+				location + @"Music\10cc\The Very Best Of 10cc\" +
+				@"The Things We Do For Love.mp3";
+
+			Rules rules = GetRules();
+
+			using MediaFileTags tags = new(fileName, location, rules);
+
+			Assert.NotNull(tags);
+			Assert.NotNull(tags.TagFile);
+			Assert.NotNull(tags.TagSet);
+		}
+
+		/// <summary>
+		/// The run rule disc check method.
+		/// </summary>
+		[Test]
 		public void RunRuleDiscCheck()
 		{
 			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
