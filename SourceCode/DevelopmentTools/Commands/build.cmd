@@ -31,15 +31,13 @@ CD ..\..
 REM IF "%1"=="release" CALL VersionUpdate BackUpManagerLibrary\BackupManagerLibrary.csproj
 REM IF "%1"=="release" CALL VersionUpdate BackUpManager\BackupManager.csproj
 
-IF EXIST Bin\Release\AnyCPU\NUL DEL /Q Bin\Release\AnyCPU\*.*
-
-CALL msbuild -property:Configuration=Release;Platform="Any CPU";Runtimeidentifier=win-x64 /restore
+CALL msbuild -property:Configuration=Release;IncludeAllContentForSelfExtract=true;Platform="Any CPU";PublishReadyToRun=true;PublishSingleFile=true;PublishTrimmed=True;Runtimeidentifier=win-x64;SelfContained=true -restore -target:publish;rebuild MusicManager
 
 IF "%1"=="release" GOTO release
 GOTO end
 
 :release
-CD Bin\Release\AnyCPU
+CD Bin\Release\AnyCPU\win-x64\publish
 
 7z u MusicManager.zip .
 
