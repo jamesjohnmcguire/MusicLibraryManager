@@ -474,3 +474,41 @@ iTunes
 	C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes
 Music Manager
 	Program has more than one entry point defined. Compile with /main to specify the type that contains the entry point.	MusicClean
+MusicManager
+		MediaFileTags.cs(137,5): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MediaFileTags.cs(144,6): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MusicManager.cs(47,4): Trim analysis warning IL2072: DigitalZenWorks.MusicToolKit.MusicManager.MusicManager(): '#0' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicParameterlessConstructor' in call to 'System.Activator.CreateInstance(Type)'. The return value of method 'System.Runtime.InteropServices.Marshal.GetTypeFromCLSID(Guid)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(253,7): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetFullPathObject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(277,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetItemSubject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(313,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.SetItemSubject(Object,String,Object): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataSet.WriteXmlSchema(DataSet,XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataSet.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataSet.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataTable.GetXmlSchema()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataTable.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataTable.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		warning IL2104: Assembly 'Common.Logging' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'CSCore' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
+		warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+			error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
+Music Manager
+	"C:\\Users\\JamesMc\\Data\\External\\iTunes Media\\"
+	"C:\\Users\\JamesMc\\Data\\External\\iTunes Library.xml"
+	1) Invalid : 
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\Bin\Release\AnyCPU\DigitalZenWorks.MusicToolKit.Tests.dll
+	  File not found: C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryMan
+	  ager\SourceCode\Bin\Release\AnyCPU\DigitalZenWorks.MusicToolKit.Tests.dll
+
+	 1) Invalid : 
+	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\Bin\Release\Any CPU\DigitalZenWorks.MusicToolKit.Tests.dll
+	  File not found: C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryMan
+	  ager\SourceCode\Bin\Release\Any CPU\DigitalZenWorks.MusicToolKit.Tests.dll
+	  
+
+	CALL dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishReadyToRun=true -p:PublishSingleFile=true --output Binaries\Windows
+
+	C:\Program Files\dotnet\sdk\6.0.200\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.RuntimeIdentifierInference.targets(150,5): error NETSDK1031: It is not supported to build or publish a self-contained application without specifying a RuntimeIdentifier. You must either specify a RuntimeIdentifier or set SelfContained
+	to false. [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\So
+	urceCode\MusicManager\MusicManager.csproj]
