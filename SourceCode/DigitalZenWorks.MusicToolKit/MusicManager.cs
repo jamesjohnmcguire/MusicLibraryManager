@@ -29,9 +29,6 @@ namespace DigitalZenWorks.MusicToolKit
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
-
 		private readonly IITLibraryPlaylist playList;
 		private readonly string iTunesDirectoryLocation;
 		private readonly string iTunesLibraryXMLPath;
@@ -105,7 +102,6 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
-		[SupportedOSPlatform("windows")]
 		public int CleanMusicLibrary()
 		{
 			// Operate on the actual music files in the file system

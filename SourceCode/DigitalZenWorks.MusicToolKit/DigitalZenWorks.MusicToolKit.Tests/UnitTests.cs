@@ -175,18 +175,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			string resourceName = "DigitalZenWorks.MusicToolKit.DefaultRules.json";
-			Assembly assembly = typeof(MusicManager).Assembly;
-
-			using Stream templateObjectStream =
-				assembly.GetManifestResourceStream(resourceName);
-
-			Assert.NotNull(templateObjectStream);
-
-			using StreamReader reader = new (templateObjectStream);
-			string contents = reader.ReadToEnd();
-
-			Rules rules = new (contents);
+			Rules rules = GetRules();
 
 			for (int index = 0; index < rules.RulesList.Count; index++)
 			{
@@ -270,6 +259,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			int count = result.Count;
 			Assert.GreaterOrEqual(count, 1);
+		}
+
+		/// <summary>
+		/// The run rule disc check method.
+		/// </summary>
+		[Test]
+		public void MediaFileTagsCheck()
+		{
+			using MusicManager musicUtility = new();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName =
+				location + @"Music\10cc\The Very Best Of 10cc\" +
+				@"The Things We Do For Love.mp3";
+
+			Rules rules = GetRules();
+
+			using MediaFileTags tags = new(fileName, location, rules);
+
+			Assert.NotNull(tags);
+			Assert.NotNull(tags.TagFile);
+			Assert.NotNull(tags.TagSet);
 		}
 
 		/// <summary>
@@ -388,6 +399,25 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		private static Rules GetRules()
+		{
+			string resourceName =
+				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
+			Assembly assembly = typeof(MusicManager).Assembly;
+
+			using Stream templateObjectStream =
+				assembly.GetManifestResourceStream(resourceName);
+
+			Assert.NotNull(templateObjectStream);
+
+			using StreamReader reader = new (templateObjectStream);
+			string contents = reader.ReadToEnd();
+
+			Rules rules = new (contents);
+
+			return rules;
 		}
 
 		private static void LogInitialization()
