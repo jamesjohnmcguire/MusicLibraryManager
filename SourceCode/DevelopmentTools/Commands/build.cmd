@@ -31,7 +31,7 @@ CD ..\..
 REM IF "%1"=="release" CALL VersionUpdate BackUpManagerLibrary\BackupManagerLibrary.csproj
 REM IF "%1"=="release" CALL VersionUpdate BackUpManager\BackupManager.csproj
 
-CALL msbuild -property:Configuration=Release;IncludeAllContentForSelfExtract=true;Platform="Any CPU";PublishReadyToRun=true;PublishSingleFile=true;PublishTrimmed=True;Runtimeidentifier=win-x64;SelfContained=true -restore -target:publish;rebuild MusicManager
+CALL msbuild -property:Configuration=Release;IncludeAllContentForSelfExtract=true;Platform="Any CPU";PublishReadyToRun=true;PublishSingleFile=true;Runtimeidentifier=win-x64;SelfContained=true -restore -target:publish;rebuild MusicManager
 
 IF "%1"=="release" GOTO release
 GOTO end
