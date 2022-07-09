@@ -512,3 +512,9 @@ Music Manager
 	C:\Program Files\dotnet\sdk\6.0.200\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.RuntimeIdentifierInference.targets(150,5): error NETSDK1031: It is not supported to build or publish a self-contained application without specifying a RuntimeIdentifier. You must either specify a RuntimeIdentifier or set SelfContained
 	to false. [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\So
 	urceCode\MusicManager\MusicManager.csproj]
+Music Manager
+	soundcharts.com
+	muckrack.com
+	Spotify API dashboard
+	Apple Music / iTunes / 
+	Deezer
