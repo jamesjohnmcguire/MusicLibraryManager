@@ -267,7 +267,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MediaFileTagsCheck()
 		{
-			using MusicManager musicUtility = new();
+			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
 			string fileName =
@@ -276,7 +276,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			Rules rules = GetRules();
 
-			using MediaFileTags tags = new(fileName, location, rules);
+			using MediaFileTags tags = new (fileName, location, rules);
 
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);
