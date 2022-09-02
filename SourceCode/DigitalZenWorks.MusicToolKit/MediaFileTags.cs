@@ -222,7 +222,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>An updated album string.</returns>
 		public static string RegexRemove(string pattern, string content)
 		{
-			string output = string.Empty;
+			string output = content;
 
 			if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
 			{
