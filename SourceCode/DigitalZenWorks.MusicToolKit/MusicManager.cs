@@ -248,6 +248,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is FileNotFoundException ||
 				exception is IndexOutOfRangeException ||
 				exception is InvalidOperationException ||
+				exception is NotSupportedException ||
 				exception is NullReferenceException ||
 				exception is IOException ||
 				exception is PathTooLongException ||
