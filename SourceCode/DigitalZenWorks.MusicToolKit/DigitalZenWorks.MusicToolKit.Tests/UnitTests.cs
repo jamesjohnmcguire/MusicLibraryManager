@@ -5,7 +5,9 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
+using DigitalZenWorks.Common.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
@@ -14,6 +16,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
+using CommonLogging = Common.Logging;
 
 [assembly: CLSCompliant(true)]
 
@@ -29,6 +33,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private TagSet tags;
+		private string temporaryPath;
+		private string testFile;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UnitTests"/> class.
@@ -45,6 +51,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			LogInitialization();
 
+			temporaryPath = Path.GetTempFileName();
+			File.Delete(temporaryPath);
+			Directory.CreateDirectory(temporaryPath);
+
+			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
+			bool result = FileUtils.CreateFileFromEmbeddedResource(
+				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
+
+			result = File.Exists(testFile);
+
 			tags = new ();
 
 			string original =
@@ -55,6 +71,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Performers = new string[1];
 			tags.Artists[0] = "Various Artists";
 			tags.Performers[0] = "The Solos";
+		}
+
+		/// <summary>
+		/// One time tear down method.
+		/// </summary>
+		[OneTimeTearDown]
+		public void OneTimeTearDown()
+		{
+			bool result = Directory.Exists(temporaryPath);
+
+			if (true == result)
+			{
+				Directory.Delete(temporaryPath, true);
+			}
 		}
 
 		/// <summary>
@@ -97,6 +127,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveCdNoChange()
+		{
+			string original = "Den Bosh";
+			string album = original;
+
+			album = MediaFileTags.AlbumRemoveCd(album);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// Album remove disc method test.
 		/// </summary>
 		[Test]
@@ -111,6 +158,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveDiscNoChange()
+		{
+			string original = "Den Bosh";
+			string album = original;
+
+			album = MediaFileTags.AlbumRemoveDisc(album);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
 		}
 
 		/// <summary>
@@ -143,6 +207,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Something [In Heaven]";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album replace curly braces method test.
+		/// </summary>
+		[Test]
+		public void AlbumReplaceCurlyBracesNoChange()
+		{
+			string original = "Something In Heaven";
+			string album = original;
+
+			album = MediaFileTags.AlbumReplaceCurlyBraces(album);
+
+			Assert.That(album, Is.EqualTo(original));
 		}
 
 		/// <summary>
@@ -231,6 +309,98 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// Instance Album remove cd method test.
+		/// </summary>
+		[Test]
+		public void InstanceAlbumRemoveCd()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album cd 1";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album cd 1\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album cd 1";
+
+			string album = tags.AlbumRemoveCd();
+
+			File.Delete(newFileName);
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Instance Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void InstanceAlbumRemoveCdNoChange()
+		{
+			string original = "Album";
+			using MediaFileTags tags = new (testFile);
+			tags.Album = original;
+
+			string album = tags.AlbumRemoveCd();
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// Instance Album remove disc method test.
+		/// </summary>
+		[Test]
+		public void InstanceAlbumRemoveDisc()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album (Disk 2)";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album (Disk 2)";
+
+			string album = tags.AlbumRemoveDisc();
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Instance Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void InstanceAlbumRemoveDiscNoChange()
+		{
+			string original = "Album";
+			using MediaFileTags tags = new (testFile);
+			tags.Album = original;
+
+			string album = tags.AlbumRemoveDisc();
+
+			Log.Info("album: " + album);
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// ITunes path location method test.
 		/// </summary>
 		[Test]
@@ -281,6 +451,50 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);
 			Assert.NotNull(tags.TagSet);
+		}
+
+		/// <summary>
+		/// The regex remove result differnt test.
+		/// </summary>
+		[Test]
+		public void RegexRemoveDifferent()
+		{
+			string original = "What It Is! Funky Soul And Rare Grooves cd 1";
+			string content = original;
+			string pattern = @" cd.*?\d";
+			content = MediaFileTags.RegexRemove(pattern, content);
+
+			bool result = original.Equals(content, StringComparison.Ordinal);
+
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The regex remove result same test.
+		/// </summary>
+		[Test]
+		public void RegexRemoveNoPattern()
+		{
+			string original = "What It Is! Funky Soul And Rare Grooves";
+			string content = original;
+			string pattern = null;
+			content = MediaFileTags.RegexRemove(pattern, content);
+
+			Assert.That(content, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// The regex remove result same test.
+		/// </summary>
+		[Test]
+		public void RegexRemoveSame()
+		{
+			string original = "What It Is! Funky Soul And Rare Grooves";
+			string content = original;
+			string pattern = @" cd.*?\d";
+			content = MediaFileTags.RegexRemove(pattern, content);
+
+			Assert.That(content, Is.EqualTo(original));
 		}
 
 		/// <summary>
@@ -446,7 +660,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =
-				new Common.Logging.Serilog.SerilogFactoryAdapter();
+				new CommonLogging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }
