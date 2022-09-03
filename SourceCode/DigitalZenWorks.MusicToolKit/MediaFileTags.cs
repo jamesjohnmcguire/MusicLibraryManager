@@ -6,6 +6,7 @@
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
+using Common.Logging;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -19,6 +20,8 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public class MediaFileTags : IDisposable
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
 		private static readonly ResourceManager StringTable =
 			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
 
@@ -224,10 +227,23 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string output = content;
 
-			if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+			try
 			{
-				output = Regex.Replace(
-					content, pattern, string.Empty, RegexOptions.IgnoreCase);
+				if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+				{
+					output = Regex.Replace(
+						content, pattern,
+						string.Empty,
+						RegexOptions.IgnoreCase);
+				}
+			}
+			catch (Exception exception) when
+			(exception is ArgumentException ||
+			exception is ArgumentNullException ||
+			exception is ArgumentOutOfRangeException ||
+			exception is RegexMatchTimeoutException)
+			{
+				Log.Error(exception.ToString());
 			}
 
 			return output;
