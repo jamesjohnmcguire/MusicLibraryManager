@@ -6,55 +6,32 @@ Process
 	Testing
 
 Tasks
-	Return same value if not different in RegexRemove
-	Catch exceptions in RegexRemove
-	Add bad values test for RegexRemove
-	Add no change test for AlbumRemoveCd
-	Add tests for AlbumReplaceCurlyBraces
-	Add tests for AlbumRemoveDisc
 	Instance tests for AlbumRemoveCd, AlbumRemoveDisc, 
 	Tests for Update, copy all from above
 	Tests for Update, no change
 	Tests for Update, change album, change artist, change title
-	Return filename from SaveTagsToJsonFile
-	Make test for SaveTagsToJsonFile
-	Change skeleton to tagSet
-	Refactor private MediaFileTags tags to be parameter of specific methods 
-	Write name of source when exception in SaveTagsToJsonFile
-	Optimize SaveTagsToJsonFile
-	Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
-
-	Fix updated in Update
-	catch in ITunesXmlFile
 	Test ITunesXmlFile when not existing file
 	Test ITunesXmlFile when existing file
 	Test ITunesXmlFile when not xml file
 	Test ITunesFolderLocation when valid, when null
 	Test LoadItunesXmlFile for valid return 
 	Test LoadItunesXmlFile when invalid
-	TagSet property strangeness
-	Check for existence of iTunesLib
 	MusicManager, Test if rules exist
-	Add command line switch for UpdateLibrarySkeleton
-	MusicManager, expose important current private methods as APIs
-	return value for CleanFile
+	Return filename from SaveTagsToJsonFile
+	Make test for SaveTagsToJsonFile
 	AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
 	Test for CreateAlbumPathFromTag, basic
 	Test for CreateAlbumPathFromTag, regex
 	Test for CreateAlbumPathFromTag, create directory
 	Tests for CreateArtistPathFromTag, same as above
-	Refactor DeleteDeadTracks, into smaller testable methods
-	Refactor FindDuplicates, into smaller testable methods
 	Tests fir GetDulicateLocation
 	Add tests for UpdateFile, same and different
 	Add tests for UpdateItunes
-	UpdateItunesLocation
-	UpdateTrackFromLocation
-	Is OrderedContractResolver being used? necessary?
+	Tests for UpdateItunesLocation
+	Tests for UpdateTrackFromLocation
 	Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
 	Tests for Rule.Run
 	Test ConditionNotEmptyTest
-	Keep GetFullPathObject?
 	Test GetItemSubject
 	Test SetItemSubject
 	Test RegexReplace
@@ -63,9 +40,27 @@ Tasks
 	Test ConditionEqualsTest
 	Test ConditionNotEqualsTest
 	Test ConditionRegexMatch
-	GetConditionalValue
-	IsConditionMet
-	GetRuleByName
+	Tests for GetConditionalValue
+	Tests for IsConditionMet
+	Tests for GetRuleByName
+	Refactor DeleteDeadTracks, into smaller testable methods
+	Refactor FindDuplicates, into smaller testable methods
+	Add command line switch for UpdateLibrarySkeleton
+	MusicManager, expose important current private methods as APIs
+	Change skeleton to tagSet
+	return value for CleanFile
+	Refactor private MediaFileTags tags to be parameter of specific methods 
+	Write name of source when exception in SaveTagsToJsonFile
+	Optimize SaveTagsToJsonFile
+	Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
+	#pragma warning disable CS0618 // Type or member is obsolete
+	Fix updated in Update
+	catch in ITunesXmlFile
+	TagSet property strangeness
+	Check for existence of iTunesLib
+
+	Is OrderedContractResolver being used? necessary?
+	Keep GetFullPathObject?
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
@@ -138,6 +133,12 @@ Tasks
 		error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
 
 	Finished
+		Return same value if not different in RegexRemove
+		Catch exceptions in RegexRemove
+		Add bad values test for RegexRemove
+		Add no change test for AlbumRemoveCd
+		Add tests for AlbumReplaceCurlyBraces
+		Add tests for AlbumRemoveDisc
 		Project '..\MusicUtility\MusicUtility.csproj' targets 'net5.0-windows'. It cannot be referenced by a project that targets '.NETCoreApp,Version=v5.0'.	MusicClean
 		NUnit.Engine.NUnitEngineException : An exception occurred in the driver while loading tests.  ----> System.IO.FileNotFoundException : Could not load file or assembly 'MusicUtility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
 		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203	
