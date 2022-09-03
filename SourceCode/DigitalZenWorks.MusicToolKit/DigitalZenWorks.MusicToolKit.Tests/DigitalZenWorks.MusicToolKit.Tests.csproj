@@ -20,6 +20,7 @@
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
+		<PackageReference Include="DigitalZenWorks.Common.Utilities" Version="1.1.60" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
@@ -45,6 +46,7 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="stylecop.json" />
+		<EmbeddedResource Include="sakura.mp4" />
 	</ItemGroup>
 
 </Project>
