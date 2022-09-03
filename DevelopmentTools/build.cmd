@@ -26,7 +26,7 @@ msbuild MusicLibrary.msbuild.xml /p:BuildType=%buildType%;Configuration=%configu
 
 :default
 CD %~dp0
-CD ..\..
+CD ..
 
 REM IF "%1"=="release" CALL VersionUpdate BackUpManagerLibrary\BackupManagerLibrary.csproj
 REM IF "%1"=="release" CALL VersionUpdate BackUpManager\BackupManager.csproj
