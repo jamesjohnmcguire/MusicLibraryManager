@@ -280,6 +280,26 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
+		private static string CreateAlbumPathFromTag(
+			FileInfo file, string currentPath, string albumTag)
+		{
+			string album = Paths.GetAlbumFromPath(file.FullName);
+			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
+
+			string pattern = @"\.{2,}";
+
+			if (Regex.IsMatch(pathPart, pattern))
+			{
+				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
+			}
+
+			pathPart = pathPart.Trim();
+			string path = Path.Combine(currentPath, pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
+		}
+
 		private static void CreateDirectoryIfNotExists(string path)
 		{
 			DirectoryInfo directory = new (path);
@@ -457,31 +477,9 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private string CreateAlbumPathFromTag(
-			FileInfo file, string currentPath, string albumTag)
-		{
-			string album = Paths.GetAlbumFromPath(
-				file.FullName, iTunesDirectoryLocation);
-			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
-
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(pathPart, pattern))
-			{
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
-			}
-
-			pathPart = pathPart.Trim();
-			string path = Path.Combine(currentPath, pathPart);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
-		}
-
 		private string CreateArtistPathFromTag(FileInfo file, string artistTag)
 		{
-			string artist = Paths.GetArtistFromPath(
-				file.FullName, iTunesDirectoryLocation);
+			string artist = Paths.GetArtistFromPath(file.FullName);
 			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
 
 			string pattern = @"\.{2,}";
