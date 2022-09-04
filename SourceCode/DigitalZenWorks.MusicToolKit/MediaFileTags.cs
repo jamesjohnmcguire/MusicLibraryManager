@@ -123,7 +123,10 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Performers[0] = value;
+				if (TagFile.Tag.Performers.Length > 0)
+				{
+					TagFile.Tag.Performers[0] = value;
+				}
 			}
 		}
 
@@ -232,7 +235,8 @@ namespace DigitalZenWorks.MusicToolKit
 				if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
 				{
 					output = Regex.Replace(
-						content, pattern,
+						content,
+						pattern,
 						string.Empty,
 						RegexOptions.IgnoreCase);
 				}
@@ -286,20 +290,24 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>A value indicating success or not.</returns>
 		public bool Update()
 		{
-			rules.RunRules(this);
+			bool updated = false;
+
+			if (rules != null)
+			{
+				rules.RunRules(this);
+			}
 
 			bool artistUpdated = UpdateArtistTag(filePath);
 
-			bool updated = UpdateAlbumTag(filePath);
+			bool albumUpdated = UpdateAlbumTag(filePath);
 
 			bool titleUpdated = UpdateTitleTag();
 
-			Year = TagFile.Tag.Year;
-
-			if ((true == updated) || (true == artistUpdated) ||
+			if ((true == albumUpdated) || (true == artistUpdated) ||
 				(true == titleUpdated))
 			{
 				TagFile.Save();
+				updated = true;
 			}
 
 			return updated;
@@ -323,13 +331,13 @@ namespace DigitalZenWorks.MusicToolKit
 		private bool UpdateAlbumTag(string fileName)
 		{
 			bool updated = false;
-
+			string orginal = TagFile.Tag.Album;
 			Album = TagFile.Tag.Album;
 
 			// tags are toast, attempt to get from file name
 			if (string.IsNullOrWhiteSpace(Album))
 			{
-				Album = Paths.GetAlbumFromPath(fileName, iTunesLocation);
+				Album = Paths.GetAlbumFromPath(fileName);
 			}
 
 			Album = AlbumRemoveCd();
@@ -372,7 +380,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			if (!Album.Equals(TagFile.Tag.Album, StringComparison.Ordinal))
+			if (!Album.Equals(orginal, StringComparison.Ordinal))
 			{
 				updated = true;
 			}
@@ -407,8 +415,12 @@ namespace DigitalZenWorks.MusicToolKit
 			if (string.IsNullOrWhiteSpace(Artist))
 			{
 				// attempt to get from filename
-				Artist = Paths.GetArtistFromPath(fileName, iTunesLocation);
-				updated = true;
+				Artist = Paths.GetArtistFromPath(fileName);
+
+				if (!string.IsNullOrWhiteSpace(Artist))
+				{
+					updated = true;
+				}
 			}
 
 			if (!string.IsNullOrWhiteSpace(Artist))
@@ -456,9 +468,12 @@ namespace DigitalZenWorks.MusicToolKit
 
 			foreach (string regex in regexes)
 			{
-				if (Regex.IsMatch(Title, regex))
+				string previousTitle = Title;
+				Title = RegexRemove(regex, Title);
+
+				if (!string.IsNullOrWhiteSpace(previousTitle) &&
+					!previousTitle.Equals(Title, StringComparison.Ordinal))
 				{
-					Title = Regex.Replace(Title, regex, string.Empty);
 					updated = true;
 				}
 			}
