@@ -5,7 +5,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>DigitalZenWorks.MusicToolKit.Tests</AssemblyName>
 		<AssemblyVersion>0.2.0.177</AssemblyVersion>
-		<CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<FileVersion>0.2.0.177</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
