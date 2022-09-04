@@ -56,10 +56,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Directory.CreateDirectory(temporaryPath);
 
 			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
-			bool result = FileUtils.CreateFileFromEmbeddedResource(
+			FileUtils.CreateFileFromEmbeddedResource(
 				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
-
-			result = File.Exists(testFile);
 
 			tags = new ();
 
@@ -100,7 +98,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				location + @"Music\10cc\The Very Best Of 10cc\" +
 				@"The Things We Do For Love.mp3";
 
-			string album = Paths.GetAlbumFromPath(fileName, location);
+			string album = Paths.GetAlbumFromPath(fileName);
 
 			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
@@ -238,7 +236,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				location + @"Music\10cc\The Very Best Of 10cc\" +
 				@"The Things We Do For Love.mp3";
 
-			string artist = Paths.GetArtistFromPath(fileName, location);
+			string artist = Paths.GetArtistFromPath(fileName);
 
 			Log.Info("artist: " + artist);
 			Assert.IsNotEmpty(artist);
@@ -613,6 +611,34 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		/// <summary>
+		/// The tag file update change test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateChange()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album (Disk 2)";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album (Disk 2)";
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
 		}
 
 		private static Rules GetRules()
