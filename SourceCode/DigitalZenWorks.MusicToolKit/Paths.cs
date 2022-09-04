@@ -23,22 +23,41 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Get album from path method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
-		/// <param name="iTunesPath">The iTunes path of the path.</param>
 		/// <returns>The album part of the path.</returns>
-		public static string GetAlbumFromPath(string path, string iTunesPath)
+		public static string GetAlbumFromPath(string path)
 		{
-			Dictionary<string, string> exceptions = new ();
-			exceptions.Add("10Cc", "10cc");
+			string album = null;
 
-			string album = GetPathPart(path, iTunesPath, 2);
-			album = GetTitleCase(album);
-
-			foreach (KeyValuePair<string, string> exception in exceptions)
+			if (!string.IsNullOrWhiteSpace(path))
 			{
-				album = album.Replace(
-					exception.Key,
-					exception.Value,
-					StringComparison.OrdinalIgnoreCase);
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 2)
+				{
+					// Assuming file has path structure ending with
+					// artist/album/song.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int albumSegment = pathParts.Length - 2;
+					album = pathParts[albumSegment];
+				}
+			}
+
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				Dictionary<string, string> exceptions = new();
+				exceptions.Add("10Cc", "10cc");
+
+				album = GetTitleCase(album);
+
+				foreach (KeyValuePair<string, string> exception in exceptions)
+				{
+					album = album.Replace(
+						exception.Key,
+						exception.Value,
+						StringComparison.OrdinalIgnoreCase);
+				}
 			}
 
 			return album;
@@ -48,11 +67,26 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Get artist from path method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
-		/// <param name="iTunesPath">The iTunes path of the path.</param>
 		/// <returns>The artist part of the path.</returns>
-		public static string GetArtistFromPath(string path, string iTunesPath)
+		public static string GetArtistFromPath(string path)
 		{
-			string artist = Paths.GetPathPart(path, iTunesPath, 1);
+			string artist = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 3)
+				{
+					// Assuming file has path structure ending with
+					// artist/album/song.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int artistSegment = pathParts.Length - 3;
+					artist = pathParts[artistSegment];
+				}
+			}
 
 			return artist;
 		}
@@ -173,6 +207,14 @@ namespace DigitalZenWorks.MusicToolKit
 			title = GetTitleCase(title);
 
 			return title;
+		}
+
+		private static int GetDirectoryCount(string fileName)
+		{
+			string[] parts = fileName.Split(Path.DirectorySeparatorChar);
+			int depth = parts.Length;
+
+			return depth;
 		}
 
 		private static string GetTitleCase(string title)
