@@ -46,7 +46,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(album))
 			{
-				Dictionary<string, string> exceptions = new();
+				Dictionary<string, string> exceptions = new ();
 				exceptions.Add("10Cc", "10cc");
 
 				album = GetTitleCase(album);
