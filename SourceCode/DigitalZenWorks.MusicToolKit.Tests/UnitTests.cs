@@ -418,12 +418,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MediaFileTagsCheck()
 		{
-			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
-				"The Things We Do For Love.mp3";
-
 			Rules rules = GetRules();
 
-			using MediaFileTags tags = new (fileName, rules);
+			using MediaFileTags tags = new (testFile, rules);
 
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);
@@ -593,6 +590,24 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The tag file update album from path test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumFromPath()
+		{
+			using MediaFileTags tags = new (testFile);
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The tag file update change test.
 		/// </summary>
 		[Test]
@@ -612,6 +627,25 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			bool result = tags.Update();
 			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update no change test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateNoChange()
+		{
+			using MediaFileTags tags = new (testFile);
+			tags.Album = "Album";
+
+			bool result = tags.Update();
+			Assert.False(result);
 
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
