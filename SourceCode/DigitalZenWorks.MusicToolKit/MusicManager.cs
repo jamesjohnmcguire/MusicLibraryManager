@@ -142,8 +142,7 @@ namespace DigitalZenWorks.MusicToolKit
 					string destinationFile =
 						destinationPath + "\\" + sourceFile.Name + ".json";
 
-					tags = new MediaFileTags(
-						sourceFile.FullName, ITunesLibraryLocation, rules);
+					tags = new MediaFileTags(sourceFile.FullName, rules);
 
 					TagSet tagSet = tags.TagSet;
 
@@ -378,7 +377,7 @@ namespace DigitalZenWorks.MusicToolKit
 					message));
 
 				// get and update tags
-				tags = new MediaFileTags(file.FullName, ITunesLibraryLocation, rules);
+				tags = new MediaFileTags(file.FullName, rules);
 				tags.Update();
 
 				// update directory and file names

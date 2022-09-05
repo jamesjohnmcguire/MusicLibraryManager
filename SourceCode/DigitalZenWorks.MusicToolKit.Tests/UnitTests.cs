@@ -91,16 +91,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void AlbumNameGetFromPath()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-
-			string fileName =
-				location + @"Music\10cc\The Very Best Of 10cc\" +
-				@"The Things We Do For Love.mp3";
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
 
 			string album = Paths.GetAlbumFromPath(fileName);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "The Very Best Of 10cc";
@@ -117,7 +112,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = MediaFileTags.AlbumRemoveCd(album);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "Den Bosh";
@@ -135,7 +129,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = MediaFileTags.AlbumRemoveCd(album);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -151,7 +144,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = MediaFileTags.AlbumRemoveDisc(album);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
@@ -169,7 +161,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = MediaFileTags.AlbumRemoveDisc(album);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -186,7 +177,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			album = album.Replace(
 				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "Talking Heads - Brick(2005)";
@@ -227,18 +217,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void ArtistNameGetFromPath()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-
-			Assert.IsNotEmpty(location);
-
-			string fileName =
-				location + @"Music\10cc\The Very Best Of 10cc\" +
-				@"The Things We Do For Love.mp3";
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
 
 			string artist = Paths.GetArtistFromPath(fileName);
 
-			Log.Info("artist: " + artist);
 			Assert.IsNotEmpty(artist);
 
 			string expected = "10cc";
@@ -435,16 +418,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MediaFileTagsCheck()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
-
-			string fileName =
-				location + @"Music\10cc\The Very Best Of 10cc\" +
-				@"The Things We Do For Love.mp3";
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
 
 			Rules rules = GetRules();
 
-			using MediaFileTags tags = new (fileName, location, rules);
+			using MediaFileTags tags = new (fileName, rules);
 
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);

@@ -22,11 +22,11 @@ namespace DigitalZenWorks.MusicToolKit
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly ResourceManager StringTable =
 			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
 
 		private readonly string filePath;
-		private readonly string iTunesLocation;
 		private readonly Rules rules;
 
 		/// <summary>
@@ -50,21 +50,9 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
 		/// </summary>
 		/// <param name="file">The media file.</param>
-		/// <param name="iTunesLocation">The iTunes location.</param>
-		public MediaFileTags(string file, string iTunesLocation)
-			: this(file)
-		{
-			this.iTunesLocation = iTunesLocation;
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
-		/// </summary>
-		/// <param name="file">The media file.</param>
-		/// <param name="iTunesLocation">The iTunes location.</param>
 		/// <param name="rules">The rules to use.</param>
-		public MediaFileTags(string file, string iTunesLocation, Rules rules)
-			: this(file, iTunesLocation)
+		public MediaFileTags(string file, Rules rules)
+			: this(file)
 		{
 			this.rules = rules;
 		}
