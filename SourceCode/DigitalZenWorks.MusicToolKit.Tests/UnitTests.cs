@@ -608,6 +608,144 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The tag file update album remove cd test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumRemoveCd()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album cd 1";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album cd 1\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album cd 1";
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			File.Delete(newFileName);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update album remove curly braces test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumRemoveCurlyBraces()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album {In Heaven}";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album {In Heaven}\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album {In Heaven}";
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			File.Delete(newFileName);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album [In Heaven]";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update album remove disc test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumRemoveDisc()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album (Disk 2)";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album (Disk 2)";
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			File.Delete(newFileName);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update album remove flac test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumRemoveFlac()
+		{
+			string newPath =
+				temporaryPath + @"\Artist\Album[FLAC]";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album[FLAC]\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			using MediaFileTags tags = new (newFileName);
+			tags.Album = "Album[FLAC]";
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			File.Delete(newFileName);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update artist from path test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateArtistFromPath()
+		{
+			using MediaFileTags tags = new (testFile);
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			string artist = tags.Artist;
+			Assert.IsNotEmpty(artist);
+
+			string expected = "Artist";
+			Assert.That(artist, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The tag file update change test.
 		/// </summary>
 		[Test]
@@ -642,8 +780,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateNoChange()
 		{
 			using MediaFileTags tags = new (testFile);
+			tags.Artist = "Artist";
 			tags.Album = "Album";
+			tags.Title = "Sakura";
+			tags.Update();
 
+			tags.Album = "Album";
 			bool result = tags.Update();
 			Assert.False(result);
 
@@ -652,6 +794,24 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Album";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update title from path test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateTitleFromPath()
+		{
+			using MediaFileTags tags = new(testFile);
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			string title = tags.Title;
+			Assert.IsNotEmpty(title);
+
+			string expected = "Sakura";
+			Assert.That(title, Is.EqualTo(expected));
 		}
 
 		private static Rules GetRules()
