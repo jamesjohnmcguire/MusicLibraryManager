@@ -29,6 +29,8 @@ namespace DigitalZenWorks.MusicToolKit
 		private readonly string filePath;
 		private readonly Rules rules;
 
+		private string artist;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
 		/// </summary>
@@ -82,27 +84,28 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			get
 			{
-				string artist = null;
-
-				if ((TagFile.Tag.Performers != null) &&
-					(TagFile.Tag.Performers.Length > 0))
-				{
-					artist = TagFile.Tag.Performers[0];
-				}
-
 				if (string.IsNullOrWhiteSpace(artist))
 				{
-					if (TagFile.Tag.AlbumArtists.Length > 0)
+					if ((TagFile.Tag.Performers != null) &&
+						(TagFile.Tag.Performers.Length > 0))
 					{
-						artist = TagFile.Tag.AlbumArtists[0];
+						artist = TagFile.Tag.Performers[0];
 					}
-				}
 
-				if (string.IsNullOrWhiteSpace(artist))
-				{
-					if (TagFile.Tag.Artists.Length > 0)
+					if (string.IsNullOrWhiteSpace(artist))
 					{
-						artist = TagFile.Tag.Artists[0];
+						if (TagFile.Tag.AlbumArtists.Length > 0)
+						{
+							artist = TagFile.Tag.AlbumArtists[0];
+						}
+					}
+
+					if (string.IsNullOrWhiteSpace(artist))
+					{
+						if (TagFile.Tag.Artists.Length > 0)
+						{
+							artist = TagFile.Tag.Artists[0];
+						}
 					}
 				}
 
@@ -111,10 +114,12 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				if (TagFile.Tag.Performers.Length > 0)
-				{
-					TagFile.Tag.Performers[0] = value;
-				}
+				artist = value;
+
+				string[] artists = new string[1];
+				artists[0] = artist;
+
+				TagFile.Tag.Performers = artists;
 			}
 		}
 
@@ -158,13 +163,37 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets or sets the title.
 		/// </summary>
 		/// <value>The title.</value>
-		public string Title { get; set; }
+		public string Title
+		{
+			get
+			{
+				return TagFile.Tag.Title;
+			}
+
+			set
+			{
+				TagFile.Tag.Title = value;
+			}
+		}
+
 
 		/// <summary>
 		/// Gets or sets the year.
 		/// </summary>
 		/// <value>The year.</value>
-		public uint Year { get; set; }
+		public uint Year
+		{
+			get
+			{
+				return TagFile.Tag.Year;
+			}
+
+			set
+			{
+				TagFile.Tag.Year = value;
+			}
+		}
+
 
 		/// <summary>
 		/// Album remove cd method.
@@ -451,31 +480,44 @@ namespace DigitalZenWorks.MusicToolKit
 
 			Title = TagFile.Tag.Title;
 
-			string[] regexes =
-				new string[] { @" \[.*?\]", @" \(.*?\)" };
-
-			foreach (string regex in regexes)
+			if (string.IsNullOrEmpty(Title))
 			{
-				string previousTitle = Title;
-				Title = RegexRemove(regex, Title);
+				Title = Paths.GetTitleFromPath(filePath);
 
-				if (!string.IsNullOrWhiteSpace(previousTitle) &&
-					!previousTitle.Equals(Title, StringComparison.Ordinal))
+				if (!string.IsNullOrEmpty(Title))
 				{
 					updated = true;
 				}
 			}
 
-			if ((!string.IsNullOrWhiteSpace(Artist)) &&
-				Title.Contains(
-					Artist + " - ", StringComparison.OrdinalIgnoreCase))
+			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = Title.Replace(
-					Artist + " - ",
-					string.Empty,
-					StringComparison.OrdinalIgnoreCase);
-				TagFile.Tag.Title = Title;
-				updated = true;
+				string[] regexes =
+				new string[] { @" \[.*?\]", @" \(.*?\)" };
+
+				foreach (string regex in regexes)
+				{
+					string previousTitle = Title;
+					Title = RegexRemove(regex, Title);
+
+					if (!string.IsNullOrWhiteSpace(previousTitle) &&
+						!previousTitle.Equals(Title, StringComparison.Ordinal))
+					{
+						updated = true;
+					}
+				}
+
+				if ((!string.IsNullOrWhiteSpace(Artist)) &&
+					Title.Contains(
+						Artist + " - ", StringComparison.OrdinalIgnoreCase))
+				{
+					Title = Title.Replace(
+						Artist + " - ",
+						string.Empty,
+						StringComparison.OrdinalIgnoreCase);
+					TagFile.Tag.Title = Title;
+					updated = true;
+				}
 			}
 
 			return updated;
