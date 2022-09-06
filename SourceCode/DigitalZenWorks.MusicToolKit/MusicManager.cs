@@ -657,8 +657,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			path = CreateAlbumPathFromTag(file, path, tags.Album);
 
-			string title = Paths.GetTitleFromPath(
-				file.FullName, ITunesLibraryLocation);
+			string title = Paths.GetTitleFromPath(file.FullName);
 			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
 
 			string filePath = path + "\\" + pathPart + file.Extension;

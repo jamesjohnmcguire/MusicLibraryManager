@@ -199,11 +199,28 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Get title from path method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
-		/// <param name="iTunesPath">The iTunes path of the path.</param>
 		/// <returns>The title part of the path.</returns>
-		public static string GetTitleFromPath(string path, string iTunesPath)
+		public static string GetTitleFromPath(string path)
 		{
-			string title = GetPathPart(path, iTunesPath, 3);
+			string title = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 0)
+				{
+					// Assuming the last part of the path structure has the
+					// song title.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int titleSegment = pathParts.Length - 1;
+					title = pathParts[titleSegment];
+					title = Path.GetFileNameWithoutExtension(title);
+				}
+			}
+
 			title = GetTitleCase(title);
 
 			return title;
