@@ -6,13 +6,6 @@ Process
 	Testing
 
 Tasks
-	Instance tests for AlbumRemoveCd, AlbumRemoveDisc, 
-	Tests for Update, copy all from above
-	Tests for Update, no change
-	Tests for Update, change album, change artist, change title
-	Test ITunesXmlFile when not existing file
-	Test ITunesXmlFile when existing file
-	Test ITunesXmlFile when not xml file
 	Test ITunesFolderLocation when valid, when null
 	Test LoadItunesXmlFile for valid return 
 	Test LoadItunesXmlFile when invalid
@@ -43,9 +36,20 @@ Tasks
 	Tests for GetConditionalValue
 	Tests for IsConditionMet
 	Tests for GetRuleByName
+	ITunesFolderLocation / ITunesDirectoryLocation
+	Refactor ITunesXmlFile
 	Refactor DeleteDeadTracks, into smaller testable methods
 	Refactor FindDuplicates, into smaller testable methods
+	Migrate custom functionality from GetAlbumFromPath
+	Warning	CA1031	Modify 'UpdateItunesLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	748	Active
+	Warning	CA1031	Modify 'UpdateTrackFromLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	815	Active
+	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+	Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
 	Add command line switch for UpdateLibrarySkeleton
+	What if com component doesn't exist?
+	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
 	Change skeleton to tagSet
 	return value for CleanFile
@@ -72,7 +76,7 @@ Tasks
 		C:\Program Files\dotnet\sdk\5.0.101\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): error NETSDK1004: Assets file 'MusicUtility\obj\project.assets.json' not found. Run a NuGet package restore to generate this file. MusicUtility\MusicUtility.csproj
 		FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
 		MusicLibraryManager\SourceCode\MusicClean\MusicClean.csproj(21,2): error MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
-		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\MusicUtility\MusicUtility.csproj]
+		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [MusicUtility\MusicUtility.csproj]
 Tasks
 	many "* 1".* songs
 	convert flac files
@@ -133,6 +137,13 @@ Tasks
 		error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
 
 	Finished
+		Test ITunesXmlFile when not xml file
+		Test ITunesXmlFile when existing file
+		Test ITunesXmlFile when not existing file
+		Tests for Update, copy all from above
+		Tests for Update, no change
+		Tests for Update, change album, change artist, change title
+		Instance tests for AlbumRemoveCd, AlbumRemoveDisc, 
 		Return same value if not different in RegexRemove
 		Catch exceptions in RegexRemove
 		Add bad values test for RegexRemove
@@ -240,6 +251,16 @@ Design
 				MoveFileBasedOnTags(file);
 						File.Move
 				iTunes.LibraryPlaylist.AddFile(track);
+	if song ends with ' \d'
+		check if song exists without ' \d'
+		if song exists
+			check if the same
+			if same
+				delete song with ' \d'
+				adjust itunes playlist, as needed
+		else
+			rename song
+			adjust itunes playlist, as needed
 	Rules
 		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
 
