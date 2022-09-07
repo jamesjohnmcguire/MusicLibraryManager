@@ -395,6 +395,45 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// iTunes Xml Create with invalid file test.
+		/// </summary>
+		[Test]
+		public void ItunesXmlFileCreateInvalidFile()
+		{
+			ITunesXmlFile iTunesXmlFile = null;
+
+			string nonExistantFilePath = Path.GetTempFileName();
+			File.Delete(nonExistantFilePath);
+
+			FileNotFoundException exception =
+				Assert.Throws<FileNotFoundException>(() =>
+				iTunesXmlFile = new ITunesXmlFile(nonExistantFilePath));
+
+			Assert.NotNull(exception);
+
+			Assert.Null(iTunesXmlFile);
+		}
+
+		/// <summary>
+		/// iTunes Xml Create success test.
+		/// </summary>
+		[Test]
+		public void ItunesXmlFileCreateSuccess()
+		{
+			ITunesXmlFile iTunesXmlFile = null;
+
+			string xmlFile = Path.GetTempFileName();
+			File.Delete(xmlFile);
+
+			FileUtils.CreateFileFromEmbeddedResource(
+				"DigitalZenWorks.MusicToolKit.Tests.XMLFile.xml", xmlFile);
+
+			iTunesXmlFile = new ITunesXmlFile(xmlFile);
+
+			Assert.NotNull(iTunesXmlFile);
+		}
+
+		/// <summary>
 		/// Load iTunes XML file method test.
 		/// </summary>
 		[Test]
@@ -410,6 +449,35 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			int count = result.Count;
 			Assert.GreaterOrEqual(count, 1);
+		}
+
+		/// <summary>
+		/// Load iTunes XML file not exists test.
+		/// </summary>
+		[Test]
+		public void LoadiTunesXmlFileNotExists()
+		{
+			string temporaryPath = Path.GetTempFileName();
+			File.Delete(temporaryPath);
+
+			Dictionary<string, object> result =
+				ITunesXmlFile.LoadItunesXmlFile(temporaryPath);
+
+			Assert.Null(result);
+		}
+
+		/// <summary>
+		/// Load iTunes XML file not xml filetest.
+		/// </summary>
+		[Test]
+		public void LoadiTunesXmlFileNotXmlFile()
+		{
+			string temporaryPath = Path.GetTempFileName();
+
+			Dictionary<string, object> result =
+				ITunesXmlFile.LoadItunesXmlFile(temporaryPath);
+
+			Assert.Null(result);
 		}
 
 		/// <summary>
