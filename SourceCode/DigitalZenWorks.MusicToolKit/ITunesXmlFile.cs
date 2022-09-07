@@ -46,11 +46,18 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="filePath">The path to iTunes xml file.</param>
 		public ITunesXmlFile(string filePath)
 		{
-			libraryXMLPath = filePath;
+			if (File.Exists(filePath))
+			{
+				libraryXMLPath = filePath;
 
-			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
-			xmlDocument = new XmlDocument();
-			xmlDocument.LoadXml(fileText);
+				string fileText = File.ReadAllText(filePath, Encoding.UTF8);
+				xmlDocument = new XmlDocument();
+				xmlDocument.LoadXml(fileText);
+			}
+			else
+			{
+				throw new FileNotFoundException();
+			}
 		}
 
 		/// <summary>
