@@ -43,13 +43,24 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		public MusicManager()
 		{
-			// Create a reference to iTunes
-			iTunes = new iTunesLib.iTunesApp();
-			playList = iTunes.LibraryPlaylist;
-			iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
+			try
+			{
+				// Create a reference to iTunes
+				iTunes = new iTunesLib.iTunesApp();
+			}
+			catch (System.Runtime.InteropServices.COMException exception)
+			{
+				Log.Warn(exception.ToString());
+			}
 
-			ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
-			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+			if (iTunes != null)
+			{
+				playList = iTunes.LibraryPlaylist;
+				iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
+
+				ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
+				iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+			}
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
 			librarySkeletonDirectoryLocation = temp + "Skeleton";
