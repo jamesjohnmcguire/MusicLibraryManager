@@ -22,14 +22,11 @@ namespace DigitalZenWorks.MusicToolKit
 	/// iTunes xml file class.
 	/// </summary>
 	/// <remarks>
-	/// The itunes xml file appears to be longer maintained by iTunes.
-	/// Although it might be present, it will likely not contain the latest
-	/// library information.
+	/// The itunes xml file appeared to be no longer maintained by iTunes. But,
+	/// currently it seems that is is being consistently updated as an export
+	/// of the binary database.
 	///
-	/// Thus, this class is no longer used.  But kept as it might sometime be
-	/// useful.
-	///
-	/// Furthermore, some web oriented URI decoding was required that put an
+	/// Some web oriented URI decoding was required that put an
 	/// usual dependency on System.Web, which is usually only used in web
 	/// applications.  If this is ever needed again, add <ItemGroup><Reference
 	/// Include = "System.Web" /></ItemGroup> to your csproj file and enable
@@ -49,11 +46,18 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="filePath">The path to iTunes xml file.</param>
 		public ITunesXmlFile(string filePath)
 		{
-			libraryXMLPath = filePath;
+			if (File.Exists(filePath))
+			{
+				libraryXMLPath = filePath;
 
-			string fileText = File.ReadAllText(filePath, Encoding.UTF8);
-			xmlDocument = new XmlDocument();
-			xmlDocument.LoadXml(fileText);
+				string fileText = File.ReadAllText(filePath, Encoding.UTF8);
+				xmlDocument = new XmlDocument();
+				xmlDocument.LoadXml(fileText);
+			}
+			else
+			{
+				throw new FileNotFoundException();
+			}
 		}
 
 		/// <summary>

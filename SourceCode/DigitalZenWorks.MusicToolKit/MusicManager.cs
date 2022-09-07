@@ -43,13 +43,24 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		public MusicManager()
 		{
-			// Create a reference to iTunes
-			iTunes = new iTunesLib.iTunesApp();
-			playList = iTunes.LibraryPlaylist;
-			iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
+			try
+			{
+				// Create a reference to iTunes
+				iTunes = new iTunesLib.iTunesApp();
+			}
+			catch (System.Runtime.InteropServices.COMException exception)
+			{
+				Log.Warn(exception.ToString());
+			}
 
-			ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
-			iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+			if (iTunes != null)
+			{
+				playList = iTunes.LibraryPlaylist;
+				iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
+
+				ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
+				iTunesDirectoryLocation = iTunesXmlFile.ITunesFolderLocation;
+			}
 
 			string temp = iTunesDirectoryLocation.Trim('\\');
 			librarySkeletonDirectoryLocation = temp + "Skeleton";
@@ -142,8 +153,7 @@ namespace DigitalZenWorks.MusicToolKit
 					string destinationFile =
 						destinationPath + "\\" + sourceFile.Name + ".json";
 
-					tags = new MediaFileTags(
-						sourceFile.FullName, ITunesLibraryLocation, rules);
+					tags = new MediaFileTags(sourceFile.FullName, rules);
 
 					TagSet tagSet = tags.TagSet;
 
@@ -248,6 +258,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is FileNotFoundException ||
 				exception is IndexOutOfRangeException ||
 				exception is InvalidOperationException ||
+				exception is NotSupportedException ||
 				exception is NullReferenceException ||
 				exception is IOException ||
 				exception is PathTooLongException ||
@@ -277,6 +288,26 @@ namespace DigitalZenWorks.MusicToolKit
 					tags = null;
 				}
 			}
+		}
+
+		private static string CreateAlbumPathFromTag(
+			FileInfo file, string currentPath, string albumTag)
+		{
+			string album = Paths.GetAlbumFromPath(file.FullName);
+			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
+
+			string pattern = @"\.{2,}";
+
+			if (Regex.IsMatch(pathPart, pattern))
+			{
+				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
+			}
+
+			pathPart = pathPart.Trim();
+			string path = Path.Combine(currentPath, pathPart);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
 		}
 
 		private static void CreateDirectoryIfNotExists(string path)
@@ -357,7 +388,7 @@ namespace DigitalZenWorks.MusicToolKit
 					message));
 
 				// get and update tags
-				tags = new MediaFileTags(file.FullName, ITunesLibraryLocation, rules);
+				tags = new MediaFileTags(file.FullName, rules);
 				tags.Update();
 
 				// update directory and file names
@@ -456,31 +487,9 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private string CreateAlbumPathFromTag(
-			FileInfo file, string currentPath, string albumTag)
-		{
-			string album = Paths.GetAlbumFromPath(
-				file.FullName, iTunesDirectoryLocation);
-			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
-
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(pathPart, pattern))
-			{
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
-			}
-
-			pathPart = pathPart.Trim();
-			string path = Path.Combine(currentPath, pathPart);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
-		}
-
 		private string CreateArtistPathFromTag(FileInfo file, string artistTag)
 		{
-			string artist = Paths.GetArtistFromPath(
-				file.FullName, iTunesDirectoryLocation);
+			string artist = Paths.GetArtistFromPath(file.FullName);
 			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
 
 			string pattern = @"\.{2,}";
@@ -659,8 +668,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			path = CreateAlbumPathFromTag(file, path, tags.Album);
 
-			string title = Paths.GetTitleFromPath(
-				file.FullName, ITunesLibraryLocation);
+			string title = Paths.GetTitleFromPath(file.FullName);
 			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
 
 			string filePath = path + "\\" + pathPart + file.Extension;
