@@ -22,9 +22,9 @@ namespace DigitalZenWorks.MusicToolKit
 	/// iTunes xml file class.
 	/// </summary>
 	/// <remarks>
-	/// The itunes xml file appeared to be longer maintained by iTunes.  But,
-	/// currently it seems that is no being consistent updated as an export of
-	/// the binary database.
+	/// The itunes xml file appeared to be no longer maintained by iTunes. But,
+	/// currently it seems that is is being consistently updated as an export
+	/// of the binary database.
 	///
 	/// Some web oriented URI decoding was required that put an
 	/// usual dependency on System.Web, which is usually only used in web
