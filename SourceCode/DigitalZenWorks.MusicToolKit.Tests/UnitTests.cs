@@ -6,6 +6,7 @@
 
 using Common.Logging;
 using DigitalZenWorks.Common.Utilities;
+using iTunesLib;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Serilog;
@@ -13,6 +14,7 @@ using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -209,6 +211,45 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Talking Heads - Brick(2005)";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The are file and track the same yes test.
+		/// </summary>
+		[Test]
+		public void AreFileAndTrackTheSameYes()
+		{
+			using MusicManager musicUtility = new ();
+
+			iTunesApp iTunes = musicUtility.ItunesCom;
+
+			if (iTunes != null)
+			{
+				string searchName = "The Things We Do For Love";
+
+				IITLibraryPlaylist playList = iTunes.LibraryPlaylist;
+				IITTrackCollection tracks = playList.Search(
+					searchName,
+					ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+
+				Assert.NotNull(tracks);
+
+				if (null != tracks)
+				{
+					string fileName = musicUtility.ITunesLibraryLocation +
+						@"\Music\10cc\The Very Best Of 10cc\" +
+						"The Things We Do For Love.mp3";
+					MediaFileTags tags = new (fileName);
+					musicUtility.Tags = tags;
+
+					// tracks is a list of potential matches
+					foreach (IITTrack track in tracks)
+					{
+						bool same = musicUtility.AreFileAndTrackTheSame(track);
+						Assert.True(same);
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -496,6 +537,44 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForRules()
+		{
+			using MusicManager musicManager = new ();
+
+			Rules rules = musicManager.Rules;
+
+			Assert.NotNull(rules);
+		}
+
+		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForSameRules()
+		{
+			Rules rules = GetRules();
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				@"\s*\(Disk).*?\)",
+				Operation.Remove);
+
+			rules.RulesList.Add(rule);
+
+			using MusicManager musicManager = new (rules);
+
+			Rules rules2 = musicManager.Rules;
+
+			int count1 = rules.RulesList.Count;
+			int count2 = rules2.RulesList.Count;
+			Assert.AreEqual(count1, count2);
+		}
+
+		/// <summary>
 		/// The regex remove result differnt test.
 		/// </summary>
 		[Test]
@@ -655,6 +734,44 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		/// <summary>
+		/// The save tags to json file success test.
+		/// </summary>
+		[Test]
+		public void SaveTagsToJsonFile()
+		{
+			using MusicManager musicUtility = new ();
+
+			string temporaryFile = Path.GetTempFileName();
+			FileInfo fileInfo = new FileInfo(temporaryFile);
+			string destinationPath = Path.GetDirectoryName(temporaryFile);
+			bool result =
+				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The save tags to json file success test.
+		/// </summary>
+		[Test]
+		public void SaveTagsToJsonFileSuccess()
+		{
+			using MusicManager musicUtility = new ();
+
+			FileInfo fileInfo = new FileInfo(testFile);
+			string destinationPath = Path.GetDirectoryName(testFile);
+			bool result =
+				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+
+			Assert.True(result);
+			string destinationFile =
+				destinationPath + "\\" + fileInfo.Name + ".json";
+
+			result = File.Exists(destinationFile);
+			Assert.True(result);
 		}
 
 		/// <summary>
@@ -870,7 +987,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateTitleFromPath()
 		{
-			using MediaFileTags tags = new(testFile);
+			using MediaFileTags tags = new (testFile);
 
 			bool result = tags.Update();
 			Assert.True(result);

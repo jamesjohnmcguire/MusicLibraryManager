@@ -6,12 +6,6 @@ Process
 	Testing
 
 Tasks
-	Test ITunesFolderLocation when valid, when null
-	Test LoadItunesXmlFile for valid return 
-	Test LoadItunesXmlFile when invalid
-	MusicManager, Test if rules exist
-	Return filename from SaveTagsToJsonFile
-	Make test for SaveTagsToJsonFile
 	AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
 	Test for CreateAlbumPathFromTag, basic
 	Test for CreateAlbumPathFromTag, regex
@@ -37,54 +31,43 @@ Tasks
 	Tests for IsConditionMet
 	Tests for GetRuleByName
 	ITunesFolderLocation / ITunesDirectoryLocation
+	Conditional check for existence of iTunesLib, before using everywhere
+	MusicManager(libraryLocation)
 	Refactor ITunesXmlFile
 	Refactor DeleteDeadTracks, into smaller testable methods
 	Refactor FindDuplicates, into smaller testable methods
 	Migrate custom functionality from GetAlbumFromPath
+	Move iTunes related functionality to its own class
 	Warning	CA1031	Modify 'UpdateItunesLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	748	Active
 	Warning	CA1031	Modify 'UpdateTrackFromLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	815	Active
 	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
 	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
 	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
 	Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
+	Return filename from SaveTagsToJsonFile
 	Add command line switch for UpdateLibrarySkeleton
-	What if com component doesn't exist?
 	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
 	Change skeleton to tagSet
 	return value for CleanFile
 	Refactor private MediaFileTags tags to be parameter of specific methods 
 	Write name of source when exception in SaveTagsToJsonFile
-	Optimize SaveTagsToJsonFile
+	Optimize SaveTagsToJsonFile, so to not save if content is the same
 	Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
 	#pragma warning disable CS0618 // Type or member is obsolete
-	Fix updated in Update
-	catch in ITunesXmlFile
 	TagSet property strangeness
-	Check for existence of iTunesLib
-
-	Is OrderedContractResolver being used? necessary?
 	Keep GetFullPathObject?
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
 	Property set method not found.
 	Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
-		exception	{"Data at the root level is invalid. Line 1, position 1."}	System.Exception {System.Xml.XmlException}	MusicUtility\\ITunesXmlFile.cs:line 41
-		MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
-		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. MusicUtility\MusicUtility.csproj
-		C:\Program Files\dotnet\sdk\5.0.101\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): error NETSDK1004: Assets file 'MusicUtility\obj\project.assets.json' not found. Run a NuGet package restore to generate this file. MusicUtility\MusicUtility.csproj
-		FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
-		MusicLibraryManager\SourceCode\MusicClean\MusicClean.csproj(21,2): error MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
-		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [MusicUtility\MusicUtility.csproj]
-Tasks
 	many "* 1".* songs
 	convert flac files
 	https://github.com/josephw/titl
 	Many almost duplicates
 	Missing Artwork   Neil Young & Crazy Horse Rust Never Sleeps [320 Kbps]\AlbumArt_{5E574596-5561-4491-9CB4-3E5C7BFD6945}_Large.jpg
 	System.IO.FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
-
 	Replace all Console.WriteLine	with logging
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
 	Rename skeleton methods
@@ -134,9 +117,18 @@ Tasks
 	warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 	warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
-		error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
 
 	Finished
+		Is OrderedContractResolver being used? necessary?
+		catch in ITunesXmlFile
+		Fix updated in Update
+		Make test for SaveTagsToJsonFile
+		What if com component doesn't exist?
+		Check for existence of iTunesLib
+		Test ITunesFolderLocation when valid, when null
+		Test LoadItunesXmlFile for valid return 
+		Test LoadItunesXmlFile when invalid
+		MusicManager, Test if rules exist
 		Test ITunesXmlFile when not xml file
 		Test ITunesXmlFile when existing file
 		Test ITunesXmlFile when not existing file
@@ -150,6 +142,14 @@ Tasks
 		Add no change test for AlbumRemoveCd
 		Add tests for AlbumReplaceCurlyBraces
 		Add tests for AlbumRemoveDisc
+		exception	{"Data at the root level is invalid. Line 1, position 1."}	System.Exception {System.Xml.XmlException}	MusicUtility\\ITunesXmlFile.cs:line 41
+		MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
+		error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
+		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. MusicUtility\MusicUtility.csproj
+		C:\Program Files\dotnet\sdk\5.0.101\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): error NETSDK1004: Assets file 'MusicUtility\obj\project.assets.json' not found. Run a NuGet package restore to generate this file. MusicUtility\MusicUtility.csproj
+		FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
+		MusicLibraryManager\SourceCode\MusicClean\MusicClean.csproj(21,2): error MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
+		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [MusicUtility\MusicUtility.csproj]
 		Project '..\MusicUtility\MusicUtility.csproj' targets 'net5.0-windows'. It cannot be referenced by a project that targets '.NETCoreApp,Version=v5.0'.	MusicClean
 		NUnit.Engine.NUnitEngineException : An exception occurred in the driver while loading tests.  ----> System.IO.FileNotFoundException : Could not load file or assembly 'MusicUtility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
 		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203	

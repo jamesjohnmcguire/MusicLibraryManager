@@ -86,7 +86,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets the iTunes Application Com Reference.
 		/// </summary>
 		/// <value>The iTunes Application Com Reference.</value>
-		public iTunesApp ItunesCom { get; }
+		public iTunesApp ItunesCom { get { return iTunes; } }
 
 		/// <summary>
 		/// Gets the iTunes libary location.
