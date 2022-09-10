@@ -356,7 +356,7 @@ namespace DigitalZenWorks.MusicToolKit
 			return rules;
 		}
 
-		private bool AreFileAndTrackTheSame(IITTrack track)
+		public bool AreFileAndTrackTheSame(IITTrack track)
 		{
 			bool same = false;
 
