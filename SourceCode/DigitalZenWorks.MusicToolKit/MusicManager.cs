@@ -721,7 +721,7 @@ namespace DigitalZenWorks.MusicToolKit
 			return file;
 		}
 
-		public IITTrackCollection UpdateItunes(FileInfo file)
+		private IITTrackCollection UpdateItunes(FileInfo file)
 		{
 			string searchName = Path.GetFileNameWithoutExtension(file.Name);
 
