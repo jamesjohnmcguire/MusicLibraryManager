@@ -125,6 +125,52 @@ namespace DigitalZenWorks.MusicToolKit
 		public Rules Rules { get { return rules; } }
 
 		/// <summary>
+		/// Are file and track the same method.
+		/// </summary>
+		/// <param name="track">The iTunes track to check.</param>
+		/// <returns>A value indicating whether they are the same
+		/// or not.</returns>
+		public bool AreFileAndTrackTheSame(IITTrack track)
+		{
+			bool same = false;
+
+			if (track != null)
+			{
+				try
+				{
+					string album1 = track.Album;
+					string album2 = tags.Album;
+					string artist1 = track.Artist;
+					string artist2 = tags.Artist;
+					string title1 = track.Name;
+					string title2 = tags.Title;
+					int year1 = track.Year;
+					int year2 = (int)tags.Year;
+
+					if (string.Equals(
+						album1, album2, StringComparison.OrdinalIgnoreCase) &&
+						string.Equals(
+							artist1, artist2, StringComparison.OrdinalIgnoreCase) &&
+						string.Equals(
+							title1, title2, StringComparison.OrdinalIgnoreCase) &&
+						(year1 == year2))
+					{
+						same = true;
+					}
+				}
+				catch (Exception exception) when
+					(exception is ArgumentException ||
+					exception is ArgumentNullException)
+				{
+					Log.Error(CultureInfo.InvariantCulture, m => m(
+						exception.ToString()));
+				}
+			}
+
+			return same;
+		}
+
+		/// <summary>
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
@@ -363,43 +409,6 @@ namespace DigitalZenWorks.MusicToolKit
 			rules = new Rules(contents);
 
 			return rules;
-		}
-
-		public bool AreFileAndTrackTheSame(IITTrack track)
-		{
-			bool same = false;
-
-			try
-			{
-				string album1 = track.Album;
-				string album2 = tags.Album;
-				string artist1 = track.Artist;
-				string artist2 = tags.Artist;
-				string title1 = track.Name;
-				string title2 = tags.Title;
-				int year1 = track.Year;
-				int year2 = (int)tags.Year;
-
-				if (string.Equals(
-					album1, album2, StringComparison.OrdinalIgnoreCase) &&
-					string.Equals(
-						artist1, artist2, StringComparison.OrdinalIgnoreCase) &&
-					string.Equals(
-						title1, title2, StringComparison.OrdinalIgnoreCase) &&
-					(year1 == year2))
-				{
-					same = true;
-				}
-			}
-			catch (Exception exception) when
-				(exception is ArgumentException ||
-				exception is ArgumentNullException)
-			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
-			}
-
-			return same;
 		}
 
 		private void CleanFile(FileInfo file)
