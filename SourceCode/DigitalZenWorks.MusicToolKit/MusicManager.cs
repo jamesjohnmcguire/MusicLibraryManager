@@ -89,6 +89,15 @@ namespace DigitalZenWorks.MusicToolKit
 		public iTunesApp ItunesCom { get { return iTunes; } }
 
 		/// <summary>
+		/// Gets or sets the file tags object.
+		/// </summary>
+		/// <value>The file tags object.</value>
+		public MediaFileTags Tags
+		{
+			get { return tags; } set { tags = value; }
+		}
+
+		/// <summary>
 		/// Gets the iTunes libary location.
 		/// </summary>
 		/// <value>The iTunes libary location.</value>
