@@ -143,9 +143,13 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
 		/// <param name="destinationPath">The destination path.</param>
-		public void SaveTagsToJsonFile(
+		/// <returns>A value indicating if the method was successful
+		/// or not.</returns>
+		public bool SaveTagsToJsonFile(
 			FileInfo sourceFile, string destinationPath)
 		{
+			bool result = false;
+
 			try
 			{
 				if (sourceFile != null)
@@ -166,6 +170,8 @@ namespace DigitalZenWorks.MusicToolKit
 						tagSet, Formatting.Indented, jsonSettings);
 
 					File.WriteAllText(destinationFile, json);
+
+					result = true;
 				}
 			}
 			catch (Exception exception) when
@@ -176,6 +182,8 @@ namespace DigitalZenWorks.MusicToolKit
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
+
+			return result;
 		}
 
 		/// <summary>
