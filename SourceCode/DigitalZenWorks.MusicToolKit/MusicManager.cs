@@ -83,6 +83,12 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Gets the iTunes Application Com Reference.
+		/// </summary>
+		/// <value>The iTunes Application Com Reference.</value>
+		public iTunesApp ItunesCom { get; }
+
+		/// <summary>
 		/// Gets the iTunes libary location.
 		/// </summary>
 		/// <value>The iTunes libary location.</value>
@@ -706,7 +712,7 @@ namespace DigitalZenWorks.MusicToolKit
 			return file;
 		}
 
-		private IITTrackCollection UpdateItunes(FileInfo file)
+		public IITTrackCollection UpdateItunes(FileInfo file)
 		{
 			string searchName = Path.GetFileNameWithoutExtension(file.Name);
 
