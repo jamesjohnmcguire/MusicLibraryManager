@@ -359,7 +359,7 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private static string CreateAlbumPathFromTag(
+		public static string CreateAlbumPathFromTag(
 			FileInfo file, string currentPath, string albumTag)
 		{
 			string album = Paths.GetAlbumFromPath(file.FullName);
@@ -519,7 +519,7 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private string CreateArtistPathFromTag(FileInfo file, string artistTag)
+		public string CreateArtistPathFromTag(FileInfo file, string artistTag)
 		{
 			string artist = Paths.GetArtistFromPath(file.FullName);
 			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
