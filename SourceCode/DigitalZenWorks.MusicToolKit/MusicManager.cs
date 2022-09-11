@@ -369,6 +369,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (Regex.IsMatch(pathPart, pattern))
 			{
+				// Remove 2 or more dots from abulm part.
 				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
 			}
 
