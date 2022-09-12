@@ -149,14 +149,12 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Get path part from tag method.
 		/// </summary>
-		/// <param name="tag">The tag data to use.</param>
 		/// <param name="path">The full path of the file.</param>
 		/// <returns>The path part.</returns>
-		public static string GetPathPartFromTag(string tag, string path)
+		public static string RemoveIllegalPathCharactors(string path)
 		{
-			if (!string.IsNullOrWhiteSpace(tag))
+			if (!string.IsNullOrWhiteSpace(path))
 			{
-				path = tag;
 				char[] illegalCharactors = new char[]
 				{
 					'<', '>', '"', '?', '*', '\''

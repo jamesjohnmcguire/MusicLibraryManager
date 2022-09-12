@@ -360,21 +360,12 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		public static string CreateAlbumPathFromTag(
-			FileInfo file, string currentPath, string albumTag)
+			string artistPath, string albumTag)
 		{
-			string album = Paths.GetAlbumFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
+			albumTag = Paths.RemoveIllegalPathCharactors(albumTag);
+			albumTag = albumTag.Trim();
 
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(pathPart, pattern))
-			{
-				// Remove 2 or more dots from abulm part.
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
-			}
-
-			pathPart = pathPart.Trim();
-			string path = Path.Combine(currentPath, pathPart);
+			string path = Path.Combine(artistPath, albumTag);
 			CreateDirectoryIfNotExists(path);
 
 			return path;
@@ -522,20 +513,19 @@ namespace DigitalZenWorks.MusicToolKit
 
 		public string CreateArtistPathFromTag(FileInfo file, string artistTag)
 		{
-			string artist = Paths.GetArtistFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
+			artistTag = Paths.RemoveIllegalPathCharactors(artistTag);
 
 			string pattern = @"\.{2,}";
 
-			if (Regex.IsMatch(pathPart, pattern))
+			if (Regex.IsMatch(artistTag, pattern))
 			{
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
+				artistTag = Regex.Replace(artistTag, pattern, string.Empty);
 			}
 
-			pathPart = pathPart.Trim();
+			artistTag = artistTag.Trim();
 
 			string path = Path.Combine(
-				iTunesDirectoryLocation, "Music\\" + pathPart);
+				iTunesDirectoryLocation, "Music\\" + artistTag);
 			CreateDirectoryIfNotExists(path);
 
 			return path;
@@ -699,12 +689,11 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string path = CreateArtistPathFromTag(file, tags.Artist);
 
-			path = CreateAlbumPathFromTag(file, path, tags.Album);
+			path = CreateAlbumPathFromTag(path, tags.Album);
 
-			string title = Paths.GetTitleFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
+			string title = Paths.RemoveIllegalPathCharactors(tags.Title);
 
-			string filePath = path + "\\" + pathPart + file.Extension;
+			string filePath = path + "\\" + title + file.Extension;
 
 			// windows will treat different cases as same file names,
 			// so need to compensate
