@@ -92,6 +92,30 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get the artist path from the file path method.
+		/// </summary>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The artist part of the path.</returns>
+		public static string GetArtistPathFromFilePath(string path)
+		{
+			string artistPath = null;
+
+			string artist = GetArtistFromPath(path);
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				for (int index = 0; index < 3; index++)
+				{
+					path = Path.GetDirectoryName(path);
+				}
+
+				artistPath = path + @"\" + artist;
+			}
+
+			return artistPath;
+		}
+
+		/// <summary>
 		/// Get iTunes directory depth method.
 		/// </summary>
 		/// <param name="iTunesPath">The iTunes path.</param>
