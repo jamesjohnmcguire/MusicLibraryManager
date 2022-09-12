@@ -270,6 +270,30 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The create album path from tag success test.
+		/// </summary>
+		[Test]
+		public void CreateAlbumPathFromTagSuccess()
+		{
+			string artistPath = Paths.GetArtistPathFromFilePath(testFile);
+
+			string path =
+				MusicManager.CreateAlbumPathFromTag(artistPath, "Album");
+
+			Assert.IsNotEmpty(path);
+
+			bool exists = Directory.Exists(path);
+			Assert.True(exists);
+
+			FileInfo fileInfo = new FileInfo(path);
+
+			string albumPart = fileInfo.Name;
+
+			string expected = "Album";
+			Assert.That(albumPart, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The get default rules method test.
 		/// </summary>
 		[Test]
@@ -461,15 +485,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void ItunesXmlFileCreateSuccess()
 		{
-			ITunesXmlFile iTunesXmlFile = null;
-
 			string xmlFile = Path.GetTempFileName();
 			File.Delete(xmlFile);
 
 			FileUtils.CreateFileFromEmbeddedResource(
 				"DigitalZenWorks.MusicToolKit.Tests.XMLFile.xml", xmlFile);
 
-			iTunesXmlFile = new ITunesXmlFile(xmlFile);
+			ITunesXmlFile iTunesXmlFile = new (xmlFile);
 
 			Assert.NotNull(iTunesXmlFile);
 		}
@@ -745,7 +767,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MusicManager musicUtility = new ();
 
 			string temporaryFile = Path.GetTempFileName();
-			FileInfo fileInfo = new FileInfo(temporaryFile);
+			FileInfo fileInfo = new (temporaryFile);
 			string destinationPath = Path.GetDirectoryName(temporaryFile);
 			bool result =
 				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
@@ -761,7 +783,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			using MusicManager musicUtility = new ();
 
-			FileInfo fileInfo = new FileInfo(testFile);
+			FileInfo fileInfo = new (testFile);
 			string destinationPath = Path.GetDirectoryName(testFile);
 			bool result =
 				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
