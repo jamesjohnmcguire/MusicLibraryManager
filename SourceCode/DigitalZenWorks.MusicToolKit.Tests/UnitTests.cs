@@ -348,6 +348,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get duplicate location test.
+		/// </summary>
+		[Test]
+		public void GetDuplicateLocation()
+		{
+			using MusicManager musicUtility = new ();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
+			string fullPath = Path.Combine(location, fileName);
+
+			string duplicateLocation =
+				musicUtility.GetDuplicateLocation(fullPath);
+
+			bool contains = duplicateLocation.Contains(
+				"Music2", StringComparison.Ordinal);
+
+			Assert.True(contains);
+		}
+
+		/// <summary>
 		/// The get itunes path depth method test.
 		/// </summary>
 		[Test]
