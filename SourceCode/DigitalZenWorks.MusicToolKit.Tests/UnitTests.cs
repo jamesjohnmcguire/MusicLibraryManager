@@ -294,6 +294,31 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The create artist path from tag success test.
+		/// </summary>
+		[Test]
+		public void CreateArtistPathFromTagSuccess()
+		{
+			using MusicManager musicUtility = new ();
+
+			FileInfo fileInfo = new FileInfo(testFile);
+			string path =
+				musicUtility.CreateArtistPathFromTag(fileInfo, "Artist");
+
+			Assert.IsNotEmpty(path);
+
+			bool exists = Directory.Exists(path);
+			Assert.True(exists);
+
+			fileInfo = new FileInfo(path);
+
+			string artistPart = fileInfo.Name;
+
+			string expected = "Artist";
+			Assert.That(artistPart, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The get default rules method test.
 		/// </summary>
 		[Test]
