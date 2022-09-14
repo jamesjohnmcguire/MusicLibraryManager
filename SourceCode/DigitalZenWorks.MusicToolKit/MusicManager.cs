@@ -253,6 +253,66 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get duplicate location.
+		/// </summary>
+		/// <param name="path">The path of the duplicate item.</param>
+		/// <returns>A new path for the duplicate item.</returns>
+		public string GetDuplicateLocation(string path)
+		{
+			string destinationPath = null;
+
+			if (string.IsNullOrWhiteSpace(path))
+			{
+				bool locationOk = false;
+				int tries = 2;
+
+				destinationPath = path;
+				string[] pathParts =
+					path.Split(Path.DirectorySeparatorChar);
+
+				string[] iTunesPathParts =
+					ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+
+				while (false == locationOk)
+				{
+					int depth = iTunesPathParts.Length - 1;
+					pathParts[depth] = "Music" +
+						tries.ToString(CultureInfo.InvariantCulture);
+
+					List<string> newList = new (pathParts);
+					while (newList.Count > depth + 1)
+					{
+						newList.RemoveAt(newList.Count - 1);
+					}
+
+					string[] newParts = newList.ToArray();
+					string newPath = string.Join("\\", newParts);
+
+					CreateDirectoryIfNotExists(newPath);
+
+					while (pathParts.Length > depth + 2)
+					{
+						depth++;
+						newPath += "\\" + pathParts[depth];
+
+						CreateDirectoryIfNotExists(newPath);
+					}
+
+					destinationPath = newPath + "\\" + pathParts[^1];
+
+					if (!System.IO.File.Exists(destinationPath))
+					{
+						locationOk = true;
+					}
+
+					tries++;
+				}
+			}
+
+			return destinationPath;
+		}
+
+		/// <summary>
 		/// Save tags to json file method.
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
@@ -654,56 +714,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return duplicateTracks;
-		}
-
-		private string GetDuplicateLocation(string path)
-		{
-			bool locationOk = false;
-			int tries = 2;
-
-			string destinationPath = path;
-			string[] pathParts =
-				path.Split(Path.DirectorySeparatorChar);
-
-			string[] iTunesPathParts =
-				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-
-			while (false == locationOk)
-			{
-				int depth = iTunesPathParts.Length - 1;
-				pathParts[depth] = "Music" +
-					tries.ToString(CultureInfo.InvariantCulture);
-
-				List<string> newList = new (pathParts);
-				while (newList.Count > depth + 1)
-				{
-					newList.RemoveAt(newList.Count - 1);
-				}
-
-				string[] newParts = newList.ToArray();
-				string newPath = string.Join("\\", newParts);
-
-				CreateDirectoryIfNotExists(newPath);
-
-				while (pathParts.Length > depth + 2)
-				{
-					depth++;
-					newPath += "\\" + pathParts[depth];
-
-					CreateDirectoryIfNotExists(newPath);
-				}
-
-				destinationPath = newPath + "\\" + pathParts[^1];
-
-				if (!System.IO.File.Exists(destinationPath))
-				{
-					locationOk = true;
-				}
-
-				tries++;
-			}
-
-			return destinationPath;
 		}
 
 		private FileInfo UpdateFile(FileInfo file)
