@@ -6,11 +6,6 @@ Process
 	Testing
 
 Tasks
-	AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
-	Test for CreateAlbumPathFromTag, basic
-	Test for CreateAlbumPathFromTag, regex
-	Test for CreateAlbumPathFromTag, create directory
-	Tests for CreateArtistPathFromTag, same as above
 	Tests fir GetDulicateLocation
 	Add tests for UpdateFile, same and different
 	Add tests for UpdateItunes
@@ -52,16 +47,19 @@ Tasks
 	return value for CleanFile
 	Refactor private MediaFileTags tags to be parameter of specific methods 
 	Write name of source when exception in SaveTagsToJsonFile
+	Refactor AreFileAndTrackTheSame with better internal testing
 	Optimize SaveTagsToJsonFile, so to not save if content is the same
 	Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
 	#pragma warning disable CS0618 // Type or member is obsolete
 	TagSet property strangeness
 	Keep GetFullPathObject?
+	Unify all tucked away implicit rules, regex's inside private methods, etc
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
 	Property set method not found.
 	Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
+	GetPathPartFromTag, RemoveIllegalPathCharactors Refactor
 	many "* 1".* songs
 	convert flac files
 	https://github.com/josephw/titl
@@ -119,6 +117,9 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Tests for CreateArtistPathFromTag, same as above
+		Test for CreateAlbumPathFromTag, basic
+		AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
 		Is OrderedContractResolver being used? necessary?
 		catch in ITunesXmlFile
 		Fix updated in Update
