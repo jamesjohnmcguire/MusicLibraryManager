@@ -119,7 +119,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Get the base path from the file path method.
 		/// </summary>
 		/// <remarks>This assumes the file path ends with the format of:
-		/// Artist\Album\Song.ext</remarks>
+		/// Artist\Album\Song.ext.</remarks>
 		/// <param name="path">The full path of the file.</param>
 		/// <returns>The base part of the path.</returns>
 		public static string GetBasePathFromFilePath(string path)
@@ -139,7 +139,6 @@ namespace DigitalZenWorks.MusicToolKit
 						basePath = Path.GetDirectoryName(basePath);
 					}
 				}
-
 			}
 
 			return basePath;
@@ -310,7 +309,7 @@ namespace DigitalZenWorks.MusicToolKit
 				StringComparison.OrdinalIgnoreCase))
 			{
 				// there is an extra intermediary directory, remove it
-				List<string> list = new List<string>(pathParts);
+				List<string> list = new (pathParts);
 				list.RemoveAt(7);
 
 				pathParts = list.ToArray();

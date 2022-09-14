@@ -285,7 +285,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			bool exists = Directory.Exists(path);
 			Assert.True(exists);
 
-			FileInfo fileInfo = new FileInfo(path);
+			FileInfo fileInfo = new (path);
 
 			string albumPart = fileInfo.Name;
 
@@ -299,18 +299,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CreateArtistPathFromTagSuccess()
 		{
-			using MusicManager musicUtility = new ();
-
-			FileInfo fileInfo = new FileInfo(testFile);
+			FileInfo fileInfo = new (testFile);
 			string path =
-				musicUtility.CreateArtistPathFromTag(fileInfo, "Artist");
+				MusicManager.CreateArtistPathFromTag(fileInfo, "Artist");
 
 			Assert.IsNotEmpty(path);
 
 			bool exists = Directory.Exists(path);
 			Assert.True(exists);
 
-			fileInfo = new FileInfo(path);
+			fileInfo = new (path);
 
 			string artistPart = fileInfo.Name;
 

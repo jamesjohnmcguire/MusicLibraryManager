@@ -125,6 +125,59 @@ namespace DigitalZenWorks.MusicToolKit
 		public Rules Rules { get { return rules; } }
 
 		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="artistPath">The artist path of the file.</param>
+		/// <param name="albumTag">The album tag.</param>
+		/// <returns>A new combined path.</returns>
+		public static string CreateAlbumPathFromTag(
+			string artistPath, string albumTag)
+		{
+			albumTag = Paths.RemoveIllegalPathCharactors(albumTag);
+			albumTag = albumTag.Trim();
+
+			string path = Path.Combine(artistPath, albumTag);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
+		}
+
+		/// <summary>
+		/// Create artist path from tag.
+		/// </summary>
+		/// <param name="file">The given file.</param>
+		/// <param name="artistTag">The artist tag.</param>
+		/// <returns>A combined file path.</returns>
+		public static string CreateArtistPathFromTag(
+			FileInfo file, string artistTag)
+		{
+			string path = null;
+
+			if (file != null)
+			{
+				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
+
+				artistTag = Paths.RemoveIllegalPathCharactors(artistTag);
+
+				string pattern = @"\.{2,}";
+
+				if (Regex.IsMatch(artistTag, pattern))
+				{
+					artistTag =
+						Regex.Replace(artistTag, pattern, string.Empty);
+				}
+
+				artistTag = artistTag.Trim();
+
+				path = Path.Combine(
+					basePath, artistTag);
+				CreateDirectoryIfNotExists(path);
+			}
+
+			return path;
+		}
+
+		/// <summary>
 		/// Are file and track the same method.
 		/// </summary>
 		/// <param name="track">The iTunes track to check.</param>
@@ -359,18 +412,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		public static string CreateAlbumPathFromTag(
-			string artistPath, string albumTag)
-		{
-			albumTag = Paths.RemoveIllegalPathCharactors(albumTag);
-			albumTag = albumTag.Trim();
-
-			string path = Path.Combine(artistPath, albumTag);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
-		}
-
 		private static void CreateDirectoryIfNotExists(string path)
 		{
 			DirectoryInfo directory = new (path);
@@ -509,28 +550,6 @@ namespace DigitalZenWorks.MusicToolKit
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
-		}
-
-		public string CreateArtistPathFromTag(FileInfo file, string artistTag)
-		{
-			artistTag = Paths.RemoveIllegalPathCharactors(artistTag);
-
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(artistTag, pattern))
-			{
-				artistTag = Regex.Replace(artistTag, pattern, string.Empty);
-			}
-
-			artistTag = artistTag.Trim();
-
-			string basePath = Paths.GetBasePathFromFilePath(file.FullName);
-
-			string path = Path.Combine(
-				basePath, artistTag);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
 		}
 
 		private void DeleteDeadTracks()
