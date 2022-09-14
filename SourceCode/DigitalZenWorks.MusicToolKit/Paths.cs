@@ -116,6 +116,36 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get the base path from the file path method.
+		/// </summary>
+		/// <remarks>This assumes the file path ends with the format of:
+		/// Artist\Album\Song.ext</remarks>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The base part of the path.</returns>
+		public static string GetBasePathFromFilePath(string path)
+		{
+			string basePath = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 3)
+				{
+					basePath = path;
+
+					for (int index = 0; index < 3; index++)
+					{
+						basePath = Path.GetDirectoryName(basePath);
+					}
+				}
+
+			}
+
+			return basePath;
+		}
+
+		/// <summary>
 		/// Get iTunes directory depth method.
 		/// </summary>
 		/// <param name="iTunesPath">The iTunes path.</param>

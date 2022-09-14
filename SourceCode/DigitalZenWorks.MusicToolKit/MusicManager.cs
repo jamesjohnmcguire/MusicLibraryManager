@@ -524,8 +524,10 @@ namespace DigitalZenWorks.MusicToolKit
 
 			artistTag = artistTag.Trim();
 
+			string basePath = Paths.GetBasePathFromFilePath(file.FullName);
+
 			string path = Path.Combine(
-				iTunesDirectoryLocation, "Music\\" + artistTag);
+				basePath, artistTag);
 			CreateDirectoryIfNotExists(path);
 
 			return path;
