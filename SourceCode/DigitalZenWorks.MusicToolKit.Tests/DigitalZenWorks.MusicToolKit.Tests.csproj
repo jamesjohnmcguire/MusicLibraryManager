@@ -10,11 +10,24 @@
 		<FileVersion>0.2.0.177</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
+		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Version>0.2.0.177</Version>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<COMReference Include="iTunesLib">
+		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
+		<VersionMajor>1</VersionMajor>
+		<VersionMinor>13</VersionMinor>
+		<Lcid>0</Lcid>
+		<WrapperTool>tlbimp</WrapperTool>
+		<Isolated>False</Isolated>
+		<EmbedInteropTypes>True</EmbedInteropTypes>
+		</COMReference>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />

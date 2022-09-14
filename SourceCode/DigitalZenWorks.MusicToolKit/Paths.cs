@@ -92,6 +92,59 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get the artist path from the file path method.
+		/// </summary>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The artist part of the path.</returns>
+		public static string GetArtistPathFromFilePath(string path)
+		{
+			string artistPath = null;
+
+			string artist = GetArtistFromPath(path);
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				for (int index = 0; index < 3; index++)
+				{
+					path = Path.GetDirectoryName(path);
+				}
+
+				artistPath = path + @"\" + artist;
+			}
+
+			return artistPath;
+		}
+
+		/// <summary>
+		/// Get the base path from the file path method.
+		/// </summary>
+		/// <remarks>This assumes the file path ends with the format of:
+		/// Artist\Album\Song.ext.</remarks>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The base part of the path.</returns>
+		public static string GetBasePathFromFilePath(string path)
+		{
+			string basePath = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 3)
+				{
+					basePath = path;
+
+					for (int index = 0; index < 3; index++)
+					{
+						basePath = Path.GetDirectoryName(basePath);
+					}
+				}
+			}
+
+			return basePath;
+		}
+
+		/// <summary>
 		/// Get iTunes directory depth method.
 		/// </summary>
 		/// <param name="iTunesPath">The iTunes path.</param>
@@ -149,14 +202,12 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Get path part from tag method.
 		/// </summary>
-		/// <param name="tag">The tag data to use.</param>
 		/// <param name="path">The full path of the file.</param>
 		/// <returns>The path part.</returns>
-		public static string GetPathPartFromTag(string tag, string path)
+		public static string RemoveIllegalPathCharactors(string path)
 		{
-			if (!string.IsNullOrWhiteSpace(tag))
+			if (!string.IsNullOrWhiteSpace(path))
 			{
-				path = tag;
 				char[] illegalCharactors = new char[]
 				{
 					'<', '>', '"', '?', '*', '\''
@@ -258,7 +309,7 @@ namespace DigitalZenWorks.MusicToolKit
 				StringComparison.OrdinalIgnoreCase))
 			{
 				// there is an extra intermediary directory, remove it
-				List<string> list = new List<string>(pathParts);
+				List<string> list = new (pathParts);
 				list.RemoveAt(7);
 
 				pathParts = list.ToArray();

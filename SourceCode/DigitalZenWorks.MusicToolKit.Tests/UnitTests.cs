@@ -6,6 +6,7 @@
 
 using Common.Logging;
 using DigitalZenWorks.Common.Utilities;
+using iTunesLib;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Serilog;
@@ -13,6 +14,7 @@ using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -212,6 +214,45 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The are file and track the same yes test.
+		/// </summary>
+		[Test]
+		public void AreFileAndTrackTheSameYes()
+		{
+			using MusicManager musicUtility = new ();
+
+			iTunesApp iTunes = musicUtility.ItunesCom;
+
+			if (iTunes != null)
+			{
+				string searchName = "The Things We Do For Love";
+
+				IITLibraryPlaylist playList = iTunes.LibraryPlaylist;
+				IITTrackCollection tracks = playList.Search(
+					searchName,
+					ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+
+				Assert.NotNull(tracks);
+
+				if (null != tracks)
+				{
+					string fileName = musicUtility.ITunesLibraryLocation +
+						@"\Music\10cc\The Very Best Of 10cc\" +
+						"The Things We Do For Love.mp3";
+					MediaFileTags tags = new (fileName);
+					musicUtility.Tags = tags;
+
+					// tracks is a list of potential matches
+					foreach (IITTrack track in tracks)
+					{
+						bool same = musicUtility.AreFileAndTrackTheSame(track);
+						Assert.True(same);
+					}
+				}
+			}
+		}
+
+		/// <summary>
 		/// The artist name get from path method test.
 		/// </summary>
 		[Test]
@@ -226,6 +267,53 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "10cc";
 			Assert.That(artist, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The create album path from tag success test.
+		/// </summary>
+		[Test]
+		public void CreateAlbumPathFromTagSuccess()
+		{
+			string artistPath = Paths.GetArtistPathFromFilePath(testFile);
+
+			string path =
+				MusicManager.CreateAlbumPathFromTag(artistPath, "Album");
+
+			Assert.IsNotEmpty(path);
+
+			bool exists = Directory.Exists(path);
+			Assert.True(exists);
+
+			FileInfo fileInfo = new (path);
+
+			string albumPart = fileInfo.Name;
+
+			string expected = "Album";
+			Assert.That(albumPart, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The create artist path from tag success test.
+		/// </summary>
+		[Test]
+		public void CreateArtistPathFromTagSuccess()
+		{
+			FileInfo fileInfo = new (testFile);
+			string path =
+				MusicManager.CreateArtistPathFromTag(fileInfo, "Artist");
+
+			Assert.IsNotEmpty(path);
+
+			bool exists = Directory.Exists(path);
+			Assert.True(exists);
+
+			fileInfo = new (path);
+
+			string artistPart = fileInfo.Name;
+
+			string expected = "Artist";
+			Assert.That(artistPart, Is.EqualTo(expected));
 		}
 
 		/// <summary>
@@ -257,6 +345,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 					Assert.That(test, Is.EqualTo("The Solos"));
 				}
 			}
+		}
+
+		/// <summary>
+		/// The get duplicate location test.
+		/// </summary>
+		[Test]
+		public void GetDuplicateLocation()
+		{
+			using MusicManager musicUtility = new ();
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
+			string fullPath = Path.Combine(location, fileName);
+
+			string duplicateLocation =
+				musicUtility.GetDuplicateLocation(fullPath);
+
+			bool contains = duplicateLocation.Contains(
+				"Music2", StringComparison.Ordinal);
+
+			Assert.True(contains);
 		}
 
 		/// <summary>
@@ -420,15 +530,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void ItunesXmlFileCreateSuccess()
 		{
-			ITunesXmlFile iTunesXmlFile = null;
-
 			string xmlFile = Path.GetTempFileName();
 			File.Delete(xmlFile);
 
 			FileUtils.CreateFileFromEmbeddedResource(
 				"DigitalZenWorks.MusicToolKit.Tests.XMLFile.xml", xmlFile);
 
-			iTunesXmlFile = new ITunesXmlFile(xmlFile);
+			ITunesXmlFile iTunesXmlFile = new (xmlFile);
 
 			Assert.NotNull(iTunesXmlFile);
 		}
@@ -493,6 +601,44 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);
 			Assert.NotNull(tags.TagSet);
+		}
+
+		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForRules()
+		{
+			using MusicManager musicManager = new ();
+
+			Rules rules = musicManager.Rules;
+
+			Assert.NotNull(rules);
+		}
+
+		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForSameRules()
+		{
+			Rules rules = GetRules();
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				@"\s*\(Disk).*?\)",
+				Operation.Remove);
+
+			rules.RulesList.Add(rule);
+
+			using MusicManager musicManager = new (rules);
+
+			Rules rules2 = musicManager.Rules;
+
+			int count1 = rules.RulesList.Count;
+			int count2 = rules2.RulesList.Count;
+			Assert.AreEqual(count1, count2);
 		}
 
 		/// <summary>
@@ -655,6 +801,44 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string test = tags.Artists[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
+		}
+
+		/// <summary>
+		/// The save tags to json file success test.
+		/// </summary>
+		[Test]
+		public void SaveTagsToJsonFile()
+		{
+			using MusicManager musicUtility = new ();
+
+			string temporaryFile = Path.GetTempFileName();
+			FileInfo fileInfo = new (temporaryFile);
+			string destinationPath = Path.GetDirectoryName(temporaryFile);
+			bool result =
+				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The save tags to json file success test.
+		/// </summary>
+		[Test]
+		public void SaveTagsToJsonFileSuccess()
+		{
+			using MusicManager musicUtility = new ();
+
+			FileInfo fileInfo = new (testFile);
+			string destinationPath = Path.GetDirectoryName(testFile);
+			bool result =
+				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+
+			Assert.True(result);
+			string destinationFile =
+				destinationPath + "\\" + fileInfo.Name + ".json";
+
+			result = File.Exists(destinationFile);
+			Assert.True(result);
 		}
 
 		/// <summary>
@@ -870,7 +1054,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateTitleFromPath()
 		{
-			using MediaFileTags tags = new(testFile);
+			using MediaFileTags tags = new (testFile);
 
 			bool result = tags.Update();
 			Assert.True(result);

@@ -83,6 +83,21 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Gets the iTunes Application Com Reference.
+		/// </summary>
+		/// <value>The iTunes Application Com Reference.</value>
+		public iTunesApp ItunesCom { get { return iTunes; } }
+
+		/// <summary>
+		/// Gets or sets the file tags object.
+		/// </summary>
+		/// <value>The file tags object.</value>
+		public MediaFileTags Tags
+		{
+			get { return tags; } set { tags = value; }
+		}
+
+		/// <summary>
 		/// Gets the iTunes libary location.
 		/// </summary>
 		/// <value>The iTunes libary location.</value>
@@ -108,6 +123,105 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <value>The rules.</value>
 		public Rules Rules { get { return rules; } }
+
+		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="artistPath">The artist path of the file.</param>
+		/// <param name="albumTag">The album tag.</param>
+		/// <returns>A new combined path.</returns>
+		public static string CreateAlbumPathFromTag(
+			string artistPath, string albumTag)
+		{
+			albumTag = Paths.RemoveIllegalPathCharactors(albumTag);
+			albumTag = albumTag.Trim();
+
+			string path = Path.Combine(artistPath, albumTag);
+			CreateDirectoryIfNotExists(path);
+
+			return path;
+		}
+
+		/// <summary>
+		/// Create artist path from tag.
+		/// </summary>
+		/// <param name="file">The given file.</param>
+		/// <param name="artistTag">The artist tag.</param>
+		/// <returns>A combined file path.</returns>
+		public static string CreateArtistPathFromTag(
+			FileInfo file, string artistTag)
+		{
+			string path = null;
+
+			if (file != null)
+			{
+				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
+
+				artistTag = Paths.RemoveIllegalPathCharactors(artistTag);
+
+				string pattern = @"\.{2,}";
+
+				if (Regex.IsMatch(artistTag, pattern))
+				{
+					artistTag =
+						Regex.Replace(artistTag, pattern, string.Empty);
+				}
+
+				artistTag = artistTag.Trim();
+
+				path = Path.Combine(
+					basePath, artistTag);
+				CreateDirectoryIfNotExists(path);
+			}
+
+			return path;
+		}
+
+		/// <summary>
+		/// Are file and track the same method.
+		/// </summary>
+		/// <param name="track">The iTunes track to check.</param>
+		/// <returns>A value indicating whether they are the same
+		/// or not.</returns>
+		public bool AreFileAndTrackTheSame(IITTrack track)
+		{
+			bool same = false;
+
+			if (track != null)
+			{
+				try
+				{
+					string album1 = track.Album;
+					string album2 = tags.Album;
+					string artist1 = track.Artist;
+					string artist2 = tags.Artist;
+					string title1 = track.Name;
+					string title2 = tags.Title;
+					int year1 = track.Year;
+					int year2 = (int)tags.Year;
+
+					if (string.Equals(
+						album1, album2, StringComparison.OrdinalIgnoreCase) &&
+						string.Equals(
+							artist1, artist2, StringComparison.OrdinalIgnoreCase) &&
+						string.Equals(
+							title1, title2, StringComparison.OrdinalIgnoreCase) &&
+						(year1 == year2))
+					{
+						same = true;
+					}
+				}
+				catch (Exception exception) when
+					(exception is ArgumentException ||
+					exception is ArgumentNullException)
+				{
+					Log.Error(CultureInfo.InvariantCulture, m => m(
+						exception.ToString()));
+				}
+			}
+
+			return same;
+		}
 
 		/// <summary>
 		/// Clean music library method.
@@ -139,13 +253,77 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get duplicate location.
+		/// </summary>
+		/// <param name="path">The path of the duplicate item.</param>
+		/// <returns>A new path for the duplicate item.</returns>
+		public string GetDuplicateLocation(string path)
+		{
+			string destinationPath = null;
+
+			if (string.IsNullOrWhiteSpace(path))
+			{
+				bool locationOk = false;
+				int tries = 2;
+
+				destinationPath = path;
+				string[] pathParts =
+					path.Split(Path.DirectorySeparatorChar);
+
+				string[] iTunesPathParts =
+					ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
+
+				while (false == locationOk)
+				{
+					int depth = iTunesPathParts.Length - 1;
+					pathParts[depth] = "Music" +
+						tries.ToString(CultureInfo.InvariantCulture);
+
+					List<string> newList = new (pathParts);
+					while (newList.Count > depth + 1)
+					{
+						newList.RemoveAt(newList.Count - 1);
+					}
+
+					string[] newParts = newList.ToArray();
+					string newPath = string.Join("\\", newParts);
+
+					CreateDirectoryIfNotExists(newPath);
+
+					while (pathParts.Length > depth + 2)
+					{
+						depth++;
+						newPath += "\\" + pathParts[depth];
+
+						CreateDirectoryIfNotExists(newPath);
+					}
+
+					destinationPath = newPath + "\\" + pathParts[^1];
+
+					if (!System.IO.File.Exists(destinationPath))
+					{
+						locationOk = true;
+					}
+
+					tries++;
+				}
+			}
+
+			return destinationPath;
+		}
+
+		/// <summary>
 		/// Save tags to json file method.
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
 		/// <param name="destinationPath">The destination path.</param>
-		public void SaveTagsToJsonFile(
+		/// <returns>A value indicating if the method was successful
+		/// or not.</returns>
+		public bool SaveTagsToJsonFile(
 			FileInfo sourceFile, string destinationPath)
 		{
+			bool result = false;
+
 			try
 			{
 				if (sourceFile != null)
@@ -166,6 +344,8 @@ namespace DigitalZenWorks.MusicToolKit
 						tagSet, Formatting.Indented, jsonSettings);
 
 					File.WriteAllText(destinationFile, json);
+
+					result = true;
 				}
 			}
 			catch (Exception exception) when
@@ -176,6 +356,8 @@ namespace DigitalZenWorks.MusicToolKit
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
 			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -290,26 +472,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private static string CreateAlbumPathFromTag(
-			FileInfo file, string currentPath, string albumTag)
-		{
-			string album = Paths.GetAlbumFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(albumTag, album);
-
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(pathPart, pattern))
-			{
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
-			}
-
-			pathPart = pathPart.Trim();
-			string path = Path.Combine(currentPath, pathPart);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
-		}
-
 		private static void CreateDirectoryIfNotExists(string path)
 		{
 			DirectoryInfo directory = new (path);
@@ -340,43 +502,6 @@ namespace DigitalZenWorks.MusicToolKit
 			rules = new Rules(contents);
 
 			return rules;
-		}
-
-		private bool AreFileAndTrackTheSame(IITTrack track)
-		{
-			bool same = false;
-
-			try
-			{
-				string album1 = track.Album;
-				string album2 = tags.Album;
-				string artist1 = track.Artist;
-				string artist2 = tags.Artist;
-				string title1 = track.Name;
-				string title2 = tags.Title;
-				int year1 = track.Year;
-				int year2 = (int)tags.Year;
-
-				if (string.Equals(
-					album1, album2, StringComparison.OrdinalIgnoreCase) &&
-					string.Equals(
-						artist1, artist2, StringComparison.OrdinalIgnoreCase) &&
-					string.Equals(
-						title1, title2, StringComparison.OrdinalIgnoreCase) &&
-					(year1 == year2))
-				{
-					same = true;
-				}
-			}
-			catch (Exception exception) when
-				(exception is ArgumentException ||
-				exception is ArgumentNullException)
-			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
-			}
-
-			return same;
 		}
 
 		private void CleanFile(FileInfo file)
@@ -487,27 +612,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-		private string CreateArtistPathFromTag(FileInfo file, string artistTag)
-		{
-			string artist = Paths.GetArtistFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(artistTag, artist);
-
-			string pattern = @"\.{2,}";
-
-			if (Regex.IsMatch(pathPart, pattern))
-			{
-				pathPart = Regex.Replace(pathPart, pattern, string.Empty);
-			}
-
-			pathPart = pathPart.Trim();
-
-			string path = Path.Combine(
-				iTunesDirectoryLocation, "Music\\" + pathPart);
-			CreateDirectoryIfNotExists(path);
-
-			return path;
-		}
-
 		private void DeleteDeadTracks()
 		{
 			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
@@ -612,66 +716,15 @@ namespace DigitalZenWorks.MusicToolKit
 			return duplicateTracks;
 		}
 
-		private string GetDulicateLocation(string path)
-		{
-			bool locationOk = false;
-			int tries = 2;
-
-			string destinationPath = path;
-			string[] pathParts =
-				path.Split(Path.DirectorySeparatorChar);
-
-			string[] iTunesPathParts =
-				ITunesLibraryLocation.Split(Path.DirectorySeparatorChar);
-
-			while (false == locationOk)
-			{
-				int depth = iTunesPathParts.Length - 1;
-				pathParts[depth] = "Music" +
-					tries.ToString(CultureInfo.InvariantCulture);
-
-				List<string> newList = new (pathParts);
-				while (newList.Count > depth + 1)
-				{
-					newList.RemoveAt(newList.Count - 1);
-				}
-
-				string[] newParts = newList.ToArray();
-				string newPath = string.Join("\\", newParts);
-
-				CreateDirectoryIfNotExists(newPath);
-
-				while (pathParts.Length > depth + 2)
-				{
-					depth++;
-					newPath += "\\" + pathParts[depth];
-
-					CreateDirectoryIfNotExists(newPath);
-				}
-
-				destinationPath = newPath + "\\" + pathParts[^1];
-
-				if (!System.IO.File.Exists(destinationPath))
-				{
-					locationOk = true;
-				}
-
-				tries++;
-			}
-
-			return destinationPath;
-		}
-
 		private FileInfo UpdateFile(FileInfo file)
 		{
 			string path = CreateArtistPathFromTag(file, tags.Artist);
 
-			path = CreateAlbumPathFromTag(file, path, tags.Album);
+			path = CreateAlbumPathFromTag(path, tags.Album);
 
-			string title = Paths.GetTitleFromPath(file.FullName);
-			string pathPart = Paths.GetPathPartFromTag(tags.Title, title);
+			string title = Paths.RemoveIllegalPathCharactors(tags.Title);
 
-			string filePath = path + "\\" + pathPart + file.Extension;
+			string filePath = path + "\\" + title + file.Extension;
 
 			// windows will treat different cases as same file names,
 			// so need to compensate
@@ -685,7 +738,7 @@ namespace DigitalZenWorks.MusicToolKit
 				else
 				{
 					// a file is already there, move into duplicates
-					filePath = GetDulicateLocation(filePath);
+					filePath = GetDuplicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}
 			}
