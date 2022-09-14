@@ -656,7 +656,7 @@ namespace DigitalZenWorks.MusicToolKit
 			return duplicateTracks;
 		}
 
-		private string GetDulicateLocation(string path)
+		private string GetDuplicateLocation(string path)
 		{
 			bool locationOk = false;
 			int tries = 2;
@@ -728,7 +728,7 @@ namespace DigitalZenWorks.MusicToolKit
 				else
 				{
 					// a file is already there, move into duplicates
-					filePath = GetDulicateLocation(filePath);
+					filePath = GetDuplicateLocation(filePath);
 					System.IO.File.Move(file.FullName, filePath);
 				}
 			}
