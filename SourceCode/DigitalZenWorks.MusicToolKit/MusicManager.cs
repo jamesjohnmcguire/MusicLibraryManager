@@ -360,6 +360,11 @@ namespace DigitalZenWorks.MusicToolKit
 			return result;
 		}
 
+		/// <summary>
+		/// Update files.
+		/// </summary>
+		/// <param name="file">The file to update.</param>
+		/// <returns>The updated file.</returns>
 		public FileInfo UpdateFile(FileInfo file)
 		{
 			string path = CreateArtistPathFromTag(file, tags.Artist);

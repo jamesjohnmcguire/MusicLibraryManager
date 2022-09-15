@@ -6,7 +6,6 @@ Process
 	Testing
 
 Tasks
-	Tests fir GetDulicateLocation
 	Add tests for UpdateFile, same and different
 	Add tests for UpdateItunes
 	Tests for UpdateItunesLocation
@@ -117,6 +116,7 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Tests fir GetDulicateLocation
 		Tests for CreateArtistPathFromTag, same as above
 		Test for CreateAlbumPathFromTag, basic
 		AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
