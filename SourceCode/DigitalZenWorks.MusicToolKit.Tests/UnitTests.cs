@@ -1066,6 +1066,39 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(title, Is.EqualTo(expected));
 		}
 
+		/// <summary>
+		/// The update file same test.
+		/// </summary>
+		[Test]
+		public void UpdateFileSame()
+		{
+			using MusicManager musicUtility = new ();
+
+			MediaFileTags tags = new (testFile);
+			tags.Album = "Album";
+			tags.Artist = "Artist";
+			tags.Title = "Sakura";
+
+			musicUtility.Tags = tags;
+
+			FileInfo fileInfo = new (testFile);
+
+			fileInfo = musicUtility.UpdateFile(fileInfo);
+			string newFileName = fileInfo.FullName;
+
+			// Clean up.
+			string basePath = Paths.GetBasePathFromFilePath(testFile);
+
+			// Need to go 1 up actually.
+			basePath = Path.GetDirectoryName(basePath);
+			string temporaryMusicPath = Path.Combine(basePath, "Music2");
+			Directory.Delete(temporaryMusicPath, true);
+
+			string expected = basePath + @"\Music2\Artist\Album\Sakura.mp4";
+
+			Assert.That(newFileName, Is.EqualTo(expected));
+		}
+
 		private static Rules GetRules()
 		{
 			string resourceName =
