@@ -391,9 +391,25 @@ namespace DigitalZenWorks.MusicToolKit
 					}
 					else
 					{
-						// a file is already there, move into duplicates
-						filePath = GetDuplicateLocation(filePath);
-						System.IO.File.Move(file.FullName, filePath);
+						if (filePath.Equals(
+							file.FullName, StringComparison.OrdinalIgnoreCase))
+						{
+							// Windows special case - The file names differ
+							// only by case, so need to compensate.  Simply
+							// saving with the new name won't work - Windows
+							// will just ignore the case change and keep the
+							// original name.
+							string temporaryFilePath = filePath + ".tmp";
+							System.IO.File.Move(
+								file.FullName, temporaryFilePath);
+							System.IO.File.Move(temporaryFilePath, filePath);
+						}
+						else
+						{
+							// a file is already there, move into duplicates
+							filePath = GetDuplicateLocation(filePath);
+							System.IO.File.Move(file.FullName, filePath);
+						}
 					}
 				}
 
