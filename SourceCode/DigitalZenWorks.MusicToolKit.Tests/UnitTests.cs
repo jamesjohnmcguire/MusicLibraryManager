@@ -1067,6 +1067,50 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The update file different test.
+		/// </summary>
+		[Test]
+		public void UpdateFileDifferent()
+		{
+			using MusicManager musicUtility = new ();
+
+			string newPath =
+				temporaryPath + @"\Artist\Album (Disk 2)";
+			Directory.CreateDirectory(newPath);
+
+			string newFileName =
+				temporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
+
+			File.Copy(testFile, newFileName);
+
+			MediaFileTags tags = new (newFileName);
+
+			// UpdateFile assumes tags have already been cleaned.
+			tags.Album = "Album";
+			tags.Artist = "Artist";
+			tags.Title = "Sakura";
+
+			musicUtility.Tags = tags;
+
+			FileInfo fileInfo = new (newFileName);
+
+			fileInfo = musicUtility.UpdateFile(fileInfo);
+			newFileName = fileInfo.FullName;
+
+			// Clean up.
+			string basePath = Paths.GetBasePathFromFilePath(testFile);
+
+			// Need to go 1 up actually.
+			basePath = Path.GetDirectoryName(basePath);
+			string temporaryMusicPath = Path.Combine(basePath, "Music2");
+			Directory.Delete(temporaryMusicPath, true);
+
+			string expected = basePath + @"\Music2\Artist\Album\Sakura.mp4";
+
+			Assert.That(newFileName, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The update file same test.
 		/// </summary>
 		[Test]
