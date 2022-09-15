@@ -360,6 +360,41 @@ namespace DigitalZenWorks.MusicToolKit
 			return result;
 		}
 
+		public FileInfo UpdateFile(FileInfo file)
+		{
+			string path = CreateArtistPathFromTag(file, tags.Artist);
+
+			path = CreateAlbumPathFromTag(path, tags.Album);
+
+			string title = Paths.RemoveIllegalPathCharactors(tags.Title);
+
+			string filePath = path + "\\" + title + file.Extension;
+
+			// windows will treat different cases as same file names,
+			// so need to compensate
+			if (!filePath.Equals(
+				file.FullName, StringComparison.Ordinal))
+			{
+				if (!System.IO.File.Exists(filePath))
+				{
+					System.IO.File.Move(file.FullName, filePath);
+				}
+				else
+				{
+					// a file is already there, move into duplicates
+					filePath = GetDuplicateLocation(filePath);
+					System.IO.File.Move(file.FullName, filePath);
+				}
+			}
+
+			// might have difference in title case, even though, the OS will
+			// treat different cases the same, let's try to keep to the proper
+			// title case
+			file = new FileInfo(filePath);
+
+			return file;
+		}
+
 		/// <summary>
 		/// Update library skeleton method.
 		/// </summary>
@@ -714,41 +749,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return duplicateTracks;
-		}
-
-		private FileInfo UpdateFile(FileInfo file)
-		{
-			string path = CreateArtistPathFromTag(file, tags.Artist);
-
-			path = CreateAlbumPathFromTag(path, tags.Album);
-
-			string title = Paths.RemoveIllegalPathCharactors(tags.Title);
-
-			string filePath = path + "\\" + title + file.Extension;
-
-			// windows will treat different cases as same file names,
-			// so need to compensate
-			if (!filePath.Equals(
-				file.FullName, StringComparison.Ordinal))
-			{
-				if (!System.IO.File.Exists(filePath))
-				{
-					System.IO.File.Move(file.FullName, filePath);
-				}
-				else
-				{
-					// a file is already there, move into duplicates
-					filePath = GetDuplicateLocation(filePath);
-					System.IO.File.Move(file.FullName, filePath);
-				}
-			}
-
-			// might have difference in title case, even though, the OS will
-			// treat different cases the same, let's try to keep to the proper
-			// title case
-			file = new FileInfo(filePath);
-
-			return file;
 		}
 
 		private IITTrackCollection UpdateItunes(FileInfo file)
