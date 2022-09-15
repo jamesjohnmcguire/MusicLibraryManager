@@ -363,39 +363,42 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Update files.
 		/// </summary>
+		/// <remarks>When adjusting the case in the file name parts, always
+		/// need to be aware and compensate for, that Windows will treat file
+		/// names with differnt cases as the same.</remarks>
 		/// <param name="file">The file to update.</param>
 		/// <returns>The updated file.</returns>
 		public FileInfo UpdateFile(FileInfo file)
 		{
-			string path = CreateArtistPathFromTag(file, tags.Artist);
-
-			path = CreateAlbumPathFromTag(path, tags.Album);
-
-			string title = Paths.RemoveIllegalPathCharactors(tags.Title);
-
-			string filePath = path + "\\" + title + file.Extension;
-
-			// windows will treat different cases as same file names,
-			// so need to compensate
-			if (!filePath.Equals(
-				file.FullName, StringComparison.Ordinal))
+			if (file != null)
 			{
-				if (!System.IO.File.Exists(filePath))
-				{
-					System.IO.File.Move(file.FullName, filePath);
-				}
-				else
-				{
-					// a file is already there, move into duplicates
-					filePath = GetDuplicateLocation(filePath);
-					System.IO.File.Move(file.FullName, filePath);
-				}
-			}
+				string path = CreateArtistPathFromTag(file, tags.Artist);
 
-			// might have difference in title case, even though, the OS will
-			// treat different cases the same, let's try to keep to the proper
-			// title case
-			file = new FileInfo(filePath);
+				path = CreateAlbumPathFromTag(path, tags.Album);
+
+				string title = Paths.RemoveIllegalPathCharactors(tags.Title);
+
+				string filePath = path + "\\" + title + file.Extension;
+
+				// windows will treat different cases as same file names,
+				// so need to compensate
+				if (!filePath.Equals(
+					file.FullName, StringComparison.Ordinal))
+				{
+					if (!System.IO.File.Exists(filePath))
+					{
+						System.IO.File.Move(file.FullName, filePath);
+					}
+					else
+					{
+						// a file is already there, move into duplicates
+						filePath = GetDuplicateLocation(filePath);
+						System.IO.File.Move(file.FullName, filePath);
+					}
+				}
+
+				file = new FileInfo(filePath);
+			}
 
 			return file;
 		}
