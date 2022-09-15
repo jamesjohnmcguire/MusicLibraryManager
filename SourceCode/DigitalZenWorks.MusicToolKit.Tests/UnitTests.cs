@@ -1130,15 +1130,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			fileInfo = musicUtility.UpdateFile(fileInfo);
 			string newFileName = fileInfo.FullName;
 
-			// Clean up.
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
 
-			// Need to go 1 up actually.
-			basePath = Path.GetDirectoryName(basePath);
-			string temporaryMusicPath = Path.Combine(basePath, "Music2");
-			Directory.Delete(temporaryMusicPath, true);
-
-			string expected = basePath + @"\Music2\Artist\Album\Sakura.mp4";
+			string expected =
+				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
 			Assert.That(newFileName, Is.EqualTo(expected));
 		}
