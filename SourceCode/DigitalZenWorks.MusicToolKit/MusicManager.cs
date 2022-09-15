@@ -261,7 +261,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string destinationPath = null;
 
-			if (string.IsNullOrWhiteSpace(path))
+			if (!string.IsNullOrWhiteSpace(path))
 			{
 				bool locationOk = false;
 				int tries = 2;
