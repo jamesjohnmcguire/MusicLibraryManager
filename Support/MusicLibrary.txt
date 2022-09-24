@@ -6,7 +6,6 @@ Process
 	Testing
 
 Tasks
-	Add tests for UpdateFile, same and different
 	Add tests for UpdateItunes
 	Tests for UpdateItunesLocation
 	Tests for UpdateTrackFromLocation
@@ -40,6 +39,11 @@ Tasks
 	Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
 	Return filename from SaveTagsToJsonFile
 	Add command line switch for UpdateLibrarySkeleton
+	GetDefaultRules use FileUtils
+	Don't call GetDefaultRules if rules already exist
+	items.OrderBy(i => i.Name, StringComparer.Ordinal)
+	SaveTagsToJsonFile, Catch json exceptions
+	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
 	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
 	Change skeleton to tagSet
@@ -116,6 +120,7 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Add tests for UpdateFile, same and different
 		Tests fir GetDulicateLocation
 		Tests for CreateArtistPathFromTag, same as above
 		Test for CreateAlbumPathFromTag, basic
@@ -582,3 +587,11 @@ New
 		https://musicbrainz.org/doc/MusicBrainz_Database/Schema
 
 		https://en.wikipedia.org/wiki/List_of_online_music_databases
+	Removed Regix, place back in at appropriate place
+			string pattern = @"\.{2,}";
+
+			if (Regex.IsMatch(albumTag, pattern))
+			{
+				// Remove 2 or more dots from abulm part.
+				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
+			}
