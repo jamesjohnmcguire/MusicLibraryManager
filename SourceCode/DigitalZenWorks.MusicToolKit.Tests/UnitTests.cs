@@ -237,15 +237,14 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				if (null != tracks)
 				{
 					string fileName = musicUtility.ITunesLibraryLocation +
-						@"\Music\10cc\The Very Best Of 10cc\" +
+						@"Music\10cc\The Very Best Of 10cc\" +
 						"The Things We Do For Love.mp3";
-					MediaFileTags tags = new (fileName);
-					musicUtility.Tags = tags;
 
 					// tracks is a list of potential matches
 					foreach (IITTrack track in tracks)
 					{
-						bool same = musicUtility.AreFileAndTrackTheSame(track);
+						bool same = MusicManager.AreFileAndTrackTheSame(
+							fileName, track);
 						Assert.True(same);
 					}
 				}
