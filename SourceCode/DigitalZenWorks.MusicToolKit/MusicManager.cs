@@ -480,54 +480,62 @@ namespace DigitalZenWorks.MusicToolKit
 		public bool UpdateItunes(FileInfo file)
 		{
 			bool updated = false;
-			string searchName = Path.GetFileNameWithoutExtension(file.Name);
 
-			IITTrackCollection tracks = playList.Search(
-				searchName, ITPlaylistSearchField.ITPlaylistSearchFieldAll);
-
-			if (null == tracks)
+			if (file != null)
 			{
-				// not in collection yet, add it
-				iTunes.LibraryPlaylist.AddFile(file.FullName);
-				updated = true;
-			}
-			else
-			{
-				// tracks is a list of potential matches
-				bool found = false;
+				string searchName =
+					Path.GetFileNameWithoutExtension(file.Name);
 
-				foreach (IITTrack track in tracks)
+				IITTrackCollection tracks = playList.Search(
+					searchName,
+					ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+
+				if (null == tracks)
 				{
-					// Check the file paths.
-					bool same = AreFileAndTrackTheSame(file.FullName, track);
-
-					if (true == same)
-					{
-						found = true;
-						break;
-					}
+					// not in collection yet, add it
+					iTunes.LibraryPlaylist.AddFile(file.FullName);
+					updated = true;
 				}
-
-				if (false == found)
+				else
 				{
-					// Check to see if there is an existing track with an
-					// invalid location to update.
+					// tracks is a list of potential matches
+					bool found = false;
+
 					foreach (IITTrack track in tracks)
 					{
-						updated = UpdateItunesLocation(track, file.FullName);
+						// Check the file paths.
+						bool same =
+							AreFileAndTrackTheSame(file.FullName, track);
 
-						if (updated == true)
+						if (true == same)
 						{
-							// Only update one, to avoid duplicates.
+							found = true;
 							break;
 						}
 					}
 
-					if (updated == false)
+					if (false == found)
 					{
-						// not in collection yet, add it
-						iTunes.LibraryPlaylist.AddFile(file.FullName);
-						updated = true;
+						// Check to see if there is an existing track with an
+						// invalid location to update.
+						foreach (IITTrack track in tracks)
+						{
+							updated =
+								UpdateItunesLocation(track, file.FullName);
+
+							if (updated == true)
+							{
+								// Only update one, to avoid duplicates.
+								break;
+							}
+						}
+
+						if (updated == false)
+						{
+							// not in collection yet, add it
+							iTunes.LibraryPlaylist.AddFile(file.FullName);
+							updated = true;
+						}
 					}
 				}
 			}
@@ -712,8 +720,7 @@ namespace DigitalZenWorks.MusicToolKit
 				// update directory and file names
 				file = UpdateFile(file);
 
-				// update iTunes
-				IITTrackCollection tracks = UpdateItunes(file);
+				UpdateItunes(file);
 			}
 			catch (Exception exception) when
 				(exception is ArgumentNullException ||
