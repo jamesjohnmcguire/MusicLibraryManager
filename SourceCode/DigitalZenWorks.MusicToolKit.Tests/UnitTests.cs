@@ -1137,6 +1137,26 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 		}
 
+		/// <summary>
+		/// The update iTunes test.
+		/// </summary>
+		[Test]
+		public void UpdateItunes()
+		{
+			using MusicManager musicUtility = new ();
+
+			string location = musicUtility.ITunesLibraryLocation;
+
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
+			string fullPath = Path.Combine(location, fileName);
+			FileInfo fileInfo = new (fullPath);
+
+			bool updated = musicUtility.UpdateItunes(fileInfo);
+
+			Assert.False(updated);
+		}
+
 		private static Rules GetRules()
 		{
 			string resourceName =
