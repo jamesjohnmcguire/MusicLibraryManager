@@ -148,8 +148,8 @@ namespace DigitalZenWorks.MusicToolKit
 					}
 					else if (filePath != null &&
 						filePath.Equals(
-						fileTrack.Location,
-						StringComparison.OrdinalIgnoreCase))
+							fileTrack.Location,
+							StringComparison.OrdinalIgnoreCase))
 					{
 						same = true;
 					}
