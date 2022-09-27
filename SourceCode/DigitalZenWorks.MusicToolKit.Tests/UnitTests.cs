@@ -382,6 +382,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get object base item test.
+		/// </summary>
+		[Test]
+		public void GetObjectBaseItem()
+		{
+			string fullType = "DigitalZenWorks.MusicToolKit.Tags.Album";
+			string baseItem = Rule.GetObjectBaseElement(fullType);
+
+			string expected = "Album";
+			Assert.That(baseItem, Is.EqualTo(expected));
+
+		}
+
+		/// <summary>
 		/// The get rules list method test.
 		/// </summary>
 		[Test]
