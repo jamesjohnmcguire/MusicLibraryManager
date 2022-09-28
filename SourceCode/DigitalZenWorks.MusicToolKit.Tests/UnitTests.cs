@@ -392,6 +392,34 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Album";
 			Assert.That(baseItem, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The get object base item test.
+		/// </summary>
+		[Test]
+		public void GetObjectBaseItemNone()
+		{
+			string baseItem = Rule.GetObjectBaseElement(null);
+
+			Assert.Null(baseItem);
+
+			baseItem = Rule.GetObjectBaseElement(string.Empty);
+
+			Assert.Null(baseItem);
+		}
+
+		/// <summary>
+		/// The get object base item test.
+		/// </summary>
+		[Test]
+		public void GetObjectBaseItemSingle()
+		{
+			string fullType = "Album";
+			string baseItem = Rule.GetObjectBaseElement(fullType);
+
+			string expected = "Album";
+			Assert.That(baseItem, Is.EqualTo(expected));
 
 		}
 
