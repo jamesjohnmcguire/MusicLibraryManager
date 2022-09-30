@@ -269,6 +269,37 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The condition not empty test fail test.
+		/// </summary>
+		[Test]
+		public void ConditionNotEmtpyTestFail()
+		{
+			object subject = DateTime.Now;
+
+			bool result = Rule.ConditionNotEmptyTest(subject);
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The condition not empty test success test.
+		/// </summary>
+		[Test]
+		public void ConditionNotEmtpyTestSuccess()
+		{
+			string album = "Album";
+			object subject = album;
+
+			bool result = Rule.ConditionNotEmptyTest(subject);
+			Assert.True(result);
+
+			string[] subjects = new string[] { "Album" };
+			subject = subjects;
+
+			result = Rule.ConditionNotEmptyTest(subject);
+			Assert.True(result);
+		}
+
+		/// <summary>
 		/// The create album path from tag success test.
 		/// </summary>
 		[Test]
