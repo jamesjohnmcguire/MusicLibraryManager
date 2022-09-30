@@ -6,12 +6,6 @@ Process
 	Testing
 
 Tasks
-	Add tests for UpdateItunes
-	Tests for UpdateItunesLocation
-	Tests for UpdateTrackFromLocation
-	Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
-	Tests for Rule.Run
-	Test ConditionNotEmptyTest
 	Test GetItemSubject
 	Test SetItemSubject
 	Test RegexReplace
@@ -57,6 +51,10 @@ Tasks
 	TagSet property strangeness
 	Keep GetFullPathObject?
 	Unify all tucked away implicit rules, regex's inside private methods, etc
+	Rename to more appropriate name: ConditionNotEmptyTest
+	Review, Remove? UpdateTrackFromLocation	Seems unused, but contains potentially damaging functionality.  Also, it seems like it's not needed, at least in it's current state.  At the very least, refactor into smaller testable methods.
+	Tests for UpdateTrackFromLocation
+	Tests for UpdateItunesLocation
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
@@ -120,6 +118,10 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Test ConditionNotEmptyTest
+		Tests for Rule.Run
+		Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
+		Add tests for UpdateItunes
 		Add tests for UpdateFile, same and different
 		Tests fir GetDulicateLocation
 		Tests for CreateArtistPathFromTag, same as above
