@@ -153,6 +153,34 @@ namespace DigitalZenWorks.MusicToolKit
 		public string Subject { get; set; }
 
 		/// <summary>
+		/// The condition not empty test method.
+		/// </summary>
+		/// <param name="itemSubject">The item subject to test.</param>
+		/// <returns>A value indicating success or not.</returns>
+		public static bool ConditionNotEmptyTest(object itemSubject)
+		{
+			bool success = false;
+
+			if (itemSubject is string)
+			{
+				success = true;
+			}
+			else if (itemSubject is string[] subjectObject)
+			{
+				foreach (string nextSubject in subjectObject)
+				{
+					if (!string.IsNullOrWhiteSpace(nextSubject))
+					{
+						success = true;
+						break;
+					}
+				}
+			}
+
+			return success;
+		}
+
+		/// <summary>
 		/// Get object base element method.
 		/// </summary>
 		/// <param name="element">The element to check.</param>
@@ -198,29 +226,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return changed;
-		}
-
-		private static bool ConditionNotEmptyTest(object itemSubject)
-		{
-			bool success = false;
-
-			if (itemSubject is string)
-			{
-				success = true;
-			}
-			else if (itemSubject is string[] subjectObject)
-			{
-				foreach (string nextSubject in subjectObject)
-				{
-					if (!string.IsNullOrWhiteSpace(nextSubject))
-					{
-						success = true;
-						break;
-					}
-				}
-			}
-
-			return success;
 		}
 
 		private static object GetFullPathObject(object item, string subject)
