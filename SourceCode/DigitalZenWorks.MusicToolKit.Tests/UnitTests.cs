@@ -400,6 +400,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get item subject test.
+		/// </summary>
+		[Test]
+		public void GetItemSubject()
+		{
+			string subject = Rule.GetItemSubject(tags, "Album");
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+
+			Assert.That(subject, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// The get itunes path depth method test.
 		/// </summary>
 		[Test]
@@ -911,6 +925,22 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			result = File.Exists(destinationFile);
 			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The set item subject test.
+		/// </summary>
+		[Test]
+		public void SetItemSubject()
+		{
+			string newSubject =
+				"What It Is! Funky Soul And Rare Grooves";
+
+			bool result = Rule.SetItemSubject(tags, "Album", newSubject);
+			Assert.True(result);
+
+			string subject = Rule.GetItemSubject(tags, "Album");
+			Assert.That(subject, Is.EqualTo(newSubject));
 		}
 
 		/// <summary>
