@@ -361,6 +361,39 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Check next rule method.
+		/// </summary>
+		/// <param name="item">The item to evaluate.</param>
+		/// <returns>True if the item subject was updated,
+		/// otherwise fale.</returns>
+		public bool CheckNextRule(object item)
+		{
+			bool changed = false;
+
+			if (this.ChainRule != null)
+			{
+				Rule nextRule = null;
+
+				switch (this.Chain)
+				{
+					case Chain.And:
+						nextRule = this.ChainRule;
+						break;
+					case Chain.Or:
+						nextRule = this.ChainRule;
+						break;
+				}
+
+				if (nextRule != null)
+				{
+					changed = nextRule.Run(item);
+				}
+			}
+
+			return changed;
+		}
+
+		/// <summary>
 		/// Run method.
 		/// </summary>
 		/// <param name="item">The object to process.</param>
@@ -430,33 +463,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return currentItem;
-		}
-
-		private bool CheckNextRule(object item)
-		{
-			bool changed = false;
-
-			if (this.ChainRule != null)
-			{
-				Rule nextRule = null;
-
-				switch (this.Chain)
-				{
-					case Chain.And:
-						nextRule = this.ChainRule;
-						break;
-					case Chain.Or:
-						nextRule = this.ChainRule;
-						break;
-				}
-
-				if (nextRule != null)
-				{
-					changed = nextRule.Run(item);
-				}
-			}
-
-			return changed;
 		}
 
 		private bool ConditionEqualsTest(object itemSubject)
