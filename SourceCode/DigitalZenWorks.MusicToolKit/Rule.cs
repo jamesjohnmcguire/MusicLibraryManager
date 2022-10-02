@@ -181,6 +181,47 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// GEt the subject from the given item.
+		/// </summary>
+		/// <param name="item">The item to evaluate.</param>
+		/// <param name="subject">The subject type.</param>
+		/// <returns>The subject type value.</returns>
+		public static string GetItemSubject(object item, string subject)
+		{
+			string itemSubject = null;
+			string baseElement = GetObjectBaseElement(subject);
+
+			// Get the property info of the 'subject' from
+			// the item being inspected
+			Type itemType = item.GetType();
+			PropertyInfo propertyInfo =
+				itemType.GetProperty(baseElement);
+
+			if (propertyInfo != null)
+			{
+				object propertyValue = propertyInfo.GetValue(item, null);
+
+				if (propertyValue is string propertyText)
+				{
+					itemSubject = propertyText;
+				}
+				else if (propertyValue is string[] propertyArray)
+				{
+					foreach (string nextSubject in propertyArray)
+					{
+						if (!string.IsNullOrWhiteSpace(nextSubject))
+						{
+							itemSubject = nextSubject;
+							break;
+						}
+					}
+				}
+			}
+
+			return itemSubject;
+		}
+
+		/// <summary>
 		/// Get object base element method.
 		/// </summary>
 		/// <param name="element">The element to check.</param>
@@ -197,6 +238,52 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return baseElement;
+		}
+
+		/// <summary>
+		/// Set item subject method.
+		/// </summary>
+		/// <param name="item">The item to set.</param>
+		/// <param name="subject">The subject type.</param>
+		/// <param name="newValue">The subject type value.</param>
+		/// <returns>True if the item subject was updated,
+		/// otherwise fale.</returns>
+		public static bool SetItemSubject(
+			object item, string subject, object newValue)
+		{
+			bool result = false;
+
+			if (item != null)
+			{
+				string baseElement = GetObjectBaseElement(subject);
+
+				// Get the property info of the 'subject' from
+				// the item being inspected
+				Type itemType = item.GetType();
+				PropertyInfo propertyInfo =
+					itemType.GetProperty(baseElement);
+
+				if (propertyInfo != null)
+				{
+					object propertyValue = propertyInfo.GetValue(item, null);
+
+					if (propertyValue is string)
+					{
+						propertyInfo.SetValue(item, newValue, null);
+						result = true;
+					}
+					else if (propertyValue is string[])
+					{
+						string[] newValueArray = new string[1];
+						newValueArray[0] = (string)newValue;
+
+						propertyInfo.SetValue(item, newValueArray, null);
+						result = true;
+					}
+				}
+			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -269,75 +356,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return currentItem;
-		}
-
-		private static string GetItemSubject(object item, string subject)
-		{
-			string itemSubject = null;
-			string baseElement = GetObjectBaseElement(subject);
-
-			// Get the property info of the 'subject' from
-			// the item being inspected
-			Type itemType = item.GetType();
-			PropertyInfo propertyInfo =
-				itemType.GetProperty(baseElement);
-
-			if (propertyInfo != null)
-			{
-				object propertyValue = propertyInfo.GetValue(item, null);
-
-				if (propertyValue is string propertyText)
-				{
-					itemSubject = propertyText;
-				}
-				else if (propertyValue is string[] propertyArray)
-				{
-					foreach (string nextSubject in propertyArray)
-					{
-						if (!string.IsNullOrWhiteSpace(nextSubject))
-						{
-							itemSubject = nextSubject;
-							break;
-						}
-					}
-				}
-			}
-
-			return itemSubject;
-		}
-
-		private static bool SetItemSubject(object item, string subject, object newValue)
-		{
-			bool result = false;
-
-			string baseElement = GetObjectBaseElement(subject);
-
-			// Get the property info of the 'subject' from
-			// the item being inspected
-			Type itemType = item.GetType();
-			PropertyInfo propertyInfo =
-				itemType.GetProperty(baseElement);
-
-			if (propertyInfo != null)
-			{
-				object propertyValue = propertyInfo.GetValue(item, null);
-
-				if (propertyValue is string)
-				{
-					propertyInfo.SetValue(item, newValue, null);
-					result = true;
-				}
-				else if (propertyValue is string[])
-				{
-					string[] newValueArray = new string[1];
-					newValueArray[0] = (string)newValue;
-
-					propertyInfo.SetValue(item, newValueArray, null);
-					result = true;
-				}
-			}
-
-			return result;
 		}
 
 		private static string RegexReplace(object content, object conditional)
