@@ -772,6 +772,37 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The rule regex remove test.
+		/// </summary>
+		[Test]
+		public void RuleRegexRemove()
+		{
+			string original = "What It Is! Funky Soul And Rare Grooves cd 1";
+			string content = original;
+			string pattern = @" cd.*?\d";
+
+			string result = Rule.RegexReplace(original, pattern);
+
+			string expected = "What It Is! Funky Soul And Rare Grooves";
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The rule regex remove test.
+		/// </summary>
+		[Test]
+		public void RuleRegexRemoveSame()
+		{
+			string original = "What It Is! Funky Soul And Rare Grooves";
+			string content = original;
+			string pattern = @" cd.*?\d";
+
+			string result = Rule.RegexReplace(original, pattern);
+
+			Assert.That(result, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// The run rule disc check method.
 		/// </summary>
 		[Test]
