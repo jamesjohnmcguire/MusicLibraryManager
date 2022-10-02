@@ -241,6 +241,35 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Regex replace method.
+		/// </summary>
+		/// <param name="content">The object to update.</param>
+		/// <param name="conditional">The regex condition.</param>
+		/// <returns>The updated property.</returns>
+		public static string RegexReplace(object content, object conditional)
+		{
+			string subject = null;
+
+			if (content is string @string)
+			{
+				subject = @string;
+
+				string find = (string)conditional;
+
+				if (Regex.IsMatch(subject, find, RegexOptions.IgnoreCase))
+				{
+					subject = Regex.Replace(
+						subject,
+						find,
+						string.Empty,
+						RegexOptions.IgnoreCase);
+				}
+			}
+
+			return subject;
+		}
+
+		/// <summary>
 		/// Set item subject method.
 		/// </summary>
 		/// <param name="item">The item to set.</param>
@@ -356,29 +385,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return currentItem;
-		}
-
-		private static string RegexReplace(object content, object conditional)
-		{
-			string subject = null;
-
-			if (content is string @string)
-			{
-				subject = @string;
-
-				string find = (string)conditional;
-
-				if (Regex.IsMatch(subject, find, RegexOptions.IgnoreCase))
-				{
-					subject = Regex.Replace(
-						subject,
-						find,
-						string.Empty,
-						RegexOptions.IgnoreCase);
-				}
-			}
-
-			return subject;
 		}
 
 		private bool Action(object item, string subject, object content)
