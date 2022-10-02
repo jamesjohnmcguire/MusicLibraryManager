@@ -316,6 +316,51 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Action method.
+		/// </summary>
+		/// <param name="item">The item to act upon.</param>
+		/// <param name="subject">The subject property.</param>
+		/// <param name="content">The content property.</param>
+		/// <returns>True if the item subject was updated,
+		/// otherwise fale.</returns>
+		public bool Action(object item, string subject, object content)
+		{
+			bool result = false;
+
+			switch (this.Condition)
+			{
+				case Condition.ContainsRegex:
+					content = RegexReplace(content, this.Conditional);
+					result = SetItemSubject(item, subject, content);
+					break;
+				default:
+					break;
+			}
+
+			switch (this.Operation)
+			{
+				case Operation.Replace:
+					if (this.ConditionalType == ConditionalType.Literal)
+					{
+						this.Replacement = this.Conditional;
+					}
+					else
+					{
+						// need to get the value of the property
+						this.Replacement =
+							GetItemSubject(item, (string)this.Replacement);
+					}
+
+					result = SetItemSubject(item, subject, this.Replacement);
+					break;
+				default:
+					break;
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		/// Run method.
 		/// </summary>
 		/// <param name="item">The object to process.</param>
@@ -385,43 +430,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return currentItem;
-		}
-
-		private bool Action(object item, string subject, object content)
-		{
-			bool result = false;
-
-			switch (this.Condition)
-			{
-				case Condition.ContainsRegex:
-					content = RegexReplace(content, this.Conditional);
-					result = SetItemSubject(item, subject, content);
-					break;
-				default:
-					break;
-			}
-
-			switch (this.Operation)
-			{
-				case Operation.Replace:
-					if (this.ConditionalType == ConditionalType.Literal)
-					{
-						this.Replacement = this.Conditional;
-					}
-					else
-					{
-						// need to get the value of the property
-						this.Replacement =
-							GetItemSubject(item, (string)this.Replacement);
-					}
-
-					result = SetItemSubject(item, subject, this.Replacement);
-					break;
-				default:
-					break;
-			}
-
-			return result;
 		}
 
 		private bool CheckNextRule(object item)
