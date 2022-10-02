@@ -816,6 +816,68 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The rule check next rule none test.
+		/// </summary>
+		[Test]
+		public void RuleCheckNextRuleNone()
+		{
+			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
+
+			Rule rule = new (
+				element,
+				Condition.ContainsRegex,
+				@"\s*\(Dis(c|k).*?\)",
+				Operation.Remove);
+
+			bool result = rule.CheckNextRule(tags);
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The rule check next rule set test.
+		/// </summary>
+		[Test]
+		public void RuleCheckNextRuleSet()
+		{
+			string original = "Various Artists";
+			string element = "Artists";
+
+			// Set up final rule - and if artists not equal performers,
+			// replace artists with performers
+			Rule nextChainRule = new (
+				"Artists",
+				Condition.NotEquals,
+				"Performers",
+				Operation.Replace,
+				"Performers");
+
+			nextChainRule.ConditionalType = ConditionalType.Property;
+
+			// Set up additional rule - and if performers tag is not empty,
+			Rule chainRule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
+				Condition.NotEmpty,
+				original,
+				Operation.None,
+				null,
+				Chain.And,
+				nextChainRule);
+
+			// Set up initial rule - if artists tag equal 'Various Artists'
+			Rule rule = new (
+				element,
+				Condition.Equals,
+				original,
+				Operation.None,
+				null,
+				Chain.And,
+				chainRule);
+
+			bool result = rule.CheckNextRule(tags);
+			Assert.True(result);
+		}
+
+		/// <summary>
 		/// The rule regex remove test.
 		/// </summary>
 		[Test]
