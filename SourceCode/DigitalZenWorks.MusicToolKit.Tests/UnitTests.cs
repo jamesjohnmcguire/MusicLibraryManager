@@ -775,6 +775,50 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The rule regex remove test.
 		/// </summary>
 		[Test]
+		public void RuleAction()
+		{
+			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
+
+			Rule rule = new (
+				element,
+				Condition.ContainsRegex,
+				@"\s*\(Dis(c|k).*?\)",
+				Operation.Remove);
+
+			bool result = rule.Action(
+				tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The rule regex remove change test.
+		/// </summary>
+		[Test]
+		public void RuleActionChange()
+		{
+			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
+
+			Rule rule = new (
+				element,
+				Condition.ContainsRegex,
+				@"\s*\(Dis(c|k).*?\)",
+				Operation.Remove);
+
+			tags.Album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
+
+			bool result = rule.Action(
+				tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+			Assert.True(result);
+
+			string album = tags.Album;
+			string expected = "What It Is! Funky Soul And Rare Grooves";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The rule regex remove test.
+		/// </summary>
+		[Test]
 		public void RuleRegexRemove()
 		{
 			string original = "What It Is! Funky Soul And Rare Grooves cd 1";
