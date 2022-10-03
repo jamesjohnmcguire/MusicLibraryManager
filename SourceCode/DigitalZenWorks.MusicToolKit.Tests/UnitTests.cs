@@ -628,6 +628,21 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get rule by name test.
+		/// </summary>
+		[Test]
+		public void GetRuleByName()
+		{
+			using MusicManager musicUtility = new ();
+
+			Rules rules = musicUtility.Rules;
+			Assert.NotNull(rules);
+
+			Rule rule = rules.GetRuleByName("RemoveDiscFromAlbum");
+			Assert.NotNull(rule);
+		}
+
+		/// <summary>
 		/// The get rules list method test.
 		/// </summary>
 		[Test]
