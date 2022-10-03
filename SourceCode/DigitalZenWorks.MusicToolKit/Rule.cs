@@ -470,9 +470,16 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool conditionMet = false;
 
-			if (Regex.IsMatch(content, Conditional, RegexOptions.IgnoreCase))
+			try
 			{
-				conditionMet = true;
+				if (Regex.IsMatch(
+					content, Conditional, RegexOptions.IgnoreCase))
+				{
+					conditionMet = true;
+				}
+			}
+			catch (RegexParseException)
+			{
 			}
 
 			return conditionMet;
