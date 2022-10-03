@@ -11,7 +11,6 @@ using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
