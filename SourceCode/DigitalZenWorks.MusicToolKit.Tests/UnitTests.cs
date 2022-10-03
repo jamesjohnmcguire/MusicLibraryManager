@@ -463,6 +463,49 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get conditional value test.
+		/// </summary>
+		[Test]
+		public void GetConditionalValue()
+		{
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Operation.Remove);
+
+			rule.ConditionalType = ConditionalType.Property;
+
+			string condition = rule.GetConditionalValue(tags);
+
+			Assert.That(condition, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// The get conditional value literal test.
+		/// </summary>
+		[Test]
+		public void GetConditionalValueLiternal()
+		{
+			string original = "Something";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				original,
+				Operation.Remove);
+
+			rule.ConditionalType = ConditionalType.Literal;
+
+			string condition = rule.GetConditionalValue(tags);
+
+			Assert.That(condition, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// The get default rules method test.
 		/// </summary>
 		[Test]
