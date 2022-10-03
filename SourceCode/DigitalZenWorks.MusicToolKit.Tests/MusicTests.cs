@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="UnitTests.cs" company="Digital Zen Works">
+// <copyright file="MusicTests.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2022 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class UnitTests : TestsBase
+	public class MusicTests : TestsBase
 	{
 		/// <summary>
 		/// Album name get from path method test.
