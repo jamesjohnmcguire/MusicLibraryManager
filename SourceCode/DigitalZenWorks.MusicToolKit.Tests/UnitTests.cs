@@ -269,6 +269,82 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The condition equals test fail test.
+		/// </summary>
+		[Test]
+		public void ConditionEqualsTestFail()
+		{
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.Equals,
+				@"Album",
+				Operation.None);
+
+			string subject = "Something else";
+
+			bool result = rule.ConditionEqualsTest(subject);
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The condition equals test success test.
+		/// </summary>
+		[Test]
+		public void ConditionEqualsTestSuccess()
+		{
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.Equals,
+				@"Album",
+				Operation.None);
+
+			string subject = "Album";
+
+			bool result = rule.ConditionEqualsTest(subject);
+			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The condition not equals test fail test.
+		/// </summary>
+		[Test]
+		public void ConditionNotEqualsTestFail()
+		{
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.Equals,
+				@"Album",
+				Operation.None);
+
+			string subject = "Album";
+			using MediaFileTags tags = new (testFile);
+			tags.Album = "Album";
+
+			bool result = rule.ConditionNotEqualsTest(tags, subject);
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The condition not equals test success test.
+		/// </summary>
+		[Test]
+		public void ConditionNotEqualsTestSuccess()
+		{
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.Equals,
+				@"Something Else",
+				Operation.None);
+
+			string subject = "Album";
+			using MediaFileTags tags = new (testFile);
+			tags.Album = "Something Else";
+
+			bool result = rule.ConditionNotEqualsTest(tags, subject);
+			Assert.True(result);
+		}
+
+		/// <summary>
 		/// The condition not empty test fail test.
 		/// </summary>
 		[Test]
@@ -296,6 +372,46 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			subject = subjects;
 
 			result = Rule.ConditionNotEmptyTest(subject);
+			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The condition regex match fail test.
+		/// </summary>
+		[Test]
+		public void ConditionRegexMatchFail()
+		{
+			string subject =
+				"What It Is! Funky Soul And Rare Grooves";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			bool result = rule.ConditionRegexMatch(subject);
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The condition regex match success test.
+		/// </summary>
+		[Test]
+		public void ConditionRegexMatchSuccess()
+		{
+			string subject =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			bool result = rule.ConditionRegexMatch(subject);
 			Assert.True(result);
 		}
 
@@ -709,11 +825,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void MusicManagerCheckForSameRules()
 		{
 			Rules rules = GetRules();
+			string pattern = @"\s*\(Dis(c|k).*?\)";
 
 			Rule rule = new (
 				"DigitalZenWorks.MusicToolKit.Tags.Album",
 				Condition.ContainsRegex,
-				@"\s*\(Disk).*?\)",
+				pattern,
 				Operation.Remove);
 
 			rules.RulesList.Add(rule);
