@@ -624,7 +624,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Album";
 			Assert.That(baseItem, Is.EqualTo(expected));
-
 		}
 
 		/// <summary>
@@ -1101,7 +1100,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void RuleRegexRemove()
 		{
 			string original = "What It Is! Funky Soul And Rare Grooves cd 1";
-			string content = original;
 			string pattern = @" cd.*?\d";
 
 			string result = Rule.RegexReplace(original, pattern);
@@ -1117,7 +1115,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void RuleRegexRemoveSame()
 		{
 			string original = "What It Is! Funky Soul And Rare Grooves";
-			string content = original;
 			string pattern = @" cd.*?\d";
 
 			string result = Rule.RegexReplace(original, pattern);
