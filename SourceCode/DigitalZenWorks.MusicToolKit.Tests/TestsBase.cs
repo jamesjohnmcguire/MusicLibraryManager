@@ -56,7 +56,14 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
 			FileUtils.CreateFileFromEmbeddedResource(
 				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
+		}
 
+		/// <summary>
+		/// The setup before every test method.
+		/// </summary>
+		[SetUp]
+		public void SetUp()
+		{
 			tags = new ();
 
 			string original =
