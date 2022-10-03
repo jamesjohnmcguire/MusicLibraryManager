@@ -3,19 +3,19 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>DigitalZenWorks.MusicToolKit</AssemblyTitle>
-		<AssemblyVersion>0.2.0.178</AssemblyVersion>
+		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2022 James John McGuire</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.2.0.178</FileVersion>
+		<FileVersion>0.4.180.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<Version>0.2.0.178</Version>
+		<Version>0.4.180</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
