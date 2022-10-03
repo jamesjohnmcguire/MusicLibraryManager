@@ -47,10 +47,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\RulesLibrary\RulesLibrary.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
 		<EmbeddedResource Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
 		<None Remove="DigitalZenWorks.MusicToolKit.Tests\**" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">
 		<AutoGen>True</AutoGen>

@@ -4,6 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;

@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
+using DigitalZenWorks.RulesLibrary;
 using iTunesLib;
 using Newtonsoft.Json;
 using System;
