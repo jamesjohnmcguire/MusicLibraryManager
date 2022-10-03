@@ -4,20 +4,14 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
 using DigitalZenWorks.Common.Utilities;
 using iTunesLib;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Serilog;
-using Serilog.Configuration;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-
-using CommonLogging = Common.Logging;
 
 [assembly: CLSCompliant(true)]
 
@@ -29,9 +23,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	[TestFixture]
 	public class UnitTests
 	{
-		private static readonly ILog Log = LogManager.GetLogger(
-			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 		private TagSet tags;
 		private string temporaryPath;
 		private string testFile;
@@ -49,8 +40,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[SetUp]
 		public void OneTimeSetUp()
 		{
-			LogInitialization();
-
 			temporaryPath = Path.GetTempFileName();
 			File.Delete(temporaryPath);
 			Directory.CreateDirectory(temporaryPath);
@@ -678,7 +667,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			File.Delete(newFileName);
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "Album";
@@ -697,7 +685,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = tags.AlbumRemoveCd();
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -723,7 +710,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = tags.AlbumRemoveDisc();
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			string expected = "Album";
@@ -742,7 +728,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = tags.AlbumRemoveDisc();
 
-			Log.Info("album: " + album);
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -799,7 +784,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MusicManager musicUtility = new ();
 			string location = musicUtility.ITunesLibraryLocation;
 
-			Log.Info("ITunesPathLocation: " + location);
 			Assert.IsNotEmpty(location);
 		}
 
@@ -1626,35 +1610,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Rules rules = new (contents);
 
 			return rules;
-		}
-
-		private static void LogInitialization()
-		{
-			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
-			string baseDataDirectory = Environment.GetFolderPath(
-				Environment.SpecialFolder.ApplicationData,
-				Environment.SpecialFolderOption.Create) + @"\" +
-				applicationDataDirectory;
-
-			string logFilePath = baseDataDirectory + @"\MusicManager.log";
-			const string outputTemplate =
-				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
-				"{Message:lj}{NewLine}{Exception}";
-
-			LoggerConfiguration configuration = new ();
-			configuration = configuration.MinimumLevel.Verbose();
-
-			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
-			sinkConfiguration.Console(LogEventLevel.Verbose, outputTemplate);
-			sinkConfiguration.File(
-				logFilePath,
-				LogEventLevel.Verbose,
-				outputTemplate,
-				flushToDiskInterval: TimeSpan.FromSeconds(1));
-			Serilog.Log.Logger = configuration.CreateLogger();
-
-			LogManager.Adapter =
-				new CommonLogging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }
