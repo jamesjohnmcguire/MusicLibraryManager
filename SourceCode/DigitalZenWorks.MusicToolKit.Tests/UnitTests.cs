@@ -14,10 +14,8 @@ using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 using CommonLogging = Common.Logging;
 
