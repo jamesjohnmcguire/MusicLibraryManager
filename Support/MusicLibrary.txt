@@ -6,17 +6,6 @@ Process
 	Testing
 
 Tasks
-	Test GetItemSubject
-	Test SetItemSubject
-	Test RegexReplace
-	Test Action
-	Test CheckNextRule
-	Test ConditionEqualsTest
-	Test ConditionNotEqualsTest
-	Test ConditionRegexMatch
-	Tests for GetConditionalValue
-	Tests for IsConditionMet
-	Tests for GetRuleByName
 	ITunesFolderLocation / ITunesDirectoryLocation
 	Conditional check for existence of iTunesLib, before using everywhere
 	MusicManager(libraryLocation)
@@ -118,6 +107,17 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Tests for GetRuleByName
+		Tests for IsConditionMet
+		Tests for GetConditionalValue
+		Test ConditionRegexMatch
+		Test ConditionEqualsTest
+		Test ConditionNotEqualsTest
+		Test CheckNextRule
+		Test Action
+		Test RegexReplace
+		Test GetItemSubject
+		Test SetItemSubject
 		Test ConditionNotEmptyTest
 		Tests for Rule.Run
 		Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
