@@ -348,7 +348,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The condition not empty test fail test.
 		/// </summary>
 		[Test]
-		public void ConditionNotEmtpyTestFail()
+		public void ConditionNotEmptyTestFail()
 		{
 			object subject = DateTime.Now;
 
@@ -360,7 +360,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The condition not empty test success test.
 		/// </summary>
 		[Test]
-		public void ConditionNotEmtpyTestSuccess()
+		public void ConditionNotEmptyTestSuccess()
 		{
 			string album = "Album";
 			object subject = album;
