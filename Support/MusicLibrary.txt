@@ -6,25 +6,6 @@ Process
 	Testing
 
 Tasks
-	Tests fir GetDulicateLocation
-	Add tests for UpdateFile, same and different
-	Add tests for UpdateItunes
-	Tests for UpdateItunesLocation
-	Tests for UpdateTrackFromLocation
-	Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
-	Tests for Rule.Run
-	Test ConditionNotEmptyTest
-	Test GetItemSubject
-	Test SetItemSubject
-	Test RegexReplace
-	Test Action
-	Test CheckNextRule
-	Test ConditionEqualsTest
-	Test ConditionNotEqualsTest
-	Test ConditionRegexMatch
-	Tests for GetConditionalValue
-	Tests for IsConditionMet
-	Tests for GetRuleByName
 	ITunesFolderLocation / ITunesDirectoryLocation
 	Conditional check for existence of iTunesLib, before using everywhere
 	MusicManager(libraryLocation)
@@ -41,6 +22,11 @@ Tasks
 	Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
 	Return filename from SaveTagsToJsonFile
 	Add command line switch for UpdateLibrarySkeleton
+	GetDefaultRules use FileUtils
+	Don't call GetDefaultRules if rules already exist
+	items.OrderBy(i => i.Name, StringComparer.Ordinal)
+	SaveTagsToJsonFile, Catch json exceptions
+	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
 	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
 	Change skeleton to tagSet
@@ -54,6 +40,10 @@ Tasks
 	TagSet property strangeness
 	Keep GetFullPathObject?
 	Unify all tucked away implicit rules, regex's inside private methods, etc
+	Rename to more appropriate name: ConditionNotEmptyTest
+	Review, Remove? UpdateTrackFromLocation	Seems unused, but contains potentially damaging functionality.  Also, it seems like it's not needed, at least in it's current state.  At the very least, refactor into smaller testable methods.
+	Tests for UpdateTrackFromLocation
+	Tests for UpdateItunesLocation
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
@@ -117,6 +107,23 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Tests for GetRuleByName
+		Tests for IsConditionMet
+		Tests for GetConditionalValue
+		Test ConditionRegexMatch
+		Test ConditionEqualsTest
+		Test ConditionNotEqualsTest
+		Test CheckNextRule
+		Test Action
+		Test RegexReplace
+		Test GetItemSubject
+		Test SetItemSubject
+		Test ConditionNotEmptyTest
+		Tests for Rule.Run
+		Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
+		Add tests for UpdateItunes
+		Add tests for UpdateFile, same and different
+		Tests fir GetDulicateLocation
 		Tests for CreateArtistPathFromTag, same as above
 		Test for CreateAlbumPathFromTag, basic
 		AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
@@ -582,3 +589,11 @@ New
 		https://musicbrainz.org/doc/MusicBrainz_Database/Schema
 
 		https://en.wikipedia.org/wiki/List_of_online_music_databases
+	Removed Regix, place back in at appropriate place
+			string pattern = @"\.{2,}";
+
+			if (Regex.IsMatch(albumTag, pattern))
+			{
+				// Remove 2 or more dots from abulm part.
+				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
+			}

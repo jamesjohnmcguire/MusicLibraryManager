@@ -9,6 +9,7 @@
 using Common.Logging;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
@@ -176,7 +177,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
-
 		/// <summary>
 		/// Gets or sets the year.
 		/// </summary>
@@ -193,7 +193,6 @@ namespace DigitalZenWorks.MusicToolKit
 				TagFile.Tag.Year = value;
 			}
 		}
-
 
 		/// <summary>
 		/// Album remove cd method.
@@ -383,7 +382,7 @@ namespace DigitalZenWorks.MusicToolKit
 					Regex regex = new (pattern);
 					MatchCollection matches = regex.Matches(pattern);
 
-					foreach (Match match in matches)
+					foreach (Match match in matches.Cast<Match>())
 					{
 						string foundAtPosition = StringTable.GetString(
 								"FOUND_AT_POSITION",
