@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicManager", "MusicManager\MusicManager.csproj", "{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalZenWorks.MusicToolKit", "DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj", "{A056FC65-FA91-4581-8852-126B70FBC564}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4656C0C4-B1E9-4174-84C6-2CD1A58987D6} = {4656C0C4-B1E9-4174-84C6-2CD1A58987D6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalZenWorks.MusicToolKit.Tests", "DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj", "{0DCEE9BF-890E-4191-A627-A68C711C30CE}"
 EndProject
