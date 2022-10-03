@@ -276,7 +276,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="subject">The subject type.</param>
 		/// <param name="newValue">The subject type value.</param>
 		/// <returns>True if the item subject was updated,
-		/// otherwise fale.</returns>
+		/// otherwise false.</returns>
 		public static bool SetItemSubject(
 			object item, string subject, object newValue)
 		{
@@ -322,7 +322,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="subject">The subject property.</param>
 		/// <param name="content">The content property.</param>
 		/// <returns>True if the item subject was updated,
-		/// otherwise fale.</returns>
+		/// otherwise false.</returns>
 		public bool Action(object item, string subject, object content)
 		{
 			bool result = false;
@@ -365,7 +365,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="item">The item to evaluate.</param>
 		/// <returns>True if the item subject was updated,
-		/// otherwise fale.</returns>
+		/// otherwise false.</returns>
 		public bool CheckNextRule(object item)
 		{
 			bool changed = false;
@@ -391,6 +391,143 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return changed;
+		}
+
+		/// <summary>
+		/// Condition equals test method.
+		/// </summary>
+		/// <param name="itemSubject">The subject to test.</param>
+		/// <returns>True if the item subject was matched,
+		/// otherwise false.</returns>
+		public bool ConditionEqualsTest(object itemSubject)
+		{
+			bool success = false;
+			string testing = (string)Conditional;
+
+			if (itemSubject is string subject)
+			{
+				if (subject.Equals(testing, StringComparison.Ordinal))
+				{
+					success = true;
+				}
+			}
+			else if (itemSubject is string[] subjectObject)
+			{
+				foreach (string nextSubject in subjectObject)
+				{
+					if (nextSubject.Equals(testing, StringComparison.Ordinal))
+					{
+						success = true;
+						break;
+					}
+				}
+			}
+
+			return success;
+		}
+
+		/// <summary>
+		/// Condition not equals test method.
+		/// </summary>
+		/// <param name="item">The item to evaluate.</param>
+		/// <param name="itemSubject">The subject value to check.</param>
+		/// <returns>True if the item subject was not matched,
+		/// otherwise false.</returns>
+		public bool ConditionNotEqualsTest(object item, object itemSubject)
+		{
+			bool success = false;
+			Conditional = GetConditionalValue(item);
+
+			if (itemSubject is string subject)
+			{
+				if (!subject.Equals(Conditional, StringComparison.Ordinal))
+				{
+					success = true;
+				}
+			}
+			else if (itemSubject is string[] subjectObject)
+			{
+				foreach (string nextSubject in subjectObject)
+				{
+					if (!nextSubject.Equals(
+						Conditional, StringComparison.Ordinal))
+					{
+						success = true;
+					}
+				}
+			}
+
+			return success;
+		}
+
+		/// <summary>
+		/// Condition regex match method.
+		/// </summary>
+		/// <param name="content">The content to check.</param>
+		/// <returns>True if the item subject was matched,
+		/// otherwise false.</returns>
+		public bool ConditionRegexMatch(string content)
+		{
+			bool conditionMet = false;
+
+			if (Regex.IsMatch(content, Conditional, RegexOptions.IgnoreCase))
+			{
+				conditionMet = true;
+			}
+
+			return conditionMet;
+		}
+
+		/// <summary>
+		/// Get conditional value method.
+		/// </summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>The conditional value.</returns>
+		public string GetConditionalValue(object item)
+		{
+			string objectValue;
+
+			if (this.ConditionalType == ConditionalType.Literal)
+			{
+				objectValue = Conditional;
+			}
+			else
+			{
+				objectValue = GetItemSubject(item, Conditional);
+			}
+
+			return objectValue;
+		}
+
+		/// <summary>
+		/// Is condition met method.
+		/// </summary>
+		/// <param name="item">The item to check.</param>
+		/// <param name="content">The content to check for.</param>
+		/// <returns>True if the item subject was matched,
+		/// otherwise false.</returns>
+		public bool IsConditionMet(object item, object content)
+		{
+			bool conditionMet = false;
+
+			switch (Condition)
+			{
+				case Condition.ContainsRegex:
+					string contentText = (string)content;
+					conditionMet = ConditionRegexMatch(contentText);
+					break;
+				case Condition.Equals:
+					conditionMet = ConditionEqualsTest(content);
+					break;
+				case Condition.NotEmpty:
+					conditionMet = ConditionNotEmptyTest(content);
+					break;
+				case Condition.NotEquals:
+					conditionMet = ConditionNotEqualsTest(item, content);
+					break;
+			}
+
+			return conditionMet;
 		}
 
 		/// <summary>
@@ -463,111 +600,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return currentItem;
-		}
-
-		private bool ConditionEqualsTest(object itemSubject)
-		{
-			bool success = false;
-			string testing = (string)Conditional;
-
-			if (itemSubject is string subject)
-			{
-				if (subject.Equals(testing, StringComparison.Ordinal))
-				{
-					success = true;
-				}
-			}
-			else if (itemSubject is string[] subjectObject)
-			{
-				foreach (string nextSubject in subjectObject)
-				{
-					if (nextSubject.Equals(testing, StringComparison.Ordinal))
-					{
-						success = true;
-						break;
-					}
-				}
-			}
-
-			return success;
-		}
-
-		private bool ConditionNotEqualsTest(object item, object itemSubject)
-		{
-			bool success = false;
-			Conditional = GetConditionalValue(item);
-
-			if (itemSubject is string subject)
-			{
-				if (!subject.Equals(Conditional, StringComparison.Ordinal))
-				{
-					success = true;
-				}
-			}
-			else if (itemSubject is string[] subjectObject)
-			{
-				foreach (string nextSubject in subjectObject)
-				{
-					if (!nextSubject.Equals(Conditional, StringComparison.Ordinal))
-					{
-						success = true;
-					}
-				}
-			}
-
-			return success;
-		}
-
-		private bool ConditionRegexMatch(string content)
-		{
-			bool conditionMet = false;
-
-			if (Regex.IsMatch(content, Conditional, RegexOptions.IgnoreCase))
-			{
-				conditionMet = true;
-			}
-
-			return conditionMet;
-		}
-
-		private string GetConditionalValue(object item)
-		{
-			string objectValue;
-
-			if (this.ConditionalType == ConditionalType.Literal)
-			{
-				objectValue = Conditional;
-			}
-			else
-			{
-				objectValue = GetItemSubject(item, Conditional);
-			}
-
-			return objectValue;
-		}
-
-		private bool IsConditionMet(object item, object content)
-		{
-			bool conditionMet = false;
-
-			switch (Condition)
-			{
-				case Condition.ContainsRegex:
-					string contentText = (string)content;
-					conditionMet = ConditionRegexMatch(contentText);
-					break;
-				case Condition.Equals:
-					conditionMet = ConditionEqualsTest(content);
-					break;
-				case Condition.NotEmpty:
-					conditionMet = ConditionNotEmptyTest(content);
-					break;
-				case Condition.NotEquals:
-					conditionMet = ConditionNotEqualsTest(item, content);
-					break;
-			}
-
-			return conditionMet;
 		}
 	}
 }
