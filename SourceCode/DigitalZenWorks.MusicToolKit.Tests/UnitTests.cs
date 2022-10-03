@@ -297,14 +297,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void InstanceAlbumRemoveCd()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album cd 1";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album cd 1\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
@@ -342,19 +336,15 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void InstanceAlbumRemoveDisc()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album (Disk 2)";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
 
 			string album = tags.AlbumRemoveDisc();
+
+			File.Delete(newFileName);
 
 			Assert.IsNotEmpty(album);
 
@@ -546,7 +536,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateAlbumFromPath()
 		{
-			using MediaFileTags tags = new (TestFile);
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+
+			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Update();
 			Assert.True(result);
@@ -554,7 +547,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
 
-			string expected = "Album";
+			File.Delete(newFileName);
+
+			string expected = "Album Name";
 			Assert.That(album, Is.EqualTo(expected));
 		}
 
@@ -564,14 +559,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateAlbumRemoveCd()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album cd 1";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album cd 1\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
@@ -594,14 +583,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateAlbumRemoveCurlyBraces()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album {In Heaven}";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album {In Heaven}\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album {In Heaven}";
@@ -624,14 +607,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateAlbumRemoveDisc()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album (Disk 2)";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
@@ -654,14 +631,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateAlbumRemoveFlac()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album[FLAC]";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album[FLAC]\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album[FLAC]", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album[FLAC]";
@@ -684,13 +655,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateArtistFromPath()
 		{
-			using MediaFileTags tags = new (TestFile);
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Update();
 			Assert.True(result);
 
 			string artist = tags.Artist;
 			Assert.IsNotEmpty(artist);
+
+			File.Delete(newFileName);
 
 			string expected = "Artist";
 			Assert.That(artist, Is.EqualTo(expected));
@@ -702,14 +677,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateChange()
 		{
-			string newPath =
-				TemporaryPath + @"\Artist\Album (Disk 2)";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
@@ -719,6 +688,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
+
+			File.Delete(newFileName);
 
 			string expected = "Album";
 			Assert.That(album, Is.EqualTo(expected));
@@ -730,7 +701,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateNoChange()
 		{
-			using MediaFileTags tags = new (TestFile);
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+			using MediaFileTags tags = new (newFileName);
 			tags.Artist = "Artist";
 			tags.Album = "Album";
 			tags.Title = "Sakura";
@@ -743,6 +716,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
 
+			File.Delete(newFileName);
+
 			string expected = "Album";
 			Assert.That(album, Is.EqualTo(expected));
 		}
@@ -753,13 +728,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void TagFileUpdateTitleFromPath()
 		{
-			using MediaFileTags tags = new (TestFile);
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Update();
 			Assert.True(result);
 
 			string title = tags.Title;
 			Assert.IsNotEmpty(title);
+
+			File.Delete(newFileName);
 
 			string expected = "Sakura";
 			Assert.That(title, Is.EqualTo(expected));
@@ -773,14 +752,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			using MusicManager musicUtility = new ();
 
-			string newPath =
-				TemporaryPath + @"\Artist\Album (Disk 2)";
-			Directory.CreateDirectory(newPath);
-
 			string newFileName =
-				TemporaryPath + @"\Artist\Album (Disk 2)\sakura.mp4";
-
-			File.Copy(TestFile, newFileName);
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
 			MediaFileTags tags = new (newFileName);
 
@@ -797,6 +770,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			newFileName = fileInfo.FullName;
 
 			// Clean up.
+			File.Delete(newFileName);
+
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 
 			// Need to go 1 up actually.

@@ -89,5 +89,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Directory.Delete(temporaryPath, true);
 			}
 		}
+
+		/// <summary>
+		/// Make test file copy.
+		/// </summary>
+		/// <param name="directory">The directory to create.</param>
+		/// <param name="fileName">The file name to create.</param>
+		/// <returns>The file path of the copy file.</returns>
+		protected string MakeTestFileCopy(string directory, string fileName)
+		{
+			string newPath = TemporaryPath + directory;
+			Directory.CreateDirectory(newPath);
+
+			string newFileName = newPath + @"\" + fileName;
+
+			File.Copy(TestFile, newFileName);
+
+			return newFileName;
+		}
 	}
 }
