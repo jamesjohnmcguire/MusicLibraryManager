@@ -4,12 +4,9 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using iTunesLib;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace DigitalZenWorks.MusicToolKit.Tests
