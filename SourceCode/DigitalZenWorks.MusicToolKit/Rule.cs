@@ -189,30 +189,34 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string GetItemSubject(object item, string subject)
 		{
 			string itemSubject = null;
-			string baseElement = GetObjectBaseElement(subject);
 
-			// Get the property info of the 'subject' from
-			// the item being inspected
-			Type itemType = item.GetType();
-			PropertyInfo propertyInfo =
-				itemType.GetProperty(baseElement);
-
-			if (propertyInfo != null)
+			if (item != null && !string.IsNullOrWhiteSpace(subject))
 			{
-				object propertyValue = propertyInfo.GetValue(item, null);
+				string baseElement = GetObjectBaseElement(subject);
 
-				if (propertyValue is string propertyText)
+				// Get the property info of the 'subject' from
+				// the item being inspected
+				Type itemType = item.GetType();
+				PropertyInfo propertyInfo =
+					itemType.GetProperty(baseElement);
+
+				if (propertyInfo != null)
 				{
-					itemSubject = propertyText;
-				}
-				else if (propertyValue is string[] propertyArray)
-				{
-					foreach (string nextSubject in propertyArray)
+					object propertyValue = propertyInfo.GetValue(item, null);
+
+					if (propertyValue is string propertyText)
 					{
-						if (!string.IsNullOrWhiteSpace(nextSubject))
+						itemSubject = propertyText;
+					}
+					else if (propertyValue is string[] propertyArray)
+					{
+						foreach (string nextSubject in propertyArray)
 						{
-							itemSubject = nextSubject;
-							break;
+							if (!string.IsNullOrWhiteSpace(nextSubject))
+							{
+								itemSubject = nextSubject;
+								break;
+							}
 						}
 					}
 				}
