@@ -737,6 +737,48 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The is condition met fail test.
+		/// </summary>
+		[Test]
+		public void IsConditionMetFail()
+		{
+			string original =
+				"What It Is! Funky Soul And Rare Grooves";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			bool conditionMet = rule.IsConditionMet(tags, original);
+
+			Assert.False(conditionMet);
+		}
+
+		/// <summary>
+		/// The is condition met success test.
+		/// </summary>
+		[Test]
+		public void IsConditionMetSuccess()
+		{
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			bool conditionMet = rule.IsConditionMet(tags, original);
+
+			Assert.True(conditionMet);
+		}
+
+		/// <summary>
 		/// ITunes path location method test.
 		/// </summary>
 		[Test]
