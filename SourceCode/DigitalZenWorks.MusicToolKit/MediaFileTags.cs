@@ -7,6 +7,7 @@
 #pragma warning disable CS0618 // Type or member is obsolete
 
 using Common.Logging;
+using DigitalZenWorks.RulesLibrary;
 using System;
 using System.Globalization;
 using System.Linq;

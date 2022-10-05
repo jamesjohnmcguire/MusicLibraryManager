@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using DigitalZenWorks.MusicToolKit;
+using DigitalZenWorks.RulesLibrary;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;

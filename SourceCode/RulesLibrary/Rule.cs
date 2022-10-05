@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.RulesLibrary
 {
 	/////////////////////////////////////////////////////////////////////////
 	/// <summary>
@@ -474,16 +474,19 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool conditionMet = false;
 
-			try
+			if (!string.IsNullOrWhiteSpace(content))
 			{
-				if (Regex.IsMatch(
-					content, Conditional, RegexOptions.IgnoreCase))
+				try
 				{
-					conditionMet = true;
+					if (Regex.IsMatch(
+						content, Conditional, RegexOptions.IgnoreCase))
+					{
+						conditionMet = true;
+					}
 				}
-			}
-			catch (RegexParseException)
-			{
+				catch (RegexParseException)
+				{
+				}
 			}
 
 			return conditionMet;

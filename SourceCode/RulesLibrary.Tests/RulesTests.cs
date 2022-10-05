@@ -4,21 +4,81 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using DigitalZenWorks.Common.Utilities;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using RulesLibrary.Tests;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
-namespace DigitalZenWorks.MusicToolKit.Tests
+[assembly: CLSCompliant(false)]
+
+namespace DigitalZenWorks.RulesLibrary.Tests
 {
 	/// <summary>
 	/// Rules tests class.
 	/// </summary>
 	[TestFixture]
-	public class RulesTests : TestsBase
+	public class RulesTests
 	{
+		private string rulesFileContent;
+		private PocoItem tags;
+		private string temporaryPath;
+		private Rules testRules;
+
+		/// <summary>
+		/// The one time setup method.
+		/// </summary>
+		[OneTimeSetUp]
+		public void OneTimeSetUp()
+		{
+			temporaryPath = Path.GetTempFileName();
+			File.Delete(temporaryPath);
+			Directory.CreateDirectory(temporaryPath);
+
+			string rulesFile = temporaryPath + @"\rules.json";
+			FileUtils.CreateFileFromEmbeddedResource(
+				"RulesLibrary.Tests.TestRules.json",
+				rulesFile);
+
+			rulesFileContent = File.ReadAllText(rulesFile);
+		}
+
+		/// <summary>
+		/// The setup before every test method.
+		/// </summary>
+		[SetUp]
+		public void SetUp()
+		{
+			testRules = new (rulesFileContent);
+
+			tags = new ();
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Property1 = original;
+
+			tags.PropertySet = new string[1];
+			tags.PropertySet[0] = "Various Artists";
+			tags.PropertySet2 = new string[1];
+			tags.PropertySet2[0] = "The Solos";
+		}
+
+		/// <summary>
+		/// One time tear down method.
+		/// </summary>
+		[OneTimeTearDown]
+		public void OneTimeTearDown()
+		{
+			bool result = Directory.Exists(temporaryPath);
+
+			if (true == result)
+			{
+				Directory.Delete(temporaryPath, true);
+			}
+		}
+
 		/// <summary>
 		/// The condition equals test fail test.
 		/// </summary>
@@ -62,14 +122,14 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void ConditionNotEqualsTestFail()
 		{
 			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				"RulesLibrary.Tests.PocoItem",
 				Condition.Equals,
 				@"Album",
 				Operation.None);
 
 			string subject = "Album";
-			using MediaFileTags tags = new (TestFile);
-			tags.Album = "Album";
+			PocoItem tags = new ();
+			tags.Property1 = "Album";
 
 			bool result = rule.ConditionNotEqualsTest(tags, subject);
 			Assert.False(result);
@@ -82,14 +142,14 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void ConditionNotEqualsTestSuccess()
 		{
 			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				"RulesLibrary.Tests.PocoItem",
 				Condition.Equals,
-				@"Something Else",
+				"Something",
 				Operation.None);
 
-			string subject = "Album";
-			using MediaFileTags tags = new (TestFile);
-			tags.Album = "Something Else";
+			string subject = "Something Else";
+			PocoItem tags = new ();
+			tags.Property1 = subject;
 
 			bool result = rule.ConditionNotEqualsTest(tags, subject);
 			Assert.True(result);
@@ -176,13 +236,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
 			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
-				Condition.ContainsRegex,
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				"RulesLibrary.Tests.PocoItem",
+				Condition.Equals,
+				"Property1",
 				Operation.Remove);
 
 			rule.ConditionalType = ConditionalType.Property;
-			string condition = rule.GetConditionalValue(Tags);
+			string condition = rule.GetConditionalValue(tags);
 
 			Assert.That(condition, Is.EqualTo(original));
 		}
@@ -202,7 +262,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Operation.Remove);
 
 			rule.ConditionalType = ConditionalType.Literal;
-			string condition = rule.GetConditionalValue(Tags);
+			string condition = rule.GetConditionalValue(tags);
 
 			Assert.That(condition, Is.EqualTo(original));
 		}
@@ -213,25 +273,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetDefaultRules()
 		{
-			Rules rules = GetRules();
-
-			for (int index = 0; index < rules.RulesList.Count; index++)
+			for (int index = 0; index < testRules.RulesList.Count; index++)
 			{
-				Rule rule = rules.RulesList[index];
+				Rule rule = testRules.RulesList[index];
 
-				bool result = rule.Run(Tags);
+				bool result = rule.Run(tags);
 
 				Assert.True(result);
 
 				if (index == 0)
 				{
-					string test = Tags.Album;
+					string test = tags.Property1;
 					Assert.That(test, Is.EqualTo(
 						"What It Is! Funky Soul And Rare Grooves"));
 				}
 				else
 				{
-					string test = Tags.Artists[0];
+					string test = tags.PropertySet[0];
 
 					Assert.That(test, Is.EqualTo("The Solos"));
 				}
@@ -244,7 +302,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetItemSubject()
 		{
-			string subject = Rule.GetItemSubject(Tags, "Album");
+			string subject = Rule.GetItemSubject(tags, "Property1");
 
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -299,12 +357,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetRuleByName()
 		{
-			using MusicManager musicUtility = new ();
+			Assert.NotNull(testRules);
 
-			Rules rules = musicUtility.Rules;
-			Assert.NotNull(rules);
-
-			Rule rule = rules.GetRuleByName("RemoveDiscFromAlbum");
+			Rule rule = testRules.GetRuleByName("RemoveDiscFromAlbum");
 			Assert.NotNull(rule);
 		}
 
@@ -314,12 +369,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetRulesList()
 		{
-			using MusicManager musicUtility = new ();
+			Assert.NotNull(testRules);
 
-			Rules rules = musicUtility.Rules;
-			Assert.NotNull(rules);
-
-			IList<Rule> rulesList = rules.RulesList;
+			IList<Rule> rulesList = testRules.RulesList;
 			int count = rulesList.Count;
 
 			Assert.GreaterOrEqual(count, 1);
@@ -341,7 +393,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				pattern,
 				Operation.Remove);
 
-			bool conditionMet = rule.IsConditionMet(Tags, original);
+			bool conditionMet = rule.IsConditionMet(tags, original);
 
 			Assert.False(conditionMet);
 		}
@@ -362,63 +414,18 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				pattern,
 				Operation.Remove);
 
-			bool conditionMet = rule.IsConditionMet(Tags, original);
+			bool conditionMet = rule.IsConditionMet(tags, original);
 
 			Assert.True(conditionMet);
 		}
 
 		/// <summary>
-		/// The run rule disc check method.
+		/// The check for rules test.
 		/// </summary>
 		[Test]
-		public void MediaFileTagsCheck()
+		public void CheckForRules()
 		{
-			Rules rules = GetRules();
-
-			using MediaFileTags tags = new (TestFile, rules);
-
-			Assert.NotNull(tags);
-			Assert.NotNull(tags.TagFile);
-			Assert.NotNull(tags.TagSet);
-		}
-
-		/// <summary>
-		/// The MusicManager check for rules test.
-		/// </summary>
-		[Test]
-		public void MusicManagerCheckForRules()
-		{
-			using MusicManager musicManager = new ();
-
-			Rules rules = musicManager.Rules;
-
-			Assert.NotNull(rules);
-		}
-
-		/// <summary>
-		/// The MusicManager check for rules test.
-		/// </summary>
-		[Test]
-		public void MusicManagerCheckForSameRules()
-		{
-			Rules rules = GetRules();
-			string pattern = @"\s*\(Dis(c|k).*?\)";
-
-			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
-				Condition.ContainsRegex,
-				pattern,
-				Operation.Remove);
-
-			rules.RulesList.Add(rule);
-
-			using MusicManager musicManager = new (rules);
-
-			Rules rules2 = musicManager.Rules;
-
-			int count1 = rules.RulesList.Count;
-			int count2 = rules2.RulesList.Count;
-			Assert.AreEqual(count1, count2);
+			Assert.NotNull(testRules);
 		}
 
 		/// <summary>
@@ -427,16 +434,18 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void RuleAction()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
-
 			Rule rule = new (
-				element,
+				"RulesLibrary.Tests.PocoItem",
 				Condition.ContainsRegex,
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
+			string subject = "What It Is! Funky Soul And Rare Grooves";
+			PocoItem tags = new ();
+			tags.Property1 = subject;
+
 			bool result = rule.Action(
-				Tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
 			Assert.True(result);
 		}
 
@@ -446,21 +455,19 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void RuleActionChange()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
-
 			Rule rule = new (
-				element,
+				"RulesLibrary.Tests.PocoItem",
 				Condition.ContainsRegex,
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
-			Tags.Album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Property1 = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
 			bool result = rule.Action(
-				Tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
 			Assert.True(result);
 
-			string album = Tags.Album;
+			string album = tags.Property1;
 			string expected = "What It Is! Funky Soul And Rare Grooves";
 			Assert.That(album, Is.EqualTo(expected));
 		}
@@ -479,7 +486,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
-			bool result = rule.CheckNextRule(Tags);
+			bool result = rule.CheckNextRule(tags);
 			Assert.False(result);
 		}
 
@@ -490,22 +497,22 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void RuleCheckNextRuleSet()
 		{
 			string original = "Various Artists";
-			string element = "Artists";
+			string element = "PropertySet";
 
-			// Set up final rule - and if artists not equal performers,
-			// replace artists with performers
+			// Set up final rule - and if PropertySet not equal PropertySet2,
+			// replace PropertySet with PropertySet2
 			Rule nextChainRule = new (
-				"Artists",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEquals,
-				"Performers",
+				"PropertySet2",
 				Operation.Replace,
-				"Performers");
+				"PropertySet2");
 
 			nextChainRule.ConditionalType = ConditionalType.Property;
 
-			// Set up additional rule - and if performers tag is not empty,
+			// Set up additional rule - and if PropertySet2 tag is not empty,
 			Rule chainRule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEmpty,
 				original,
 				Operation.None,
@@ -513,7 +520,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Chain.And,
 				nextChainRule);
 
-			// Set up initial rule - if artists tag equal 'Various Artists'
+			// Set up initial rule - if PropertySet tag equal 'Various Artists'
 			Rule rule = new (
 				element,
 				Condition.Equals,
@@ -523,7 +530,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Chain.And,
 				chainRule);
 
-			bool result = rule.CheckNextRule(Tags);
+			bool result = rule.CheckNextRule(tags);
 			Assert.True(result);
 		}
 
@@ -562,7 +569,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
+			string element = "RulesLibrary.Tests.PocoItem.Property1";
 
 			Rule rule = new (
 				element,
@@ -570,11 +577,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
-			bool result = rule.Run(Tags);
+			bool result = rule.Run(tags);
 
 			Assert.True(result);
 
-			string test = Tags.Album;
+			string test = tags.Property1;
 			Assert.That(test, Is.EqualTo(
 				"What It Is! Funky Soul And Rare Grooves"));
 		}
@@ -585,19 +592,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void RunRuleDiscCheckByName()
 		{
-			using MusicManager musicUtility = new ();
+			Assert.NotNull(testRules);
 
-			Rules rules = musicUtility.Rules;
-			Assert.NotNull(rules);
-
-			Rule rule = rules.GetRuleByName("RemoveDiscFromAlbum");
+			Rule rule = testRules.GetRuleByName("RemoveDiscFromAlbum");
 			Assert.NotNull(rule);
 
-			bool result = rule.Run(Tags);
+			bool result = rule.Run(tags);
 
 			Assert.True(result);
 
-			string test = Tags.Album;
+			string test = tags.Property1;
 			Assert.That(test, Is.EqualTo(
 				"What It Is! Funky Soul And Rare Grooves"));
 		}
@@ -609,22 +613,22 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void RunRuleVariousArtistsCheck()
 		{
 			string original = "Various Artists";
-			string element = "Artists";
+			string element = "PropertySet";
 
 			// Set up final rule - and if artists not equal performers,
 			// replace artists with performers
 			Rule nextChainRule = new (
-				"Artists",
+				"PropertySet",
 				Condition.NotEquals,
-				"Performers",
+				"PropertySet2",
 				Operation.Replace,
-				"Performers");
+				"PropertySet2");
 
 			nextChainRule.ConditionalType = ConditionalType.Property;
 
 			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEmpty,
 				original,
 				Operation.None,
@@ -642,11 +646,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Chain.And,
 				chainRule);
 
-			bool result = rule.Run(Tags);
+			bool result = rule.Run(tags);
 
 			Assert.True(result);
 
-			string test = Tags.Artists[0];
+			string test = tags.PropertySet[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
 		}
@@ -657,38 +661,18 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void RunRuleVariousArtistsCheckByName()
 		{
-			using MusicManager musicUtility = new ();
+			Assert.NotNull(testRules);
 
-			Rules rules = musicUtility.Rules;
-			Assert.NotNull(rules);
-
-			Rule rule = rules.GetRuleByName("ReplaceVariousArtists");
+			Rule rule = testRules.GetRuleByName("ReplaceVariousArtists");
 			Assert.NotNull(rule);
 
-			bool result = rule.Run(Tags);
+			bool result = rule.Run(tags);
 
 			Assert.True(result);
 
-			string test = Tags.Artists[0];
+			string test = tags.PropertySet[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
-		}
-
-		/// <summary>
-		/// The save tags to json file success test.
-		/// </summary>
-		[Test]
-		public void SaveTagsToJsonFile()
-		{
-			using MusicManager musicUtility = new ();
-
-			string temporaryFile = Path.GetTempFileName();
-			FileInfo fileInfo = new (temporaryFile);
-			string destinationPath = Path.GetDirectoryName(temporaryFile);
-			bool result =
-				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
-
-			Assert.False(result);
 		}
 
 		/// <summary>
@@ -700,30 +684,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newSubject =
 				"What It Is! Funky Soul And Rare Grooves";
 
-			bool result = Rule.SetItemSubject(Tags, "Album", newSubject);
+			bool result = Rule.SetItemSubject(tags, "PropertySet", newSubject);
 			Assert.True(result);
 
-			string subject = Rule.GetItemSubject(Tags, "Album");
+			string subject = Rule.GetItemSubject(tags, "PropertySet");
 			Assert.That(subject, Is.EqualTo(newSubject));
-		}
-
-		private static Rules GetRules()
-		{
-			string resourceName =
-				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
-			Assembly assembly = typeof(MusicManager).Assembly;
-
-			using Stream templateObjectStream =
-				assembly.GetManifestResourceStream(resourceName);
-
-			Assert.NotNull(templateObjectStream);
-
-			using StreamReader reader = new (templateObjectStream);
-			string contents = reader.ReadToEnd();
-
-			Rules rules = new (contents);
-
-			return rules;
 		}
 	}
 }

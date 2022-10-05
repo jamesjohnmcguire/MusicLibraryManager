@@ -1,0 +1,32 @@
+[
+  {
+    "name": "RemoveDiscFromAlbum",
+    "subject": "RulesLibrary.Tests.PocoItem.Property1",
+    "condition": "ContainsRegex",
+    "conditional": "\\s*\\(Dis(c|k).*?\\)",
+    "operation": "Remove"
+  },
+  {
+    "name": "ReplaceVariousArtists",
+    "subject": "RulesLibrary.Tests.PocoItem.PropertySet",
+    "condition": "Equals",
+    "conditional": "Various Artists",
+    "operation": "Replace",
+    "chain": "and",
+    "chainRule": {
+      "subject": "RulesLibrary.Tests.PocoItem.PropertySet2",
+      "condition": "NotEmpty",
+      "conditional": "",
+      "operation": "Replace",
+      "chain": "and",
+      "chainRule": {
+        "subject": "RulesLibrary.Tests.PocoItem.PropertySet",
+        "condition": "NotEquals",
+        "conditional": "RulesLibrary.Tests.PocoItem.PropertySet2",
+        "operation": "Replace",
+        "replacement": "RulesLibrary.Tests.PocoItem.PropertySet2",
+        "conditionalType": "Property"
+      }
+    }
+  }
+]

@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="ConditionalType.cs" company="Digital Zen Works">
+// <copyright file="Operation.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2022 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -10,21 +10,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.RulesLibrary
 {
 	/// <summary>
-	/// Conditional types enum.
+	/// Operation types enum.
 	/// </summary>
-	public enum ConditionalType
+	public enum Operation
 	{
 		/// <summary>
-		/// ConditionalType literal.
+		/// Operation none.
 		/// </summary>
-		Literal,
+		None,
 
 		/// <summary>
-		/// ConditionalType property.
+		/// Operation remove.
 		/// </summary>
-		Property
+		Remove,
+
+		/// <summary>
+		/// Operation replace.
+		/// </summary>
+		Replace
 	}
 }

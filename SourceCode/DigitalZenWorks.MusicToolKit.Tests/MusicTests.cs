@@ -4,10 +4,15 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using DigitalZenWorks.Common.Utilities;
+using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
+using System.Globalization;
 using System.IO;
+
+[assembly: CLSCompliant(false)]
 
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
@@ -15,8 +20,59 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class MusicTests : TestsBase
+	public class MusicTests
 	{
+		private TagSet tags;
+		private string temporaryPath;
+		private string testFile;
+
+		/// <summary>
+		/// The one time setup method.
+		/// </summary>
+		[OneTimeSetUp]
+		public void OneTimeSetUp()
+		{
+			temporaryPath = Path.GetTempFileName();
+			File.Delete(temporaryPath);
+			Directory.CreateDirectory(temporaryPath);
+
+			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
+			FileUtils.CreateFileFromEmbeddedResource(
+				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
+		}
+
+		/// <summary>
+		/// The setup before every test method.
+		/// </summary>
+		[SetUp]
+		public void SetUp()
+		{
+			tags = new ();
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Album = original;
+
+			tags.Artists = new string[1];
+			tags.Performers = new string[1];
+			tags.Artists[0] = "Various Artists";
+			tags.Performers[0] = "The Solos";
+		}
+
+		/// <summary>
+		/// One time tear down method.
+		/// </summary>
+		[OneTimeTearDown]
+		public void OneTimeTearDown()
+		{
+			bool result = Directory.Exists(temporaryPath);
+
+			if (true == result)
+			{
+				Directory.Delete(temporaryPath, true);
+			}
+		}
+
 		/// <summary>
 		/// Album name get from path method test.
 		/// </summary>
@@ -166,7 +222,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CreateAlbumPathFromTagSuccess()
 		{
-			string artistPath = Paths.GetArtistPathFromFilePath(TestFile);
+			string artistPath = Paths.GetArtistPathFromFilePath(testFile);
 
 			string path =
 				MusicManager.CreateAlbumPathFromTag(artistPath, "Album");
@@ -190,7 +246,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CreateArtistPathFromTagSuccess()
 		{
-			FileInfo fileInfo = new (TestFile);
+			FileInfo fileInfo = new (testFile);
 			string path =
 				MusicManager.CreateArtistPathFromTag(fileInfo, "Artist");
 
@@ -214,7 +270,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void GetDuplicateLocation()
 		{
 			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
+			string location = musicUtility.LibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
@@ -235,8 +291,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
+			using ITunesManager iTunesManager = new ();
+			string location = iTunesManager.ItunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
 			Assert.GreaterOrEqual(iTunesDepth, 6);
@@ -271,7 +327,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void InstanceAlbumRemoveCdNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new (TestFile);
+			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 
 			string album = tags.AlbumRemoveCd();
@@ -310,7 +366,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void InstanceAlbumRemoveDiscNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new (TestFile);
+			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 
 			string album = tags.AlbumRemoveDisc();
@@ -318,6 +374,51 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// The run rule disc check method.
+		/// </summary>
+		[Test]
+		public void MediaFileTagsCheck()
+		{
+			using MusicManager musicManager = new ();
+
+			Rules rules = musicManager.Rules;
+
+			using MediaFileTags tags = new (testFile, rules);
+
+			Assert.NotNull(tags);
+			Assert.NotNull(tags.TagFile);
+			Assert.NotNull(tags.TagSet);
+		}
+
+		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForSameRules()
+		{
+			using MusicManager musicManager = new ();
+			Rules rules = musicManager.Rules;
+
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			rules.RulesList.Add(rule);
+
+			using MusicManager musicManager2 = new (rules);
+
+			Rules rules2 = musicManager2.Rules;
+
+			int count1 = rules.RulesList.Count;
+			int count2 = rules2.RulesList.Count;
+			Assert.AreEqual(count1, count2);
 		}
 
 		/// <summary>
@@ -368,12 +469,29 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The save tags to json file success test.
 		/// </summary>
 		[Test]
+		public void SaveTagsToJsonFile()
+		{
+			using MusicManager musicUtility = new ();
+
+			string temporaryFile = Path.GetTempFileName();
+			FileInfo fileInfo = new (temporaryFile);
+			string destinationPath = Path.GetDirectoryName(temporaryFile);
+			bool result =
+				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+
+			Assert.False(result);
+		}
+
+		/// <summary>
+		/// The save tags to json file success test.
+		/// </summary>
+		[Test]
 		public void SaveTagsToJsonFileSuccess()
 		{
 			using MusicManager musicUtility = new ();
 
-			FileInfo fileInfo = new (TestFile);
-			string destinationPath = Path.GetDirectoryName(TestFile);
+			FileInfo fileInfo = new (testFile);
+			string destinationPath = Path.GetDirectoryName(testFile);
 			bool result =
 				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
 
@@ -627,14 +745,18 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			// Clean up.
 			File.Delete(newFileName);
 
-			string basePath = Paths.GetBasePathFromFilePath(TestFile);
+			string basePath = Paths.GetBasePathFromFilePath(testFile);
 
 			// Need to go 1 up actually.
-			basePath = Path.GetDirectoryName(basePath);
-			string temporaryMusicPath = Path.Combine(basePath, "Music2");
-			Directory.Delete(temporaryMusicPath, true);
+			// basePath = Path.GetDirectoryName(basePath);
+			string newBasePath = basePath + 2.ToString(CultureInfo.InvariantCulture);
 
-			string expected = basePath + @"\Music2\Artist\Album\Sakura.mp4";
+			if (Directory.Exists(newBasePath))
+			{
+				Directory.Delete(newBasePath, true);
+			}
+
+			string expected = newBasePath + @"\Artist\Album\Sakura.mp4";
 
 			Assert.That(newFileName, Is.EqualTo(expected));
 		}
@@ -647,24 +769,42 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			using MusicManager musicUtility = new ();
 
-			MediaFileTags tags = new (TestFile);
+			MediaFileTags tags = new (testFile);
 			tags.Album = "Album";
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
 
 			musicUtility.Tags = tags;
 
-			FileInfo fileInfo = new (TestFile);
+			FileInfo fileInfo = new (testFile);
 
 			fileInfo = musicUtility.UpdateFile(fileInfo);
 			string newFileName = fileInfo.FullName;
 
-			string basePath = Paths.GetBasePathFromFilePath(TestFile);
+			string basePath = Paths.GetBasePathFromFilePath(testFile);
 
 			string expected =
 				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
 			Assert.That(newFileName, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Make test file copy.
+		/// </summary>
+		/// <param name="directory">The directory to create.</param>
+		/// <param name="fileName">The file name to create.</param>
+		/// <returns>The file path of the copy file.</returns>
+		private string MakeTestFileCopy(string directory, string fileName)
+		{
+			string newPath = temporaryPath + directory;
+			Directory.CreateDirectory(newPath);
+
+			string newFileName = newPath + @"\" + fileName;
+
+			File.Copy(testFile, newFileName);
+
+			return newFileName;
 		}
 	}
 }

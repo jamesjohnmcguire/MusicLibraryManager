@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.RulesLibrary
 {
 	/// <summary>
 	/// Chain types enum.
