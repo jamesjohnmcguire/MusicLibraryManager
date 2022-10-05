@@ -123,6 +123,69 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Are file and track the same method.
+		/// </summary>
+		/// <param name="filePath">The file path to check.</param>
+		/// <param name="track">The iTunes track to check.</param>
+		/// <returns>A value indicating whether they are the same
+		/// or not.</returns>
+		public static bool DoFileAndTrackHaveSameValues(
+			string filePath, IITTrack track)
+		{
+			bool same = false;
+
+			if (!string.IsNullOrWhiteSpace(filePath) &&
+				File.Exists(filePath) &&
+				track != null)
+			{
+				try
+				{
+					if (track.Kind == ITTrackKind.ITTrackKindFile)
+					{
+						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
+
+						if (!string.IsNullOrWhiteSpace(fileTrack.Location) &&
+							File.Exists(fileTrack.Location))
+						{
+							using MediaFileTags tags = new(filePath);
+
+							string album1 = fileTrack.Album;
+							string album2 = tags.Album;
+							string artist1 = fileTrack.Artist;
+							string artist2 = tags.Artist;
+							string title1 = fileTrack.Name;
+							string title2 = tags.Title;
+							int year1 = fileTrack.Year;
+							int year2 = (int)tags.Year;
+
+							if (album1.Equals(
+								album2, StringComparison.OrdinalIgnoreCase) &&
+								artist1.Equals(
+									artist2,
+									StringComparison.OrdinalIgnoreCase) &&
+								title1.Equals(
+									title2,
+									StringComparison.OrdinalIgnoreCase) &&
+								year1 == year2)
+							{
+								same = true;
+							}
+						}
+					}
+				}
+				catch (Exception exception) when
+					(exception is ArgumentException ||
+					exception is ArgumentNullException)
+				{
+					Log.Error(CultureInfo.InvariantCulture, m => m(
+						exception.ToString()));
+				}
+			}
+
+			return same;
+		}
+
+		/// <summary>
 		/// Is valid iTunes location method.
 		/// </summary>
 		/// <remarks>This method will check if the location property within
