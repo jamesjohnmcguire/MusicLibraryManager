@@ -22,6 +22,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	[TestFixture]
 	public class RulesTests
 	{
+		private string rulesFileContent;
 		private PocoItem tags;
 		private string temporaryPath;
 		private Rules testRules;
@@ -41,8 +42,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				"RulesLibrary.Tests.TestRules.json",
 				rulesFile);
 
-			string contents = File.ReadAllText(rulesFile);
-			testRules = new (contents);
+			rulesFileContent = File.ReadAllText(rulesFile);
 		}
 
 		/// <summary>
@@ -51,6 +51,8 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[SetUp]
 		public void SetUp()
 		{
+			testRules = new (rulesFileContent);
+
 			tags = new ();
 
 			string original =
