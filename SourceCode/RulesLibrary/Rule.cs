@@ -474,16 +474,19 @@ namespace DigitalZenWorks.RulesLibrary
 		{
 			bool conditionMet = false;
 
-			try
+			if (!string.IsNullOrWhiteSpace(content))
 			{
-				if (Regex.IsMatch(
-					content, Conditional, RegexOptions.IgnoreCase))
+				try
 				{
-					conditionMet = true;
+					if (Regex.IsMatch(
+						content, Conditional, RegexOptions.IgnoreCase))
+					{
+						conditionMet = true;
+					}
 				}
-			}
-			catch (RegexParseException)
-			{
+				catch (RegexParseException)
+				{
+				}
 			}
 
 			return conditionMet;
