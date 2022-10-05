@@ -393,6 +393,34 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The MusicManager check for rules test.
+		/// </summary>
+		[Test]
+		public void MusicManagerCheckForSameRules()
+		{
+			using MusicManager musicManager = new ();
+			Rules rules = musicManager.Rules;
+
+			string pattern = @"\s*\(Dis(c|k).*?\)";
+
+			Rule rule = new (
+				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				Condition.ContainsRegex,
+				pattern,
+				Operation.Remove);
+
+			rules.RulesList.Add(rule);
+
+			using MusicManager musicManager2 = new (rules);
+
+			Rules rules2 = musicManager2.Rules;
+
+			int count1 = rules.RulesList.Count;
+			int count2 = rules2.RulesList.Count;
+			Assert.AreEqual(count1, count2);
+		}
+
+		/// <summary>
 		/// The regex remove result differnt test.
 		/// </summary>
 		[Test]

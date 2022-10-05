@@ -38,7 +38,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			string rulesFile = temporaryPath + @"\rules.json";
 			FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.RulesLibrary.Tests.TestRules.json",
+				"RulesLibrary.Tests.TestRules.json",
 				rulesFile);
 
 			string contents = File.ReadAllText(rulesFile);
@@ -59,7 +59,8 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			tags.PropertySet = new string[1];
 			tags.PropertySet[0] = "Various Artists";
-			tags.PropertySet[0] = "The Solos";
+			tags.PropertySet2 = new string[1];
+			tags.PropertySet2[0] = "The Solos";
 		}
 
 		/// <summary>
@@ -141,12 +142,12 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			Rule rule = new (
 				"RulesLibrary.Tests.PocoItem",
 				Condition.Equals,
-				@"Album",
+				"Something",
 				Operation.None);
 
-			string subject = "Album";
+			string subject = "Something Else";
 			PocoItem tags = new ();
-			tags.Property1 = "Something Else";
+			tags.Property1 = subject;
 
 			bool result = rule.ConditionNotEqualsTest(tags, subject);
 			Assert.True(result);
@@ -233,9 +234,9 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
 			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
-				Condition.ContainsRegex,
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
+				"RulesLibrary.Tests.PocoItem",
+				Condition.Equals,
+				"Property1",
 				Operation.Remove);
 
 			rule.ConditionalType = ConditionalType.Property;
@@ -299,7 +300,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void GetItemSubject()
 		{
-			string subject = Rule.GetItemSubject(tags, "Album");
+			string subject = Rule.GetItemSubject(tags, "Property1");
 
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -426,50 +427,23 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		}
 
 		/// <summary>
-		/// The MusicManager check for rules test.
-		/// </summary>
-		[Test]
-		public void MusicManagerCheckForSameRules()
-		{
-			string rulesFile = temporaryPath + @"\rules.json";
-			FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", rulesFile);
-
-			string contents = File.ReadAllText(rulesFile);
-			Rules rules = new (contents);
-
-			string pattern = @"\s*\(Dis(c|k).*?\)";
-
-			Rule rule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.Album",
-				Condition.ContainsRegex,
-				pattern,
-				Operation.Remove);
-
-			rules.RulesList.Add(rule);
-
-			int count1 = rules.RulesList.Count;
-			int count2 = testRules.RulesList.Count;
-
-			Assert.AreEqual(count1, count2);
-		}
-
-		/// <summary>
 		/// The rule regex remove test.
 		/// </summary>
 		[Test]
 		public void RuleAction()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
-
 			Rule rule = new (
-				element,
+				"RulesLibrary.Tests.PocoItem",
 				Condition.ContainsRegex,
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
 
+			string subject = "What It Is! Funky Soul And Rare Grooves";
+			PocoItem tags = new ();
+			tags.Property1 = subject;
+
 			bool result = rule.Action(
-				tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
 			Assert.True(result);
 		}
 
@@ -479,10 +453,8 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void RuleActionChange()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
-
 			Rule rule = new (
-				element,
+				"RulesLibrary.Tests.PocoItem",
 				Condition.ContainsRegex,
 				@"\s*\(Dis(c|k).*?\)",
 				Operation.Remove);
@@ -490,7 +462,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			tags.Property1 = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
 			bool result = rule.Action(
-				tags, "Album", "What It Is! Funky Soul And Rare Grooves");
+				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
 			Assert.True(result);
 
 			string album = tags.Property1;
@@ -523,22 +495,22 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		public void RuleCheckNextRuleSet()
 		{
 			string original = "Various Artists";
-			string element = "Artists";
+			string element = "PropertySet";
 
-			// Set up final rule - and if artists not equal performers,
-			// replace artists with performers
+			// Set up final rule - and if PropertySet not equal PropertySet2,
+			// replace PropertySet with PropertySet2
 			Rule nextChainRule = new (
-				"Artists",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEquals,
-				"Performers",
+				"PropertySet2",
 				Operation.Replace,
-				"Performers");
+				"PropertySet2");
 
 			nextChainRule.ConditionalType = ConditionalType.Property;
 
-			// Set up additional rule - and if performers tag is not empty,
+			// Set up additional rule - and if PropertySet2 tag is not empty,
 			Rule chainRule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEmpty,
 				original,
 				Operation.None,
@@ -546,7 +518,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				Chain.And,
 				nextChainRule);
 
-			// Set up initial rule - if artists tag equal 'Various Artists'
+			// Set up initial rule - if PropertySet tag equal 'Various Artists'
 			Rule rule = new (
 				element,
 				Condition.Equals,
@@ -595,7 +567,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void RunRuleDiscCheck()
 		{
-			string element = "DigitalZenWorks.MusicToolKit.Tags.Album";
+			string element = "RulesLibrary.Tests.PocoItem.Property1";
 
 			Rule rule = new (
 				element,
@@ -639,22 +611,22 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		public void RunRuleVariousArtistsCheck()
 		{
 			string original = "Various Artists";
-			string element = "Artists";
+			string element = "PropertySet";
 
 			// Set up final rule - and if artists not equal performers,
 			// replace artists with performers
 			Rule nextChainRule = new (
-				"Artists",
+				"PropertySet",
 				Condition.NotEquals,
-				"Performers",
+				"PropertySet2",
 				Operation.Replace,
-				"Performers");
+				"PropertySet2");
 
 			nextChainRule.ConditionalType = ConditionalType.Property;
 
 			// Set up additional rule - and if performers tag is not empty,
 			Rule chainRule = new (
-				"DigitalZenWorks.MusicToolKit.Tags.TagFile.Tag.Performers",
+				"RulesLibrary.Tests.PocoItem.PropertySet2",
 				Condition.NotEmpty,
 				original,
 				Operation.None,
@@ -696,7 +668,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			Assert.True(result);
 
-			string test = tags.Property1;
+			string test = tags.PropertySet[0];
 
 			Assert.That(test, Is.EqualTo("The Solos"));
 		}
@@ -710,10 +682,10 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			string newSubject =
 				"What It Is! Funky Soul And Rare Grooves";
 
-			bool result = Rule.SetItemSubject(tags, "Album", newSubject);
+			bool result = Rule.SetItemSubject(tags, "PropertySet", newSubject);
 			Assert.True(result);
 
-			string subject = Rule.GetItemSubject(tags, "Album");
+			string subject = Rule.GetItemSubject(tags, "PropertySet");
 			Assert.That(subject, Is.EqualTo(newSubject));
 		}
 	}

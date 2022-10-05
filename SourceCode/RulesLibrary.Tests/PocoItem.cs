@@ -28,5 +28,11 @@ namespace RulesLibrary.Tests
 		/// </summary>
 		/// <value>The artists.</value>
 		public virtual string[] PropertySet { get; set; }
+
+		/// <summary>
+		/// Gets or sets the PropertySet2.
+		/// </summary>
+		/// <value>The artists.</value>
+		public virtual string[] PropertySet2 { get; set; }
 	}
 }
