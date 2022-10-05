@@ -9,6 +9,7 @@ using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
+using System.Globalization;
 using System.IO;
 
 [assembly: CLSCompliant(false)]
@@ -269,7 +270,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void GetDuplicateLocation()
 		{
 			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
+			string location = musicUtility.LibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
@@ -290,8 +291,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
+			using ITunesManager iTunesManager = new ();
+			string location = iTunesManager.ItunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
 			Assert.GreaterOrEqual(iTunesDepth, 6);
@@ -747,11 +748,15 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
 
 			// Need to go 1 up actually.
-			basePath = Path.GetDirectoryName(basePath);
-			string temporaryMusicPath = Path.Combine(basePath, "Music2");
-			Directory.Delete(temporaryMusicPath, true);
+			// basePath = Path.GetDirectoryName(basePath);
+			string newBasePath = basePath + 2.ToString(CultureInfo.InvariantCulture);
 
-			string expected = basePath + @"\Music2\Artist\Album\Sakura.mp4";
+			if (Directory.Exists(newBasePath))
+			{
+				Directory.Delete(newBasePath, true);
+			}
+
+			string expected = newBasePath + @"\Artist\Album\Sakura.mp4";
 
 			Assert.That(newFileName, Is.EqualTo(expected));
 		}

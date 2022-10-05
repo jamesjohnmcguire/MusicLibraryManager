@@ -25,9 +25,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void AreFileAndTrackTheSameYes()
 		{
-			using MusicManager musicUtility = new ();
+			using ITunesManager iTunesManager = new ();
 
-			iTunesApp iTunes = musicUtility.ItunesCom;
+			iTunesApp iTunes = iTunesManager.ItunesCom;
 
 			if (iTunes != null)
 			{
@@ -42,14 +42,14 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 				if (null != tracks)
 				{
-					string fileName = musicUtility.ITunesLibraryLocation +
+					string fileName = iTunesManager.ItunesLibraryLocation +
 						@"Music\10cc\The Very Best Of 10cc\" +
 						"The Things We Do For Love.mp3";
 
 					// tracks is a list of potential matches
 					foreach (IITTrack track in tracks)
 					{
-						bool same = MusicManager.AreFileAndTrackTheSame(
+						bool same = ITunesManager.AreFileAndTrackTheSame(
 							fileName, track);
 						Assert.True(same);
 					}
@@ -63,8 +63,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void ITunesPathLocation()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.ITunesLibraryLocation;
+			using ITunesManager iTunesManager = new ();
+			string location = iTunesManager.ItunesLibraryLocation;
 
 			Assert.IsNotEmpty(location);
 		}
@@ -112,8 +112,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void LoadiTunesXmlFile()
 		{
-			using MusicManager musicUtility = new ();
-			string xmlFilePath = musicUtility.ITunesLibraryXMLPath;
+			using ITunesManager iTunesManager = new ();
+			string xmlFilePath = iTunesManager.ITunesLibraryXMLPath;
 
 			Dictionary<string, object> result =
 				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
@@ -159,16 +159,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateItunes()
 		{
-			using MusicManager musicUtility = new ();
+			using ITunesManager iTunesManager = new ();
 
-			string location = musicUtility.ITunesLibraryLocation;
+			string location = iTunesManager.ItunesLibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
 			string fullPath = Path.Combine(location, fileName);
 			FileInfo fileInfo = new (fullPath);
 
-			bool updated = musicUtility.UpdateItunes(fileInfo);
+			bool updated = iTunesManager.UpdateItunes(fileInfo);
 
 			Assert.False(updated);
 		}
