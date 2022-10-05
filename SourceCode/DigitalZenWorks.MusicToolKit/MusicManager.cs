@@ -214,35 +214,11 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Clean music library method.
-		/// </summary>
-		/// <returns>A value indicating success or not.</returns>
-		public int CleanMusicLibrary()
-		{
-			// Operate on the actual music files in the file system
-			CleanFiles(libraryLocation);
-
-			// Operate on the iTunes data store
-			iTunesManager.DeleteDeadTracks();
-
-			return 0;
-		}
-
-		/// <summary>
-		/// Dispose method.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
 		/// Get duplicate location.
 		/// </summary>
 		/// <param name="path">The path of the duplicate item.</param>
 		/// <returns>A new path for the duplicate item.</returns>
-		public string GetDuplicateLocation(string path)
+		public static string GetDuplicateLocation(string path)
 		{
 			string destinationPath = null;
 
@@ -255,15 +231,12 @@ namespace DigitalZenWorks.MusicToolKit
 				string[] pathParts =
 					path.Split(Path.DirectorySeparatorChar);
 
-				string[] iTunesPathParts =
-					libraryLocation.Split(Path.DirectorySeparatorChar);
-
 				while (false == locationOk)
 				{
 					string basePath = Paths.GetBasePathFromFilePath(path);
 					string newBasePath = basePath +
 						tries.ToString(CultureInfo.InvariantCulture);
-					FileInfo fileInfo = new FileInfo(newBasePath);
+					FileInfo fileInfo = new (newBasePath);
 					string baseName = fileInfo.Name;
 
 					int depth = pathParts.Length - 4;
@@ -298,11 +271,36 @@ namespace DigitalZenWorks.MusicToolKit
 							locationOk = true;
 						}
 					}
+
 					tries++;
 				}
 			}
 
 			return destinationPath;
+		}
+
+		/// <summary>
+		/// Clean music library method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
+		public int CleanMusicLibrary()
+		{
+			// Operate on the actual music files in the file system
+			CleanFiles(libraryLocation);
+
+			// Operate on the iTunes data store
+			iTunesManager.DeleteDeadTracks();
+
+			return 0;
+		}
+
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		/// <summary>
@@ -516,6 +514,12 @@ namespace DigitalZenWorks.MusicToolKit
 			if (disposing)
 			{
 				// dispose managed resources
+				if (iTunesManager != null)
+				{
+					iTunesManager.Dispose();
+					iTunesManager = null;
+				}
+
 				if (tags != null)
 				{
 					tags.Dispose();
@@ -572,7 +576,10 @@ namespace DigitalZenWorks.MusicToolKit
 				// update directory and file names
 				file = UpdateFile(file);
 
-				iTunesManager.UpdateItunes(file);
+				if (iTunesManager.IsItunesEnabled == true)
+				{
+					iTunesManager.UpdateItunes(file);
+				}
 			}
 			catch (Exception exception) when
 				(exception is ArgumentNullException ||

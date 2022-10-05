@@ -277,7 +277,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fullPath = Path.Combine(location, fileName);
 
 			string duplicateLocation =
-				musicUtility.GetDuplicateLocation(fullPath);
+				MusicManager.GetDuplicateLocation(fullPath);
 
 			bool contains = duplicateLocation.Contains(
 				"Music2", StringComparison.Ordinal);
