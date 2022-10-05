@@ -378,7 +378,8 @@ namespace DigitalZenWorks.MusicToolKit
 								Log.Error(CultureInfo.InvariantCulture, m => m(
 									exception.ToString()));
 
-								updated = UpdateTrackFromLocation(track, filePath);
+								// updated = UpdateTrackFromLocation(track, filePath);
+								throw;
 							}
 						}
 					}
@@ -455,6 +456,8 @@ namespace DigitalZenWorks.MusicToolKit
 							{
 								Log.Error(CultureInfo.InvariantCulture, m => m(
 									exception.ToString()));
+
+								throw;
 							}
 
 							foundTrack.Artist = artist;
