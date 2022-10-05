@@ -26,3 +26,6 @@ dotnet_diagnostic.NUnit2018.severity = none
 
 # NUnit2028: Consider using Assert.That(actual, Is.GreaterThanOrEqualTo(expected)) instead of Assert.GreaterOrEqual(actual, expected)
 dotnet_diagnostic.NUnit2028.severity = none
+
+# NUnit2036: Consider using Assert.That(collection, Is.Not.Empty) instead of Assert.IsNotEmpty(collection)
+dotnet_diagnostic.NUnit2036.severity = none
