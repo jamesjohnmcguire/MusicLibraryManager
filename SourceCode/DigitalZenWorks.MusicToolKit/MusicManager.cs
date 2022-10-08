@@ -28,7 +28,7 @@ namespace DigitalZenWorks.MusicToolKit
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string libraryLocation;
-		private readonly string librarySkeletonDirectoryLocation;
+		private readonly string libraryTagsOnlyDirectoryLocation;
 
 		private ITunesManager iTunesManager;
 		private Rules rules;
@@ -53,7 +53,7 @@ namespace DigitalZenWorks.MusicToolKit
 				libraryLocation = libraryLocation.Trim('\\');
 			}
 
-			librarySkeletonDirectoryLocation = libraryLocation + "Skeleton";
+			libraryTagsOnlyDirectoryLocation = libraryLocation + " Tags Only";
 
 			GetDefaultRules();
 		}
@@ -347,20 +347,20 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Update library skeleton method.
+		/// Update library tags only method.
 		/// </summary>
-		public void UpdateLibrarySkeleton()
+		public void UpdateLibraryTagsOnly()
 		{
-			UpdateLibrarySkeleton(
-				libraryLocation, librarySkeletonDirectoryLocation);
+			UpdateLibraryTagsOnly(
+				libraryLocation, libraryTagsOnlyDirectoryLocation);
 		}
 
 		/// <summary>
-		/// Update library skeleton method.
+		/// Update library tags only method.
 		/// </summary>
 		/// <param name="path">The path of the source files.</param>
-		/// <param name="skeletonPath">The path of skeleton files.</param>
-		public void UpdateLibrarySkeleton(string path, string skeletonPath)
+		/// <param name="tagsOnlyPath">The path of tags only files.</param>
+		public void UpdateLibraryTagsOnly(string path, string tagsOnlyPath)
 		{
 			try
 			{
@@ -379,7 +379,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
-					CreateDirectoryIfNotExists(skeletonPath);
+					CreateDirectoryIfNotExists(tagsOnlyPath);
 
 					DirectoryInfo directory = new (path);
 
@@ -390,7 +390,7 @@ namespace DigitalZenWorks.MusicToolKit
 						if (includes.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
-							SaveTagsToJsonFile(file, skeletonPath);
+							SaveTagsToJsonFile(file, tagsOnlyPath);
 						}
 					}
 
@@ -399,10 +399,10 @@ namespace DigitalZenWorks.MusicToolKit
 					foreach (string subDirectory in directories)
 					{
 						DirectoryInfo subDirectoryInfo = new (subDirectory);
-						string nextSkeletonPath =
-							skeletonPath + "\\" + subDirectoryInfo.Name;
+						string nextTagsOnlyPath =
+							tagsOnlyPath + "\\" + subDirectoryInfo.Name;
 
-						UpdateLibrarySkeleton(subDirectory, nextSkeletonPath);
+						UpdateLibraryTagsOnly(subDirectory, nextTagsOnlyPath);
 					}
 
 					// refresh

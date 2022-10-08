@@ -50,9 +50,10 @@ namespace MusicManager
 					rules = new (rulesData);
 				}
 
-				using DigitalZenWorks.MusicToolKit.MusicManager musicUtility = new (rules);
+				using DigitalZenWorks.MusicToolKit.MusicManager musicUtility =
+					new (rules);
 
-				musicUtility.UpdateLibrarySkeleton();
+				musicUtility.UpdateLibraryTagsOnly();
 				musicUtility.CleanMusicLibrary();
 			}
 			catch (Exception exception)
