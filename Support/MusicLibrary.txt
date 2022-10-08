@@ -6,8 +6,7 @@ Process
 	Testing
 
 Tasks
-	ITunesFolderLocation / ITunesDirectoryLocation
-	Conditional check for existence of iTunesLib, before using everywhere
+	Update all Log.Error(CultureInfo.InvariantCulture, m => m(
 	MusicManager(libraryLocation)
 	Refactor ITunesXmlFile
 	Refactor DeleteDeadTracks, into smaller testable methods
@@ -29,7 +28,6 @@ Tasks
 	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
 	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
-	Change skeleton to tagSet
 	return value for CleanFile
 	Refactor private MediaFileTags tags to be parameter of specific methods 
 	Write name of source when exception in SaveTagsToJsonFile
@@ -58,7 +56,6 @@ Tasks
 	System.IO.FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
 	Replace all Console.WriteLine	with logging
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
-	Rename skeleton methods
 	Exclude non music directories
 	Remove null fields from json files
 	Add snapshot of each directory as csv
@@ -107,6 +104,10 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Rename skeleton methods
+		Change skeleton to tagSet
+		ITunesFolderLocation / ITunesDirectoryLocation
+		Conditional check for existence of iTunesLib, before using everywhere
 		Tests for GetRuleByName
 		Tests for IsConditionMet
 		Tests for GetConditionalValue
