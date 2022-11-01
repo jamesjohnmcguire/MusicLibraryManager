@@ -91,10 +91,13 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Gets the rules.
+		/// Gets or sets the rules.
 		/// </summary>
 		/// <value>The rules.</value>
-		public Rules Rules { get { return rules; } }
+		public Rules Rules
+		{
+			get { return rules; } set { rules = value; }
+		}
 
 		/// <summary>
 		/// Create album path from tag.

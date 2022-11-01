@@ -13,6 +13,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 [assembly: CLSCompliant(true)]
 
@@ -39,19 +40,6 @@ namespace MusicManager
 
 				Log.Info("Starting Music Manager");
 
-				string rulesData = null;
-				Rules rules = null;
-
-				if ((arguments != null) && (arguments.Length > 0))
-				{
-					rulesData = GetRulesData(arguments[0]);
-				}
-
-				if (!string.IsNullOrWhiteSpace(rulesData))
-				{
-					rules = new (rulesData);
-				}
-
 				IList<Command> commands = GetCommands();
 
 				CommandLineArguments commandLine = new (commands, arguments);
@@ -62,14 +50,18 @@ namespace MusicManager
 				}
 				else
 				{
-					Command command = commandLine.Command;
-
 					using DigitalZenWorks.MusicToolKit.MusicManager
-						musicUtility = new (rules);
+						musicUtility = new ();
+
+					Command command = commandLine.Command;
 
 					switch (command.Name)
 					{
 						case "clean":
+							Rules rules = GetRulesData(command);
+
+							musicUtility.Rules = rules;
+
 							musicUtility.CleanMusicLibrary();
 							break;
 						case "extract-tags":
@@ -94,8 +86,11 @@ namespace MusicManager
 			help.Description = "Show this information";
 			commands.Add(help);
 
-			Command clean = new ("clean");
-			clean.Description = "Clean music files";
+			CommandOption rules = new ("r", "rules", true);
+			IList<CommandOption> options = new List<CommandOption>();
+			options.Add(rules);
+
+			Command clean = new ("clean", options, 0, "Clean music files");
 			commands.Add(clean);
 
 			Command extractTags = new ("extract-tags");
@@ -105,11 +100,21 @@ namespace MusicManager
 			return commands;
 		}
 
-		private static string GetRulesData(string fileName)
+		private static Rules GetRulesData(Command command)
 		{
-			string data = File.ReadAllText(fileName);
+			Rules rules = null;
+			CommandOption optionFound =
+				command.GetOption("r", "rules");
 
-			return data;
+			if (optionFound != null)
+			{
+				string rulesFilePath = optionFound.Parameter;
+				string rulesData = File.ReadAllText(rulesFilePath);
+
+				rules = new (rulesData);
+			}
+
+			return rules;
 		}
 
 		private static void LogInitialization()
