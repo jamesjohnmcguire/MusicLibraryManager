@@ -147,7 +147,7 @@ namespace DigitalZenWorks.MusicToolKit
 						if (!string.IsNullOrWhiteSpace(fileTrack.Location) &&
 							File.Exists(fileTrack.Location))
 						{
-							using MediaFileTags tags = new(filePath);
+							using MediaFileTags tags = new (filePath);
 
 							string album1 = fileTrack.Album;
 							string album2 = tags.Album;
@@ -275,37 +275,16 @@ namespace DigitalZenWorks.MusicToolKit
 
 			for (int index = 1; index <= trackCount; index++)
 			{
-				try
+				// only work with files
+				fileTrack = tracks[index] as IITFileOrCDTrack;
+				bool deadTrack = CheckForDeadTrack(fileTrack);
+
+				if (deadTrack == true)
 				{
-					// only work with files
-					fileTrack = tracks[index] as IITFileOrCDTrack;
-
-					// is this a file track?
-					if ((null != fileTrack) &&
-						(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
-					{
-						if (string.IsNullOrWhiteSpace(fileTrack.Location))
-						{
-							numberDeadFound++;
-
-							fileTrack.Delete();
-						}
-						else if (!File.Exists(fileTrack.Location))
-						{
-							numberDeadFound++;
-							fileTrack.Delete();
-						}
-					}
-
-					numberChecked++;
+					numberDeadFound++;
 				}
-				catch (Exception exception) when
-					(exception is ArgumentException ||
-					exception is NullReferenceException)
-				{
-					Log.Error(CultureInfo.InvariantCulture, m => m(
-						exception.ToString()));
-				}
+
+				numberChecked++;
 			}
 		}
 
@@ -466,6 +445,36 @@ namespace DigitalZenWorks.MusicToolKit
 				iTunes = null;
 				GC.Collect();
 			}
+		}
+
+		private static bool CheckForDeadTrack(IITFileOrCDTrack fileTrack)
+		{
+			bool deadTrack = false;
+
+			try
+			{
+				// is this a file track?
+				if ((null != fileTrack) &&
+					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+				{
+					if (string.IsNullOrWhiteSpace(fileTrack.Location) ||
+						!File.Exists(fileTrack.Location))
+					{
+						deadTrack = true;
+
+						fileTrack.Delete();
+					}
+				}
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is NullReferenceException)
+			{
+				Log.Error(CultureInfo.InvariantCulture, m => m(
+					exception.ToString()));
+			}
+
+			return deadTrack;
 		}
 
 		private bool UpdateTrackFromLocation(
