@@ -17,7 +17,7 @@ using System.Text;
 
 [assembly: CLSCompliant(true)]
 
-namespace MusicManager
+namespace DigitalZenWorks.Music.ToolKit.Application
 {
 	/// <summary>
 	/// The main program class.
