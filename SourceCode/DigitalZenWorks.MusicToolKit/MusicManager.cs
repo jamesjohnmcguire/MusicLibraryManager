@@ -319,8 +319,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 				string filePath = path + "\\" + title + file.Extension;
 
-				// windows will treat different cases as same file names,
-				// so need to compensate
 				if (!filePath.Equals(
 					file.FullName, StringComparison.Ordinal))
 				{
