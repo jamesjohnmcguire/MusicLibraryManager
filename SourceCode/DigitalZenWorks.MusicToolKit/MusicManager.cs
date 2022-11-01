@@ -227,8 +227,11 @@ namespace DigitalZenWorks.MusicToolKit
 			// Operate on the actual music files in the file system
 			CleanFiles(libraryLocation);
 
-			// Operate on the iTunes data store
-			iTunesManager.DeleteDeadTracks();
+			if (iTunesManager.IsItunesEnabled == true)
+			{
+				// Operate on the iTunes data store
+				iTunesManager.DeleteDeadTracks();
+			}
 
 			return 0;
 		}
