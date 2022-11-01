@@ -484,7 +484,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool deleted = false;
 
-			DirectoryInfo directory = new(path);
+			DirectoryInfo directory = new (path);
 			string[] directories = Directory.GetDirectories(path);
 			FileInfo[] files = directory.GetFiles();
 
@@ -544,14 +544,18 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 			catch (Exception exception) when
-				(exception is ArgumentNullException ||
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
 				exception is TagLib.CorruptFileException ||
 				exception is DirectoryNotFoundException ||
 				exception is FileNotFoundException ||
 				exception is IOException ||
-				exception is NullReferenceException ||
 				exception is IndexOutOfRangeException ||
 				exception is InvalidOperationException ||
+				exception is NullReferenceException ||
+				exception is PathTooLongException ||
+				exception is System.Security.SecurityException ||
+				exception is TargetException ||
 				exception is UnauthorizedAccessException ||
 				exception is TagLib.UnsupportedFormatException)
 			{
@@ -597,7 +601,6 @@ namespace DigitalZenWorks.MusicToolKit
 			catch (Exception exception) when
 				(exception is ArgumentException ||
 				exception is ArgumentNullException ||
-				exception is TagLib.CorruptFileException ||
 				exception is DirectoryNotFoundException ||
 				exception is FileNotFoundException ||
 				exception is IndexOutOfRangeException ||
@@ -607,8 +610,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is PathTooLongException ||
 				exception is System.Security.SecurityException ||
 				exception is TargetException ||
-				exception is UnauthorizedAccessException ||
-				exception is TagLib.UnsupportedFormatException)
+				exception is UnauthorizedAccessException)
 			{
 				Log.Error(CultureInfo.InvariantCulture, m => m(
 					exception.ToString()));
