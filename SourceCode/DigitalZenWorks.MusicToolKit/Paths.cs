@@ -238,9 +238,6 @@ namespace DigitalZenWorks.MusicToolKit
 							StringComparison.OrdinalIgnoreCase);
 					}
 				}
-
-				path = path.Replace(
-					"  ", " ", StringComparison.OrdinalIgnoreCase);
 			}
 
 			return path;
