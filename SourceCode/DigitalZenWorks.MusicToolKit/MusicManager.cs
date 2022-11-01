@@ -480,6 +480,26 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
+		private static bool DeleteEmptyDirectory(string path)
+		{
+			bool deleted = false;
+
+			DirectoryInfo directory = new(path);
+			string[] directories = Directory.GetDirectories(path);
+			FileInfo[] files = directory.GetFiles();
+
+			if ((files.Length == 0) && (directories.Length == 0) &&
+				(!path.Contains(
+					"Automatically Add to iTunes",
+					StringComparison.OrdinalIgnoreCase)))
+			{
+				Directory.Delete(path, false);
+				deleted = true;
+			}
+
+			return deleted;
+		}
+
 		private Rules GetDefaultRules()
 		{
 			string contents = null;
@@ -544,14 +564,6 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			try
 			{
-				string[] excludes =
-				{
-					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
-					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
-					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
-					".url", ".xls", ".zip"
-				};
-
 				string[] includes =
 				{
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
@@ -579,17 +591,7 @@ namespace DigitalZenWorks.MusicToolKit
 						CleanFiles(subDirectory);
 					}
 
-					// refresh
-					directories = Directory.GetDirectories(path);
-					files = directory.GetFiles();
-
-					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains(
-							"Automatically Add to iTunes",
-							StringComparison.OrdinalIgnoreCase)))
-					{
-						Directory.Delete(path, false);
-					}
+					DeleteEmptyDirectory(path);
 				}
 			}
 			catch (Exception exception) when
