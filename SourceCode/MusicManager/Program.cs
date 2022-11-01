@@ -5,11 +5,13 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
+using DigitalZenWorks.CommandLine.Commands;
 using DigitalZenWorks.RulesLibrary;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 [assembly: CLSCompliant(true)]
@@ -27,9 +29,9 @@ namespace MusicManager
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
-		/// <param name="args">An array of arguments passed to
+		/// <param name="arguments">An array of arguments passed to
 		/// the program.</param>
-		public static void Main(string[] args)
+		public static void Main(string[] arguments)
 		{
 			try
 			{
@@ -40,9 +42,9 @@ namespace MusicManager
 				string rulesData = null;
 				Rules rules = null;
 
-				if ((args != null) && (args.Length > 0))
+				if ((arguments != null) && (arguments.Length > 0))
 				{
-					rulesData = GetRulesData(args[0]);
+					rulesData = GetRulesData(arguments[0]);
 				}
 
 				if (!string.IsNullOrWhiteSpace(rulesData))
@@ -50,11 +52,31 @@ namespace MusicManager
 					rules = new (rulesData);
 				}
 
-				using DigitalZenWorks.MusicToolKit.MusicManager musicUtility =
-					new (rules);
+				IList<Command> commands = GetCommands();
 
-				musicUtility.UpdateLibraryTagsOnly();
-				musicUtility.CleanMusicLibrary();
+				CommandLineArguments commandLine = new (commands, arguments);
+
+				if (commandLine.ValidArguments == false)
+				{
+					Log.Error(commandLine.ErrorMessage);
+				}
+				else
+				{
+					Command command = commandLine.Command;
+
+					using DigitalZenWorks.MusicToolKit.MusicManager
+						musicUtility = new (rules);
+
+					switch (command.Name)
+					{
+						case "clean":
+							musicUtility.CleanMusicLibrary();
+							break;
+						case "extract-tags":
+							musicUtility.UpdateLibraryTagsOnly();
+							break;
+					}
+				}
 			}
 			catch (Exception exception)
 			{
@@ -62,6 +84,25 @@ namespace MusicManager
 
 				throw;
 			}
+		}
+
+		private static IList<Command> GetCommands()
+		{
+			IList<Command> commands = new List<Command>();
+
+			Command help = new ("help");
+			help.Description = "Show this information";
+			commands.Add(help);
+
+			Command clean = new ("clean");
+			clean.Description = "Clean music files";
+			commands.Add(clean);
+
+			Command extractTags = new ("extract-tags");
+			extractTags.Description = "Extract tag info";
+			commands.Add(extractTags);
+
+			return commands;
 		}
 
 		private static string GetRulesData(string fileName)
