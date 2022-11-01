@@ -286,8 +286,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is TagLib.CorruptFileException ||
 				exception is TagLib.UnsupportedFormatException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 
 			return result;
@@ -441,8 +440,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is UnauthorizedAccessException ||
 				exception is TagLib.UnsupportedFormatException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 		}
 
@@ -528,8 +526,7 @@ namespace DigitalZenWorks.MusicToolKit
 			try
 			{
 				string message = "Checking: " + file.FullName;
-				Log.Info(CultureInfo.InvariantCulture, m => m(
-					message));
+				Log.Info(message);
 
 				// get and update tags
 				tags = new MediaFileTags(file.FullName, rules);
@@ -559,8 +556,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is UnauthorizedAccessException ||
 				exception is TagLib.UnsupportedFormatException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 		}
 
@@ -612,8 +608,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is TargetException ||
 				exception is UnauthorizedAccessException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 		}
 	}

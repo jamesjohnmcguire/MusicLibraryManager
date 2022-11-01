@@ -177,8 +177,7 @@ namespace DigitalZenWorks.MusicToolKit
 					(exception is ArgumentException ||
 					exception is ArgumentNullException)
 				{
-					Log.Error(CultureInfo.InvariantCulture, m => m(
-						exception.ToString()));
+					Log.Error(exception.ToString());
 				}
 			}
 
@@ -246,8 +245,7 @@ namespace DigitalZenWorks.MusicToolKit
 								// exception, find out why the exception
 								// occured, then find out if the below code
 								// makes any sense
-								Log.Error(CultureInfo.InvariantCulture, m => m(
-									exception.ToString()));
+								Log.Error(exception.ToString());
 
 								// updated = UpdateTrackFromLocation(track, filePath);
 								throw;
@@ -473,8 +471,7 @@ namespace DigitalZenWorks.MusicToolKit
 				(exception is ArgumentException ||
 				exception is NullReferenceException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 
 			return deadTrack;
@@ -529,8 +526,7 @@ namespace DigitalZenWorks.MusicToolKit
 							}
 							catch (Exception exception)
 							{
-								Log.Error(CultureInfo.InvariantCulture, m => m(
-									exception.ToString()));
+								Log.Error(exception.ToString());
 
 								throw;
 							}

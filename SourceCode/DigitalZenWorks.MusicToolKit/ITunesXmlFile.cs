@@ -155,8 +155,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is WebException ||
 				exception is XmlException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 			}
 
 			return iTunesInformation;
@@ -204,8 +203,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is ArgumentOutOfRangeException ||
 				exception is UriFormatException)
 			{
-				Log.Error(CultureInfo.InvariantCulture, m => m(
-					exception.ToString()));
+				Log.Error(exception.ToString());
 				localPath = null;
 			}
 
