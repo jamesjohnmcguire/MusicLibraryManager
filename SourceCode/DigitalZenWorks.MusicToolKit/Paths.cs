@@ -204,7 +204,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
 		/// <returns>The path part.</returns>
-		public static string RemoveIllegalPathCharactors(string path)
+		public static string RemoveIllegalPathCharacters(string path)
 		{
 			if (!string.IsNullOrWhiteSpace(path))
 			{

@@ -108,7 +108,7 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string CreateAlbumPathFromTag(
 			string artistPath, string albumTag)
 		{
-			albumTag = Paths.RemoveIllegalPathCharactors(albumTag);
+			albumTag = Paths.RemoveIllegalPathCharacters(albumTag);
 			albumTag = albumTag.Trim();
 
 			string path = Path.Combine(artistPath, albumTag);
@@ -132,7 +132,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
 
-				artistTag = Paths.RemoveIllegalPathCharactors(artistTag);
+				artistTag = Paths.RemoveIllegalPathCharacters(artistTag);
 
 				string pattern = @"\.{2,}";
 
@@ -308,7 +308,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				path = CreateAlbumPathFromTag(path, tags.Album);
 
-				string title = Paths.RemoveIllegalPathCharactors(tags.Title);
+				string title = Paths.RemoveIllegalPathCharacters(tags.Title);
 
 				string filePath = path + "\\" + title + file.Extension;
 
