@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MusicManager": {
+      "commandName": "Project",
+      "commandLineArgs": "clean"
+    }
+  }
+}
