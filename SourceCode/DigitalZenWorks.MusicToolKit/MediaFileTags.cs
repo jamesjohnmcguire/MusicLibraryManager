@@ -392,6 +392,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
+				Album = Album.Trim();
+
 				string breaker = " - ";
 				if (Album.Contains(
 					breaker, StringComparison.OrdinalIgnoreCase))
@@ -469,6 +471,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
+				Artist = Artist.Trim();
+
 				string breaker = " - ";
 				if (Artist.Contains(
 					breaker, StringComparison.OrdinalIgnoreCase))
@@ -519,6 +523,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
+				Title = Title.Trim();
+
 				string[] regexes =
 				new string[] { @" \[.*?\]" };
 
