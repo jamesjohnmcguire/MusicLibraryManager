@@ -345,6 +345,33 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
+		private static string ExtractSubTitle(string title)
+		{
+			string subTitle = null;
+
+			try
+			{
+				string pattern = @" \[.*?\]";
+				Match match = Regex.Match(
+					title, pattern, RegexOptions.IgnoreCase);
+
+				if (match.Success == true)
+				{
+					subTitle = match.Value;
+				}
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is ArgumentOutOfRangeException ||
+				exception is RegexMatchTimeoutException)
+			{
+				Log.Error(exception.ToString());
+			}
+
+			return subTitle;
+		}
+
 		private bool UpdateAlbumTag(string fileName)
 		{
 			bool updated = false;
@@ -493,11 +520,19 @@ namespace DigitalZenWorks.MusicToolKit
 			if (!string.IsNullOrEmpty(Title))
 			{
 				string[] regexes =
-				new string[] { @" \[.*?\]", @" \(.*?\)" };
+				new string[] { @" \[.*?\]" };
 
 				foreach (string regex in regexes)
 				{
 					string previousTitle = Title;
+
+					string subTitle = ExtractSubTitle(Title);
+
+					if (!string.IsNullOrWhiteSpace(subTitle))
+					{
+						TagFile.Tag.Subtitle = subTitle;
+					}
+
 					Title = RegexRemove(regex, Title);
 
 					if (!string.IsNullOrWhiteSpace(previousTitle) &&
