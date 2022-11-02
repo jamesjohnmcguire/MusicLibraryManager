@@ -314,6 +314,8 @@ namespace DigitalZenWorks.MusicToolKit
 				path = CreateAlbumPathFromTag(path, tags.Album);
 
 				string title = Paths.RemoveIllegalPathCharacters(tags.Title);
+				title = RemoveTrailingNumbers(title);
+
 				title = title.Replace(
 					"  ", " ", StringComparison.OrdinalIgnoreCase);
 
@@ -501,6 +503,13 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return deleted;
+		}
+
+		private static string RemoveTrailingNumbers(string text)
+		{
+			text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+
+			return text;
 		}
 
 		private Rules GetDefaultRules()
