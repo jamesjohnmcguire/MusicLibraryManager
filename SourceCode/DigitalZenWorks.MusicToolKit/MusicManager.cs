@@ -110,6 +110,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			albumTag = Paths.RemoveIllegalPathCharacters(albumTag);
 			albumTag = albumTag.Trim();
+			albumTag = albumTag.TrimEnd('.');
 
 			albumTag = albumTag.Replace(
 				"  ", " ", StringComparison.OrdinalIgnoreCase);
@@ -136,6 +137,8 @@ namespace DigitalZenWorks.MusicToolKit
 				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
 
 				artistTag = Paths.RemoveIllegalPathCharacters(artistTag);
+				artistTag = artistTag.TrimEnd('.');
+
 				artistTag = artistTag.Replace(
 					"  ", " ", StringComparison.OrdinalIgnoreCase);
 
