@@ -60,7 +60,10 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 						case "clean":
 							Rules rules = GetRulesData(command);
 
-							musicUtility.Rules = rules;
+							if (rules != null)
+							{
+								musicUtility.Rules = rules;
+							}
 
 							musicUtility.CleanMusicLibrary();
 							break;
