@@ -308,10 +308,11 @@ namespace DigitalZenWorks.MusicToolKit
 		public bool Update()
 		{
 			bool updated = false;
+			bool rulesUpdated = false;
 
 			if (rules != null)
 			{
-				rules.RunRules(this);
+				rulesUpdated = rules.RunRules(this);
 			}
 
 			bool artistUpdated = UpdateArtistTag(filePath);
@@ -321,7 +322,7 @@ namespace DigitalZenWorks.MusicToolKit
 			bool titleUpdated = UpdateTitleTag();
 
 			if ((true == albumUpdated) || (true == artistUpdated) ||
-				(true == titleUpdated))
+				(true == titleUpdated) || true == rulesUpdated)
 			{
 				TagFile.Save();
 				updated = true;
