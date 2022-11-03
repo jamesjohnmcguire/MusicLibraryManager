@@ -71,15 +71,26 @@ namespace DigitalZenWorks.RulesLibrary
 		/// Run rules method.
 		/// </summary>
 		/// <param name="item">The object to process.</param>
-		public void RunRules(object item)
+		/// <returns>A value indicating whether the the item was updated
+		/// or not.</returns>
+		public bool RunRules(object item)
 		{
+			bool updated = false;
+
 			if (item != null)
 			{
 				foreach (Rule rule in rules)
 				{
-					rule.Run(item);
+					bool ruleUpdated = rule.Run(item);
+
+					if (ruleUpdated == true)
+					{
+						updated = true;
+					}
 				}
 			}
+
+			return updated;
 		}
 	}
 }
