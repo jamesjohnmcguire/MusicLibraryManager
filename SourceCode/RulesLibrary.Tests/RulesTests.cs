@@ -607,6 +607,23 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		}
 
 		/// <summary>
+		/// The run rules updated test.
+		/// </summary>
+		[Test]
+		public void RunRulesUpdated()
+		{
+			Assert.NotNull(testRules);
+
+			bool result = testRules.RunRules(tags);
+
+			Assert.True(result);
+
+			string test = tags.Property1;
+			Assert.That(test, Is.EqualTo(
+				"What It Is! Funky Soul And Rare Grooves"));
+		}
+
+		/// <summary>
 		/// The run rule various artists check method test.
 		/// </summary>
 		[Test]
