@@ -562,11 +562,11 @@ namespace DigitalZenWorks.RulesLibrary
 				if (conditionMet == true)
 				{
 					changed = CheckNextRule(item);
-				}
 
-				if (this.ChainRule == null)
-				{
-					changed = Action(item, Subject, content);
+					if (this.ChainRule == null)
+					{
+						changed = Action(item, Subject, content);
+					}
 				}
 			}
 
