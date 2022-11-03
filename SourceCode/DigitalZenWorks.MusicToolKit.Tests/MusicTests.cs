@@ -20,8 +20,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class MusicTests
+	public class MusicTests : IDisposable
 	{
+		private MusicManager musicManager;
+		private Rules rules;
 		private TagSet tags;
 		private string temporaryPath;
 		private string testFile;
@@ -32,6 +34,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
+			musicManager = new MusicManager();
+
 			temporaryPath = Path.GetTempFileName();
 			File.Delete(temporaryPath);
 			Directory.CreateDirectory(temporaryPath);
@@ -57,6 +61,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Performers = new string[1];
 			tags.Artists[0] = "Various Artists";
 			tags.Performers[0] = "The Solos";
+
+			rules = musicManager.Rules;
 		}
 
 		/// <summary>
@@ -71,6 +77,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			{
 				Directory.Delete(temporaryPath, true);
 			}
+
+			Dispose();
+		}
+
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		/// <summary>
@@ -269,8 +286,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetDuplicateLocation()
 		{
-			using MusicManager musicUtility = new ();
-			string location = musicUtility.LibraryLocation;
+			string location = musicManager.LibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
@@ -382,10 +398,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MediaFileTagsCheck()
 		{
-			using MusicManager musicManager = new ();
-
-			Rules rules = musicManager.Rules;
-
 			using MediaFileTags tags = new (testFile, rules);
 
 			Assert.NotNull(tags);
@@ -399,9 +411,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MusicManagerCheckForSameRules()
 		{
-			using MusicManager musicManager = new ();
-			Rules rules = musicManager.Rules;
-
 			string pattern = @"\s*\(Dis(c|k).*?\)";
 
 			Rule rule = new (
@@ -471,13 +480,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void SaveTagsToJsonFile()
 		{
-			using MusicManager musicUtility = new ();
-
 			string temporaryFile = Path.GetTempFileName();
 			FileInfo fileInfo = new (temporaryFile);
 			string destinationPath = Path.GetDirectoryName(temporaryFile);
 			bool result =
-				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
 			Assert.False(result);
 		}
@@ -488,12 +495,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void SaveTagsToJsonFileSuccess()
 		{
-			using MusicManager musicUtility = new ();
-
 			FileInfo fileInfo = new (testFile);
 			string destinationPath = Path.GetDirectoryName(testFile);
 			bool result =
-				musicUtility.SaveTagsToJsonFile(fileInfo, destinationPath);
+				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
 			Assert.True(result);
 			string destinationFile =
@@ -508,6 +513,29 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// </summary>
 		[Test]
 		public void TagFileUpdateAlbumFromPath()
+		{
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+
+			using MediaFileTags tags = new (newFileName);
+
+			bool result = tags.Update();
+			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			File.Delete(newFileName);
+
+			string expected = "Album Name";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The tag file update album from path with rules test.
+		/// </summary>
+		[Test]
+		public void TagFileUpdateAlbumFromPathRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
@@ -723,8 +751,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileDifferent()
 		{
-			using MusicManager musicUtility = new ();
-
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
@@ -735,11 +761,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
 
-			musicUtility.Tags = tags;
+			musicManager.Tags = tags;
 
 			FileInfo fileInfo = new (newFileName);
 
-			fileInfo = musicUtility.UpdateFile(fileInfo);
+			fileInfo = musicManager.UpdateFile(fileInfo);
 			newFileName = fileInfo.FullName;
 
 			// Clean up.
@@ -767,18 +793,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileSame()
 		{
-			using MusicManager musicUtility = new ();
-
 			MediaFileTags tags = new (testFile);
 			tags.Album = "Album";
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
 
-			musicUtility.Tags = tags;
+			musicManager.Tags = tags;
 
 			FileInfo fileInfo = new (testFile);
 
-			fileInfo = musicUtility.UpdateFile(fileInfo);
+			fileInfo = musicManager.UpdateFile(fileInfo);
 			string newFileName = fileInfo.FullName;
 
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
@@ -787,6 +811,24 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
 			Assert.That(newFileName, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		/// <param name="disposing">Indicates whether currently disposing
+		/// or not.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// dispose managed resources
+				if (musicManager != null)
+				{
+					musicManager.Dispose();
+					musicManager = null;
+				}
+			}
 		}
 
 		/// <summary>

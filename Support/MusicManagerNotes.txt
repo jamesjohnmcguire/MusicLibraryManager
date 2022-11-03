@@ -6,19 +6,13 @@ Process
 	Testing
 
 Tasks
-	Update all Log.Error(CultureInfo.InvariantCulture, m => m(
-	MusicManager(libraryLocation)
+	Log any change to media file
+	If exact duplicate, remove, don't move
+	Re-add , @" \(.*?\)" for title?
 	Refactor ITunesXmlFile
 	Refactor DeleteDeadTracks, into smaller testable methods
 	Refactor FindDuplicates, into smaller testable methods
 	Migrate custom functionality from GetAlbumFromPath
-	Move iTunes related functionality to its own class
-	Warning	CA1031	Modify 'UpdateItunesLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	748	Active
-	Warning	CA1031	Modify 'UpdateTrackFromLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	815	Active
-	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
-	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
-	Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
-	Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
 	Return filename from SaveTagsToJsonFile
 	Add command line switch for UpdateLibrarySkeleton
 	GetDefaultRules use FileUtils
@@ -104,6 +98,15 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Update all Log.Error(CultureInfo.InvariantCulture, m => m(
+		MusicManager(libraryLocation)
+		Move iTunes related functionality to its own class
+		Warning	CA1031	Modify 'UpdateItunesLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	748	Active
+		Warning	CA1031	Modify 'UpdateTrackFromLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	815	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
 		Rename skeleton methods
 		Change skeleton to tagSet
 		ITunesFolderLocation / ITunesDirectoryLocation
