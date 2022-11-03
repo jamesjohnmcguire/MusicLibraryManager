@@ -502,7 +502,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			// Set up final rule - and if PropertySet not equal PropertySet2,
 			// replace PropertySet with PropertySet2
 			Rule nextChainRule = new (
-				"RulesLibrary.Tests.PocoItem.PropertySet2",
+				"RulesLibrary.Tests.PocoItem.PropertySet",
 				Condition.NotEquals,
 				"PropertySet2",
 				Operation.Replace,
