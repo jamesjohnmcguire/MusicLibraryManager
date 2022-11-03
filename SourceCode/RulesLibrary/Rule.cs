@@ -238,7 +238,7 @@ namespace DigitalZenWorks.RulesLibrary
 			{
 				string[] parts = element.Split('.');
 
-				baseElement = parts[parts.Length - 1];
+				baseElement = parts[^1];
 			}
 
 			return baseElement;
