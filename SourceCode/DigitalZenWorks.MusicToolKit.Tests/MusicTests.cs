@@ -140,6 +140,38 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// Album remove copy amount test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveCopyAmount()
+		{
+			string album = "Den Bosh (1)";
+
+			album = MediaFileTags.AlbumRemoveCopyAmount(album);
+
+			Assert.IsNotEmpty(album);
+
+			string expected = "Den Bosh";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album remove copy amount same test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveCopyAmountSame()
+		{
+			string album = "Den Bosh (Nice Day)";
+
+			album = MediaFileTags.AlbumRemoveCopyAmount(album);
+
+			Assert.IsNotEmpty(album);
+
+			string expected = "Den Bosh (Nice Day)";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// Album replace curly braces method test.
 		/// </summary>
 		[Test]
