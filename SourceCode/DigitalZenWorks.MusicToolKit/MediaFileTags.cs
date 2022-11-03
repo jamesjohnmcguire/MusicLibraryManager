@@ -209,6 +209,22 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Album remove copy amount method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string AlbumRemoveCopyAmount(string album)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				string pattern = @" \(\d*\)$";
+				album = RegexRemove(pattern, album);
+			}
+
+			return album;
+		}
+
+		/// <summary>
 		/// Album replace curly braces method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
@@ -391,6 +407,7 @@ namespace DigitalZenWorks.MusicToolKit
 			Album = Album.Replace(
 				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
 			Album = AlbumReplaceCurlyBraces(Album);
+			Album = AlbumRemoveCopyAmount(Album);
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
@@ -405,26 +422,6 @@ namespace DigitalZenWorks.MusicToolKit
 						separators, StringSplitOptions.RemoveEmptyEntries);
 
 					Album = parts[1];
-				}
-
-				string pattern = @" \(.*?\)";
-
-				if (Regex.IsMatch(Album, pattern))
-				{
-					Regex regex = new (pattern);
-					MatchCollection matches = regex.Matches(pattern);
-
-					foreach (Match match in matches.Cast<Match>())
-					{
-						string foundAtPosition = StringTable.GetString(
-								"FOUND_AT_POSITION",
-								CultureInfo.InvariantCulture);
-
-						Console.WriteLine(
-							foundAtPosition,
-							match.Value,
-							match.Index);
-					}
 				}
 			}
 
