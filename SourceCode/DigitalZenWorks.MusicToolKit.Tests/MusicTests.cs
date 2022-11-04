@@ -41,8 +41,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Directory.CreateDirectory(temporaryPath);
 
 			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
-			FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
 		}
 
 		/// <summary>
@@ -51,6 +49,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[SetUp]
 		public void SetUp()
 		{
+			FileUtils.CreateFileFromEmbeddedResource(
+				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
+
 			tags = new ();
 
 			string original =
@@ -115,7 +116,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh cd 1";
 
-			album = MediaFileTags.AlbumRemoveCd(album);
+			album = AlbumTagRules.AlbumRemoveCd(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -132,7 +133,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Den Bosh";
 			string album = original;
 
-			album = MediaFileTags.AlbumRemoveCd(album);
+			album = AlbumTagRules.AlbumRemoveCd(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -147,7 +148,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh (1)";
 
-			album = MediaFileTags.AlbumRemoveCopyAmount(album);
+			album = AlbumTagRules.AlbumRemoveCopyAmount(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -163,7 +164,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh (Nice Day)";
 
-			album = MediaFileTags.AlbumRemoveCopyAmount(album);
+			album = AlbumTagRules.AlbumRemoveCopyAmount(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -179,7 +180,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Something {In Heaven}";
 
-			album = MediaFileTags.AlbumReplaceCurlyBraces(album);
+			album = AlbumTagRules.AlbumReplaceCurlyBraces(album);
 
 			string expected = "Something [In Heaven]";
 			Assert.That(album, Is.EqualTo(expected));
@@ -194,7 +195,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Something In Heaven";
 			string album = original;
 
-			album = MediaFileTags.AlbumReplaceCurlyBraces(album);
+			album = AlbumTagRules.AlbumReplaceCurlyBraces(album);
 
 			Assert.That(album, Is.EqualTo(original));
 		}
@@ -207,7 +208,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
-			album = MediaFileTags.AlbumRemoveDisc(album);
+			album = AlbumTagRules.AlbumRemoveDisc(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -224,7 +225,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Den Bosh";
 			string album = original;
 
-			album = MediaFileTags.AlbumRemoveDisc(album);
+			album = AlbumTagRules.AlbumRemoveDisc(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -358,10 +359,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
 
-			string album = tags.AlbumRemoveCd();
+			bool result = tags.Update();
 
 			File.Delete(newFileName);
 
+			Assert.True(result);
+
+			string album = tags.Album;
 			Assert.IsNotEmpty(album);
 
 			string expected = "Album";
@@ -378,8 +382,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 
-			string album = tags.AlbumRemoveCd();
+			bool result = tags.Update();
+			Assert.True(result);
 
+			string album = tags.Album;
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -395,12 +401,15 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
-			tags.Album = "Album (Disk 2)";
+			string album = tags.Album = "Album (Disk 2)";
 
-			string album = tags.AlbumRemoveDisc();
+			bool result = tags.Update();
 
 			File.Delete(newFileName);
 
+			Assert.True(result);
+
+			album = tags.Album;
 			Assert.IsNotEmpty(album);
 
 			string expected = "Album";
@@ -416,9 +425,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Album";
 			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
+			tags.Artist = "Artist";
+			tags.Title = "Sakura";
 
-			string album = tags.AlbumRemoveDisc();
+			bool result = tags.Update();
+			Assert.False(result);
 
+			string album = tags.Album;
 			Assert.IsNotEmpty(album);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -471,7 +484,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "What It Is! Funky Soul And Rare Grooves cd 1";
 			string content = original;
 			string pattern = @" cd.*?\d";
-			content = MediaFileTags.RegexRemove(pattern, content);
+			content = Rule.RegexRemove(pattern, content);
 
 			bool result = original.Equals(content, StringComparison.Ordinal);
 
@@ -487,7 +500,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "What It Is! Funky Soul And Rare Grooves";
 			string content = original;
 			string pattern = null;
-			content = MediaFileTags.RegexRemove(pattern, content);
+			content = Rule.RegexRemove(pattern, content);
 
 			Assert.That(content, Is.EqualTo(original));
 		}
@@ -501,7 +514,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "What It Is! Funky Soul And Rare Grooves";
 			string content = original;
 			string pattern = @" cd.*?\d";
-			content = MediaFileTags.RegexRemove(pattern, content);
+			content = Rule.RegexRemove(pattern, content);
 
 			Assert.That(content, Is.EqualTo(original));
 		}

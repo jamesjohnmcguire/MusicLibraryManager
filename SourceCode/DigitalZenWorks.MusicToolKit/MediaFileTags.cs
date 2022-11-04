@@ -196,119 +196,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Album remove cd method.
-		/// </summary>
-		/// <param name="album">The album string.</param>
-		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveCd(string album)
-		{
-			string pattern = @" cd.*?\d";
-			album = RegexRemove(pattern, album);
-
-			return album;
-		}
-
-		/// <summary>
-		/// Album remove copy amount method.
-		/// </summary>
-		/// <param name="album">The album string.</param>
-		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveCopyAmount(string album)
-		{
-			if (!string.IsNullOrWhiteSpace(album))
-			{
-				string pattern = @" \(\d*\)$";
-				album = RegexRemove(pattern, album);
-			}
-
-			return album;
-		}
-
-		/// <summary>
-		/// Album replace curly braces method.
-		/// </summary>
-		/// <param name="album">The album string.</param>
-		/// <returns>An updated album string.</returns>
-		public static string AlbumReplaceCurlyBraces(string album)
-		{
-			if (!string.IsNullOrWhiteSpace(album))
-			{
-				album = album.Replace('{', '[');
-				album = album.Replace('}', ']');
-			}
-
-			return album;
-		}
-
-		/// <summary>
-		/// Album remove disc method.
-		/// </summary>
-		/// <param name="album">The album string.</param>
-		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveDisc(string album)
-		{
-			string pattern = @"\s*\(Dis(c|k).*?\)";
-			album = RegexRemove(pattern, album);
-
-			return album;
-		}
-
-		/// <summary>
-		/// Regex remove method.
-		/// </summary>
-		/// <param name="pattern">The pattern to match.</param>
-		/// <param name="content">The content to search.</param>
-		/// <returns>An updated album string.</returns>
-		public static string RegexRemove(string pattern, string content)
-		{
-			string output = content;
-
-			try
-			{
-				if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
-				{
-					output = Regex.Replace(
-						content,
-						pattern,
-						string.Empty,
-						RegexOptions.IgnoreCase);
-				}
-			}
-			catch (Exception exception) when
-			(exception is ArgumentException ||
-			exception is ArgumentNullException ||
-			exception is ArgumentOutOfRangeException ||
-			exception is RegexMatchTimeoutException)
-			{
-				Log.Error(exception.ToString());
-			}
-
-			return output;
-		}
-
-		/// <summary>
-		/// Album remove cd method.
-		/// </summary>
-		/// <returns>An updated album string.</returns>
-		public string AlbumRemoveCd()
-		{
-			Album = AlbumRemoveCd(Album);
-
-			return Album;
-		}
-
-		/// <summary>
-		/// Album remove disc method.
-		/// </summary>
-		/// <returns>An updated album string.</returns>
-		public string AlbumRemoveDisc()
-		{
-			Album = AlbumRemoveDisc(Album);
-
-			return Album;
-		}
-
-		/// <summary>
 		/// Dispose method.
 		/// </summary>
 		public void Dispose()
@@ -402,12 +289,12 @@ namespace DigitalZenWorks.MusicToolKit
 				Album = Paths.GetAlbumFromPath(fileName);
 			}
 
-			Album = AlbumRemoveCd();
-			Album = AlbumRemoveDisc();
+			Album = AlbumTagRules.AlbumRemoveCd(Album);
+			Album = AlbumTagRules.AlbumRemoveDisc(Album);
 			Album = Album.Replace(
 				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
-			Album = AlbumReplaceCurlyBraces(Album);
-			Album = AlbumRemoveCopyAmount(Album);
+			Album = AlbumTagRules.AlbumReplaceCurlyBraces(Album);
+			Album = AlbumTagRules.AlbumRemoveCopyAmount(Album);
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
@@ -533,7 +420,7 @@ namespace DigitalZenWorks.MusicToolKit
 						TagFile.Tag.Subtitle = subTitle;
 					}
 
-					Title = RegexRemove(regex, Title);
+					Title = Rule.RegexRemove(regex, Title);
 				}
 
 				if ((!string.IsNullOrWhiteSpace(Artist)) &&

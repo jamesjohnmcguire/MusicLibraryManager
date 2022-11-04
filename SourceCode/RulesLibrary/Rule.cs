@@ -249,6 +249,39 @@ namespace DigitalZenWorks.RulesLibrary
 		}
 
 		/// <summary>
+		/// Regex remove method.
+		/// </summary>
+		/// <param name="pattern">The pattern to match.</param>
+		/// <param name="content">The content to search.</param>
+		/// <returns>An updated album string.</returns>
+		public static string RegexRemove(string pattern, string content)
+		{
+			string output = content;
+
+			try
+			{
+				if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+				{
+					output = Regex.Replace(
+						content,
+						pattern,
+						string.Empty,
+						RegexOptions.IgnoreCase);
+				}
+			}
+			catch (Exception exception) when
+			(exception is ArgumentException ||
+			exception is ArgumentNullException ||
+			exception is ArgumentOutOfRangeException ||
+			exception is RegexMatchTimeoutException)
+			{
+				Log.Error(exception.ToString());
+			}
+
+			return output;
+		}
+
+		/// <summary>
 		/// Regex replace method.
 		/// </summary>
 		/// <param name="content">The object to update.</param>
