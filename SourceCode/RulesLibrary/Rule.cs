@@ -4,6 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,9 @@ namespace DigitalZenWorks.RulesLibrary
 	/// </summary>
 	public class Rule
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
+
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
 		/// <summary>
