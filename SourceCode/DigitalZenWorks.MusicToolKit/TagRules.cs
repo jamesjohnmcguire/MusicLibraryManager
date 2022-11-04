@@ -4,8 +4,10 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using Serilog;
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
 {
