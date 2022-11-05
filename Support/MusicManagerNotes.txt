@@ -7,11 +7,13 @@ Process
 
 Tasks
 	Log any change to media file
+	Console.WriteLine
 	If exact duplicate, remove, don't move
 	Re-add , @" \(.*?\)" for title?
 	Refactor ITunesXmlFile
 	Refactor DeleteDeadTracks, into smaller testable methods
 	Refactor FindDuplicates, into smaller testable methods
+	AcoustID fingerprints
 	Migrate custom functionality from GetAlbumFromPath
 	Return filename from SaveTagsToJsonFile
 	Add command line switch for UpdateLibrarySkeleton
@@ -98,6 +100,7 @@ Tasks
 	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		clean up usings
 		Update all Log.Error(CultureInfo.InvariantCulture, m => m(
 		MusicManager(libraryLocation)
 		Move iTunes related functionality to its own class
@@ -496,6 +499,25 @@ Resources
 			https://github.com/mono/taglib-sharp	https://www.nuget.org/packages/TagLibSharp
 			Alternate Tagging libraries
 				Audio Tools Library (ATL) for .NET	https://github.com/Zeugma440/atldotnet
+		MusicBrainz
+			music tag original album
+				https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
+				https://picard.musicbrainz.org/docs/development/
+			https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3
+		extract tagsinto other file
+			http://meta-extractor.sourceforge.net/
+			https://sourceforge.net/projects/meta-extractor/files/
+			https://github.com/DIA-NZ/Metadata-Extraction-Tool
+			https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
+		music database
+			https://github.com/metabrainz/musicbrainz-server/tree/master/admin/sql
+			https://musicbrainz.org/doc/MusicBrainz_Database/Schema
+
+			https://en.wikipedia.org/wiki/List_of_online_music_databases
+		AcoustID fingerprints
+			https://github.com/acoustid/chromaprint
+			https://github.com/wo80/AcoustID.NET
+			https://oxygene.sk/2011/01/how-does-chromaprint-work/
 	c# itunes api
 		http://www.joshkunz.com/iTunesControl/
 		http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
@@ -531,16 +553,6 @@ Resources
 
 		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
 		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-	MusicBrainz
-		music tag original album
-			https://community.metabrainz.org/t/plugin-tag-first-recorded-date/187175/8
-			https://picard.musicbrainz.org/docs/development/
-		https://community.metabrainz.org/t/newbie-here-picard-seems-to-be-prefering-tags-other-than-the-original-release/89554/3
-	extract tagsinto other file
-		http://meta-extractor.sourceforge.net/
-		https://sourceforge.net/projects/meta-extractor/files/
-		https://github.com/DIA-NZ/Metadata-Extraction-Tool
-		https://www.codeproject.com/Articles/11175/Extracting-Tags-and-Details-from-Your-MP3-Collecti
 	Packages
 		https://github.com/JamesNK/Newtonsoft.Json
 	http://regexstorm.net/tester
@@ -587,12 +599,6 @@ New
 	Catch Exceptions from ReadAllText, IsMatch
 		https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readalltext?f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.IO.File.ReadAllText)%3Bk(DevLang-csharp)%26rd%3Dtrue&view=net-6.0
 		https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex.ismatch?f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Text.RegularExpressions.Regex.IsMatch)%3Bk(DevLang-csharp)%26rd%3Dtrue&view=net-6.0
-
-	music database
-		https://github.com/metabrainz/musicbrainz-server/tree/master/admin/sql
-		https://musicbrainz.org/doc/MusicBrainz_Database/Schema
-
-		https://en.wikipedia.org/wiki/List_of_online_music_databases
 	Removed Regix, place back in at appropriate place
 			string pattern = @"\.{2,}";
 
