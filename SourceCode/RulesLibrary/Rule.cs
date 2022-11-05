@@ -5,13 +5,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DigitalZenWorks.RulesLibrary
 {
@@ -50,7 +45,8 @@ namespace DigitalZenWorks.RulesLibrary
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Rule"/> class.
 		/// </summary>
-		public Rule() { }
+		public Rule()
+		{ }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Rule"/> class.
@@ -270,10 +266,10 @@ namespace DigitalZenWorks.RulesLibrary
 				}
 			}
 			catch (Exception exception) when
-			(exception is ArgumentException ||
-			exception is ArgumentNullException ||
-			exception is ArgumentOutOfRangeException ||
-			exception is RegexMatchTimeoutException)
+				(exception is ArgumentException ||
+				exception is ArgumentNullException ||
+				exception is ArgumentOutOfRangeException ||
+				exception is RegexMatchTimeoutException)
 			{
 				Log.Error(exception.ToString());
 			}

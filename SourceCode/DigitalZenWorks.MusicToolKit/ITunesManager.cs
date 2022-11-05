@@ -8,7 +8,6 @@ using Common.Logging;
 using iTunesLib;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 
@@ -499,10 +498,8 @@ namespace DigitalZenWorks.MusicToolKit
 			int year = track.Year;
 
 			int count = iTunes.LibraryPlaylist.Tracks.Count;
-			IITTrack item = iTunes.LibraryPlaylist.Tracks[count];
 
-			IITOperationStatus status =
-				iTunes.LibraryPlaylist.AddFile(musicFilePath);
+			iTunes.LibraryPlaylist.AddFile(musicFilePath);
 
 			IITTrackCollection tracks = playList.Search(
 				name, ITPlaylistSearchField.ITPlaylistSearchFieldAll);

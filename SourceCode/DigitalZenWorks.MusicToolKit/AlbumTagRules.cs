@@ -5,8 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using DigitalZenWorks.RulesLibrary;
-using System;
-using System.Text;
 
 namespace DigitalZenWorks.MusicToolKit
 {

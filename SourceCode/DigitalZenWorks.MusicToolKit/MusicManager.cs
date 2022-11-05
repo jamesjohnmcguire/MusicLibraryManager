@@ -87,7 +87,8 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <value>The file tags object.</value>
 		public MediaFileTags Tags
 		{
-			get { return tags; } set { tags = value; }
+			get { return tags; }
+			set { tags = value; }
 		}
 
 		/// <summary>
@@ -96,7 +97,8 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <value>The rules.</value>
 		public Rules Rules
 		{
-			get { return rules; } set { rules = value; }
+			get { return rules; }
+			set { rules = value; }
 		}
 
 		/// <summary>
