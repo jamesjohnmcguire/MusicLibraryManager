@@ -419,18 +419,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 						UpdateLibraryTagsOnly(subDirectory, nextTagsOnlyPath);
 					}
-
-					// refresh
-					directories = Directory.GetDirectories(path);
-					files = directory.GetFiles();
-
-					if ((files.Length == 0) && (directories.Length == 0) &&
-						(!path.Contains(
-							"Automatically Add to iTunes",
-							StringComparison.OrdinalIgnoreCase)))
-					{
-						Directory.Delete(path, false);
-					}
 				}
 			}
 			catch (Exception exception) when
