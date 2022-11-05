@@ -68,7 +68,20 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 							musicUtility.CleanMusicLibrary();
 							break;
 						case "extract-tags":
-							musicUtility.UpdateLibraryTagsOnly();
+							if (command.Parameters.Count > 0)
+							{
+								string location = command.Parameters[0];
+								string tagsOnlyLocation =
+									location + " Tags Only";
+
+								musicUtility.UpdateLibraryTagsOnly(
+									location, tagsOnlyLocation);
+							}
+							else
+							{
+								musicUtility.UpdateLibraryTagsOnly();
+							}
+
 							break;
 					}
 				}
