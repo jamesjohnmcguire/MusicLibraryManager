@@ -13,7 +13,7 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Album tag rules class.
 	/// </summary>
-	public class AlbumTagRules
+	public static class AlbumTagRules
 	{
 		/// <summary>
 		/// Album remove cd method.
