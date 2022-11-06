@@ -276,7 +276,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					tags = new MediaFileTags(sourceFile.FullName, rules);
 
-					TagSet tagSet = tags.TagSet;
+					TagLib.Tag tagSet = tags.TagFile.Tag;
 
 					JsonSerializerSettings jsonSettings = new ();
 					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
