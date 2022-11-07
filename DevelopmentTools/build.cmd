@@ -37,10 +37,12 @@ IF "%1"=="release" GOTO release
 GOTO end
 
 :release
-CD Bin\Release\AnyCPU\win-x64\publish
+CD MusicManager\Bin\Release\publish
 
 7z u MusicManager.zip .
 
-hub release create -a MusicManager.zip -m "%2" v%2
+gh release create v%2 --notes "%2" MusicManager.zip
+
+CD ..\..\..
 
 :end
