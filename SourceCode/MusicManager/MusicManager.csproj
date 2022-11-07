@@ -16,8 +16,6 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
-		<PublishReadyToRun>true</PublishReadyToRun>
-		<PublishSingleFile>true</PublishSingleFile>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Version>0.4.180</Version>
 	</PropertyGroup>
