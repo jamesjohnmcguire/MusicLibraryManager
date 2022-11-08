@@ -37,9 +37,11 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MusicManager"/> class.
 		/// </summary>
-		public MusicManager()
+		/// <param name="enableItunes">Indicates whether to instanciate
+		/// the iTunes Application.</param>
+		public MusicManager(bool enableItunes)
 		{
-			iTunesManager = new ITunesManager();
+			iTunesManager = new ITunesManager(enableItunes);
 
 			string applicationDataDirectory = @"\DigitalZenWorks\MusicManager";
 			string baseDataDirectory = Environment.GetFolderPath(
@@ -62,8 +64,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Initializes a new instance of the <see cref="MusicManager"/> class.
 		/// </summary>
 		/// <param name="rules">The rules to use.</param>
-		public MusicManager(Rules rules)
-			: this()
+		/// <param name="enableItunes">Indicates whether to instanciate
+		/// the iTunes Application.</param>
+		public MusicManager(Rules rules, bool enableItunes)
+			: this(enableItunes)
 		{
 			if ((rules != null) && (rules.RulesList != null) &&
 				(rules.RulesList.Count > 0))

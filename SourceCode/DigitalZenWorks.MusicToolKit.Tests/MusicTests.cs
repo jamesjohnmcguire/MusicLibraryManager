@@ -34,7 +34,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
-			musicManager = new MusicManager();
+			musicManager = new MusicManager(false);
 
 			temporaryPath = Path.GetTempFileName();
 			File.Delete(temporaryPath);
@@ -340,7 +340,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			using ITunesManager iTunesManager = new ();
+			using ITunesManager iTunesManager = new (true);
 			string location = iTunesManager.ItunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
@@ -466,7 +466,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			rules.RulesList.Add(rule);
 
-			using MusicManager musicManager2 = new (rules);
+			using MusicManager musicManager2 = new (rules, false);
 
 			Rules rules2 = musicManager2.Rules;
 

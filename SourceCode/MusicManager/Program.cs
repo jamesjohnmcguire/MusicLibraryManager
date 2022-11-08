@@ -51,7 +51,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 				else
 				{
 					using DigitalZenWorks.MusicToolKit.MusicManager
-						musicUtility = new ();
+						musicUtility = new (true);
 
 					Command command = commandLine.Command;
 
