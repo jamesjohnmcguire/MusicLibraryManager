@@ -280,7 +280,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					tags = new MediaFileTags(sourceFile.FullName, rules);
 
-					TagLib.Tag tagSet = tags.TagFile.Tag;
+					SortedDictionary<string, object> tagSet = tags.GetTags();
 
 					JsonSerializerSettings jsonSettings = new ();
 					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
