@@ -125,36 +125,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Gets the tag set.
-		/// </summary>
-		/// <value>The tag set.</value>
-		public TagSet TagSet
-		{
-			get
-			{
-				TagSet tagSet = new ();
-				Type test = tagSet.GetType();
-				PropertyInfo[] properties = test.GetProperties();
-
-				foreach (PropertyInfo propertyInfo in properties)
-				{
-					string name = propertyInfo.Name;
-
-					test = TagFile.Tag.GetType();
-					PropertyInfo tagFileInfo = test.GetProperty(name);
-					var value = tagFileInfo.GetValue(TagFile.Tag);
-
-					if (propertyInfo.CanWrite)
-					{
-						propertyInfo.SetValue(tagSet, value);
-					}
-				}
-
-				return tagSet;
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the tag file.
 		/// </summary>
 		/// <value>The tag file.</value>

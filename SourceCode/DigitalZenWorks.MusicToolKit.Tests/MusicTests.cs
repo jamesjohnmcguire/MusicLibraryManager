@@ -25,7 +25,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	{
 		private MusicManager musicManager;
 		private Rules rules;
-		private TagSet tags;
 		private string temporaryPath;
 		private string testFile;
 
@@ -52,17 +51,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			FileUtils.CreateFileFromEmbeddedResource(
 				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
-
-			tags = new ();
-
-			string original =
-				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
-			tags.Album = original;
-
-			tags.Artists = new string[1];
-			tags.Performers = new string[1];
-			tags.Artists[0] = "Various Artists";
-			tags.Performers[0] = "The Solos";
 
 			rules = musicManager.Rules;
 		}
@@ -444,20 +432,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			Assert.NotNull(tags);
 			Assert.NotNull(tags.TagFile);
-			Assert.NotNull(tags.TagSet);
-		}
-
-		/// <summary>
-		/// The run rule disc check method.
-		/// </summary>
-		[Test]
-		public void MediaFileTagsCheck()
-		{
-			using MediaFileTags tags = new (testFile, rules);
-
-			Assert.NotNull(tags);
-			Assert.NotNull(tags.TagFile);
-			Assert.NotNull(tags.TagSet);
+			Assert.NotNull(tagSet);
 		}
 
 		/// <summary>
