@@ -9,6 +9,7 @@
 using Common.Logging;
 using DigitalZenWorks.RulesLibrary;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
@@ -200,6 +201,73 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Get the full set of tags.
+		/// </summary>
+		/// <returns>The full set of tags.</returns>
+		public SortedDictionary<string, object> GetTags()
+		{
+			SortedDictionary<string, object> tags =
+				new SortedDictionary<string, object>();
+
+			Type tagType = TagFile.Tag.GetType();
+
+			PropertyInfo[] properties = tagType.GetProperties();
+
+			foreach (PropertyInfo propertyInfo in properties)
+			{
+				string name = propertyInfo.Name;
+
+				PropertyInfo tagFileInfo = tagType.GetProperty(name);
+				object value = tagFileInfo.GetValue(TagFile.Tag);
+
+				if (value != null)
+				{
+					switch (value)
+					{
+						case bool boolValue:
+							break;
+						case double number:
+							if (!double.IsNaN(number))
+							{
+								tags.Add(name, value);
+							}
+
+							break;
+						case string[] stringArray:
+							if (stringArray.Length > 0)
+							{
+								tags.Add(name, value);
+							}
+
+							break;
+						case TagLib.IPicture[] picture:
+							if (picture.Length > 0)
+							{
+								tags.Add(name, value);
+							}
+
+							break;
+						case TagLib.Tag[]:
+							break;
+						case uint number:
+							if (number > 0)
+							{
+								tags.Add(name, value);
+							}
+
+							break;
+						default:
+							tags.Add(name, value);
+							break;
+
+					}
+				}
+			}
+
+			return tags;
 		}
 
 		/// <summary>

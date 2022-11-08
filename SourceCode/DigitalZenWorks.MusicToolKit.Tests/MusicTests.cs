@@ -9,6 +9,7 @@ using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -335,19 +336,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The get itunes path depth method test.
-		/// </summary>
-		[Test]
-		public void GetItunesPathDepth()
-		{
-			using ITunesManager iTunesManager = new (true);
-			string location = iTunesManager.ItunesLibraryLocation;
-			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
-
-			Assert.GreaterOrEqual(iTunesDepth, 6);
-		}
-
-		/// <summary>
 		/// Instance Album remove cd method test.
 		/// </summary>
 		[Test]
@@ -441,6 +429,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The run rule disc check method.
 		/// </summary>
 		[Test]
+		public void MediaFileGetTagsCheck()
+		{
+			using MediaFileTags tags = new (testFile, rules);
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Album = original;
+
+			tags.Artist = "The Solos";
+			tags.Update();
+
+			SortedDictionary<string, object> tagSet = tags.GetTags();
+
+			Assert.NotNull(tags);
+			Assert.NotNull(tags.TagFile);
+			Assert.NotNull(tags.TagSet);
+		}
+
+		/// <summary>
+		/// The run rule disc check method.
+		/// </summary>
+		[Test]
 		public void MediaFileTagsCheck()
 		{
 			using MediaFileTags tags = new (testFile, rules);
@@ -520,10 +530,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The save tags to json file success test.
+		/// The save tags to json file fail test.
 		/// </summary>
 		[Test]
-		public void SaveTagsToJsonFile()
+		public void SaveTagsToJsonFileFail()
 		{
 			string temporaryFile = Path.GetTempFileName();
 			FileInfo fileInfo = new (temporaryFile);
