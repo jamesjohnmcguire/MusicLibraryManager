@@ -58,6 +58,19 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get itunes path depth method test.
+		/// </summary>
+		[Test]
+		public void GetItunesPathDepth()
+		{
+			using ITunesManager iTunesManager = new (true);
+			string location = iTunesManager.ItunesLibraryLocation;
+			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
+
+			Assert.GreaterOrEqual(iTunesDepth, 6);
+		}
+
+		/// <summary>
 		/// ITunes path location method test.
 		/// </summary>
 		[Test]
