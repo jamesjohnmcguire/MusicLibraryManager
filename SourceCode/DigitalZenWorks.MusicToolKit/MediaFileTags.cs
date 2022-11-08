@@ -209,8 +209,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The full set of tags.</returns>
 		public SortedDictionary<string, object> GetTags()
 		{
-			SortedDictionary<string, object> tags =
-				new SortedDictionary<string, object>();
+			SortedDictionary<string, object> tags = new ();
 
 			Type tagType = TagFile.Tag.GetType();
 
@@ -225,9 +224,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (value != null)
 				{
+// Closing square brackets should be spaced correctly
+#pragma warning disable SA1011
 					switch (value)
 					{
-						case bool boolValue:
+						case bool:
 							break;
 						case double number:
 							if (!double.IsNaN(number))
@@ -262,8 +263,10 @@ namespace DigitalZenWorks.MusicToolKit
 						default:
 							tags.Add(name, value);
 							break;
-
 					}
+
+// Closing square brackets should be spaced correctly
+#pragma warning restore SA1011
 				}
 			}
 
