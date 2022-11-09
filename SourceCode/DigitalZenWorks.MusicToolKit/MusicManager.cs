@@ -292,6 +292,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 					File.WriteAllText(destinationFile, json);
 
+					Log.Info("Tags Saved to: " + destinationFile);
+
 					result = true;
 				}
 			}
