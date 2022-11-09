@@ -50,36 +50,43 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 				}
 				else
 				{
-					using DigitalZenWorks.MusicToolKit.MusicManager
-						musicUtility = new (true);
-
 					Command command = commandLine.Command;
 
 					switch (command.Name)
 					{
 						case "clean":
-							Rules rules = GetRulesData(command);
-
-							if (rules != null)
 							{
-								musicUtility.Rules = rules;
+								using MusicToolKit.MusicManager musicUtility =
+									new (true);
+								Rules rules = GetRulesData(command);
+
+								if (rules != null)
+								{
+									musicUtility.Rules = rules;
+								}
+
+								musicUtility.CleanMusicLibrary();
 							}
 
-							musicUtility.CleanMusicLibrary();
 							break;
 						case "extract-tags":
-							if (command.Parameters.Count > 0)
 							{
-								string location = command.Parameters[0];
-								string tagsOnlyLocation =
-									location + " Tags Only";
+								using MusicToolKit.MusicManager musicUtility =
+									new (false);
 
-								musicUtility.UpdateLibraryTagsOnly(
-									location, tagsOnlyLocation);
-							}
-							else
-							{
-								musicUtility.UpdateLibraryTagsOnly();
+								if (command.Parameters.Count > 0)
+								{
+									string location = command.Parameters[0];
+									string tagsOnlyLocation =
+										location + " Tags Only";
+
+									musicUtility.UpdateLibraryTagsOnly(
+										location, tagsOnlyLocation);
+								}
+								else
+								{
+									musicUtility.UpdateLibraryTagsOnly();
+								}
 							}
 
 							break;
