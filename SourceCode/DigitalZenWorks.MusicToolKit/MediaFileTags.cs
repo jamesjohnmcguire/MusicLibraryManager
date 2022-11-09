@@ -189,6 +189,14 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				string name = propertyInfo.Name;
 
+				if (name.Equals(
+						"EndTag", StringComparison.OrdinalIgnoreCase) ||
+					name.Equals(
+						"StartTag", StringComparison.OrdinalIgnoreCase))
+				{
+					continue;
+				}
+
 				PropertyInfo tagFileInfo = tagType.GetProperty(name);
 				object value = tagFileInfo.GetValue(TagFile.Tag);
 
