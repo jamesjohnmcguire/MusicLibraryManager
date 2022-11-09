@@ -425,6 +425,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 						UpdateLibraryTagsOnly(subDirectory, nextTagsOnlyPath);
 					}
+
+					if (!string.IsNullOrWhiteSpace(tagsOnlyPath))
+					{
+						DeleteEmptyDirectory(tagsOnlyPath);
+					}
 				}
 			}
 			catch (Exception exception) when
