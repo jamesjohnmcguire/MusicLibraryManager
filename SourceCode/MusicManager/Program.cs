@@ -95,7 +95,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			}
 			catch (Exception exception)
 			{
-				Console.WriteLine("Exception: " + exception.Message);
+				Log.Error(exception.Message);
 
 				throw;
 			}
