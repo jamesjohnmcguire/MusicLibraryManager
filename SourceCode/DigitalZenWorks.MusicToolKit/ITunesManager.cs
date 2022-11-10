@@ -320,50 +320,13 @@ namespace DigitalZenWorks.MusicToolKit
 			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
-			int numberChecked = 0;
-			int duplicatesFound = 0;
 
 			for (int index = 0; index < trackCount; index++)
 			{
 				fileTrack = tracks[index] as IITFileOrCDTrack;
 
-				// is this a file track?
-				if ((null != fileTrack) &&
-					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
-				{
-					numberChecked++;
-					string trackKey =
-						fileTrack.Name + fileTrack.Artist + fileTrack.Album;
-
-					if (!trackCollection.ContainsKey(trackKey))
-					{
-						trackCollection.Add(trackKey, fileTrack);
-					}
-					else
-					{
-						if ((trackCollection[trackKey].Album !=
-								fileTrack.Album) ||
-							(trackCollection[trackKey].Artist !=
-								fileTrack.Artist))
-						{
-							trackCollection.Add(trackKey, fileTrack);
-						}
-						else if (trackCollection[trackKey].BitRate >
-							fileTrack.BitRate)
-						{
-							duplicatesFound++;
-							duplicateTracks.Add(fileTrack);
-						}
-						else
-						{
-							trackCollection[trackKey] = fileTrack;
-							duplicatesFound++;
-							duplicateTracks.Add(fileTrack);
-						}
-					}
-				}
-
-				numberChecked++;
+				trackCollection = AddTrackKeyToCollection(
+					trackCollection, ref duplicateTracks, fileTrack);
 			}
 
 			return duplicateTracks;
@@ -457,6 +420,47 @@ namespace DigitalZenWorks.MusicToolKit
 					GC.Collect();
 				}
 			}
+		}
+
+		private static Dictionary<string, IITTrack> AddTrackKeyToCollection(
+			Dictionary<string, IITTrack> trackCollection,
+			ref List<IITTrack> duplicateTracks,
+			IITFileOrCDTrack fileTrack)
+		{
+			// is this a file track?
+			if ((null != fileTrack) &&
+				(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+			{
+				string trackKey =
+					fileTrack.Name + fileTrack.Artist + fileTrack.Album;
+
+				if (!trackCollection.ContainsKey(trackKey))
+				{
+					trackCollection.Add(trackKey, fileTrack);
+				}
+				else
+				{
+					if ((trackCollection[trackKey].Album !=
+							fileTrack.Album) ||
+						(trackCollection[trackKey].Artist !=
+							fileTrack.Artist))
+					{
+						trackCollection.Add(trackKey, fileTrack);
+					}
+					else if (trackCollection[trackKey].BitRate >
+						fileTrack.BitRate)
+					{
+						duplicateTracks.Add(fileTrack);
+					}
+					else
+					{
+						trackCollection[trackKey] = fileTrack;
+						duplicateTracks.Add(fileTrack);
+					}
+				}
+			}
+
+			return trackCollection;
 		}
 
 		private static bool CheckForDeadTrack(IITFileOrCDTrack fileTrack)
