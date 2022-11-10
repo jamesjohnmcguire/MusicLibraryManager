@@ -513,10 +513,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string temporaryFile = Path.GetTempFileName();
 			FileInfo fileInfo = new (temporaryFile);
 			string destinationPath = Path.GetDirectoryName(temporaryFile);
-			bool result =
+			string filePath =
 				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
-			Assert.False(result);
+			Assert.Null(filePath);
 		}
 
 		/// <summary>
@@ -527,15 +527,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			FileInfo fileInfo = new (testFile);
 			string destinationPath = Path.GetDirectoryName(testFile);
-			bool result =
+			string filePath =
 				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
-			Assert.True(result);
+			Assert.NotNull(filePath);
 			string destinationFile =
 				destinationPath + "\\" + fileInfo.Name + ".json";
 
-			result = File.Exists(destinationFile);
+			bool result = File.Exists(destinationFile);
 			Assert.True(result);
+
+			Assert.That(filePath, Is.EqualTo(destinationFile));
 		}
 
 		/// <summary>

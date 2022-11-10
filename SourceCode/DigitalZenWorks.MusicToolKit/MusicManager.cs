@@ -264,20 +264,16 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
 		/// <param name="destinationPath">The destination path.</param>
-		/// <returns>A value indicating if the method was successful
-		/// or not.</returns>
-		public bool SaveTagsToJsonFile(
+		/// <returns>The file path of the saved file.</returns>
+		public string SaveTagsToJsonFile(
 			FileInfo sourceFile, string destinationPath)
 		{
-			bool result = false;
+			string destinationFile = null;
 
 			try
 			{
 				if (sourceFile != null)
 				{
-					string destinationFile =
-						destinationPath + "\\" + sourceFile.Name + ".json";
-
 					tags = new MediaFileTags(sourceFile.FullName, rules);
 
 					SortedDictionary<string, object> tagSet = tags.GetTags();
@@ -290,11 +286,15 @@ namespace DigitalZenWorks.MusicToolKit
 					string json = JsonConvert.SerializeObject(
 						tagSet, Formatting.Indented, jsonSettings);
 
-					File.WriteAllText(destinationFile, json);
+					if (!string.IsNullOrWhiteSpace(json))
+					{
+						destinationFile =
+							destinationPath + "\\" + sourceFile.Name + ".json";
+
+						File.WriteAllText(destinationFile, json);
+					}
 
 					Log.Info("Tags Saved to: " + destinationFile);
-
-					result = true;
 				}
 			}
 			catch (Exception exception) when
@@ -306,7 +306,7 @@ namespace DigitalZenWorks.MusicToolKit
 				Log.Error("File is: " + sourceFile);
 			}
 
-			return result;
+			return destinationFile;
 		}
 
 		/// <summary>
