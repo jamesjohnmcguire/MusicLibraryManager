@@ -397,6 +397,9 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Artist = Artist.Trim();
 
+				Artist = TagRules.GetTitleCase(Artist);
+				Artist = ArtistTagRules.ApplyExceptions(Artist);
+
 				string breaker = " - ";
 				if (Artist.Contains(
 					breaker, StringComparison.OrdinalIgnoreCase))

@@ -25,22 +25,6 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string album = GetPartFromPath(path, 2);
 
-			if (!string.IsNullOrWhiteSpace(album))
-			{
-				Dictionary<string, string> exceptions = new ();
-				exceptions.Add("10Cc", "10cc");
-
-				album = TagRules.GetTitleCase(album);
-
-				foreach (KeyValuePair<string, string> exception in exceptions)
-				{
-					album = album.Replace(
-						exception.Key,
-						exception.Value,
-						StringComparison.OrdinalIgnoreCase);
-				}
-			}
-
 			return album;
 		}
 
