@@ -103,10 +103,18 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				artist = value;
 
-				string[] artists = new string[1];
-				artists[0] = artist;
+				if ((TagFile.Tag.Performers != null) &&
+					(TagFile.Tag.Performers.Length > 0))
+				{
+					TagFile.Tag.Performers[0] = artist;
+				}
+				else
+				{
+					string[] artists = new string[1];
+					artists[0] = artist;
 
-				TagFile.Tag.Performers = artists;
+					TagFile.Tag.Performers = artists;
+				}
 			}
 		}
 
