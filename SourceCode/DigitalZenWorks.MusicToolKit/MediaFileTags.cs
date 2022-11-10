@@ -94,14 +94,6 @@ namespace DigitalZenWorks.MusicToolKit
 							artist = TagFile.Tag.AlbumArtists[0];
 						}
 					}
-
-					if (string.IsNullOrWhiteSpace(artist))
-					{
-						if (TagFile.Tag.Artists.Length > 0)
-						{
-							artist = TagFile.Tag.Artists[0];
-						}
-					}
 				}
 
 				return artist;
