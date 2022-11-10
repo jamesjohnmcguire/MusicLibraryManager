@@ -8,7 +8,7 @@
   },
   {
     "name": "ReplaceVariousArtists",
-    "subject": "MusicUtility.Tags.Artists",
+    "subject": "MusicUtility.Tags.Artist",
     "condition": "Equals",
     "conditional": "Various Artists",
     "operation": "Replace",
@@ -20,7 +20,7 @@
       "operation": "Replace",
       "chain": "and",
       "chainRule": {
-        "subject": "MusicUtility.Tags.Artists",
+        "subject": "MusicUtility.Tags.Artist",
         "condition": "NotEquals",
         "conditional": "MusicUtility.Tags.Performers",
         "operation": "Replace",
