@@ -23,23 +23,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The album part of the path.</returns>
 		public static string GetAlbumFromPath(string path)
 		{
-			string album = null;
-
-			if (!string.IsNullOrWhiteSpace(path))
-			{
-				int depth = GetDirectoryCount(path);
-
-				if (depth > 2)
-				{
-					// Assuming file has path structure ending with
-					// artist/album/song.
-					string[] pathParts =
-						path.Split(Path.DirectorySeparatorChar);
-
-					int albumSegment = pathParts.Length - 2;
-					album = pathParts[albumSegment];
-				}
-			}
+			string album = GetPartFromPath(path, 2);
 
 			if (!string.IsNullOrWhiteSpace(album))
 			{
@@ -67,23 +51,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The artist part of the path.</returns>
 		public static string GetArtistFromPath(string path)
 		{
-			string artist = null;
-
-			if (!string.IsNullOrWhiteSpace(path))
-			{
-				int depth = GetDirectoryCount(path);
-
-				if (depth > 3)
-				{
-					// Assuming file has path structure ending with
-					// artist/album/song.
-					string[] pathParts =
-						path.Split(Path.DirectorySeparatorChar);
-
-					int artistSegment = pathParts.Length - 3;
-					artist = pathParts[artistSegment];
-				}
-			}
+			string artist = GetPartFromPath(path, 3);
 
 			return artist;
 		}
@@ -277,6 +245,29 @@ namespace DigitalZenWorks.MusicToolKit
 			int depth = parts.Length;
 
 			return depth;
+		}
+
+		private static string GetPartFromPath(string path, int partDepth)
+		{
+			string part = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > partDepth)
+				{
+					// Assuming file has path structure ending with
+					// artist/album/song.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int segment = pathParts.Length - partDepth;
+					part = pathParts[segment];
+				}
+			}
+
+			return part;
 		}
 
 		private static string GetTitleCase(string title)
