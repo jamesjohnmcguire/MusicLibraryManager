@@ -266,8 +266,11 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Delete dead tracks method.
 		/// </summary>
-		public void DeleteDeadTracks()
+		/// <returns>The number of dead tracks removed.</returns>
+		public int DeleteDeadTracks()
 		{
+			int numberDeadFound = 0;
+
 			if (iTunes != null)
 			{
 				IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
@@ -276,7 +279,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 				int trackCount = tracks.Count;
 				int numberChecked = 0;
-				int numberDeadFound = 0;
 
 				for (int index = 1; index <= trackCount; index++)
 				{
@@ -292,6 +294,8 @@ namespace DigitalZenWorks.MusicToolKit
 					numberChecked++;
 				}
 			}
+
+			return numberDeadFound;
 		}
 
 		/// <summary>
