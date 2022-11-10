@@ -30,7 +30,7 @@ namespace DigitalZenWorks.MusicToolKit
 				Dictionary<string, string> exceptions = new ();
 				exceptions.Add("10Cc", "10cc");
 
-				album = GetTitleCase(album);
+				album = TagRules.GetTitleCase(album);
 
 				foreach (KeyValuePair<string, string> exception in exceptions)
 				{
@@ -234,7 +234,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			title = GetTitleCase(title);
+			title = TagRules.GetTitleCase(title);
 
 			return title;
 		}
@@ -268,15 +268,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return part;
-		}
-
-		private static string GetTitleCase(string title)
-		{
-			CultureInfo cultureInfo = CultureInfo.CurrentCulture;
-			TextInfo textInfo = cultureInfo.TextInfo;
-			title = textInfo.ToTitleCase(title);
-
-			return title;
 		}
 
 		private static string RemoveIntermediaryPath(

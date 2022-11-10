@@ -4,6 +4,8 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using System.Globalization;
+
 namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
@@ -11,5 +13,18 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public static class TagRules
 	{
+		/// <summary>
+		/// Get title case.
+		/// </summary>
+		/// <param name="title">The current title.</param>
+		/// <returns>The updated title.</returns>
+		public static string GetTitleCase(string title)
+		{
+			CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+			TextInfo textInfo = cultureInfo.TextInfo;
+			title = textInfo.ToTitleCase(title);
+
+			return title;
+		}
 	}
 }
