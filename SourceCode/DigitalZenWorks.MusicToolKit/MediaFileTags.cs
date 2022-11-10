@@ -270,6 +270,8 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				TagFile.Save();
 				updated = true;
+
+				Log.Info("Updated Tags in: " + filePath);
 			}
 
 			return updated;
@@ -357,6 +359,7 @@ namespace DigitalZenWorks.MusicToolKit
 				!Album.Equals(previousAlbum, StringComparison.Ordinal))
 			{
 				updated = true;
+				Log.Info("Updating Album Tag");
 			}
 
 			return updated;
@@ -431,6 +434,7 @@ namespace DigitalZenWorks.MusicToolKit
 				!Artist.Equals(previousArtist, StringComparison.Ordinal))
 			{
 				updated = true;
+				Log.Info("Updating Artist Tag");
 			}
 
 			return updated;
@@ -483,6 +487,7 @@ namespace DigitalZenWorks.MusicToolKit
 				!Title.Equals(previousTitle, StringComparison.Ordinal))
 			{
 				updated = true;
+				Log.Info("Updating Title Tag");
 			}
 
 			return updated;
