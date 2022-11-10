@@ -303,6 +303,7 @@ namespace DigitalZenWorks.MusicToolKit
 				exception is TagLib.UnsupportedFormatException)
 			{
 				Log.Error(exception.ToString());
+				Log.Error("File is: " + sourceFile);
 			}
 
 			return result;
