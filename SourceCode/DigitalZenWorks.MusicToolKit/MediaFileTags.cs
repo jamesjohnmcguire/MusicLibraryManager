@@ -41,12 +41,6 @@ namespace DigitalZenWorks.MusicToolKit
 			filePath = file;
 
 			TagFile = TagLib.File.Create(file);
-
-			if ((TagFile.Tag.Artists.Length > 1) ||
-				(TagFile.Tag.Performers.Length > 1))
-			{
-				throw new NotSupportedException();
-			}
 		}
 
 		/// <summary>
