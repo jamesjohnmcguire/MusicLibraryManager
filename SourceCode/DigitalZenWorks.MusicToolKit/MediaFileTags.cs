@@ -78,7 +78,7 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Gets or sets the artist.
+		/// Gets or sets the primary artist.
 		/// </summary>
 		/// <value>The artist.</value>
 		public string Artist
