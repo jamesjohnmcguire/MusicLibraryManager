@@ -265,8 +265,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 			bool titleUpdated = UpdateTitleTag();
 
-			if ((true == albumUpdated) || (true == artistUpdated) ||
-				(true == titleUpdated) || true == rulesUpdated)
+			bool subTitleUpdated = UpdateSubTitleTag();
+
+			if (rulesUpdated == true || albumUpdated == true ||
+				artistUpdated == true || subTitleUpdated == true ||
+				titleUpdated == true)
 			{
 				TagFile.Save();
 				updated = true;
@@ -290,34 +293,6 @@ namespace DigitalZenWorks.MusicToolKit
 				TagFile.Dispose();
 				TagFile = null;
 			}
-		}
-
-		private static string ExtractSubTitle(string title)
-		{
-			string subTitle = null;
-
-			try
-			{
-				string pattern = @" \[.*?\]";
-				Match match = Regex.Match(
-					title, pattern, RegexOptions.IgnoreCase);
-
-				if (match.Success == true)
-				{
-					subTitle = match.Value;
-					subTitle = subTitle.Trim();
-				}
-			}
-			catch (Exception exception) when
-				(exception is ArgumentException ||
-				exception is ArgumentNullException ||
-				exception is ArgumentOutOfRangeException ||
-				exception is RegexMatchTimeoutException)
-			{
-				Log.Error(exception.ToString());
-			}
-
-			return subTitle;
 		}
 
 		private bool UpdateAlbumTag(string fileName)
@@ -399,6 +374,28 @@ namespace DigitalZenWorks.MusicToolKit
 			return updated;
 		}
 
+		private bool UpdateSubTitleTag()
+		{
+			bool updated = false;
+
+			string previousSubTitle = TagFile.Tag.Subtitle;
+
+			if (string.IsNullOrWhiteSpace(previousSubTitle))
+			{
+				string subTitle = TitleTagRules.ExtractSubTitle(Title);
+
+				if (!string.IsNullOrWhiteSpace(subTitle))
+				{
+					TagFile.Tag.Subtitle = subTitle;
+
+					updated = true;
+					Log.Info("Updating Sub Title Tag");
+				}
+			}
+
+			return updated;
+		}
+
 		private bool UpdateTitleTag()
 		{
 			bool updated = false;
@@ -413,33 +410,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = Title.Trim();
+				Title = TagRules.Trim(Title);
 
-				string[] regexes =
-				new string[] { @" \[.*?\]" };
+				Title = TitleTagRules.RemoveBracketedSubTitle(Title);
 
-				foreach (string regex in regexes)
-				{
-					string subTitle = ExtractSubTitle(Title);
-
-					if (!string.IsNullOrWhiteSpace(subTitle))
-					{
-						TagFile.Tag.Subtitle = subTitle;
-					}
-
-					Title = Rule.RegexRemove(regex, Title);
-				}
-
-				if ((!string.IsNullOrWhiteSpace(Artist)) &&
-					Title.Contains(
-						Artist + " - ", StringComparison.OrdinalIgnoreCase))
-				{
-					Title = Title.Replace(
-						Artist + " - ",
-						string.Empty,
-						StringComparison.OrdinalIgnoreCase);
-					TagFile.Tag.Title = Title;
-				}
+				Title = TitleTagRules.RemoveArtist(Title, Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Title) &&
