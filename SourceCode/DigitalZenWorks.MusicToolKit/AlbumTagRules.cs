@@ -14,11 +14,11 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class AlbumTagRules
 	{
 		/// <summary>
-		/// Album remove cd method.
+		/// Remove cd method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveCd(string album)
+		public static string RemoveCd(string album)
 		{
 			string pattern = @" cd.*?\d";
 			album = Rule.RegexRemove(pattern, album);
@@ -27,11 +27,11 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Album remove copy amount method.
+		/// Remove copy amount method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveCopyAmount(string album)
+		public static string RemoveCopyAmount(string album)
 		{
 			if (!string.IsNullOrWhiteSpace(album))
 			{
@@ -43,11 +43,11 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Album replace curly braces method.
+		/// Replace curly braces method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
-		public static string AlbumReplaceCurlyBraces(string album)
+		public static string ReplaceCurlyBraces(string album)
 		{
 			if (!string.IsNullOrWhiteSpace(album))
 			{
@@ -59,11 +59,11 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Album remove disc method.
+		/// Remove disc method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
 		/// <returns>An updated album string.</returns>
-		public static string AlbumRemoveDisc(string album)
+		public static string RemoveDisc(string album)
 		{
 			string pattern = @"\s*\(Dis(c|k).*?\)";
 			album = Rule.RegexRemove(pattern, album);
