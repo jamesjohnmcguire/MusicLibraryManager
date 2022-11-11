@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using DigitalZenWorks.RulesLibrary;
+using System;
 
 namespace DigitalZenWorks.MusicToolKit
 {
@@ -13,6 +14,33 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public static class AlbumTagRules
 	{
+		/// <summary>
+		/// Remove artist method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string RemoveArtist(string album)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				string breaker = " - ";
+				if (album.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
+				{
+					string[] separators = new string[] { breaker };
+					string[] parts = album.Split(
+						separators, StringSplitOptions.RemoveEmptyEntries);
+
+					if (parts.Length > 1)
+					{
+						album = parts[1];
+					}
+				}
+			}
+
+			return album;
+		}
+
 		/// <summary>
 		/// Remove cd method.
 		/// </summary>

@@ -343,16 +343,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Album = Album.Trim();
 
-				string breaker = " - ";
-				if (Album.Contains(
-					breaker, StringComparison.OrdinalIgnoreCase))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = Album.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
-
-					Album = parts[1];
-				}
+				Album = AlbumTagRules.RemoveArtist(Album);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Album) &&
