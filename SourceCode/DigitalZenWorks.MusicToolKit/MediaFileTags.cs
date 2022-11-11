@@ -4,15 +4,12 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-#pragma warning disable CS0618 // Type or member is obsolete
-
 using Common.Logging;
 using DigitalZenWorks.RulesLibrary;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
-using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
 {
