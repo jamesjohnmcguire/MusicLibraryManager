@@ -98,5 +98,23 @@ namespace DigitalZenWorks.MusicToolKit
 
 			return album;
 		}
+
+		/// <summary>
+		/// Remove flag method.
+		/// </summary>
+		/// <param name="album">The album string.</param>
+		/// <returns>An updated album string.</returns>
+		public static string RemoveFlac(string album)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = album.Replace(
+					"[FLAC]",
+					string.Empty,
+					StringComparison.OrdinalIgnoreCase);
+			}
+
+			return album;
+		}
 	}
 }

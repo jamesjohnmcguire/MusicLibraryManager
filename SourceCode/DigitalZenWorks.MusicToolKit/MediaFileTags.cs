@@ -334,12 +334,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				Album = Album.Trim();
+				Album = TagRules.Trim(Album);
 
 				Album = AlbumTagRules.RemoveCd(Album);
 				Album = AlbumTagRules.RemoveDisc(Album);
-				Album = Album.Replace(
-					"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+				Album = AlbumTagRules.RemoveFlac(Album);
 				Album = AlbumTagRules.ReplaceCurlyBraces(Album);
 				Album = AlbumTagRules.RemoveCopyAmount(Album);
 

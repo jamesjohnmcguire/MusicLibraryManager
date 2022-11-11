@@ -4,6 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Globalization;
 
 namespace DigitalZenWorks.MusicToolKit
@@ -25,6 +26,21 @@ namespace DigitalZenWorks.MusicToolKit
 			title = textInfo.ToTitleCase(title);
 
 			return title;
+		}
+
+		/// <summary>
+		/// Trim method.
+		/// </summary>
+		/// <param name="tag">The tag string.</param>
+		/// <returns>An updated tag string.</returns>
+		public static string Trim(string tag)
+		{
+			if (!string.IsNullOrWhiteSpace(tag))
+			{
+				tag = tag.Trim();
+			}
+
+			return tag;
 		}
 	}
 }
