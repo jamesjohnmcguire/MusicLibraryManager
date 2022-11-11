@@ -332,16 +332,16 @@ namespace DigitalZenWorks.MusicToolKit
 				Album = Paths.GetAlbumFromPath(fileName);
 			}
 
-			Album = AlbumTagRules.RemoveCd(Album);
-			Album = AlbumTagRules.RemoveDisc(Album);
-			Album = Album.Replace(
-				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
-			Album = AlbumTagRules.ReplaceCurlyBraces(Album);
-			Album = AlbumTagRules.RemoveCopyAmount(Album);
-
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
 				Album = Album.Trim();
+
+				Album = AlbumTagRules.RemoveCd(Album);
+				Album = AlbumTagRules.RemoveDisc(Album);
+				Album = Album.Replace(
+					"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+				Album = AlbumTagRules.ReplaceCurlyBraces(Album);
+				Album = AlbumTagRules.RemoveCopyAmount(Album);
 
 				Album = AlbumTagRules.RemoveArtist(Album);
 			}
