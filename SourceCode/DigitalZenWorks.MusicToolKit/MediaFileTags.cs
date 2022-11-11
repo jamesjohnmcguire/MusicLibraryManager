@@ -188,55 +188,7 @@ namespace DigitalZenWorks.MusicToolKit
 					continue;
 				}
 
-				PropertyInfo tagFileInfo = tagType.GetProperty(name);
-				object value = tagFileInfo.GetValue(TagFile.Tag);
-
-				if (value != null)
-				{
-// Closing square brackets should be spaced correctly
-#pragma warning disable SA1011
-					switch (value)
-					{
-						case bool:
-							break;
-						case double number:
-							if (!double.IsNaN(number))
-							{
-								tags.Add(name, value);
-							}
-
-							break;
-						case string[] stringArray:
-							if (stringArray.Length > 0)
-							{
-								tags.Add(name, value);
-							}
-
-							break;
-						case TagLib.IPicture[] picture:
-							if (picture.Length > 0)
-							{
-								tags.Add(name, value);
-							}
-
-							break;
-						case TagLib.Tag[]:
-							break;
-						case uint number:
-							if (number > 0)
-							{
-								tags.Add(name, value);
-							}
-
-							break;
-						default:
-							tags.Add(name, value);
-							break;
-					}
-
-// Closing square brackets should be spaced correctly
-#pragma warning restore SA1011
-				}
+				tags = GetTagFromPropertyInfo(tags, propertyInfo);
 			}
 
 			return tags;
@@ -290,6 +242,66 @@ namespace DigitalZenWorks.MusicToolKit
 				TagFile.Dispose();
 				TagFile = null;
 			}
+		}
+
+		private SortedDictionary<string, object> GetTagFromPropertyInfo(
+			SortedDictionary<string, object> tags, PropertyInfo propertyInfo)
+		{
+			Type tagType = TagFile.Tag.GetType();
+
+			string name = propertyInfo.Name;
+
+			PropertyInfo tagFileInfo = tagType.GetProperty(name);
+			object value = tagFileInfo.GetValue(TagFile.Tag);
+
+			if (value != null)
+			{
+// Closing square brackets should be spaced correctly
+#pragma warning disable SA1011
+				switch (value)
+				{
+					case bool:
+						break;
+					case double number:
+						if (!double.IsNaN(number))
+						{
+							tags.Add(name, value);
+						}
+
+						break;
+					case string[] stringArray:
+						if (stringArray.Length > 0)
+						{
+							tags.Add(name, value);
+						}
+
+						break;
+					case TagLib.IPicture[] picture:
+						if (picture.Length > 0)
+						{
+							tags.Add(name, value);
+						}
+
+						break;
+					case TagLib.Tag[]:
+						break;
+					case uint number:
+						if (number > 0)
+						{
+							tags.Add(name, value);
+						}
+
+						break;
+					default:
+						tags.Add(name, value);
+						break;
+				}
+
+// Closing square brackets should be spaced correctly
+#pragma warning restore SA1011
+			}
+
+			return tags;
 		}
 
 		private bool UpdateAlbumTag(string fileName)
