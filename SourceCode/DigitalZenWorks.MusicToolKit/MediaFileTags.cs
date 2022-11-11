@@ -360,24 +360,15 @@ namespace DigitalZenWorks.MusicToolKit
 			bool updated = false;
 			string previousArtist = Artist;
 
-			if (TagFile.Tag.AlbumArtists.Length > 0)
+			if (TagFile.Tag.Performers.Length > 0)
 			{
-				Artist = TagFile.Tag.AlbumArtists[0];
+				Artist = TagFile.Tag.Performers[0];
 			}
 
-			if (string.IsNullOrWhiteSpace(Artist) ||
-				Artist.ToUpperInvariant().Equals(
-					"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
+			if (string.IsNullOrWhiteSpace(Artist) &&
+				TagFile.Tag.AlbumArtists.Length > 0)
 			{
-				if (TagFile.Tag.Performers.Length > 0)
-				{
-					Artist = TagFile.Tag.Performers[0];
-				}
-
-				if (TagFile.Tag.Artists.Length > 0)
-				{
-					Artist = TagFile.Tag.Artists[0];
-				}
+				Artist = TagFile.Tag.AlbumArtists[0];
 			}
 
 			if (string.IsNullOrWhiteSpace(Artist))
@@ -388,36 +379,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
-				Artist = Artist.Trim();
+				Artist = TagRules.Trim(Artist);
 
 				Artist = TagRules.GetTitleCase(Artist);
 				Artist = ArtistTagRules.ApplyExceptions(Artist);
 
-				string breaker = " - ";
-				if (Artist.Contains(
-					breaker, StringComparison.OrdinalIgnoreCase))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = Artist.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
-
-					Artist = parts[0];
-				}
-
-				string[] regexes =
-					new string[] { @" \[.*?\]", @" \(Disc.*?\)", @" Cd.*" };
-
-				foreach (string regex in regexes)
-				{
-					if (Regex.IsMatch(Artist, regex, RegexOptions.IgnoreCase))
-					{
-						Artist = Regex.Replace(
-							Artist,
-							regex,
-							string.Empty,
-							RegexOptions.IgnoreCase);
-					}
-				}
+				Artist = ArtistTagRules.ReplaceVariousArtists(
+					Artist, TagFile.Tag.Performers[0]);
+				Artist = ArtistTagRules.RemoveAlbum(Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Artist) &&

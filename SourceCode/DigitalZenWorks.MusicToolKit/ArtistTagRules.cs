@@ -37,5 +37,53 @@ namespace DigitalZenWorks.MusicToolKit
 
 			return artist;
 		}
+
+		/// <summary>
+		/// Remove album method.
+		/// </summary>
+		/// <param name="artist">The artist string.</param>
+		/// <returns>An updated artist string.</returns>
+		public static string RemoveAlbum(string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(artist))
+			{
+				string breaker = " - ";
+				if (artist.Contains(
+					breaker, StringComparison.OrdinalIgnoreCase))
+				{
+					string[] separators = new string[] { breaker };
+					string[] parts = artist.Split(
+						separators, StringSplitOptions.RemoveEmptyEntries);
+
+					if (parts.Length > 0)
+					{
+						artist = parts[0];
+					}
+				}
+			}
+
+			return artist;
+		}
+
+		/// <summary>
+		/// Replace various artists method.
+		/// </summary>
+		/// <param name="artist">The artist string.</param>
+		/// <param name="replacement">The replacement artist name.</param>
+		/// <returns>An updated artist string.</returns>
+		public static string ReplaceVariousArtists(
+			string artist, string replacement)
+		{
+			if (!string.IsNullOrWhiteSpace(artist))
+			{
+				if (artist.ToUpperInvariant().Equals(
+						"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
+				{
+					artist = replacement;
+				}
+			}
+
+			return artist;
+		}
 	}
 }
