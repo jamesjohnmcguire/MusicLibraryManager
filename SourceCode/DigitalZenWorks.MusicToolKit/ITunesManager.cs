@@ -377,26 +377,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					if (false == found)
 					{
-						// Check to see if there is an existing track with an
-						// invalid location to update.
-						foreach (IITTrack track in tracks)
-						{
-							updated =
-								UpdateItunesLocation(track, file.FullName);
-
-							if (updated == true)
-							{
-								// Only update one, to avoid duplicates.
-								break;
-							}
-						}
-
-						if (updated == false)
-						{
-							// not in collection yet, add it
-							iTunes.LibraryPlaylist.AddFile(file.FullName);
-							updated = true;
-						}
+						updated = UpdateOrAddTrack(tracks, file.FullName);
 					}
 				}
 			}
@@ -490,6 +471,35 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return deadTrack;
+		}
+
+		private bool UpdateOrAddTrack(
+			IITTrackCollection tracks, string filePath)
+		{
+			bool updated = false;
+
+			// Check to see if there is an existing track with an
+			// invalid location to update.
+			foreach (IITTrack track in tracks)
+			{
+				updated =
+					UpdateItunesLocation(track, filePath);
+
+				if (updated == true)
+				{
+					// Only update one, to avoid duplicates.
+					break;
+				}
+			}
+
+			if (updated == false)
+			{
+				// not in collection yet, add it
+				iTunes.LibraryPlaylist.AddFile(filePath);
+				updated = true;
+			}
+
+			return updated;
 		}
 
 		private bool UpdateTrackFromLocation(
