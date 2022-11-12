@@ -47,13 +47,13 @@ namespace DigitalZenWorks.MusicToolKit
 		/// the iTunes Application.</param>
 		public MusicManager(bool enableItunes)
 		{
-			iTunesManager = new ITunesManager(enableItunes);
-
 			string applicationDataDirectory = @"\DigitalZenWorks\MusicManager";
 			string baseDataDirectory = Environment.GetFolderPath(
 				Environment.SpecialFolder.ApplicationData,
 				Environment.SpecialFolderOption.Create);
 			libraryLocation = baseDataDirectory + applicationDataDirectory;
+
+			iTunesManager = new ITunesManager(enableItunes);
 
 			if (iTunesManager.IsItunesEnabled == true)
 			{
