@@ -4,11 +4,6 @@
 # User-specific files
 *.suo
 *.user
-*.userosscache
-*.sln.docstates
-
-# User-specific files (MonoDevelop/Xamarin Studio)
-*.userprefs
 
 # Build results
 [Dd]ebug/
@@ -28,5 +23,3 @@ bld/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
-
-/SourceCode/.build/
