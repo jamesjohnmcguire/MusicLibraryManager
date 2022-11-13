@@ -1,3 +1,3 @@
 [submodule "SourceCode/ChromaPrint"]
 	path = SourceCode/ChromaPrint
-	url = https://github.com/acoustid/chromaprint
+	url = https://github.com/jamesjohnmcguire/chromaprint
