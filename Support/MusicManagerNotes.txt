@@ -6,17 +6,11 @@ Process
 	Testing
 
 Tasks
-	Log any change to media file
-	Console.WriteLine
 	If exact duplicate, remove, don't move
 	Re-add , @" \(.*?\)" for title?
 	Refactor ITunesXmlFile
-	Refactor DeleteDeadTracks, into smaller testable methods
 	Refactor FindDuplicates, into smaller testable methods
 	AcoustID fingerprints
-	Migrate custom functionality from GetAlbumFromPath
-	Return filename from SaveTagsToJsonFile
-	Add command line switch for UpdateLibrarySkeleton
 	GetDefaultRules use FileUtils
 	Don't call GetDefaultRules if rules already exist
 	items.OrderBy(i => i.Name, StringComparer.Ordinal)
@@ -26,12 +20,9 @@ Tasks
 	MusicManager, expose important current private methods as APIs
 	return value for CleanFile
 	Refactor private MediaFileTags tags to be parameter of specific methods 
-	Write name of source when exception in SaveTagsToJsonFile
 	Refactor AreFileAndTrackTheSame with better internal testing
 	Optimize SaveTagsToJsonFile, so to not save if content is the same
-	Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
 	#pragma warning disable CS0618 // Type or member is obsolete
-	TagSet property strangeness
 	Keep GetFullPathObject?
 	Unify all tucked away implicit rules, regex's inside private methods, etc
 	Rename to more appropriate name: ConditionNotEmptyTest
@@ -49,8 +40,6 @@ Tasks
 	https://github.com/josephw/titl
 	Many almost duplicates
 	Missing Artwork   Neil Young & Crazy Horse Rust Never Sleeps [320 Kbps]\AlbumArt_{5E574596-5561-4491-9CB4-3E5C7BFD6945}_Large.jpg
-	System.IO.FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
-	Replace all Console.WriteLine	with logging
 	Change DLL names to match the following pattern: <Company>.<Component>.dll
 	Exclude non music directories
 	Remove null fields from json files
@@ -73,6 +62,7 @@ Tasks
 	what about votes and stuff?
 	mp4 file diffs almost same... same?
 	deal with album artwork
+	Make Tests for DeleteDeadTracks
 	DeleteDeadTracks	set up progress monitor, if needed
 	DeleteDeadTracks	// check for cancel
 	DeleteDeadTracks	// increment progress
@@ -81,25 +71,34 @@ Tasks
 	FindDuplicates	// increment progress
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
-	MediaFileTags.cs(137,5): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	MediaFileTags.cs(144,6): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	MusicManager.cs(47,4): Trim analysis warning IL2072: DigitalZenWorks.MusicToolKit.MusicManager.MusicManager(): '#0' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicParameterlessConstructor' in call to 'System.Activator.CreateInstance(Type)'. The return value of method 'System.Runtime.InteropServices.Marshal.GetTypeFromCLSID(Guid)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	Rule.cs(253,7): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetFullPathObject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	Rule.cs(277,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetItemSubject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	Rule.cs(313,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.SetItemSubject(Object,String,Object): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-	ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataSet.WriteXmlSchema(DataSet,XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataSet.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataSet.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataTable.GetXmlSchema()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataTable.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataTable.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
-	warning IL2104: Assembly 'Common.Logging' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
-	warning IL2104: Assembly 'CSCore' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
-	warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
-	warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
-	warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 
 	Finished
+		Log any change to media file
+		TagSet property strangeness
+		MediaFileTags.cs(137,5): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MediaFileTags.cs(144,6): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MusicManager.cs(47,4): Trim analysis warning IL2072: DigitalZenWorks.MusicToolKit.MusicManager.MusicManager(): '#0' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicParameterlessConstructor' in call to 'System.Activator.CreateInstance(Type)'. The return value of method 'System.Runtime.InteropServices.Marshal.GetTypeFromCLSID(Guid)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(253,7): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetFullPathObject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(277,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetItemSubject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(313,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.SetItemSubject(Object,String,Object): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataSet.WriteXmlSchema(DataSet,XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataSet.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataSet.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataTable.GetXmlSchema()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataTable.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataTable.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		warning IL2104: Assembly 'Common.Logging' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'CSCore' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
+		warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		Return filename from SaveTagsToJsonFile
+		Migrate custom functionality from GetAlbumFromPath
+		Refactor DeleteDeadTracks, into smaller testable methods
+		Replace all Console.WriteLine	with logging
+		Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
+		Write name of source when exception in SaveTagsToJsonFile
+		Add command line switch for UpdateLibrarySkeleton
 		clean up usings
 		Update all Log.Error(CultureInfo.InvariantCulture, m => m(
 		MusicManager(libraryLocation)
@@ -607,3 +606,110 @@ New
 				// Remove 2 or more dots from abulm part.
 				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
 			}
+Music Manager
+	c# mp3 get raw stream
+	https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
+	https://github.com/naudio/NAudio
+
+	https://musicbrainz.org/doc/MusicBrainz_API/Search
+	https://github.com/metabrainz/picard
+	https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+
+	Remove empty directories
+	Do not instantiate iTunes when doing only extract-tags
+	Build non-itunes version
+	Deal with Multiple Artists, Remove throwing exception
+
+	+		item	{DigitalZenWorks.MusicToolKit.MediaFileTags}	object {DigitalZenWorks.MusicToolKit.MediaFileTags}
+			subject	"MusicUtility.Tags.Album"	string
+			baseElement	"Album"	string
+	+		propertyInfo	{System.String Album}	System.Reflection.PropertyInfo {System.Reflection.RuntimePropertyInfo}
+			TagFile.Tag.Album	null	string
+
+	by getting base element, skipping testing of full namespace / objec name, should a test before hand
+	Artists doesn't exist
+	GetItemSubject should return an object
+
+	https://github.com/beetbox/beets
+
+	ChromaPrint
+	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin .
+
+	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=/Users/JamesMc/Data/External/Util/Bin .
+
+	SET FFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin
+
+	 -DCMAKE_POLICY_DEFAULT_CMP0003=NEW
+	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DFFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin .
+
+	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin .
+	cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+
+	VcPkg
+		-- Configuring TensorFlow (dbg)
+		CMake Error at scripts/cmake/vcpkg_execute_required_process.cmake:96 (message):
+			Command failed: C:/Util/vcpkg/downloads/tools/msys2/70289b324bc026d6/mingw64/bin/python3.exe C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg/configure.py --workspace C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
+			Working Directory: C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
+			Error code: 1
+			See logs for more information:
+			  C:\Util\vcpkg\buildtrees\tensorflow\config-x64-windows-dbg-out.log
+
+		Call Stack (most recent call first):
+		  installed/x64-windows/share/tensorflow-common/tensorflow-common.cmake:187 (vcpkg_execute_required_process)
+		  ports/tensorflow/portfile.cmake:5 (include)
+		  scripts/ports.cmake:147 (include)
+
+
+		error: building tensorflow:x64-windows failed with: BUILD_FAILED
+		error: Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
+		Then check for known issues at:
+			https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+tensorflow
+		You can submit a new issue at:
+			https://github.com/microsoft/vcpkg/issues/new?template=report-package-build-failure.md&title=[tensorflow]+Build+error
+		Include '[tensorflow] Build error' in your bug report title, the following version information in your bug description, and attach any relevant failure logs from above.
+			vcpkg-tool version: 2022-10-17-3247920fbdd47d08f36cbd480addd9890d3c2435
+			vcpkg-scripts version: 7e7c62d86 2022-11-09 (18 hours ago)
+
+		Please use the prefilled template from C:\Util\vcpkg\installed\vcpkg\issue_body.md when reporting your issue.
+
+		vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
+
+	warning: vcpkg appears to be in a Visual Studio prompt targeting x86 but installing for x64-windows. Consider using --triplet x86-windows or --triplet x86-uwp.
+
+C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\Libraries\FFMpeg
+
+C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg
+
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin .
+cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+
+cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+
+cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON --debug-find .
+
+C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg/lib/()avformat(\.lib)
+
+C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\chromaprint.sln" (default target) (1) ->
+"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
+hromaPrint\ALL_BUILD.vcxproj.metaproj" (default target) (2) ->
+"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
+hromaPrint\tests\all_tests.vcxproj.metaproj" (default target) (4) ->
+"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
+hromaPrint\tests\all_tests.vcxproj" (default target) (11) ->
+(ClCompile target) ->
+
+ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(31,29): error C2061:
+syntax error: identifier 'AVChannelLayout' ChromaPrint\tests\all_tests.vcxproj
+  
+ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(43,30): error C2061:
+syntax error: identifier 'AVChannelLayout' [C:\Users\JamesMc\Data\Clients\Digit
+alZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.vcxproj]
+  
+ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(32,50): error C2065:
+'channel_layout': undeclared identifier [C:\Users\JamesMc\Data\Clients\DigitalZ
+enWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.vcxproj]
+  
+ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(32,1): error C2660: '
+av_opt_set_int': function does not take 3 arguments [C:\Users\JamesMc\Data\Clie
+nts\DigitalZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.
+vcxproj]
