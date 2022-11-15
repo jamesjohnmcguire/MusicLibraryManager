@@ -243,29 +243,6 @@ Design
 						Update file name
 					Update iTunes
 				Fix file name, if needed
-	Process Flow
-		CleanFiles
-			UpdateArtistLocation
-			//UpdateAlbumDirectory
-			CleanFile
-				tags = new Tags(file.FullName);
-				//CleanFileName
-				//	CleanTrackNumbersOutOfFileName
-				IITTrackCollection = GetTracksFromFileName
-					IITTrackCollection playList.Search
-					foreach
-						AreFileAndTrackTheSame
-						// TODO update based on tags
-						MoveFileBasedOnTags
-							File.Move
-						UpdateLocation
-							fileTrack.Location = filePath;
-					MoveFileBasedOnTags
-						File.Move
-					iTunes.LibraryPlaylist.AddFile
-				MoveFileBasedOnTags(file);
-						File.Move
-				iTunes.LibraryPlaylist.AddFile(track);
 	if song ends with ' \d'
 		check if song exists without ' \d'
 		if song exists
@@ -311,12 +288,6 @@ Design
 		If someObject artistProperty has value equal 'various artists' replace artistPropertyValue with performersPropertyValue
 
 		Remove subject as parameter as it is already a property
-	CleanFile
-		Tags.Update
-			rules.RunRules
-				foreach (PropertyInfo property in properties)
-					foreach (Rule rule in rules)
-						object newValue = rule.Run(item, fullName, source, null);
 	Album	"The Very Best Of 10cc"
 		Rule1 (album / disks)
 		Rule2 (artist / various artists)
@@ -607,3 +578,87 @@ New
 				// Remove 2 or more dots from abulm part.
 				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
 			}
+
+Music Manager
+	c# mp3 get raw stream
+	https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
+	https://github.com/naudio/NAudio
+
+	https://musicbrainz.org/doc/MusicBrainz_API/Search
+	https://github.com/metabrainz/picard
+	https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+
+	Remove empty directories
+	Do not instantiate iTunes when doing only extract-tags
+	Build non-itunes version
+	Deal with Multiple Artists, Remove throwing exception
+
+	+		item	{DigitalZenWorks.MusicToolKit.MediaFileTags}	object {DigitalZenWorks.MusicToolKit.MediaFileTags}
+			subject	"MusicUtility.Tags.Album"	string
+			baseElement	"Album"	string
+	+		propertyInfo	{System.String Album}	System.Reflection.PropertyInfo {System.Reflection.RuntimePropertyInfo}
+			TagFile.Tag.Album	null	string
+
+	by getting base element, skipping testing of full namespace / objec name, should a test before hand
+	Artists doesn't exist
+	GetItemSubject should return an object
+
+	https://github.com/beetbox/beets
+
+	ChromaPrint
+		cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+
+	VcPkg
+		-- Configuring TensorFlow (dbg)
+		CMake Error at scripts/cmake/vcpkg_execute_required_process.cmake:96 (message):
+			Command failed: C:/Util/vcpkg/downloads/tools/msys2/70289b324bc026d6/mingw64/bin/python3.exe C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg/configure.py --workspace C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
+			Working Directory: C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
+			Error code: 1
+			See logs for more information:
+			  C:\Util\vcpkg\buildtrees\tensorflow\config-x64-windows-dbg-out.log
+
+		Call Stack (most recent call first):
+		  installed/x64-windows/share/tensorflow-common/tensorflow-common.cmake:187 (vcpkg_execute_required_process)
+		  ports/tensorflow/portfile.cmake:5 (include)
+		  scripts/ports.cmake:147 (include)
+
+		vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
+
+		warning: vcpkg appears to be in a Visual Studio prompt targeting x86 but installing for x64-windows. Consider using --triplet x86-windows or --triplet x86-uwp.
+
+
+NAudio
+	https://github.com/naudio/NAudio
+	m4a naudio
+		https://stackoverflow.com/questions/42549288/how-do-i-convert-audio-file-to-m4a-with-320kbps-with-naudio
+	naudio decode 16 bit
+		https://stackoverflow.com/questions/13995259/naudio-convert-32-bit-wav-to-16-bit-wav
+
+https://github.com/FFmpeg/FFmpeg
+	https://github.com/tomaszzmuda/Xabe.FFmpeg
+	https://github.com/rosenbjerg/FFMpegCore
+
+https://github.com/addictedcs/soundfingerprinting
+https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
+
+c# mp3 fingerprint acoustid
+
+https://github.com/protyposis/Aurio
+	https://github.com/protyposis/Aurio/blob/3ac8920c59b707fa0aa2cd7abc377754c30dd301/Aurio/Aurio/Project/AudioTrack.cs
+	http://aurio.protyposis.net/
+
+https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
+https://essentia.upf.edu/index.html
+
+chromaprint example
+
+https://github.com/wo80/AcoustID.NET
+https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
+https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
+https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
+
+[StructLayout(LayoutKind.Sequential)]
+
+chromaprint naudio
+
+https://github.com/acoustid/chromaprint/blob/8ccad6937177b1b92e40ab8f4447ea27bac009a7/src/audio/ffmpeg_audio_reader.h
