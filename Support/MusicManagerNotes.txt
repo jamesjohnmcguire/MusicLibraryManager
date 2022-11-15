@@ -242,29 +242,6 @@ Design
 						Update file name
 					Update iTunes
 				Fix file name, if needed
-	Process Flow
-		CleanFiles
-			UpdateArtistLocation
-			//UpdateAlbumDirectory
-			CleanFile
-				tags = new Tags(file.FullName);
-				//CleanFileName
-				//	CleanTrackNumbersOutOfFileName
-				IITTrackCollection = GetTracksFromFileName
-					IITTrackCollection playList.Search
-					foreach
-						AreFileAndTrackTheSame
-						// TODO update based on tags
-						MoveFileBasedOnTags
-							File.Move
-						UpdateLocation
-							fileTrack.Location = filePath;
-					MoveFileBasedOnTags
-						File.Move
-					iTunes.LibraryPlaylist.AddFile
-				MoveFileBasedOnTags(file);
-						File.Move
-				iTunes.LibraryPlaylist.AddFile(track);
 	if song ends with ' \d'
 		check if song exists without ' \d'
 		if song exists
@@ -310,12 +287,6 @@ Design
 		If someObject artistProperty has value equal 'various artists' replace artistPropertyValue with performersPropertyValue
 
 		Remove subject as parameter as it is already a property
-	CleanFile
-		Tags.Update
-			rules.RunRules
-				foreach (PropertyInfo property in properties)
-					foreach (Rule rule in rules)
-						object newValue = rule.Run(item, fullName, source, null);
 	Album	"The Very Best Of 10cc"
 		Rule1 (album / disks)
 		Rule2 (artist / various artists)
@@ -606,6 +577,7 @@ New
 				// Remove 2 or more dots from abulm part.
 				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
 			}
+
 Music Manager
 	c# mp3 get raw stream
 	https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
@@ -633,83 +605,45 @@ Music Manager
 	https://github.com/beetbox/beets
 
 	ChromaPrint
-	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin .
-
-	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=/Users/JamesMc/Data/External/Util/Bin .
-
-	SET FFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin
-
-	 -DCMAKE_POLICY_DEFAULT_CMP0003=NEW
-	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DFFMPEG_ROOT=C:\Users\JamesMc\Data\External\Util\Bin .
-
-	cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin .
-	cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
-
-	VcPkg
-		-- Configuring TensorFlow (dbg)
-		CMake Error at scripts/cmake/vcpkg_execute_required_process.cmake:96 (message):
-			Command failed: C:/Util/vcpkg/downloads/tools/msys2/70289b324bc026d6/mingw64/bin/python3.exe C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg/configure.py --workspace C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
-			Working Directory: C:/Util/vcpkg/buildtrees/tensorflow/x64-windows-dbg
-			Error code: 1
-			See logs for more information:
-			  C:\Util\vcpkg\buildtrees\tensorflow\config-x64-windows-dbg-out.log
-
-		Call Stack (most recent call first):
-		  installed/x64-windows/share/tensorflow-common/tensorflow-common.cmake:187 (vcpkg_execute_required_process)
-		  ports/tensorflow/portfile.cmake:5 (include)
-		  scripts/ports.cmake:147 (include)
-
-
-		error: building tensorflow:x64-windows failed with: BUILD_FAILED
-		error: Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
-		Then check for known issues at:
-			https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+tensorflow
-		You can submit a new issue at:
-			https://github.com/microsoft/vcpkg/issues/new?template=report-package-build-failure.md&title=[tensorflow]+Build+error
-		Include '[tensorflow] Build error' in your bug report title, the following version information in your bug description, and attach any relevant failure logs from above.
-			vcpkg-tool version: 2022-10-17-3247920fbdd47d08f36cbd480addd9890d3c2435
-			vcpkg-scripts version: 7e7c62d86 2022-11-09 (18 hours ago)
-
-		Please use the prefilled template from C:\Util\vcpkg\installed\vcpkg\issue_body.md when reporting your issue.
+		cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
 
 		vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
 
-	warning: vcpkg appears to be in a Visual Studio prompt targeting x86 but installing for x64-windows. Consider using --triplet x86-windows or --triplet x86-uwp.
+		warning: vcpkg appears to be in a Visual Studio prompt targeting x86 but installing for x64-windows. Consider using --triplet x86-windows or --triplet x86-uwp.
 
-C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\Libraries\FFMpeg
 
-C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg
+NAudio
+	https://github.com/naudio/NAudio
+	m4a naudio
+		https://stackoverflow.com/questions/42549288/how-do-i-convert-audio-file-to-m4a-with-320kbps-with-naudio
+	naudio decode 16 bit
+		https://stackoverflow.com/questions/13995259/naudio-convert-32-bit-wav-to-16-bit-wav
 
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin .
-cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/External/Util/Bin -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+https://github.com/FFmpeg/FFmpeg
+	https://github.com/tomaszzmuda/Xabe.FFmpeg
+	https://github.com/rosenbjerg/FFMpegCore
 
-cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
+https://github.com/addictedcs/soundfingerprinting
+https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
 
-cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON --debug-find .
+c# mp3 fingerprint acoustid
 
-C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg/lib/()avformat(\.lib)
+https://github.com/protyposis/Aurio
+	https://github.com/protyposis/Aurio/blob/3ac8920c59b707fa0aa2cd7abc377754c30dd301/Aurio/Aurio/Project/AudioTrack.cs
+	http://aurio.protyposis.net/
 
-C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\chromaprint.sln" (default target) (1) ->
-"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
-hromaPrint\ALL_BUILD.vcxproj.metaproj" (default target) (2) ->
-"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
-hromaPrint\tests\all_tests.vcxproj.metaproj" (default target) (4) ->
-"C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\C
-hromaPrint\tests\all_tests.vcxproj" (default target) (11) ->
-(ClCompile target) ->
+https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
+https://essentia.upf.edu/index.html
 
-ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(31,29): error C2061:
-syntax error: identifier 'AVChannelLayout' ChromaPrint\tests\all_tests.vcxproj
-  
-ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(43,30): error C2061:
-syntax error: identifier 'AVChannelLayout' [C:\Users\JamesMc\Data\Clients\Digit
-alZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.vcxproj]
-  
-ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(32,50): error C2065:
-'channel_layout': undeclared identifier [C:\Users\JamesMc\Data\Clients\DigitalZ
-enWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.vcxproj]
-  
-ChromaPrint\src\audio/ffmpeg_audio_processor_swresample.h(32,1): error C2660: '
-av_opt_set_int': function does not take 3 arguments [C:\Users\JamesMc\Data\Clie
-nts\DigitalZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\all_tests.
-vcxproj]
+chromaprint example
+
+https://github.com/wo80/AcoustID.NET
+https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
+https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
+https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
+
+[StructLayout(LayoutKind.Sequential)]
+
+chromaprint naudio
+
+https://github.com/acoustid/chromaprint/blob/8ccad6937177b1b92e40ab8f4447ea27bac009a7/src/audio/ffmpeg_audio_reader.h
