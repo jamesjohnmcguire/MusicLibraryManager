@@ -5,6 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using DigitalZenWorks.Common.Utilities;
+using DigitalZenWorks.MusicToolKit.Decoders;
 using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -300,6 +301,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Artist";
 			Assert.That(artistPart, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The decode file test.
+		/// </summary>
+		[Test]
+		public void DecodeFile()
+		{
+			using NAudioDecoder decoder = new (testFile);
+			AudioConsumer consumer = new AudioConsumer();
+
+			bool result = decoder.Decode(consumer, 240);
+
+			Assert.True(result);
 		}
 
 		/// <summary>
