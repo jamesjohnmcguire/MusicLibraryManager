@@ -10,6 +10,7 @@ namespace DigitalZenWorks.MusicToolKit
 	using System;
 	using System.Buffers;
 	using System.IO;
+	using System.Reflection;
 
 	/// <summary>
 	/// Decode using the NAudio library.
@@ -81,6 +82,202 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Generate Chromaprint signature.
+		/// </summary>
+		/// <returns>A Chromaprint signature.</returns>
+		public unsafe string GenerateChromaPrint()
+		{
+			string fingerPrint = null;
+
+			Assembly assembly = Assembly.GetEntryAssembly();
+			string location = assembly.Location;
+			string fullPath = System.IO.Path.GetDirectoryName(location);
+
+			assembly = Assembly.GetExecutingAssembly();
+			location = assembly.Location;
+			fullPath = System.IO.Path.GetDirectoryName(location);
+
+			ChromaprintContext context = NativeMethods.chromaprint_new(1);
+
+			int result = NativeMethods.chromaprint_start(
+				context, sampleRate, channels);
+
+			if (result > 0)
+			{
+				using WaveStream reader = OpenWaveStream(file);
+
+				try
+				{
+					double maxDuration = 120;
+					double maxChunkDuration = 0;
+					long streamSize = 0;
+					double streamLimit = maxDuration * sampleRate;
+
+					long chunkSize = 0;
+					double chunkLimit = maxChunkDuration * sampleRate;
+
+					long extraChunkLimit = 0;
+					double overlap = 0.0;
+
+					bool firstChunk = true;
+					bool finished = false;
+
+					int totalRead = 0;
+
+					while (finished == false)
+					{
+						int bufferSize = 230;
+						byte[] buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
+						int actualRead = reader.Read(buffer, totalRead, bufferSize);
+
+						bool streamDone = false;
+						if (streamLimit > 0)
+						{
+							double remaining = streamLimit - streamSize;
+							if (actualRead > remaining)
+							{
+								bufferSize = (int)remaining;
+								streamDone = true;
+							}
+						}
+
+						streamSize += actualRead;
+						totalRead += actualRead;
+
+						// TODO: Refactor into something easier
+						if (actualRead == 0)
+						{
+							if (streamDone)
+							{
+								break;
+							}
+							else
+							{
+								continue;
+							}
+						}
+
+						bool chunkDone = false;
+						int firstPartSize = actualRead;
+
+						if (chunkLimit > 0)
+						{
+							double remaining =
+								chunkLimit + extraChunkLimit - chunkSize;
+
+							if (firstPartSize > remaining)
+							{
+								firstPartSize = (int)remaining;
+								chunkDone = true;
+							}
+						}
+
+						int thisSize = firstPartSize * channels;
+
+						fixed (byte* bytePointer = buffer)
+						{
+							IntPtr bufferPointer = (IntPtr)bytePointer;
+							result = NativeMethods.chromaprint_feed(
+								context, bufferPointer, thisSize);
+						}
+
+						if (result > 0)
+						{
+							chunkSize += firstPartSize;
+
+							if (chunkDone)
+							{
+								result = NativeMethods.chromaprint_finish(context);
+
+								if (result == 0)
+								{
+									return null;
+								}
+
+								var innerChunkSize = chunkSize - extraChunkLimit;
+								double innerChunkSizeD = innerChunkSize * 1.0;
+								var chunkDuration = (innerChunkSizeD / sampleRate) + overlap;
+								chunkDuration = chunkDuration + overlap;
+
+								if (overlap > 0)
+								{
+									result =
+										NativeMethods.chromaprint_clear_fingerprint(
+											context);
+
+									if (result == 0)
+									{
+										return null;
+									}
+								}
+								else
+								{
+									result =
+										NativeMethods.chromaprint_start(
+											context, SampleRate, channels);
+
+									if (result == 0)
+									{
+										return null;
+									}
+								}
+
+								if (firstChunk)
+								{
+									extraChunkLimit = 0;
+									firstChunk = false;
+								}
+
+								chunkSize = 0;
+							}
+						}
+
+						int newFrameSize = actualRead - firstPartSize;
+						if (newFrameSize > 0)
+						{
+							thisSize = firstPartSize * channels;
+							int offset = firstPartSize * channels;
+
+							fixed (byte* bytePointer = buffer)
+							{
+								IntPtr bufferPointer = (IntPtr)bytePointer;
+								bufferPointer += offset;
+
+								result = NativeMethods.chromaprint_feed(
+									context, bufferPointer, thisSize);
+							}
+
+							if (result == 0)
+							{
+								return null;
+							}
+						}
+
+						chunkSize += newFrameSize;
+
+						if (actualRead < bufferSize || streamDone == true)
+						{
+							finished = true;
+						}
+					}
+
+					result = NativeMethods.chromaprint_finish(context);
+				}
+				catch (Exception exception) when
+					(exception is ArgumentException ||
+					exception is ArgumentNullException ||
+					exception is ArgumentOutOfRangeException ||
+					exception is IOException ||
+					exception is NotSupportedException ||
+					exception is ObjectDisposedException)
+				{
+				}
+			}
+
+			return fingerPrint;
 		}
 
 		private static WaveStream OpenWaveStream(string file)
