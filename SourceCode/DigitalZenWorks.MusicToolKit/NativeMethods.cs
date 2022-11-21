@@ -7,18 +7,15 @@
 using System;
 using System.Runtime.InteropServices;
 
-[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
-
 namespace DigitalZenWorks.MusicToolKit
 {
 	internal class NativeMethods
 	{
-
 		/// <summary>
 		/// Clear the current fingerprint, but allow more data to be processed.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// This is useful if you are processing a long stream and want to many
 		/// smaller fingerprints, instead of waiting for the entire stream to be
@@ -30,20 +27,20 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Free memory allocated by any function from the Chromaprint API.
 		/// </summary>
-		/// <param name="ptr">pointer to be deallocated</param>
+		/// <param name="ptr">pointer to be deallocated.</param>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_dealloc", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void chromaprint_dealloc(IntPtr ptr);
 
 		/// <summary>
-		/// Uncompress and optionally base64-decode an encoded fingerprint
+		/// Uncompress and optionally base64-decode an encoded fingerprint.
 		/// </summary>
-		/// <param name="encoded_fp">pointer to an encoded fingerprint</param>
-		/// <param name="encoded_size">size of the encoded fingerprint in bytes</param>
-		/// <param name="fp">[out] pointer to a pointer, where the decoded raw fingerprint (array of 32-bit integers) will be stored</param>
-		/// <param name="size">[out] Number of items in the returned raw fingerprint</param>
-		/// <param name="algorithm">[out] Chromaprint algorithm version which was used to generate the raw fingerprint</param>
+		/// <param name="encoded_fp">pointer to an encoded fingerprint.</param>
+		/// <param name="encoded_size">size of the encoded fingerprint in bytes.</param>
+		/// <param name="fp">[out] pointer to a pointer, where the decoded raw fingerprint (array of 32-bit integers) will be stored.</param>
+		/// <param name="size">[out] Number of items in the returned raw fingerprint.</param>
+		/// <param name="algorithm">[out] Chromaprint algorithm version which was used to generate the raw fingerprint.</param>
 		/// <param name="base64">Whether the encoded_fp parameter contains binary data or base64-encoded ASCII data.</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// The caller is responsible for freeing the returned pointer using chromaprint_dealloc().
 		/// </remarks>
@@ -51,15 +48,15 @@ namespace DigitalZenWorks.MusicToolKit
 		public static extern int chromaprint_decode_fingerprint(IntPtr encoded_fp, int encoded_size, out IntPtr fp, out int size, out int algorithm, int base64);
 
 		/// <summary>
-		/// Compress and optionally base64-encode a raw fingerprint
+		/// Compress and optionally base64-encode a raw fingerprint.
 		/// </summary>
-		/// <param name="fp">pointer to an array of 32-bit integers representing the raw fingerprint to be encoded</param>
-		/// <param name="size">number of items in the raw fingerprint</param>
-		/// <param name="algorithm">Chromaprint algorithm version which was used to generate the raw fingerprint</param>
-		/// <param name="encoded_fp">[out] pointer to a pointer, where the encoded fingerprint will be stored</param>
-		/// <param name="encoded_size">[out] size of the encoded fingerprint in bytes</param>
+		/// <param name="fp">pointer to an array of 32-bit integers representing the raw fingerprint to be encoded.</param>
+		/// <param name="size">number of items in the raw fingerprint.</param>
+		/// <param name="algorithm">Chromaprint algorithm version which was used to generate the raw fingerprint.</param>
+		/// <param name="encoded_fp">[out] pointer to a pointer, where the encoded fingerprint will be stored.</param>
+		/// <param name="encoded_size">[out] size of the encoded fingerprint in bytes.</param>
 		/// <param name="base64">Whether to return binary data or base64-encoded ASCII data.</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// The caller is responsible for freeing the returned pointer using chromaprint_dealloc().
 		/// </remarks>
@@ -68,25 +65,25 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Send audio data to the fingerprint calculator.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="data">raw audio data, should point to an array of 16-bit signed integers in native byte-order</param>
-		/// <param name="size">size of the data buffer (in samples)</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="data">raw audio data, should point to an array of 16-bit signed integers in native byte-order.</param>
+		/// <param name="size">size of the data buffer (in samples).</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_feed", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_feed(ChromaprintContext ctx, IntPtr data, int size);
 
 		/// <summary>
 		/// Process any remaining buffered audio data.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_finish", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_finish(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Deallocate the Chromaprint context.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
+		/// <param name="ctx">Chromaprint context pointer.</param>
 		/// <remarks>
 		/// Note that when Chromaprint is compiled with FFTW, this function is
 		/// not reentrant and you need to call it only from one thread at a time.
@@ -98,33 +95,33 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Return the fingerprint algorithm this context is configured to use.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>current algorithm version</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>current algorithm version.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_algorithm", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_algorithm(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Get the duration of internal buffers that the fingerprinting algorithm uses.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>duration in samples</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>duration in samples.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_delay", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_delay(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Get the duration of internal buffers that the fingerprinting algorithm uses.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>duration in milliseconds</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>duration in milliseconds.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_delay_ms", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_delay_ms(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Return the calculated fingerprint as a compressed string.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="fingerprint">pointer to a pointer, where a pointer to the allocated array will be stored</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="fingerprint">pointer to a pointer, where a pointer to the allocated array will be stored.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// The caller is responsible for freeing the returned pointer using chromaprint_dealloc().
 		/// </remarks>
@@ -134,9 +131,9 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Return 32-bit hash of the calculated fingerprint.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="hash">pointer to a 32-bit integer where the hash will be stored</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="hash">pointer to a 32-bit integer where the hash will be stored.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// See chromaprint_hash_fingerprint() for details on how to use the hash.
 		/// </remarks>
@@ -146,24 +143,24 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Get the duration of one item in the raw fingerprint in samples.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>duration in samples</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>duration in samples.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_item_duration", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_item_duration(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Get the duration of one item in the raw fingerprint in milliseconds.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>duration in milliseconds</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>duration in milliseconds.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_item_duration_ms", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_item_duration_ms(ChromaprintContext ctx);
 
 		/// <summary>
 		/// Get the number of channels that is internally used for fingerprinting.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>number of channels</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>number of channels.</returns>
 		/// <remarks>
 		/// You normally don't need this. Just set the audio's actual number of channels
 		/// when calling chromaprint_start() and everything will work. This is only used for
@@ -175,10 +172,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Return the calculated fingerprint as an array of 32-bit integers.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="fingerprint">pointer to a pointer, where a pointer to the allocated array will be stored</param>
-		/// <param name="size">number of items in the returned raw fingerprint</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="fingerprint">pointer to a pointer, where a pointer to the allocated array will be stored.</param>
+		/// <param name="size">number of items in the returned raw fingerprint.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// The caller is responsible for freeing the returned pointer using chromaprint_dealloc().
 		/// </remarks>
@@ -188,17 +185,17 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Return the length of the current raw fingerprint.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="size">number of items in the current raw fingerprint</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="size">number of items in the current raw fingerprint.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_get_raw_fingerprint_size", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_get_raw_fingerprint_size(ChromaprintContext ctx, out int size);
 
 		/// <summary>
 		/// Get the sampling rate that is internally used for fingerprinting.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <returns>sampling rate</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <returns>sampling rate.</returns>
 		/// <remarks>
 		/// You normally don't need this. Just set the audio's actual number of channels
 		/// when calling chromaprint_start() and everything will work. This is only used for
@@ -220,10 +217,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Generate a single 32-bit hash for a raw fingerprint.
 		/// </summary>
-		/// <param name="fp">pointer to an array of 32-bit integers representing the raw fingerprint to be hashed</param>
-		/// <param name="size">number of items in the raw fingerprint</param>
-		/// <param name="hash">[out] pointer to a 32-bit integer where the hash will be stored</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="fp">pointer to an array of 32-bit integers representing the raw fingerprint to be hashed.</param>
+		/// <param name="size">number of items in the raw fingerprint.</param>
+		/// <param name="hash">[out] pointer to a 32-bit integer where the hash will be stored.</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		/// <remarks>
 		/// If two fingerprints are similar, their hashes generated by this function
 		/// will also be similar. If they are significantly different, their hashes
@@ -241,15 +238,15 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Allocate and initialize the Chromaprint context.
 		/// </summary>
-		/// <param name="algorithm">the fingerprint algorithm version you want to use, or CHROMAPRINT_ALGORITHM_DEFAULT for the default algorithm</param>
-		/// <returns>Chromaprint context pointer</returns>
+		/// <param name="algorithm">the fingerprint algorithm version you want to use, or CHROMAPRINT_ALGORITHM_DEFAULT for the default algorithm.</param>
+		/// <returns>Chromaprint context pointer.</returns>
 		/// <remarks>
 		/// Note that when Chromaprint is compiled with FFTW, this function is
 		/// not reentrant and you need to call it only from one thread at a time.
 		/// This is not a problem when using FFmpeg or vDSP.
 		/// </remarks>
 		[DllImport(
-			"chromaprint",
+			"chromaprint.dll",
 			EntryPoint = "chromaprint_new",
 			CallingConvention = CallingConvention.Cdecl)]
 		public static extern ChromaprintContext chromaprint_new(int algorithm);
@@ -257,10 +254,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Restart the computation of a fingerprint with a new audio stream.
 		/// </summary>
-		/// <param name="ctx">Chromaprint context pointer</param>
-		/// <param name="sample_rate">sample_rate sample rate of the audio stream (in Hz)</param>
-		/// <param name="num_channels">num_channels numbers of channels in the audio stream (1 or 2)</param>
-		/// <returns>0 on error, 1 on success</returns>
+		/// <param name="ctx">Chromaprint context pointer.</param>
+		/// <param name="sample_rate">sample_rate sample rate of the audio stream (in Hz).</param>
+		/// <param name="num_channels">num_channels numbers of channels in the audio stream (1 or 2).</param>
+		/// <returns>0 on error, 1 on success.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_start", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_start(ChromaprintContext ctx, int sample_rate, int num_channels);
 	}
