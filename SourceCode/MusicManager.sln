@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chromaprint", "ChromaPrint\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fpcalc", "ChromaPrint\src\cmd\fpcalc.vcxproj", "{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChromaPrint", "ChromaPrint", "{0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21E8ACDE-900C-3B11-AF3F-A86DC2E3B306} = {0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}
+		{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7} = {0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5167DF36-0BB8-4139-B520-1B183A0AA085}
