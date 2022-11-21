@@ -318,6 +318,19 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The get ChromaPrint finger print test.
+		/// </summary>
+		[Test]
+		public void GetChromaPrintFingerPrint()
+		{
+			using NAudioDecoder decoder = new (testFile);
+
+			string fingerPrint = decoder.GenerateChromaPrint();
+
+			Assert.NotNull(fingerPrint);
+		}
+
+		/// <summary>
 		/// The get duplicate location test.
 		/// </summary>
 		[Test]
