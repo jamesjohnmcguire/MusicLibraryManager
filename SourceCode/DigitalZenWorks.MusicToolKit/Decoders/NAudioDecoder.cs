@@ -11,6 +11,7 @@ namespace DigitalZenWorks.MusicToolKit
 	using System.Buffers;
 	using System.IO;
 	using System.Reflection;
+	using System.Runtime.InteropServices;
 
 	/// <summary>
 	/// Decode using the NAudio library.
@@ -125,13 +126,13 @@ namespace DigitalZenWorks.MusicToolKit
 					bool firstChunk = true;
 					bool finished = false;
 
+					int bufferSize = 230;
 					int totalRead = 0;
 
 					while (finished == false)
 					{
-						int bufferSize = 230;
 						byte[] buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
-						int actualRead = reader.Read(buffer, totalRead, bufferSize);
+						int actualRead = reader.Read(buffer, 0, bufferSize);
 
 						bool streamDone = false;
 						if (streamLimit > 0)
@@ -176,12 +177,13 @@ namespace DigitalZenWorks.MusicToolKit
 						}
 
 						int thisSize = firstPartSize * channels;
+						thisSize = actualRead;
 
-						fixed (byte* bytePointer = buffer)
+						fixed (byte* bytePointer = &buffer[0])
 						{
 							IntPtr bufferPointer = (IntPtr)bytePointer;
 							result = NativeMethods.chromaprint_feed(
-								context, bufferPointer, thisSize);
+								context, (IntPtr)bytePointer, thisSize);
 						}
 
 						if (result > 0)
@@ -262,6 +264,8 @@ namespace DigitalZenWorks.MusicToolKit
 						{
 							finished = true;
 						}
+
+						bufferSize = 256;
 					}
 
 					result = NativeMethods.chromaprint_finish(context);
@@ -277,6 +281,11 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
+			IntPtr outBuffer;
+
+			result = NativeMethods.chromaprint_get_fingerprint(
+				context, out outBuffer);
+			fingerPrint = Marshal.PtrToStringAnsi(outBuffer);
 			return fingerPrint;
 		}
 
