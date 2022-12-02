@@ -6,6 +6,7 @@
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	using Common.Logging;
 	using NAudio.Wave;
 	using System;
 	using System.Buffers;
@@ -18,6 +19,9 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public class NAudioDecoder : AudioDecoder
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
+
 		private readonly string file;
 
 		/// <summary>
@@ -93,15 +97,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string fingerPrint = null;
 
-			Assembly assembly = Assembly.GetEntryAssembly();
-			string location = assembly.Location;
-			string fullPath = System.IO.Path.GetDirectoryName(location);
-
-			assembly = Assembly.GetExecutingAssembly();
-			location = assembly.Location;
-			fullPath = System.IO.Path.GetDirectoryName(location);
-
-			ChromaprintContext context = NativeMethods.chromaprint_new(1);
+			ChromaprintContext context = NativeMethods.chromaprint_new(2);
 
 			int result = NativeMethods.chromaprint_start(
 				context, sampleRate, channels);
@@ -179,12 +175,22 @@ namespace DigitalZenWorks.MusicToolKit
 						int thisSize = firstPartSize * channels;
 						thisSize = actualRead;
 
-						fixed (byte* bytePointer = &buffer[0])
+						fixed (byte* bytePointer = buffer)
 						{
 							IntPtr bufferPointer = (IntPtr)bytePointer;
 							result = NativeMethods.chromaprint_feed(
-								context, (IntPtr)bytePointer, thisSize);
+								context, bufferPointer, thisSize);
 						}
+#if ALTERNATE
+						GCHandle pinnedArray = GCHandle.Alloc(
+							buffer, GCHandleType.Pinned);
+						IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+
+						result = NativeMethods.chromaprint_feed(
+							context, pointer, thisSize);
+
+						pinnedArray.Free();
+#endif
 
 						if (result > 0)
 						{
@@ -271,13 +277,15 @@ namespace DigitalZenWorks.MusicToolKit
 					result = NativeMethods.chromaprint_finish(context);
 				}
 				catch (Exception exception) when
-					(exception is ArgumentException ||
+					(exception is AccessViolationException ||
+					exception is ArgumentException ||
 					exception is ArgumentNullException ||
 					exception is ArgumentOutOfRangeException ||
 					exception is IOException ||
 					exception is NotSupportedException ||
 					exception is ObjectDisposedException)
 				{
+					Log.Error(exception.ToString());
 				}
 			}
 
