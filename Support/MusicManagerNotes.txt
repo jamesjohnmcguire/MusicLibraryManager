@@ -6,6 +6,7 @@ Process
 	Testing
 
 Tasks
+	Double check not being used: \s*\(Disk).*?\)
 	Log any change to media file
 	Console.WriteLine
 	If exact duplicate, remove, don't move
