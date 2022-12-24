@@ -1,11 +1,17 @@
 Music Library Manager
-Music Manager	My Music Software development
-
-Accounts
-Process
-	Testing
 
 Tasks
+	Remove empty directories
+	Do not instantiate iTunes when doing only extract-tags
+	Build non-itunes version
+	Deal with Multiple Artists, Remove throwing exception
+	by getting base element, skipping testing of full namespace / objec name, should a test before hand
+	Artists doesn't exist
+	GetItemSubject should return an object
+	Double check not being used: \s*\(Disk).*?\)
+	Log any change to media file
+	Console.WriteLine
+
 	If exact duplicate, remove, don't move
 	Re-add , @" \(.*?\)" for title?
 	Refactor ITunesXmlFile
@@ -71,6 +77,7 @@ Tasks
 	FindDuplicates	// increment progress
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
+	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
 		Log any change to media file
@@ -241,17 +248,6 @@ Design
 						Update directory
 						Update file name
 					Update iTunes
-				Fix file name, if needed
-	if song ends with ' \d'
-		check if song exists without ' \d'
-		if song exists
-			check if the same
-			if same
-				delete song with ' \d'
-				adjust itunes playlist, as needed
-		else
-			rename song
-			adjust itunes playlist, as needed
 	Rules
 		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
 
@@ -308,6 +304,7 @@ Notes
 		C:\Users\JamesMc\Music\iTunes
 		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes	Not changed for quite a while
 		C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes	Not changed for quite a while
+		C:\Users\JamesMc\AppData\Roaming\Apple Computer\Preferences\com.apple.iTunes.plist
 		C:\Users\JamesMc\Data\External\Entertainment
 		C:\Users\JamesMc\Data\External\Entertainment\Videos\Movies
 		ITunes info	C:\Users\JamesMc\Music\iTunes	Not changed for quite a while
@@ -339,19 +336,6 @@ Notes
 	Snippets
 		//IITEncoder encoder = iTunes.CurrentEncoder;
 		//status = iTunes.ConvertFile2(musicFilePath);
-	Rules
-		if (propertyInfo.PropertyType.IsArray)
-		{
-			Array a = (Array)propertyInfo.GetValue(item);
-			Array b = (Array)propertyInfo.GetValue(item, null);
-			var tester = propertyInfo.GetValue(item);
-			var tester2 = propertyInfo.GetValue(item, null);
-			object[] test = (object[])propertyInfo.GetValue(item);
-			object[] test1 = (object[])propertyInfo.GetValue(item, null);
-			string[] test2 = (string[])propertyInfo.GetValue(item, null);
-			// var test3 = propertyInfo.GetValue(item, new object[] { 1 });
-			itemSubject = propertyInfo.GetValue(item, null);
-		}
 	Database
 		File
 			id
@@ -436,6 +420,13 @@ Issues
 		https://stackoverflow.com/questions/32434401/replacement-for-system-web-httputility-urlencode-urldecode-asp-net-5
 		https://stackoverflow.com/questions/64991233/net-5-using-system-web-reference-assemblies-should-not-be-loaded-for-execut
 Resources
+	c# mp3 get raw stream
+		https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
+		https://github.com/naudio/NAudio
+	Music Brainz
+		https://musicbrainz.org/doc/MusicBrainz_API/Search
+		https://github.com/metabrainz/picard
+		https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
 	Rules
 		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
 		https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
@@ -525,7 +516,10 @@ Resources
 		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
 	Packages
 		https://github.com/JamesNK/Newtonsoft.Json
-	http://regexstorm.net/tester
+	Regex
+		http://regexstorm.net/tester
+		c# regex replace backets
+			https://stackoverflow.com/questions/26984428/how-to-replace-a-matched-group-value-with-regex/26984540
 	https://www.sno.phy.queensu.ca/~phil/exiftool/#running
 	https://ils.unc.edu/callee/temp-dc-tools/extract-metadata.htm
 	QuickTime Decrypt Library	https://github.com/gitpan/Audio-M4P
@@ -539,33 +533,19 @@ Resources
 		https://alteridem.net/2017/05/04/test-net-core-nunit-vs2017/
 	Locations
 		https://www.davidlimonline.com/blog/2019/5/1/cant-change-the-itunes-media-folder-location-try-creating-a-new-itunes-library
-New
-	c# regex replace backets
-		https://stackoverflow.com/questions/26984428/how-to-replace-a-matched-group-value-with-regex/26984540
-	/MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
-	UrlDecode
-		Before UrlDecode
-			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes%20Media/Music/iTunes%20Media/Music/Aaron%20Goldberg/Worlds/1-07%20OAM's%20Blues%201.m4a"
-		After UrlDecode
-			"file://localhost/C:/Users/JamesMc/Data/External/Entertainment/Music/iTunes Media/Music/iTunes Media/Music/Aaron Goldberg/Worlds/1-07 OAM's Blues 1.m4a"	string
-	iTunes
-		C:\Users\JamesMc\AppData\Local\Apple Computer\iTunes
-		C:\Users\JamesMc\AppData\Roaming\Apple Computer\Preferences\com.apple.iTunes.plist
-		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes
-	Music Manager
-		"C:\\Users\\JamesMc\\Data\\External\\iTunes Media\\"
-		"C:\\Users\\JamesMc\\Data\\External\\iTunes Library.xml"
-		CALL dotnet publish --configuration Release --runtime win-x64 --self-contained true -p:PublishReadyToRun=true -p:PublishSingleFile=true --output Binaries\Windows
-
-		C:\Program Files\dotnet\sdk\6.0.200\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.RuntimeIdentifierInference.targets(150,5): error NETSDK1031: It is not supported to build or publish a self-contained application without specifying a RuntimeIdentifier. You must either specify a RuntimeIdentifier or set SelfContained
-		to false. [C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\So
-		urceCode\MusicManager\MusicManager.csproj]
-	Music Manager
+	Music Web Sites
 		soundcharts.com
 		muckrack.com
 		Spotify API dashboard
 		Apple Music / iTunes / 
 		Deezer
+	NAudio
+		https://github.com/naudio/NAudio
+		m4a naudio
+			https://stackoverflow.com/questions/42549288/how-do-i-convert-audio-file-to-m4a-with-320kbps-with-naudio
+		naudio decode 16 bit
+			https://stackoverflow.com/questions/13995259/naudio-convert-32-bit-wav-to-16-bit-wav
+New
 	Catch Exceptions from ReadAllText, IsMatch
 		https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readalltext?f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.IO.File.ReadAllText)%3Bk(DevLang-csharp)%26rd%3Dtrue&view=net-6.0
 		https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex.ismatch?f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Text.RegularExpressions.Regex.IsMatch)%3Bk(DevLang-csharp)%26rd%3Dtrue&view=net-6.0
@@ -578,30 +558,6 @@ New
 				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
 			}
 
-Music Manager
-	c# mp3 get raw stream
-	https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
-	https://github.com/naudio/NAudio
-
-	https://musicbrainz.org/doc/MusicBrainz_API/Search
-	https://github.com/metabrainz/picard
-	https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
-
-	Remove empty directories
-	Do not instantiate iTunes when doing only extract-tags
-	Build non-itunes version
-	Deal with Multiple Artists, Remove throwing exception
-
-	+		item	{DigitalZenWorks.MusicToolKit.MediaFileTags}	object {DigitalZenWorks.MusicToolKit.MediaFileTags}
-			subject	"MusicUtility.Tags.Album"	string
-			baseElement	"Album"	string
-	+		propertyInfo	{System.String Album}	System.Reflection.PropertyInfo {System.Reflection.RuntimePropertyInfo}
-			TagFile.Tag.Album	null	string
-
-	by getting base element, skipping testing of full namespace / objec name, should a test before hand
-	Artists doesn't exist
-	GetItemSubject should return an object
-
 	https://github.com/beetbox/beets
 
 	ChromaPrint
@@ -609,41 +565,157 @@ Music Manager
 
 		vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
 
-		warning: vcpkg appears to be in a Visual Studio prompt targeting x86 but installing for x64-windows. Consider using --triplet x86-windows or --triplet x86-uwp.
+		FPCalc Test
+			Channels	1
+			Sample Rate	11025
+					g_max_duration	120.00000000000000	double
+				const size_t stream_limit = g_max_duration * reader.GetSampleRate();
+			chunk_limit	0
+			no overlap
+					frame_size	230	unsigned __int64	from Read
+
+			Read
+				if (stream_limit > 0) {
+					const auto remaining = stream_limit - stream_size;
+					if (frame_size > remaining) {
+						frame_size = remaining;
+						stream_done = true;
+					}
+				}
+				stream_size += frame_size;
+
+				if (frame_size == 0) {
+					if (stream_done) {
+						break;
+					} else {
+						continue;
+					}
+				}
+
+			0x000001BC71E70540
+
+				frame_size	256	unsigned __int64
+
+			0x000001bc71e70540
+
+			0x000001bc71e70540
+
+		copy ChromaPrint\src\Debug\chromaprint.dll Bin\Debug\AnyCPU
 
 
-NAudio
-	https://github.com/naudio/NAudio
-	m4a naudio
-		https://stackoverflow.com/questions/42549288/how-do-i-convert-audio-file-to-m4a-with-320kbps-with-naudio
-	naudio decode 16 bit
-		https://stackoverflow.com/questions/13995259/naudio-convert-32-bit-wav-to-16-bit-wav
+	https://github.com/FFmpeg/FFmpeg
+		https://github.com/tomaszzmuda/Xabe.FFmpeg
+		https://github.com/rosenbjerg/FFMpegCore
 
-https://github.com/FFmpeg/FFmpeg
-	https://github.com/tomaszzmuda/Xabe.FFmpeg
-	https://github.com/rosenbjerg/FFMpegCore
+	https://github.com/addictedcs/soundfingerprinting
+	https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
 
-https://github.com/addictedcs/soundfingerprinting
-https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
+	c# mp3 fingerprint acoustid
 
-c# mp3 fingerprint acoustid
+	https://github.com/protyposis/Aurio
+		https://github.com/protyposis/Aurio/blob/3ac8920c59b707fa0aa2cd7abc377754c30dd301/Aurio/Aurio/Project/AudioTrack.cs
+		http://aurio.protyposis.net/
 
-https://github.com/protyposis/Aurio
-	https://github.com/protyposis/Aurio/blob/3ac8920c59b707fa0aa2cd7abc377754c30dd301/Aurio/Aurio/Project/AudioTrack.cs
-	http://aurio.protyposis.net/
+	https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
+	https://essentia.upf.edu/index.html
 
-https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
-https://essentia.upf.edu/index.html
+	https://github.com/wo80/AcoustID.NET
+	https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
+	https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
+	https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
 
-chromaprint example
+	[StructLayout(LayoutKind.Sequential)]
 
-https://github.com/wo80/AcoustID.NET
-https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
-https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
-https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
 
-[StructLayout(LayoutKind.Sequential)]
+	https://github.com/acoustid/chromaprint/blob/8ccad6937177b1b92e40ab8f4447ea27bac009a7/src/audio/ffmpeg_audio_reader.h
 
-chromaprint naudio
+	Test File
+		"C:\Users\JamesMc\Data\External\Entertainment\Music6\Bravos\Black Is Black\Black Is Black.m4a"
+	Terminology
+		https://hotmart.com/en/blog/audio-quality
 
-https://github.com/acoustid/chromaprint/blob/8ccad6937177b1b92e40ab8f4447ea27bac009a7/src/audio/ffmpeg_audio_reader.h
+
+	[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
+
+	-		exception	{"Destination array was not long enough. Check the destination index, length, and the array's lower bounds. (Parameter 'destinationArray')"}	System.Exception {System.ArgumentException}
+
+	+		ReadTimeout	'reader.ReadTimeout' threw an exception of type 'System.InvalidOperationException'	int {System.InvalidOperationException}
+
+	System.AccessViolationException
+	  HResult=0x80004003
+	  Message=Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
+	  Source=<Cannot evaluate the exception source>
+	  StackTrace:
+	<Cannot evaluate the exception stack trace>
+
+			totalRead	390630	int
+
+			totalRead	79334	int
+
+	fpcalc sakura.mp4
+	DURATION=18
+	FINGERPRINT=AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
+
+	sakura.mp4
+	 
+			fingerPrint	"
+	AQABDkmSxJKSZBv-48ep4Mcz4j0A4y_-QowHg8cl-NwwoV8Jn-gHnA-Dak8Fb8dHbGl6_GDyDr-g_Lgj5BGKH8dFIz1zoj_OK8jRMA7KBceDMEEVj4OeGUOWm_Aj5DWmt-hr-AtR43j2BpeVSYjkHK5MZCcwfdB3XImNK9KH-PjR4wkfOOrxTgp-TE-O8gGTMsmRCzrOsAjPo9kz_BoeW8drlCQa5SliCjouHRfugj20KsePG9eh3EWTWEkRUSf6BG4z3IWZ6uiHI3-gLpKRhxleP-iPLHkE8PgT4tWFQ09RnchP2Foj_DtGHalFXMbVHvoeHM9xDV-OysmDHx-042ci5HjxHRfOBJ5cVBf-Be_RM0MTycdffA9CfRz8QbOEI7r4EFfygPHhG9Fhoy9wPeiSkSS2N0hf5LE-cM4x5ccPfXh0IT_eB0eP_IKPfmmU4i9KUYaPSlFwZ2rwO0HzDL0U48d-SLH44sukoD-UHz8Ofbik45n0YNrTwD2eg1dwLsf0rrgt45k_fIks6Oi_4hfwGGlonMOPC_t_lORxjRToqEWoF08ZaP5wnCf6_GhKFTp4xDlGJ0rRE46e4-vxVHA-XHmw_ci1ooeWHqWN_jGaNLSgRqkMPoF5XcieI8eUHvrCHCn_oBR5PBueDefRGVVrPNlzIOQPZS_CH_xynJvwTDpuEg_ei8j3BAcBJACWUEMQEIJQJowgBAAlGQBAEGIAdkYhQBAhxqFnhEAECE8AUEZIA4iQEAohDGNKCMcIIQIoBwwAUBBMmgMOEgWEwooQrggAQCihiTDGQQOkAEI6JBAgBlAihFBQMyCZA1xJRowUSAnhgFACOCCQBUAqhQBSggrEgGLEKGWMEgQpAQwCzAgOHGCSMKJQMEQYpaADRiAiCBjGEeCYkQIAQBQEyCmjAFDaSQIEUQgJIxRBShCACBMOCACUdEAQAgySkAChgACUEGNA"	string
+
+
+	Black as Black
+	+		tmp_fp2	0x00000277ba6573d0 "AQADtIuyb8mEJ-iiwyluacip5Uh2_HGEnlVhPTu-oNEU0I_xB_kFbU122GkF_3gh8gh1pXiO08ZDGRyuJjqapFFQiynyK8GP41qM7wny7fCD5xYu6QlyHkyeD9VH5MidJ8U14c_RH1-g8khJvLAe1ESos8QP6ReuiEEe4uri49oO_-i1InYOOj-uhcW9cNCSaim6P8bx...	char *
+
+	+		fp	0x00000277ba6573d0 "AQADtIuyb8mEJ-iiwyluacip5Uh2_HGEnlVhPTu-oNEU0I_xB_kFbU122GkF_3gh8gh1pXiO08ZDGRyuJjqapFFQiynyK8GP41qM7wny7fCD5xYu6QlyHkyeD9VH5MidJ8U14c_RH1-g8khJvLAe1ESos8QP6ReuiEEe4uri49oO_-i1InYOOj-uhcW9cNCSaim6P8bx...	const char *
+
+	DURATION=209
+	FINGERPRINT=AQADtIuyb8mEJ-iiwyluacip5Uh2_HGEnlVhPTu-oNEU0I_xB_kFbU122GkF_3gh8gh1pXiO08ZDGRyuJjqapFFQiynyK8GP41qM7wny7fCD5xYu6QlyHkyeD9VH5MidJ8U14c_RH1-g8khJvLAe1ESos8QP6ReuiEEe4uri49oO_-i1InYOOj-uhcW9cNCSaim6P8bxMYU_XM8CHU6eFNfwoIefDtqJ58InGlp0ZUOfoT8aasN3NL8KjWSOJ9LwfOizwOvxgo4YaHPw4tTRF0Z76D5R3MNZwfKMnAteIz3EL8eHXEePt0P1w-fRHy_RC82Rc3iTHY2eK7jCoiGhUscX82CeXWiGI0-HlspBBTlhtSSeDOKB83iG9zB3VM5w1kWDkjgP5jl09ClOBX3g4zwa3mAWuMOZdbgs4xXaB31miMezcMjh6sGLH8elI8_RHzojoxKXWGi47NCPXUGtB00-_DmxhheeQ3sYNGNmPIfOHIXY7SgfvBf6HH4W9PguaM3x7PiRilli9MmK5kSZKEOO52hOaJuyHPgCbpJyoTkHphF-VN9xBZaeQ3sWlMyDTEc5HY8NZmF0_HCHkM_BH1eiHFreopXwgydK5sJDwk8IPsMPf8eFHx36o6mkGHpbXIf34MlwIXthLscbCidxRUf5o5EWiWAlGneOMD60B_nRKkyR_rj5oi90oj_SdT_ScbgfWG1w5dDClcF3XLMg_niPz8eV45JyNA-hkRme4x5RvvCJW8qhefjRVERnIk_Q3EdZvCc-EQ_C8EEf5Sj4Ez8cWUHP6gjlTPBjoT_y5Phw0oPO78h9NKzA_Kj3oeGP94hl-HsM7bXQ7Mh-fEcnNaDiRBb6Czn0I9bxD8-HRgwRMmMOVUd4FT7OHPcVlF5qfDM8iS7-GImm5UK3F82FRydiagny48tFlPnRnMH_48w13K9wfGDyJEKJhtegcQktnBb84Aly8kF1RUOqk7AnC6VEj_iWQ_twZWlhKoR7nDmeIa2momqFUynxPQTzcWiYD1xxiUaWPEavQi8y98LTFxemL0Zz4dRxSsf34NcQ69DFoCGPkMtCBd8QccdFlF16SNIkK0ElZkGf5XhxkoStMtBuFP5w9miu4SxKadmRLMcXPfCiBueO50NzCk8WbCUS_givJsedpWi-o5vy4UkyDeeRB8ryI8-JKwcd0UYfojmPfxT-HFN6lFFw5_AZ5libAV6OkMvhR_g0HVouD_FfHIw2piGaKhPxSMilHNKlIsyFmisaGz2PKwsa5ZPQC3ki7IJeTLkuhP-Rl-hziA-sckMkCW-yKgg_pbAKkQt7xD-eWUXzJTiP98gXQ1NThFGYHeMu_BH4o0FIUtC5NHjzIZVOHOeHMDIPjSTCw1dumOOHSmDewV-M8NCT47OESxdROSOuQ1uyFnno4Gg0HxUV4tFHPEdOqDqYRizCbIpSIe-DH2eUC7KeHd8HJmoe9CO0a_ho9Mku_Ki2_PDYwu6FSjz2I9K8FE02Hj8e5H5w9Dn0HNfC49vBaxfEZyF-IbxxbXnQ5GgVUgMvpgh5Yd8PnYfN3GgVKUWuo1mDKtovVB-ToLnwZMJ15NB-NDGxjuAUHZcO7dEj5FIOalL2ocWLxnpR7anwnOiF5irOJKNS3EdI1oHUrIXzouODPxf6oM8iI_mCZ_lwX6HgBMeD7IGuD8-R5fB6RaDS2ujRLoeFPDkuHdwWFoe54qC2fOinQyoz6LpwdRWaD1lopXgwWVKK5hKi4w7EVkX0pMeP50PtVEfjkMWTKMcoPgifpRArolxyPEcfo3EKNtWhSsuxn0FTG9qVjMP34TtRNooDO5LxQw9RchmuI_qFahGD5jeuB82DNpKMB_EGjcyE_JhStcHlGZXSoVlHrA3yKoHzBDo-_YiVcMdjnIyNdlHyGFaUynDIE1ScKLiEpwhDXvikQ-MiZSqadYeeZ7gRjqHwHWmsFf8KljTEU7gkC1WW-LijD7qPPgXFmMPhSRTu8IT1oD-uiCF0aIwUpWhGQj4O7ZHhH2kUiZXRSy8iOkejJ4bOw29QLUP4vGiqxAz2IxdUMYoR5gXD7nik4w92RRfCF1omI_rxJXnwy0KPZgxy9dCZCSFfwUdp5bjQZH9QekD4Q5_KoQ9-4SJzyLqRkzH6kELz4lNIEreOJymynBCjHLlwJnNwaYWPZhkuRUVuiI6Of0NbWfBKZfBYXB_RRFVwCuERZl7x1sO1QyMzC45-hB2N53jiDO34wHFopCeFJ5DLIl-kHP1xsAwnND_CE2-RlefQfvCko95yNOeP_seuIMwp9IKWH6UavGdwTRaaPIfWZRZ2oXED__jxZYeVI6KTBVO-4pJxfSjJ1HB3jMh3Rih5Yj905Qu6VoPjjEctJtCl4jleItSWXfg44zlxHtGX7rBzqFS2SMGTH3mXHbXw_OiDCyVz4GlexM4CRUdTjsc7PIeeJQ34-Gieo_90HN-hdQzhH_2FdtRhjoHVQPnxRSWa9TjCo7mEUjpSKvxxaccXyJWKXPikKA6u4x-aPSG-XXiy47nQhMrQL-glYYp5_EKzhgj7DDo_5DVqMZsKP7nAB5WXHA-zI490qJoOfhfCPGSIXhfByMcRvsWbH_rRIzyP57jQV9NhRkeoR9DK6EhVo9qJkw8-4vlQ_3CM8Dn0I39x8ahGxvD2oekWHNmFJt_xBlqi5EI-4TEq-JnxLDpa7EM-JofSjHGKH81RTsj1IpQkXZCSW8iHHr-NfQAiGABICEEIIIwIowQChAkpGDOGIGJJUsAQRAAwQCMBvADGACAMAooYYAwSCAgiABLKCAEAEEcw4IXyGAlGABAKOACUUEoIgqwwUhhBnGBCAPEIcwgIAiwTlgIoABKECEARUMoy4BRkxBhgGDCEAiQYAEAAxQhzAhQEqGKAISUQMEAQhpTBwAghkCBAI8IYIQIowQxQBAgmAEBAAKOIIQwJQZCBwBFihCHWCQCNFgwgIpQwRhEEBAEGCSGEAURIJgBAABECkAJECWEQIMgoCQEQDCElFDEMCECYUUIgARHBRACAEDFEAAQEEMIg4ISDghEhGQFOUYIMQAYYQx1whiAgAAAGCAMEWYAxpBQRAgiNlDHMCEAUQQQQJAgBwAiADBOSEEIQAMQQJQgADhFEiGAEKCEMAMAoQoxHQBGiBAKAAEAgQAAYIwQgABEgEDGCAWMVg0AABaQgAgiBFIPGEaMYI04wAQCixABAAFFCIMOQIABxoYQUxgHDBCEAKEGIMAAICAwwjABknAFMKGQYAEIQIAETAAAoEAACCC4AoYYARQwmSgAFEFlACGMEYAYBIIwAhADhKGKEGgUoQpI5coIAAgEqEqkAEscAEAQJQhxCwiBCHCAOGoOQQMIZxJxwVBIChJMEECqIQAIZg4wBCgFAAFAKAGIQUlAUxQQgRBClgDEECOCIE4AAQQQQghAEkfAAIGKwA8AAAZwAEiomBNJEEoKE0AoIRBRDCgFGgBCGEAKIQwIIABAQQAgChDDCCCAGMEAQQwAAgDgCDGJEAsEAAIAgIIRATACAJFCiEAIMAYAIAABRiBABnADGacEAAMgJQLQjAAgGhCFCMAEAQUBIIAwBxAAECKACAEM4E4hBAoAQDhKBFABKWOAkQABBI4RQggJhDAHMICAIMpYQAA
+
+		fingerPrint	"AQABDkmiUJKSZNEg_-gPMcd1nEh5HNexI0073DkUesaPEzxhC_twlfDRR8AfBmWeCo7GFT-2GK8IJh9eCsqPe8gdofhx5KLhMyf647yCHA3joFxwPAgTVPE46Bl2ZLkJP0IuYvrRr4G7BT1-PG9wiaKESLdxtch0YPoGfccTG7kifTh-lMS1PHDEHO-k4Mf05Cifg0mZBLmgI2dY9DyaPcNfPP7xGiWJRnkQ-9BzXALuRmB3aN3x48Z16C4iJbGSYtQX9IHbDHdhpjp6nETy4IuOPEsi_A-aH8wjBDz-hHh14dBTVCfyi7A1C_-OUUdqEZdxtdCf48Rz_Bqeo3Ly4MeH_tCZCDlefMfxpvDUoHqEf8F79MzQRPLxF98ThDrhQ7OEI7r44EqegTncDdEvGD1wPUOXjCS2F-kb5KH0gXN2TPnxHDoeXciP98GLEL_go1-sFP9QitrgE5WilLjTKaj-wM-EXgp-7JByfvgyKegP5cePQx8u0bgyPZj2NPhhB_yU49wxvStuUcazffiSCzr6r_gFPIZDI-fwHcf-HyV5XKMk0FER6njKHJo_HOfR5xWaUsUhZLvwNFGK6YSj5_h6PBXOD_6D7TvCa8UHLUdpo68VNDF_PEplSE8OiteRB_kxpYe-MEfKPyhFHs-GZ8N53HhrPNlzIOQPZS_yg_FynJvwTDpuEg_ei8j3BAegGAPEeSgKQEIoBAlXijAAwABKEAOYM8oAgggxDj2DhZCGEMMIMQAgIaQhQoAIhTCMKSEcIEQIoBwwAgBIBScMAQeJAkRpRQjTQACAAFBEE2GMgwY4AYR0yAFADCBCCSEUFMpK5gBXkBEjBVJCMIOUAA44BBSQSiEglJACMaAYMQoZJQhTwgAEmOFCOcAkYUShAoxBCgGABCKICDCMI4AxYAUAgCgICHLKKOAgkAQIogAQAgiBJBAAEAqQEtYBAYCSDggBCAEGSUyEAgJQQowBAQ"	string
+
+		fingerPrint	"AQABDkmiUJKSZFPQmdCJH_rx40euo8f0I02PO2qgsBlwCzyF1PqGSEevww_6AH9R5pkUOPrx89hivCKYfHgpKD_uIXeE4sdx0Ud65uiPX0EuNIyDkvjxIEygKR6HPTMC5iYeIXVFTM_R1_CjEPVxPG9wWZmESM7hykR2HNNX6McTG1ekDzmuo8eTPXDEHO-k4Dem5yj9gEmZBLmgI2dY9DyaZ3hf4_HxGiWJRnkQU4eOk8d93A3YQ6ty_LhxHbqLKYmVFBH1BX3gNsNdmKmOHieSP_giGXmY4fWD_siSRwCPP8ErUzj0p6h0Ij9ha43w73B0RBcuEVcLfc9xPMev4ZFROQ_e4xp66GciHHmH78BreJoSovqFf8F79MzQRPLxF98R6uMCd9BOfIguPvjyDIw7-EP0Czb6AteDLhlJYnuRvkEe6wPnHFN-_NDxXMiPsg-OE7ku-OhjpTivoRQFn0GlKB_uTEZ1C_6yoWeMH_shxeKLL9PQYz_0Q8eHS8eVSQ-mPQ1-2DmoDw6XFtO74raMZ9uHL7mgo_-KX8BjOEc-Dj8u7P9Rksc1UqCjFqFePGWg-cNxHn1eoSlVHEK2XBidKEVPOHqOr8dT4R_cPdi-I3yyAlp6lD366EGTKbQONasMPjnMC9lz5MeUHvrCHCn_oBR5PBu-bPjRGVVrPNlzHPmhKC_CH_xynJvwTDpuEl_wi8j3BAcCoASEGigAI0YISIADBBEGABAKCKAEMYA5o5AABBHilIKOCEcIEIgRA5SxQjJChGeQCGIYU4IIQoQAkAAjAKSCQGSYAw4SBYjSihCKCAAACCU0EcYBIYAUQEjiEAKAGECEIgIwjQBVDihAGDFSICUEBEIJ4IBAAACpFAJICSoQI4oZxYxQiABFhBGAGcGBA5IgYlgxQBikoBKICCLAMI4AY5iRAgBAFATIKaOAc5IAQRRAAgiBABGAUECksA4IAJREQBEC3DASEiAUEMARZwwI"	string
+
+		fingerPrint	"AQABDkmSJJOkJNmG_zjUHzr-40cp7Oi5wako_GqgsBlwEjyRWoj0Dv1hG30EnA-Dak8F7yt-bO9hC8yHl4Ly446QRyh-HLnow2eO_vgV5EbDOCgXHH2QBlU8DnqGfUGWw4-Q15he9FoDf0GNH88bxBKVSZjGF9Z0ZCfQD8qPK0mNa_oQX_hREhcfOOrxTgr6G3uO0g-YlEmQCzrOsAjPo3mG98XjH69RkmiUI9cLdceJX7gL9tCqHD9uXIdyF2ESKylGnegTuM1wF2aqox-O5A--SEYeZnj9oD-YPELA40-IVxcO_SkqnchP2Foj_DscHdElnMTVHvoeHM9xDV-OysmDl8OloDpUn4nwIHh2XDgTeHJRXfiD9zp6Zmgi-cRffEf8cUFzaJaEI7r4EFcSB4zhz4h-2OgLXA-6ZDyxT0Fe5LE-cM4x5ccPHc-F_HgfvOiR9sVz9I-CH33hvqgUBXemKaj-wM_QSzF-7EctfpC-TAr6Q_nx49CHS8eVSQ-mPQ1-2Dn4DedcTO-K2zKebR--5IKO_it-AY-R5vg4_Liw_0dJHtdIgY5ahDqeMofmD8d59HmFplRxCNkuPE2UYjrh6Dm-Hk8F58O-B98R5lrxQTua2ehrBU3MH49SGdKTg-J1PAcUZTq-MEfKPyhFHs-GLxt-dEal1Xj2HPnRQ9mL8Ae_48uW4JmE-3jwWUSuPcEBBBgEAhQiDLREAEgcIYQAABQCjAliAHZGGQEIIswIVIwUAjkgGCEGGCMgA0Q4CIUwTChDBCFEAEiAEQBAozxBjjngIFFAKKwI4YgAAIBQQhNhjANCACmAkMQhgQAxgBIhBLOAMsCVZMoAIIASAgKhBHACAQCkgBQBpAQViBHFiFESSCcIFQYIAxBgRjBlAJOEEYWKAcIgBREQiAgiwDCOAIOYkQIAQBQEBDllFHAQSAIEUUgIJgCiQABAKECMOSIAUBIBZQgQ3ElIAFEACOqEAQE"	string
+
+
+	https://markheath.net/post/naudio-wavestream-in-depth
+
+	C:\Users\JamesMc\AppData\Roaming\DigitalZenWorks\MusicManager>fpcalc -algorithm 1 -raw sakura.mp4
+	DURATION=18
+	FINGERPRINT=1101504603,1081581771,1077388491,1075096717,1075099785,1075103884,9783428,26676144,60163744,60162720,39195362,35003954,1110841878,1109875202,1109777933,44416538,61321498,27762746,10985563,6660299,1354955,306313,302217,4476045,25430160,59181488,42337124,46535456,33960482,52247074,19667490,120330801,1177032476,1189621769,1319661578,1319694410,1257812106,1251586188,1251651972,1334502036,1279979168,1141533350,1141516966,3288997538,1075449454,1083771402,1102580491,1100499017,1133024459,1133027529,25731472,4825788,1811104,2801393,6982354,11176642,11438722,11439234,32412831,31387833,929979,929979,727289,727896,17766936,17767960,21978649,60816955,62373178,27635738,27631627,90546187,86289483,86293711,86282381,120897677,110445440,109445808,42342048,42344096,33953442,33954406,34478642,34560560,33937977,47496507,61121563,10788875,82092042,69510154,203728074,203723147,1291174543,1201095317,1183187616,1183187616,1183190688,1120279394,1107713058,1107646518,1108670464,1126492172,3341610248,3341574920,3447468553,3478913609,3415802569,1234764751,1220087959,1287205029,1277766821,1277897895,1278946486,1293622422,1292520654,1338689742,1200261197,1200274768,1335534960,3484067680,3458903906,3458906082,3324757938,3324561810
+
+	3,324,561,810
+
+		fingerPrint	"AgAATpFCRVTiwc_RD080TSRUTerAZfqO9CJ-_BNCKWMEJ5EkaEftHKfwFJVyaVATSceTg8kjMFegM1eC80JPuPpQXSB_aH1ChGlwnuCPSpQyCWGeXdBzXKnwH36IPcdz6FpcVBdCK7twrsE3VMpV5L_gH5oVjG3wmbjyHDqzC9cPuzlyG7FePFl-VKYF8WRRc8eOPBGDyL7wX3hveHKgR-EjRJ-24Efzo2fwRPSIL9GDyTaaT0GeQZHYHKn4CJdOAEAtAcKA4QAglAyhjDFAGEKIIwAgoxAAhCEiFDAUMQCJQkIIApQAAACAjAAGCAMUIEIAIAQAQAAgkCBEAMUEAQA"	string
+
+	https://markheath.net/post/naudio-wavestream-in-depth
+
+	https://www.quora.com/How-do-music-identification-applications-like-Shazam-SoundHound-and-musiXmatch-acoustic-fingerprinting-work
+	https://meinantoyuriawan.medium.com/recreate-a-simple-shazam-apps-ddc0e91b3c49
+	https://www.toptal.com/algorithms/shazam-it-music-processing-fingerprinting-and-recognition
+	https://github.com/acoustid/chromaprint
+
+			testFile = @"C:\Users\JamesMc\AppData\Roaming\DigitalZenWorks\MusicManager\sakura.mp4";
+	Add to test exec("fpcalc sakura.mp4") in temp directory, save output and compare with local fingerprint
+	https://stackoverflow.com/questions/537573/how-to-get-intptr-from-byte-in-c-sharp
+	c# AccessViolationexception within fixed block
+	https://stackoverflow.com/questions/51437969/c-sharp-unsafe-access-to-fixed-memory-throws-accessviolationexception-randomly-i
+	https://stackoverflow.com/questions/3469368/how-to-handle-accessviolationexception
+
+
+	https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+	https://www.google.com/search?q=chromaprint+windows&oq=chromaprint+windows&aqs=chrome..69i57j33i160l3.19917j1j15&sourceid=chrome&ie=UTF-8
+	https://picard.musicbrainz.org/docs/build-windows/
+	https://community.chocolatey.org/packages/chromaprint
+	https://beets.readthedocs.io/en/v1.6.0/plugins/chroma.html
+
+	FFMPeg
+		error: building tensorflow:x64-windows failed with: BUILD_FAILED
+		error: Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
+		Then check for known issues at:
+			https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+tensorflow
+		You can submit a new issue at:
+			https://github.com/microsoft/vcpkg/issues/new?template=report-package-build-failure.md&title=[tensorflow]+Build+error
+		Include '[tensorflow] Build error' in your bug report title, the following version information in your bug description, and attach any relevant failure logs from above.
+			vcpkg-tool version: 2022-11-10-5fdee72bc1fceca198fb1ab7589837206a8b81ba
+			vcpkg-scripts version: e07c62d05 2022-12-20 (3 hours ago)
+		Please use the prefilled template from C:\Util\vcpkg\installed\vcpkg\issue_body.md when reporting your issue.
