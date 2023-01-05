@@ -9,7 +9,7 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
-		<Copyright>Copyright © 2019 - 2022</Copyright>
+		<Copyright>Copyright © 2019 - 2023</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<FileVersion>0.5.183.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
