@@ -698,3 +698,18 @@ New
 			vcpkg-tool version: 2022-11-10-5fdee72bc1fceca198fb1ab7589837206a8b81ba
 			vcpkg-scripts version: e07c62d05 2022-12-20 (3 hours ago)
 		Please use the prefilled template from C:\Util\vcpkg\installed\vcpkg\issue_body.md when reporting your issue.
+Music Manager
+	https://github.com/jamesjohnmcguire/chromaprint
+
+	[submodule "SourceCode/ChromaPrint"]
+        path = SourceCode/ChromaPrint
+        url = https://github.com/jamesjohnmcguire/chromaprint
+	https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/musicdatalibrary.git
+	Remove Duplicates
+		Exact Duplicates
+			In different directories
+			One off file names, such as "Pony_1.mp4"
+			iTunes has not preferred version
+		Near Duplicates
+			Same binary data, different tags
+			Different binary data, such as sample rate
