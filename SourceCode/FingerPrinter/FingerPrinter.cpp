@@ -5,10 +5,10 @@
 
 #include "FingerPrinter.h"
 
-using namespace std;
-
-int main()
+namespace FingerPrinter
 {
-	cout << "Hello CMake." << endl;
-	return 0;
+	void FingerPrint(char* filePath)
+	{
+		std::cout << "This is a test." << std::endl;
+	}
 }
