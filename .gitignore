@@ -21,5 +21,12 @@ bld/
 .vs/
 
 # NUNIT
-*.VisualState.xml
 TestResult.xml
+
+SourceCode/FingerPrinter/CMakeFiles/
+
+SourceCode/FingerPrinter/ALL_BUILD.*
+SourceCode/FingerPrinter/CMakeCache.txt
+SourceCode/FingerPrinter/Project.sln
+SourceCode/FingerPrinter/ZERO_CHECK.*
+SourceCode/FingerPrinter/cmake_install.cmake
