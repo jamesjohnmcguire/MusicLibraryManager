@@ -31,6 +31,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fpcalc", "ChromaPrint\src\c
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChromaPrint", "ChromaPrint", "{0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FingerPrinter", "FingerPrinter\FingerPrinter.vcxproj", "{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chromaprint_objs", "ChromaPrint\src\chromaprint_objs.vcxproj", "{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +173,38 @@ Global
 		{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|x64
 		{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Debug|Any CPU.Build.0 = Debug|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Debug|x64.ActiveCfg = Debug|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Debug|x64.Build.0 = Debug|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.MinSizeRel|Any CPU.ActiveCfg = MinSizeRel|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.MinSizeRel|Any CPU.Build.0 = MinSizeRel|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Release|Any CPU.ActiveCfg = Release|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Release|Any CPU.Build.0 = Release|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Release|x64.ActiveCfg = Release|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.Release|x64.Build.0 = Release|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.RelWithDebInfo|Any CPU.ActiveCfg = RelWithDebInfo|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Debug|Any CPU.Build.0 = Debug|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Debug|x64.ActiveCfg = Debug|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Debug|x64.Build.0 = Debug|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.MinSizeRel|Any CPU.ActiveCfg = MinSizeRel|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.MinSizeRel|Any CPU.Build.0 = MinSizeRel|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Release|Any CPU.ActiveCfg = Release|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Release|Any CPU.Build.0 = Release|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Release|x64.ActiveCfg = Release|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.Release|x64.Build.0 = Release|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.RelWithDebInfo|Any CPU.ActiveCfg = RelWithDebInfo|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.RelWithDebInfo|Any CPU.Build.0 = RelWithDebInfo|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +212,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{21E8ACDE-900C-3B11-AF3F-A86DC2E3B306} = {0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}
 		{1FF0ABCE-A799-3C00-9DAF-4FBA33FB0CB7} = {0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}
+		{25ADFEF4-24B5-3FEB-AF4A-18F9C092B263} = {0B96D189-30DC-4732-AB4B-D4C55BBF7BA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5167DF36-0BB8-4139-B520-1B183A0AA085}
