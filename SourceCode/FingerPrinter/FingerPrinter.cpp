@@ -7,8 +7,10 @@
 
 namespace FingerPrinter
 {
-	void FingerPrint(char* filePath)
+	char* FingerPrint(char* filePath)
 	{
-		std::cout << "This is a test." << std::endl;
+		char* result = nullptr;
+
+		return result;
 	}
 }
