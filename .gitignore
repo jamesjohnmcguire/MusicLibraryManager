@@ -23,8 +23,9 @@ bld/
 # NUNIT
 TestResult.xml
 
-SourceCode/FingerPrinter/CMakeFiles/
+SourceCode/packages/
 
+SourceCode/FingerPrinter/CMakeFiles/
 SourceCode/FingerPrinter/ALL_BUILD.*
 SourceCode/FingerPrinter/CMakeCache.txt
 SourceCode/FingerPrinter/Project.sln
