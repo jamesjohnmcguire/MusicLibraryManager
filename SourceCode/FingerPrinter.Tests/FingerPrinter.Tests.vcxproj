@@ -47,6 +47,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FingerPrinter\FingerPrinter.vcxproj">
+      <Project>{b3b4e7e5-5bc3-36ba-9d00-003c6dd6a5a4}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
