@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#include "../FingerPrinter/FingerPrinter.h"
+
+using namespace FingerPrinter;
+
 TEST(TestCaseName, TestName)
 {
 	EXPECT_EQ(1, 1);
@@ -8,10 +12,15 @@ TEST(TestCaseName, TestName)
 
 TEST(TestFingerPrinter, Success)
 {
-	EXPECT_TRUE(true);
+	char* result = FingerPrint(nullptr);
+
+	EXPECT_NE(result, nullptr);
 }
 
 TEST(TestFingerPrinter, Correct)
 {
-	EXPECT_EQ(1, 1);
+	char* result = FingerPrint(nullptr);
+
+	std::string intended = "something";
+	EXPECT_EQ(result, intended);
 }
