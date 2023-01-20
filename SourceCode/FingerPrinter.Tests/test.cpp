@@ -4,7 +4,7 @@
 
 using namespace FingerPrinter;
 
-TEST(TestCaseName, TestName)
+TEST(SanityCheck, Success)
 {
 	EXPECT_EQ(1, 1);
 	EXPECT_TRUE(true);
