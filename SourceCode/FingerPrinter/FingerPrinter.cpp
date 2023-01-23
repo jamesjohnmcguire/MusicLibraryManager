@@ -7,7 +7,7 @@
 
 namespace FingerPrinter
 {
-	char* FingerPrint(char* filePath)
+	char* FingerPrint(const wchar_t* filePath)
 	{
 		char* result = nullptr;
 
