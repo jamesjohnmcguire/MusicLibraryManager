@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(false)]
 
@@ -315,6 +316,29 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			bool result = decoder.Decode(consumer, 240);
 
 			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The get ChromaPrint finger print test.
+		/// </summary>
+		[Test]
+		public void FingerPrintTest()
+		{
+			string intended = "AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR" +
+				"_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQs" +
+				"KbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgv" +
+				"NEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9" +
+				"ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-" +
+				"9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_" +
+				"iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRAB" +
+				"hCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRR" +
+				"gAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
+
+			IntPtr data = NativeMethods.FingerPrint(null);
+			string fingerPrint = Marshal.PtrToStringAnsi(data);
+
+			Assert.Equals(intended, fingerPrint);
+			Marshal.FreeHGlobal(data);
 		}
 
 		/// <summary>
