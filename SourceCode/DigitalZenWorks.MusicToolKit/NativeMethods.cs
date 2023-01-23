@@ -260,5 +260,12 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>0 on error, 1 on success.</returns>
 		[DllImport("chromaprint", EntryPoint = "chromaprint_start", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int chromaprint_start(ChromaprintContext ctx, int sample_rate, int num_channels);
+
+		[DllImport(
+			"FingerPrinter",
+			EntryPoint = "FingerPrint",
+			CallingConvention = CallingConvention.Cdecl,
+			CharSet = CharSet.Unicode)]
+		public static extern IntPtr FingerPrint(string filePath);
 	}
 }
