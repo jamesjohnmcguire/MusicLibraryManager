@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace DigitalZenWorks.MusicToolKit
 {
-	internal class NativeMethods
+	public class NativeMethods
 	{
 		/// <summary>
 		/// Clear the current fingerprint, but allow more data to be processed.
