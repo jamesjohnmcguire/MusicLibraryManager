@@ -7,7 +7,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.AssemblyDirectory)]
+[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
 
 namespace DigitalZenWorks.MusicToolKit
 {
