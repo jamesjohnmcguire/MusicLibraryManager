@@ -7,6 +7,8 @@
 using System;
 using System.Runtime.InteropServices;
 
+[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.AssemblyDirectory)]
+
 namespace DigitalZenWorks.MusicToolKit
 {
 	internal class NativeMethods
