@@ -42,5 +42,5 @@ namespace FingerPrinter
 		#endif
 	#endif
 
-	LIB_API(char *) FingerPrint(const wchar_t* filePath);
+	LIB_API(char*) FingerPrint(const wchar_t* filePath);
 }
