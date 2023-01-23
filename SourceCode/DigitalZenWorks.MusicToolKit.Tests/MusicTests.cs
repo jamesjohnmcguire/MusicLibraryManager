@@ -334,11 +334,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"hCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRR" +
 				"gAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
 
-			IntPtr data = NativeMethods.FingerPrint(null);
-			string fingerPrint = Marshal.PtrToStringAnsi(data);
+			string fingerPrint = FingerPrinter.FingerPrint(null);
 
 			Assert.Equals(intended, fingerPrint);
-			Marshal.FreeHGlobal(data);
 		}
 
 		/// <summary>
