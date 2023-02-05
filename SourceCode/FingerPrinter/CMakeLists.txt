@@ -1,13 +1,10 @@
-﻿# CMakeList.txt : CMake project for FingerPrinter, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.12)
+project(FingerPrinter LANGUAGES CXX)
 
-# Add source to this project's executable.
-add_library (FingerPrinter "FingerPrinter.cpp" "FingerPrinter.h")
+add_compile_definitions(DLL_EXPORTS)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET FingerPrinter PROPERTY CXX_STANDARD 20)
-endif()
+add_library (FingerPrinter SHARED "FingerPrinter.cpp" "FingerPrinter.h")
 
-# TODO: Add tests and install targets if needed.
+set_property(TARGET FingerPrinter PROPERTY CXX_STANDARD 20)
+set_property(TARGET FingerPrinter PROPERTY CMAKE_CXX_STANDARD_REQUIRED ON)
+set_property(TARGET FingerPrinter PROPERTY CMAKE_CXX_EXTENSIONS OFF)
