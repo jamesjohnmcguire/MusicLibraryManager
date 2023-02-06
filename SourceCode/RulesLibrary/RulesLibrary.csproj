@@ -10,6 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
+		<Platforms>x64</Platforms>
 		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 

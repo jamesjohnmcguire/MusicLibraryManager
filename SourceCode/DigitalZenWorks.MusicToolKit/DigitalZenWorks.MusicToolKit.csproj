@@ -15,6 +15,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
+		<Platforms>x64</Platforms>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Version>0.5.183</Version>
 	</PropertyGroup>

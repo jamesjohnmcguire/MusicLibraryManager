@@ -17,6 +17,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
+		<Platforms>x64</Platforms>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Version>0.1.0.176</Version>
 	</PropertyGroup>

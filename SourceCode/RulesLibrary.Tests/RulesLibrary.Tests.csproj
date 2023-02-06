@@ -11,6 +11,7 @@
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
+		<Platforms>x64</Platforms>
 		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 
