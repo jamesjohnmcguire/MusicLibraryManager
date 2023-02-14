@@ -11,9 +11,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\FingerPrinter\CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{4C5C0A3C-8A4D-3B17-8065-EE5E5B0C9CF0}</UniqueIdentifier>
     </Filter>

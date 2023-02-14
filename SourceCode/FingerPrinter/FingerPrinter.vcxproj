@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project
+	DefaultTargets="Build"
+	ToolsVersion="17.0"
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<ItemGroup Label="ProjectConfigurations">
 		<ProjectConfiguration Include="Debug|x64">
@@ -30,27 +33,21 @@
 	</PropertyGroup>
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-
 	<ItemGroup Label="ProjectConfigurations">
-		<ProjectConfiguration Include="Debug|x64">
-			<Configuration>Debug</Configuration>
+	<ProjectConfiguration Include="Debug|x64">
+		<Configuration>Debug</Configuration>
 		</ProjectConfiguration>
 		<ProjectConfiguration Include="Release|x64">
-			<Configuration>Release</Configuration>
+		<Configuration>Release</Configuration>
 		</ProjectConfiguration>
 	</ItemGroup>
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-
 	<ImportGroup Label="PropertySheets">
-		<Import
-			Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-			Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-			Label="LocalAppDataPlatform" />
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
 	</ImportGroup>
 
 	<PropertyGroup Label="UserMacros" />
-
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
 		<LinkIncremental>true</LinkIncremental>
 		<UseDebugLibraries>true</UseDebugLibraries>
@@ -80,7 +77,7 @@
 			<ProxyFileName>%(Filename)_p.c</ProxyFileName>
 		</Midl>
 		<Link>
-			<AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+			<AdditionalDependencies>$(SolutionDir)ChromaPrint\src\Debug\chromaprint.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
 			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
 			<AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
 			<IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -131,12 +128,14 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<ClCompile Include="C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\FingerPrinter\FingerPrinter.cpp" />
-		<ClInclude Include="C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\FingerPrinter\FingerPrinter.h" />
-		</ItemGroup>
-		<ItemGroup>
+		<ClCompile Include="FingerPrinter.cpp" />
+		<ClInclude Include="FingerPrinter.h" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\ChromaPrint\src\chromaprint.vcxproj">
+		<Project>{21e8acde-900c-3b11-af3f-a86dc2e3b306}</Project>
+		</ProjectReference>
+	</ItemGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-
 </Project>
