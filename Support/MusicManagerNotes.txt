@@ -1,6 +1,8 @@
 Music Library Manager
 
 Tasks
+	Fix Python
+	Test Beets
 	Rename to AudioId
 	Add to test exec("fpcalc sakura.mp4") in temp directory, save output and compare with local fingerprint
 	Do not instantiate iTunes when doing only extract-tags
@@ -657,3 +659,12 @@ Remove Duplicates
 	Near Duplicates
 		Same binary data, different tags
 		Different binary data, such as sample rate
+FFMpeg
+	find_package(FFMPEG REQUIRED)
+		target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
+		target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
+		target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
+Beets
+	https://beets.readthedocs.io/en/v1.6.0/guides/main.html
+File Reading
+	Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
