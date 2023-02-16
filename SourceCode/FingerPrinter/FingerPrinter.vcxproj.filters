@@ -1,14 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\FingerPrinter\FingerPrinter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="FingerPrinter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\FingerPrinter\FingerPrinter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="FingerPrinter.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -17,5 +13,13 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{C9C52BE7-1FD1-3E84-9888-14E26DA207E8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Binaries">
+      <UniqueIdentifier>{0ce6e732-a9e7-4cdf-b8de-b8576fbcfafb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\ChromaPrint\src\Debug\chromaprint.dll">
+      <Filter>Binaries</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

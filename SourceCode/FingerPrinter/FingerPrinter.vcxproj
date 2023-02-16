@@ -137,5 +137,12 @@
 		<Project>{21e8acde-900c-3b11-af3f-a86dc2e3b306}</Project>
 		</ProjectReference>
 	</ItemGroup>
+
+	<ItemGroup>
+		<CopyFileToFolders Include="..\ChromaPrint\src\Debug\chromaprint.dll">
+			<FileType>Document</FileType>
+		</CopyFileToFolders>
+	</ItemGroup>
+
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
