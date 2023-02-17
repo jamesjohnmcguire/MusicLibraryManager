@@ -213,7 +213,7 @@ namespace FingerPrinter
 
 			if (chunk_size > 0) {
 				const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
-				char* finger = GetFingerPrint(
+				result = GetFingerPrint(
 					context, reader, first_chunk, ts, chunk_duration);
 				got_results = true;
 			}
@@ -223,6 +223,7 @@ namespace FingerPrinter
 			}
 		}
 
+		reader.Close();
 		chromaprint_free(context);
 		return result;
 	}
