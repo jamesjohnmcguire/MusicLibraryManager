@@ -5,6 +5,7 @@ Tasks
 	Test Beets
 	Rename to AudioId
 	Add to test exec("fpcalc sakura.mp4") in temp directory, save output and compare with local fingerprint
+	Add support for wide char FingerPrint(const wchar_t* filePath)
 	Do not instantiate iTunes when doing only extract-tags
 	Build non-itunes version
 	Deal with Multiple Artists, Remove throwing exception
@@ -668,3 +669,4 @@ Beets
 	https://beets.readthedocs.io/en/v1.6.0/guides/main.html
 File Reading
 	Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
+Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
