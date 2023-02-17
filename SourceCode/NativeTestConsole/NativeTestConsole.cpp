@@ -21,5 +21,7 @@ int main()
 		const char* dataPath = tempPath.c_str();
 
 		char* result = FingerPrint(dataPath);
+
+		std::cout << "Fingerprint: " << result << "\n";
 	}
 }
