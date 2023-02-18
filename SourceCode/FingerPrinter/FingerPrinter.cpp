@@ -1,8 +1,13 @@
 ﻿#include <cstdio>
 #include <cstdlib>
-#include <cstring>
+//#include <cstring>
 #include <sstream>
-#include <chrono>
+//#include <chrono>
+
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 #define USE_SWRESAMPLE
 #include "..\ChromaPrint\src\chromaprint.h"
@@ -16,6 +21,8 @@ using namespace chromaprint;
 
 namespace FingerPrinter
 {
+	spdlog::logger GetLogger();
+
 	char* GetFingerPrint(
 		ChromaprintContext* context,
 		FFmpegAudioReader& reader,
@@ -53,6 +60,8 @@ namespace FingerPrinter
 	char* FingerPrint(const char* filePath)
 	{
 		char* result = nullptr;
+
+		spdlog::logger logger = GetLogger();
 
 		FFmpegAudioReader reader;
 
@@ -226,5 +235,23 @@ namespace FingerPrinter
 		reader.Close();
 		chromaprint_free(context);
 		return result;
+	}
+
+	spdlog::logger GetLogger()
+	{
+		std::vector<spdlog::sink_ptr> sinks;
+
+		std::shared_ptr<spdlog::sinks::stdout_sink_st> console_log =
+			std::make_shared<spdlog::sinks::stdout_sink_st>();
+		sinks.push_back(console_log);
+
+		std::shared_ptr<spdlog::sinks::basic_file_sink_st> file_log =
+			std::make_shared<spdlog::sinks::basic_file_sink_st>("logfile");
+		sinks.push_back(file_log);
+
+		spdlog::logger logger =
+			spdlog::logger("log", begin(sinks), end(sinks));
+
+		return logger;
 	}
 }
