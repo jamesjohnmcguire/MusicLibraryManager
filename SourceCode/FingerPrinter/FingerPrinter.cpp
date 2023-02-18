@@ -22,6 +22,7 @@ using namespace chromaprint;
 namespace FingerPrinter
 {
 	spdlog::logger GetLogger();
+	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize);
 
 	char* GetFingerPrint(
 		ChromaprintContext* context,
@@ -73,162 +74,175 @@ namespace FingerPrinter
 		double maxChunkDuration = 0;
 		bool overlap = false;
 
-		auto channels = chromaprint_get_num_channels(context);
-		auto sampleRate = chromaprint_get_sample_rate(context);
+		int channels = chromaprint_get_num_channels(context);
+		int sampleRate = chromaprint_get_sample_rate(context);
 		reader.SetOutputChannels(channels);
 		reader.SetOutputSampleRate(sampleRate);
 
 		if (!reader.Open(filePath))
 		{
-			fprintf(stderr, "ERROR: %s\n", reader.GetError().c_str());
+			std::string error = "ERROR: " + reader.GetError();
+			logger.error(error);
 		}
 		else
 		{
-			if (!chromaprint_start(context, reader.GetSampleRate(), reader.GetChannels())) {
-				fprintf(stderr, "ERROR: Could not initialize the fingerprinting process\n");
-				exit(2);
-			}
+			channels = reader.GetChannels();
+			sampleRate = reader.GetSampleRate();
+			int checkResult = chromaprint_start(context, sampleRate, channels);
 
-			size_t stream_size = 0;
-			const size_t stream_limit = maxDuration * reader.GetSampleRate();
-
-			size_t chunk_size = 0;
-			const size_t chunk_limit = maxChunkDuration * reader.GetSampleRate();
-
-			size_t extra_chunk_limit = 0;
-			double overlapAmount = 0.0;
-
-			if (chunk_limit > 0 && overlap)
+			if (checkResult == 0)
 			{
-				extra_chunk_limit = chromaprint_get_delay(context);
-				overlapAmount = chromaprint_get_delay_ms(context) / 1000.0;
+				std::string error =
+					"ERROR: Could not initialize the fingerprinting process";
+				logger.error(error);
 			}
-
-			bool first_chunk = true;
-			bool read_failed = false;
-			bool got_results = false;
-
-			while (!reader.IsFinished())
+			else
 			{
-				const int16_t* frame_data = nullptr;
-				size_t frame_size = 0;
+				size_t chunk_size = 0;
+				size_t stream_size = 0;
 
-				if (!reader.Read(&frame_data, &frame_size))
+				const size_t stream_limit = maxDuration * sampleRate;
+				const size_t chunk_limit = maxChunkDuration * sampleRate;
+				size_t extra_chunk_limit = 0;
+				double overlapAmount = 0.0;
+
+				if (chunk_limit > 0 && overlap)
 				{
-					fprintf(stderr, "ERROR: %s\n", reader.GetError().c_str());
-					read_failed = true;
-					break;
+					extra_chunk_limit = chromaprint_get_delay(context);
+					overlapAmount = chromaprint_get_delay_ms(context) / 1000.0;
 				}
 
-				bool stream_done = false;
-				if (stream_limit > 0)
-				{
-					const auto remaining = stream_limit - stream_size;
-					if (frame_size > remaining)
-					{
-						frame_size = remaining;
-						stream_done = true;
-					}
-				}
-				stream_size += frame_size;
+				bool first_chunk = true;
+				bool read_failed = false;
+				bool got_results = false;
 
-				if (frame_size == 0)
+				while (!reader.IsFinished())
 				{
-					if (stream_done)
+					const int16_t* frame_data = nullptr;
+					size_t frame_size = 0;
+					bool check = reader.Read(&frame_data, &frame_size);
+
+					if (check == false)
 					{
+						std::string error = "ERROR: " + reader.GetError();
+						logger.error(error);
+						read_failed = true;
 						break;
 					}
-					else
+
+					bool streamDone =
+						IsStreamDone(stream_limit, stream_size, frame_size);
+
+					if (stream_limit > 0)
 					{
-						continue;
+						const auto remaining = stream_limit - stream_size;
+						if (frame_size > remaining)
+						{
+							frame_size = remaining;
+							streamDone = true;
+						}
 					}
-				}
+					stream_size += frame_size;
 
-				bool chunk_done = false;
-				size_t first_part_size = frame_size;
-				if (chunk_limit > 0)
-				{
-					const auto remaining =
-						chunk_limit + extra_chunk_limit - chunk_size;
-
-					if (first_part_size > remaining)
+					if (frame_size == 0)
 					{
-						first_part_size = remaining;
-						chunk_done = true;
+						if (streamDone)
+						{
+							break;
+						}
+						else
+						{
+							continue;
+						}
 					}
-				}
 
-				auto sizing = first_part_size * reader.GetChannels();
-				auto result = chromaprint_feed(context, frame_data, sizing);
-
-				if (result == 0)
-				{
-					fprintf(stderr, "ERROR: Could not process audio data\n");
-					exit(2);
-				}
-
-				chunk_size += first_part_size;
-
-				if (chunk_done)
-				{
-					if (!chromaprint_finish(context))
+					bool chunk_done = false;
+					size_t first_part_size = frame_size;
+					if (chunk_limit > 0)
 					{
-						fprintf(stderr, "ERROR: Could not finish the fingerprinting process\n");
-						exit(2);
+						const auto remaining =
+							chunk_limit + extra_chunk_limit - chunk_size;
+
+						if (first_part_size > remaining)
+						{
+							first_part_size = remaining;
+							chunk_done = true;
+						}
 					}
 
-					const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
-					char* finger = GetFingerPrint(context, reader, first_chunk, ts, chunk_duration);
+					auto sizing = first_part_size * channels;
+					auto result = chromaprint_feed(context, frame_data, sizing);
 
-					got_results = true;
-
-					ts += chunk_duration;
-
-					if (!chromaprint_start(context, reader.GetSampleRate(), reader.GetChannels())) {
-						fprintf(stderr, "ERROR: Could not initialize the fingerprinting process\n");
-						exit(2);
-					}
-
-					if (first_chunk) {
-						extra_chunk_limit = 0;
-						first_chunk = false;
-					}
-
-					chunk_size = 0;
-				}
-
-				frame_data += first_part_size * reader.GetChannels();
-				frame_size -= first_part_size;
-
-				if (frame_size > 0)
-				{
-					if (!chromaprint_feed(context, frame_data, frame_size * reader.GetChannels())) {
+					if (result == 0)
+					{
 						fprintf(stderr, "ERROR: Could not process audio data\n");
 						exit(2);
 					}
+
+					chunk_size += first_part_size;
+
+					if (chunk_done)
+					{
+						if (!chromaprint_finish(context))
+						{
+							fprintf(stderr, "ERROR: Could not finish the fingerprinting process\n");
+							exit(2);
+						}
+
+						const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
+						char* finger = GetFingerPrint(context, reader, first_chunk, ts, chunk_duration);
+
+						got_results = true;
+
+						ts += chunk_duration;
+
+						if (!chromaprint_start(context, reader.GetSampleRate(), reader.GetChannels())) {
+							fprintf(stderr, "ERROR: Could not initialize the fingerprinting process\n");
+							exit(2);
+						}
+
+						if (first_chunk) {
+							extra_chunk_limit = 0;
+							first_chunk = false;
+						}
+
+						chunk_size = 0;
+					}
+
+					frame_data += first_part_size * reader.GetChannels();
+					frame_size -= first_part_size;
+
+					if (frame_size > 0)
+					{
+						if (!chromaprint_feed(context, frame_data, frame_size * reader.GetChannels())) {
+							fprintf(stderr, "ERROR: Could not process audio data\n");
+							exit(2);
+						}
+					}
+
+					chunk_size += frame_size;
+
+					if (streamDone)
+					{
+						break;
+					}
 				}
 
-				chunk_size += frame_size;
-
-				if (stream_done) {
-					break;
+				if (!chromaprint_finish(context)) {
+					fprintf(stderr, "ERROR: Could not finish the fingerprinting process\n");
+					exit(2);
 				}
-			}
 
-			if (!chromaprint_finish(context)) {
-				fprintf(stderr, "ERROR: Could not finish the fingerprinting process\n");
-				exit(2);
-			}
-
-			if (chunk_size > 0) {
-				const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
-				result = GetFingerPrint(
-					context, reader, first_chunk, ts, chunk_duration);
-				got_results = true;
-			}
-			else if (first_chunk) {
-				fprintf(stderr, "ERROR: Not enough audio data\n");
-				exit(2);
+				if (chunk_size > 0) {
+					const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
+					result = GetFingerPrint(
+						context, reader, first_chunk, ts, chunk_duration);
+					got_results = true;
+				}
+				else if (first_chunk) {
+					fprintf(stderr, "ERROR: Not enough audio data\n");
+					exit(2);
+				}
 			}
 		}
 
@@ -253,5 +267,22 @@ namespace FingerPrinter
 			spdlog::logger("log", begin(sinks), end(sinks));
 
 		return logger;
+	}
+
+	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize)
+	{
+		bool streamDone = false;
+
+		if (streamLimit > 0)
+		{
+			const size_t remaining = streamLimit - streamSize;
+
+			if (frameSize > remaining)
+			{
+				streamDone = true;
+			}
+		}
+
+		return streamDone;
 	}
 }
