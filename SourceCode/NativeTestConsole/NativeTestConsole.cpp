@@ -6,22 +6,30 @@
 #include "../FingerPrinter/FingerPrinter.h"
 using namespace FingerPrinter;
 
-int main()
+int main(int argc, char** argv)
 {
-	std::cout << "Hello World!\n";
+	const char* dataPath = nullptr;
+	std::cout << "Testing\n";
 
-	char* appdata = std::getenv("APPDATA");
-
-	if (appdata)
+	if (argc > 1 && argv != nullptr)
 	{
-		std::filesystem::path path = appdata;
-		path /= "DigitalZenWorks\\MusicManager\\sakura.mp4";
-
-		std::string tempPath = path.string();
-		const char* dataPath = tempPath.c_str();
-
-		char* result = FingerPrint(dataPath);
-
-		std::cout << "Fingerprint: " << result << "\n";
+		dataPath = argv[1];
 	}
+	else
+	{
+		char* appdata = std::getenv("APPDATA");
+
+		if (appdata)
+		{
+			std::filesystem::path path = appdata;
+			path /= "DigitalZenWorks\\MusicManager\\sakura.mp4";
+
+			std::string tempPath = path.string();
+			dataPath = tempPath.c_str();
+		}
+	}
+
+	char* result = FingerPrint(dataPath);
+
+	std::cout << "Fingerprint: " << result << "\n";
 }
