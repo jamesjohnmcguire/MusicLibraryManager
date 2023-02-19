@@ -265,9 +265,17 @@ namespace DigitalZenWorks.MusicToolKit
 
 		[DllImport(
 			"FingerPrinter",
-			EntryPoint = "FingerPrint",
+			BestFitMapping = false,
 			CallingConvention = CallingConvention.Cdecl,
-			CharSet = CharSet.Unicode)]
+			CharSet = CharSet.Ansi,
+			EntryPoint = "FingerPrint",
+			ThrowOnUnmappableChar = true)]
 		public static extern IntPtr FingerPrint(string filePath);
+
+		[DllImport(
+			"FingerPrinter",
+			EntryPoint = "FreeFingerPrint",
+			CallingConvention = CallingConvention.Cdecl)]
+		public static extern void FreeFingerPrint(IntPtr data);
 	}
 }
