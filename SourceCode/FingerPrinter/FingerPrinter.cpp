@@ -2,10 +2,6 @@
 #include <cstdlib>
 #include <filesystem>
 
-//#include <cstring>
-//#include <sstream>
-//#include <chrono>
-
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_sinks.h"
@@ -25,6 +21,14 @@ namespace FingerPrinter
 {
 	spdlog::logger GetLogger();
 	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize);
+
+	void FreeFingerPrint(char* data)
+	{
+		if (data != nullptr)
+		{
+			free(data);
+		}
+	}
 
 	char* GetFingerPrint(
 		ChromaprintContext* context,
