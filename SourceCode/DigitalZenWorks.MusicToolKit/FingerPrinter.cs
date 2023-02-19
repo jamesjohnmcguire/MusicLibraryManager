@@ -6,6 +6,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DigitalZenWorks.MusicToolKit
 {
@@ -21,10 +22,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The finger print.</returns>
 		public static string FingerPrint(string filePath)
 		{
-			IntPtr data = NativeMethods.FingerPrint(null);
+			IntPtr data = NativeMethods.FingerPrint(filePath);
 			string fingerPrint = Marshal.PtrToStringAnsi(data);
 
-			Marshal.FreeHGlobal(data);
+			NativeMethods.FreeFingerPrint(data);
 
 			return fingerPrint;
 		}
