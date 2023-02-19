@@ -1,5 +1,10 @@
 #include "pch.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <filesystem>
+#include <iostream>
+
 #include "../FingerPrinter/FingerPrinter.h"
 
 using namespace FingerPrinter;
@@ -12,14 +17,40 @@ TEST(SanityCheck, Success)
 
 TEST(TestFingerPrinter, Success)
 {
-	char* result = FingerPrint(nullptr);
+	const char* dataPath = nullptr;
+	char* appdata = std::getenv("APPDATA");
+
+	EXPECT_NE(appdata, nullptr);
+
+	std::filesystem::path path = appdata;
+	path /= "DigitalZenWorks\\MusicManager\\sakura.mp4";
+
+	std::string tempPath = path.string();
+	dataPath = tempPath.c_str();
+
+	EXPECT_NE(dataPath, nullptr);
+
+	char* result = FingerPrint(dataPath);
 
 	EXPECT_NE(result, nullptr);
 }
 
 TEST(TestFingerPrinter, Correct)
 {
-	char* result = FingerPrint(nullptr);
+	const char* dataPath = nullptr;
+	char* appdata = std::getenv("APPDATA");
+
+	EXPECT_NE(appdata, nullptr);
+
+	std::filesystem::path path = appdata;
+	path /= "DigitalZenWorks\\MusicManager\\sakura.mp4";
+
+	std::string tempPath = path.string();
+	dataPath = tempPath.c_str();
+
+	EXPECT_NE(dataPath, nullptr);
+
+	const char* result = FingerPrint(dataPath);
 
 	const char* intended = "AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp"
 		"-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD"
@@ -30,5 +61,5 @@ TEST(TestFingerPrinter, Correct)
 		"MFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDg"
 		"EDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
 
-	EXPECT_EQ(result, intended);
+	ASSERT_STREQ(result, intended);
 }
