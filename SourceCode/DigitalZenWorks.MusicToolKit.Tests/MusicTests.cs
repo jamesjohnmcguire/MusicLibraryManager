@@ -334,22 +334,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"hCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRR" +
 				"gAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
 
-			string fingerPrint = FingerPrinter.FingerPrint(null);
+			string fingerPrint = FingerPrinter.FingerPrint(testFile);
 
-			Assert.Equals(intended, fingerPrint);
-		}
+			Assert.That(fingerPrint, Is.EqualTo(intended));
 
-		/// <summary>
-		/// The get ChromaPrint finger print test.
-		/// </summary>
-		[Test]
-		public void GetChromaPrintFingerPrint()
-		{
-			using NAudioDecoder decoder = new (testFile);
-
-			string fingerPrint = decoder.GenerateChromaPrint();
-
-			Assert.NotNull(fingerPrint);
 		}
 
 		/// <summary>
