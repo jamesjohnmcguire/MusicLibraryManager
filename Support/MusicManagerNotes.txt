@@ -1,21 +1,25 @@
 Music Library Manager
 
 Tasks
-	Fix Python
-	Test Beets
-	Rename to AudioId
-	Add to test exec("fpcalc sakura.mp4") in temp directory, save output and compare with local fingerprint
-	Add support for wide char FingerPrint(const wchar_t* filePath)
-	Do not instantiate iTunes when doing only extract-tags
-	Build non-itunes version
-	Deal with Multiple Artists, Remove throwing exception
-	by getting base element, skipping testing of full namespace / objec name, should a test before hand
-	Artists doesn't exist
-	GetItemSubject should return an object
-	Double check not being used: \s*\(Disk).*?\)
-	Log any change to media file
+	Itunes	Do not instantiate iTunes when doing only extract-tags
 	Console.WriteLine
-
+	Add Tests of additional audio files in external script
+	AudioId	Rename Files / Projects to AudioId
+	AudioId	Continue refactor of big function
+	AudioId	Set Logging to AppData
+	Over ride logging directory with environment variable
+	AudioId	Remove warnings from external sources
+	AudioId	Clean Up Warnings
+	AudioId	Connect to AcoustId
+	Test Beets, MusicBee
+	Itunes	Build non-itunes version
+	Add support for wide char FingerPrint(const wchar_t* filePath)
+	Deal with Multiple Artists, Remove throwing exception
+	Rules	by getting base element, skipping testing of full namespace / objec name, should a test before hand
+	Artists doesn't exist
+	Rules	GetItemSubject should return an object
+	Rules	Double check not being used: \s*\(Disk).*?\)
+	Log any change to media file
 	If exact duplicate, remove, don't move
 	Re-add , @" \(.*?\)" for title?
 	Refactor ITunesXmlFile
@@ -84,6 +88,7 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Fix Python
 		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
 		Remove empty directories
 		Log any change to media file
@@ -488,6 +493,10 @@ Resources
 		https://musicbrainz.org/doc/MusicBrainz_API/Search
 		https://github.com/metabrainz/picard
 		https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+	Other Services
+		https://getmusicbee.com/help/api/
+		https://beets.readthedocs.io/en/stable/guides/main.html
+		https://getmusicbee.com/addons/s/?type=2
 	Rules
 		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
 		https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
@@ -640,18 +649,6 @@ Resources
 		https://hotmart.com/en/blog/audio-quality
 	Utilities
 		https://github.com/beetbox/beets
-FFMPeg
-	Vcpkg
-		error: building tensorflow:x64-windows failed with: BUILD_FAILED
-		error: Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
-		Then check for known issues at:
-			https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+tensorflow
-		You can submit a new issue at:
-			https://github.com/microsoft/vcpkg/issues/new?template=report-package-build-failure.md&title=[tensorflow]+Build+error
-		Include '[tensorflow] Build error' in your bug report title, the following version information in your bug description, and attach any relevant failure logs from above.
-			vcpkg-tool version: 2022-11-10-5fdee72bc1fceca198fb1ab7589837206a8b81ba
-			vcpkg-scripts version: e07c62d05 2022-12-20 (3 hours ago)
-		Please use the prefilled template from C:\Util\vcpkg\installed\vcpkg\issue_body.md when reporting your issue.
 Remove Duplicates
 	Exact Duplicates
 		In different directories
