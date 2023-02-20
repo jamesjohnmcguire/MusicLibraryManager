@@ -337,7 +337,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fingerPrint = FingerPrinter.FingerPrint(testFile);
 
 			Assert.That(fingerPrint, Is.EqualTo(intended));
-
 		}
 
 		/// <summary>
