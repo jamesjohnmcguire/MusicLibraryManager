@@ -8,8 +8,13 @@ using namespace FingerPrinter;
 
 int main(int argc, char** argv)
 {
+	bool minimal = true;
 	const char* dataPath = nullptr;
-	std::cout << "Testing\n";
+
+	if (minimal == false)
+	{
+		std::cout << "Testing\n";
+	}
 
 	if (argc > 1 && argv != nullptr)
 	{
@@ -29,7 +34,20 @@ int main(int argc, char** argv)
 		}
 	}
 
+	std::cout << dataPath << std::endl << std::endl;
+
 	char* result = FingerPrint(dataPath);
 
-	std::cout << "Fingerprint: " << result << "\n";
+	if (result != nullptr)
+	{
+		if (minimal == false)
+		{
+			std::cout << "Fingerprint: " << result <<
+				std::endl << std::endl << std::endl;
+		}
+		else
+		{
+			std::cout << result << std::endl << std::endl << std::endl;
+		}
+	}
 }
