@@ -12,6 +12,7 @@ using Serilog.Configuration;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -157,11 +158,15 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			configuration = configuration.MinimumLevel.Verbose();
 
 			LoggerSinkConfiguration sinkConfiguration = configuration.WriteTo;
-			sinkConfiguration.Console(LogEventLevel.Verbose, outputTemplate);
+			sinkConfiguration.Console(
+				LogEventLevel.Verbose,
+				outputTemplate,
+				CultureInfo.InvariantCulture);
 			sinkConfiguration.File(
 				logFilePath,
 				LogEventLevel.Verbose,
 				outputTemplate,
+				CultureInfo.InvariantCulture,
 				flushToDiskInterval: TimeSpan.FromSeconds(1));
 			Serilog.Log.Logger = configuration.CreateLogger();
 

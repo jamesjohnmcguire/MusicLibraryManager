@@ -19,38 +19,22 @@ namespace DigitalZenWorks.MusicToolKit
 		protected static readonly int BUFFERSIZE = 2 * 192000;
 
 		/// <summary>
-		/// The sample rate.
-		/// </summary>
-		protected int sampleRate;
-
-		/// <summary>
-		/// The channels property.
-		/// </summary>
-		protected int channels;
-
-		/// <summary>
 		/// Finalizes an instance of the <see cref="AudioDecoder"/> class.
 		/// Destructor.
 		/// </summary>
 		~AudioDecoder() => Dispose(false);
 
 		/// <summary>
-		/// Gets the sample rate.
+		/// Gets or sets the sample rate.
 		/// </summary>
 		/// <value>The sample rate.</value>
-		public int SampleRate
-		{
-			get { return sampleRate; }
-		}
+		public int SampleRate { get; set; }
 
 		/// <summary>
-		/// Gets the channels property.
+		/// Gets or sets the channels property.
 		/// </summary>
-		/// <value>The channels property.v</value>
-		public int Channels
-		{
-			get { return channels; }
-		}
+		/// <value>The channels property.</value>
+		public int Channels { get; set; }
 
 		/// <summary>
 		/// Gets or sets the format property.
@@ -69,7 +53,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// The dispose method.
 		/// </summary>
-		public virtual void Dispose()
+		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
