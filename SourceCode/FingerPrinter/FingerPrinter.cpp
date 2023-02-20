@@ -1,6 +1,7 @@
 ﻿#include <filesystem>
 #include <iostream>
 
+#pragma warning(push 0)
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_sinks.h"
@@ -9,6 +10,7 @@
 #define USE_SWRESAMPLE
 #include "../ChromaPrint/src/chromaprint.h"
 #include "../ChromaPrint/src/audio/ffmpeg_audio_reader.h"
+#pragma warning(pop)
 
 #include "FingerPrinter.h"
 
