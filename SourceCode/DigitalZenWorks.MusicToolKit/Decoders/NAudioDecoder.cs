@@ -60,7 +60,7 @@ namespace DigitalZenWorks.MusicToolKit
 				var data = ArrayPool<short>.Shared.Rent(BUFFERSIZE);
 
 				// Samples to read to get maxLength seconds of audio
-				remaining = maxLength * this.Format.Channels * this.sampleRate;
+				remaining = maxLength * this.Format.Channels * SampleRate;
 
 				// Bytes to read
 				length = 2 * Math.Min(remaining, BUFFERSIZE);
@@ -118,8 +118,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 			var format = reader.WaveFormat;
 
-			this.sampleRate = format.SampleRate;
-			this.channels = format.Channels;
+			SampleRate = format.SampleRate;
+			Channels = format.Channels;
 
 			this.Format = new AudioProperties(
 				format.SampleRate,
