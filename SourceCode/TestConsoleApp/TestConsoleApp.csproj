@@ -10,7 +10,7 @@
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2023</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.1.0.176</FileVersion>
+		<FileVersion>0.5.184.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -18,7 +18,7 @@
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net7.0-windows</TargetFramework>
-		<Version>0.1.0.176</Version>
+		<Version>0.5.184</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
