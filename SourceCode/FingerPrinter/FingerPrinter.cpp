@@ -1,7 +1,7 @@
 ﻿#include <filesystem>
 #include <iostream>
 
-#pragma warning(push 0)
+#pragma warning( push )
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_sinks.h"
@@ -33,11 +33,6 @@ namespace FingerPrinter
 	size_t GetFrameSize(
 		size_t streamLimit, size_t streamSize, size_t frameSize);
 	spdlog::logger GetLogger();
-	bool IsChunkDone(
-		size_t frameSize,
-		size_t chunkLimit,
-		size_t extraChunkLimit,
-		size_t chunkSize);
 	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize);
 
 	void FreeFingerPrint(char* data)
@@ -61,9 +56,11 @@ namespace FingerPrinter
 			ChromaprintContext* context =
 				chromaprint_new(CHROMAPRINT_ALGORITHM_DEFAULT);
 
+			// These are values that could be set from fpcalc command line,
+			// so just constants here, for the time being
 			double ts = 0.0;
-			double maxDuration = 120;
-			double maxChunkDuration = 0;
+			const int maxDuration = 120;
+			const int maxChunkDuration = 0;
 			bool overlap = false;
 
 			int channels = chromaprint_get_num_channels(context);
@@ -141,12 +138,6 @@ namespace FingerPrinter
 							}
 						}
 
-						bool chunk_done = IsChunkDone(
-							frame_size,
-							chunk_limit,
-							extra_chunk_limit,
-							chunk_size);
-
 						size_t first_part_size = GetFirstPartSize(
 							frame_size,
 							chunk_limit,
@@ -164,52 +155,16 @@ namespace FingerPrinter
 						}
 
 						chunk_size += first_part_size;
-
-						if (chunk_done)
-						{
-							if (!chromaprint_finish(context))
-							{
-								std::string message =
-									"Could not finish the fingerprinting process";
-								logger.error(message);
-								break;
-							}
-
-							const auto chunk_duration = (chunk_size - extra_chunk_limit) * 1.0 / reader.GetSampleRate() + overlap;
-							char* finger = GetFingerPrint(
-								context,
-								reader,
-								first_chunk,
-								ts,
-								chunk_duration,
-								logger);
-
-							ts += chunk_duration;
-
-							result = chromaprint_start(
-								context, sampleRate, channels);
-
-							if (result == 0)
-							{
-								logger.error("Could not initialize the fingerprinting process");
-								break;
-							}
-
-							if (first_chunk)
-							{
-								extra_chunk_limit = 0;
-								first_chunk = false;
-							}
-
-							chunk_size = 0;
-						}
-
-						frame_data += first_part_size * reader.GetChannels();
+						frame_data += first_part_size * channels;
 						frame_size -= first_part_size;
 
 						if (frame_size > 0)
 						{
-							if (!chromaprint_feed(context, frame_data, frame_size * reader.GetChannels()))
+							int length = frame_size * channels;
+							result =
+								chromaprint_feed(context, frame_data, length);
+
+							if (result == 0)
 							{
 								logger.error("Could not process audio data");
 								break;
@@ -353,27 +308,6 @@ namespace FingerPrinter
 			spdlog::logger("log", begin(sinks), end(sinks));
 
 		return logger;
-	}
-
-	bool IsChunkDone(
-		size_t frameSize,
-		size_t chunkLimit,
-		size_t extraChunkLimit,
-		size_t chunkSize)
-	{
-		bool chunkDone = false;
-
-		if (chunkLimit > 0)
-		{
-			size_t remaining = chunkLimit + extraChunkLimit - chunkSize;
-
-			if (frameSize > remaining)
-			{
-				chunkDone = true;
-			}
-		}
-
-		return chunkDone;
 	}
 
 	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize)
