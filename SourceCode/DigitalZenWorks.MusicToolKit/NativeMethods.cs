@@ -14,18 +14,18 @@ namespace DigitalZenWorks.MusicToolKit
 	internal class NativeMethods
 	{
 		[DllImport(
-			"FingerPrinter",
+			"AudioSignature",
 			BestFitMapping = false,
 			CallingConvention = CallingConvention.Cdecl,
 			CharSet = CharSet.Ansi,
-			EntryPoint = "FingerPrint",
+			EntryPoint = "GetAudioSignature",
 			ThrowOnUnmappableChar = true)]
-		public static extern IntPtr FingerPrint(string filePath);
+		public static extern IntPtr GetAudioSignature(string filePath);
 
 		[DllImport(
-			"FingerPrinter",
-			EntryPoint = "FreeFingerPrint",
+			"AudioSignature",
+			EntryPoint = "FreeAudioSignature",
 			CallingConvention = CallingConvention.Cdecl)]
-		public static extern void FreeFingerPrint(IntPtr data);
+		public static extern void FreeAudioSignature(IntPtr data);
 	}
 }

@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="FingerPrinter.cs" company="Digital Zen Works">
+// <copyright file="AudioSignature.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -11,23 +11,23 @@ using System.Text;
 namespace DigitalZenWorks.MusicToolKit
 {
 	/// <summary>
-	/// Represents an audio finger print signature.
+	/// Represents an audio signature.
 	/// </summary>
-	public static class FingerPrinter
+	public static class AudioSignature
 	{
 		/// <summary>
-		/// Get finger print signature.
+		/// Get audio signature.
 		/// </summary>
 		/// <param name="filePath">The file path of the audio file.</param>
-		/// <returns>The finger print.</returns>
-		public static string FingerPrint(string filePath)
+		/// <returns>The audio signature.</returns>
+		public static string GetAudioSignature(string filePath)
 		{
-			IntPtr data = NativeMethods.FingerPrint(filePath);
-			string fingerPrint = Marshal.PtrToStringAnsi(data);
+			IntPtr data = NativeMethods.GetAudioSignature(filePath);
+			string audioSignature = Marshal.PtrToStringAnsi(data);
 
-			NativeMethods.FreeFingerPrint(data);
+			NativeMethods.FreeAudioSignature(data);
 
-			return fingerPrint;
+			return audioSignature;
 		}
 	}
 }

@@ -26,9 +26,9 @@
 		<PreferredToolArchitecture>x64</PreferredToolArchitecture>
 		<_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
 		<ProjectGuid>{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}</ProjectGuid>
-		<ProjectName>FingerPrinter</ProjectName>
+		<ProjectName>AudioSignature</ProjectName>
 		<WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
-		<TargetName>FingerPrinter</TargetName>
+		<TargetName>AudioSignature</TargetName>
 		<TargetExt>.dll</TargetExt>
 	</PropertyGroup>
 
@@ -81,8 +81,8 @@
 			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
 			<AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
 			<IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-			<ImportLibrary>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\FingerPrinter.lib</ImportLibrary>
-			<ProgramDataBaseFile>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\FingerPrinter.pdb</ProgramDataBaseFile>
+			<ImportLibrary>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\AudioSignature.lib</ImportLibrary>
+			<ProgramDataBaseFile>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\AudioSignature.pdb</ProgramDataBaseFile>
 			<SubSystem>Console</SubSystem>
 		</Link>
 	</ItemDefinitionGroup>
@@ -94,11 +94,11 @@
 			<InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
 			<Optimization>Disabled</Optimization>
 			<PrecompiledHeader>NotUsing</PrecompiledHeader>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR="Debug";FingerPrinter_EXPORTS</PreprocessorDefinitions>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR="Debug";AudioSignature_EXPORTS</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 		</ClCompile>
 		<ResourceCompile>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR=\"Debug\";FingerPrinter_EXPORTS</PreprocessorDefinitions>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR=\"Debug\";AudioSignature_EXPORTS</PreprocessorDefinitions>
 		</ResourceCompile>
 		<Link>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
@@ -114,10 +114,10 @@
 			<Optimization>MaxSpeed</Optimization>
 			<PrecompiledHeader>NotUsing</PrecompiledHeader>
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR="Release";FingerPrinter_EXPORTS</PreprocessorDefinitions>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR="Release";AudioSignature_EXPORTS</PreprocessorDefinitions>
 		</ClCompile>
 		<ResourceCompile>
-			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR=\"Release\";FingerPrinter_EXPORTS</PreprocessorDefinitions>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR=\"Release\";AudioSignature_EXPORTS</PreprocessorDefinitions>
 		</ResourceCompile>
 		<Link>
 			<GenerateDebugInformation>false</GenerateDebugInformation>
@@ -128,8 +128,8 @@
 	</ItemDefinitionGroup>
 
 	<ItemGroup>
-		<ClCompile Include="FingerPrinter.cpp" />
-		<ClInclude Include="FingerPrinter.h" />
+		<ClCompile Include="AudioSignature.cpp" />
+		<ClInclude Include="AudioSignature.h" />
 	</ItemGroup>
 
 	<ItemGroup>

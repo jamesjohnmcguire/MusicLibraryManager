@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FingerPrinter
+namespace AudioSignature
 {
 	#if defined _WIN32 || defined __CYGWIN__
 		#ifdef DLL_EXPORTS
@@ -42,6 +42,6 @@ namespace FingerPrinter
 		#endif
 	#endif
 
-	LIB_API(char*) FingerPrint(const char* filePath);
-	LIB_API(void) FreeFingerPrint(char* data);
+	LIB_API(char*) GetAudioSignature(const char* filePath);
+	LIB_API(void) FreeAudioSignature(char* data);
 }

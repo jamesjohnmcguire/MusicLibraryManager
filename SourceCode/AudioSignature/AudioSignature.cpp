@@ -12,13 +12,13 @@
 #include "../ChromaPrint/src/audio/ffmpeg_audio_reader.h"
 #pragma warning(pop)
 
-#include "FingerPrinter.h"
+#include "AudioSignature.h"
 
 using namespace chromaprint;
 
-namespace FingerPrinter
+namespace AudioSignature
 {
-	char* GetFingerPrint(
+	char* GetAudioSignatureInternal(
 		ChromaprintContext* context,
 		FFmpegAudioReader& reader,
 		bool first,
@@ -35,7 +35,7 @@ namespace FingerPrinter
 	spdlog::logger GetLogger();
 	bool IsStreamDone(size_t streamLimit, size_t streamSize, size_t frameSize);
 
-	void FreeFingerPrint(char* data)
+	void FreeAudioSignature(char* data)
 	{
 		if (data != nullptr)
 		{
@@ -43,7 +43,7 @@ namespace FingerPrinter
 		}
 	}
 
-	char* FingerPrint(const char* filePath)
+	char* GetAudioSignature(const char* filePath)
 	{
 		char* result = nullptr;
 
@@ -83,7 +83,7 @@ namespace FingerPrinter
 				if (checkResult == 0)
 				{
 					std::string error =
-						"Could not initialize the fingerprinting process";
+						"Could not initialize the audio signature process";
 					logger.error(error);
 				}
 				else
@@ -181,7 +181,7 @@ namespace FingerPrinter
 
 					if (!chromaprint_finish(context))
 					{
-						logger.error("Could not finish the fingerprinting process");
+						logger.error("Could not finish the audio signtature process");
 					}
 					else if (chunk_size > 0)
 					{
@@ -189,7 +189,7 @@ namespace FingerPrinter
 							(chunk_size - extra_chunk_limit) * 1.0 /
 							sampleRate + overlap;
 
-						result = GetFingerPrint(
+						result = GetAudioSignatureInternal(
 							context,
 							reader,
 							first_chunk,
@@ -216,7 +216,7 @@ namespace FingerPrinter
 		return result;
 	}
 
-	char* GetFingerPrint(
+	char* GetAudioSignatureInternal(
 		ChromaprintContext* context,
 		FFmpegAudioReader& reader,
 		bool first,
@@ -224,7 +224,7 @@ namespace FingerPrinter
 		double duration,
 		spdlog::logger log)
 	{
-		char* fingerPrint = nullptr;
+		char* audioSignature = nullptr;
 		int size;
 
 		int result = chromaprint_get_raw_fingerprint_size(context, &size);
@@ -241,7 +241,7 @@ namespace FingerPrinter
 			}
 			else
 			{
-				result = chromaprint_get_fingerprint(context, &fingerPrint);
+				result = chromaprint_get_fingerprint(context, &audioSignature);
 
 				if (result == 0)
 				{
@@ -250,7 +250,7 @@ namespace FingerPrinter
 			}
 		}
 
-		return fingerPrint;
+		return audioSignature;
 	}
 
 	size_t GetFirstPartSize(

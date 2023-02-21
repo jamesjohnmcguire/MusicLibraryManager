@@ -134,7 +134,7 @@
     <ClCompile Include="NativeTestConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FingerPrinter\FingerPrinter.vcxproj">
+    <ProjectReference Include="..\AudioSignature\AudioSignature.vcxproj">
       <Project>{b3b4e7e5-5bc3-36ba-9d00-003c6dd6a5a4}</Project>
     </ProjectReference>
   </ItemGroup>

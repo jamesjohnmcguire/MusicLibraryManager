@@ -3,8 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
-#include "../FingerPrinter/FingerPrinter.h"
-using namespace FingerPrinter;
+#include "../AudioSignature/AudioSignature.h"
+using namespace AudioSignature;
 
 int main(int argc, char** argv)
 {
@@ -36,13 +36,13 @@ int main(int argc, char** argv)
 
 	std::cout << dataPath << std::endl << std::endl;
 
-	char* result = FingerPrint(dataPath);
+	char* result = GetAudioSignature(dataPath);
 
 	if (result != nullptr)
 	{
 		if (minimal == false)
 		{
-			std::cout << "Fingerprint: " << result <<
+			std::cout << "AudioSignature: " << result <<
 				std::endl << std::endl << std::endl;
 		}
 		else

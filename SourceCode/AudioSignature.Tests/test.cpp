@@ -5,9 +5,9 @@
 #include <filesystem>
 #include <iostream>
 
-#include "../FingerPrinter/FingerPrinter.h"
+#include "../AudioSignature/AudioSignature.h"
 
-using namespace FingerPrinter;
+using namespace AudioSignature;
 
 TEST(SanityCheck, Success)
 {
@@ -15,7 +15,7 @@ TEST(SanityCheck, Success)
 	EXPECT_TRUE(true);
 }
 
-TEST(TestFingerPrinter, Success)
+TEST(TestAudioSignature, Success)
 {
 	const char* dataPath = nullptr;
 	char* appdata = std::getenv("APPDATA");
@@ -30,12 +30,12 @@ TEST(TestFingerPrinter, Success)
 
 	EXPECT_NE(dataPath, nullptr);
 
-	char* result = FingerPrint(dataPath);
+	char* result = GetAudioSignature(dataPath);
 
 	EXPECT_NE(result, nullptr);
 }
 
-TEST(TestFingerPrinter, Correct)
+TEST(TestAudioSignature, Correct)
 {
 	const char* dataPath = nullptr;
 	char* appdata = std::getenv("APPDATA");
@@ -50,7 +50,7 @@ TEST(TestFingerPrinter, Correct)
 
 	EXPECT_NE(dataPath, nullptr);
 
-	const char* result = FingerPrint(dataPath);
+	const char* result = GetAudioSignature(dataPath);
 
 	const char* intended = "AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp"
 		"-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD"

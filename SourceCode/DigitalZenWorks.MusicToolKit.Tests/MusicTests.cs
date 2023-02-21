@@ -319,10 +319,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The get ChromaPrint finger print test.
+		/// The get ChromaPrint audio signature test.
 		/// </summary>
 		[Test]
-		public void FingerPrintTest()
+		public void AudioSignatureTest()
 		{
 			string intended = "AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR" +
 				"_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQs" +
@@ -334,9 +334,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"hCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRR" +
 				"gAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
 
-			string fingerPrint = FingerPrinter.FingerPrint(testFile);
+			string audioSignature = AudioSignature.GetAudioSignature(testFile);
 
-			Assert.That(fingerPrint, Is.EqualTo(intended));
+			Assert.That(audioSignature, Is.EqualTo(intended));
 		}
 
 		/// <summary>

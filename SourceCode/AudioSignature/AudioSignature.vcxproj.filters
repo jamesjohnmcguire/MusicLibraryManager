@@ -17,12 +17,12 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FingerPrinter.cpp">
+    <ClCompile Include="AudioSignature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FingerPrinter.h">
+    <ClInclude Include="AudioSignature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
