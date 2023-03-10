@@ -88,6 +88,7 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4	
 		Fix Python
 		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
 		Remove empty directories
@@ -493,9 +494,14 @@ Resources
 		https://musicbrainz.org/doc/MusicBrainz_API/Search
 		https://github.com/metabrainz/picard
 		https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+		https://acoustid.org/webservice
+	Beets
+		music beets pip
+		https://beets.readthedocs.io/en/stable/guides/main.html
+		https://github.com/beetbox/beets
+		https://beets.io/
 	Other Services
 		https://getmusicbee.com/help/api/
-		https://beets.readthedocs.io/en/stable/guides/main.html
 		https://getmusicbee.com/addons/s/?type=2
 	Rules
 		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
