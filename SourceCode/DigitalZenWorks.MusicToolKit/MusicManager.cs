@@ -92,6 +92,11 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Gets or sets a value indicating whether the update tags property.
+		/// </summary>
+		public bool UpdateTags { get; set; }
+
+		/// <summary>
 		/// Gets or sets the file tags object.
 		/// </summary>
 		/// <value>The file tags object.</value>
@@ -595,9 +600,12 @@ namespace DigitalZenWorks.MusicToolKit
 				string message = "Checking: " + file.FullName;
 				Log.Info(message);
 
-				// get and update tags
-				tags = new MediaFileTags(file.FullName, rules);
-				tags.Update();
+				if (UpdateTags == true)
+				{
+					// get and update tags
+					tags = new MediaFileTags(file.FullName, rules);
+					tags.Update();
+				}
 
 				// update directory and file names
 				file = UpdateFile(file);

@@ -66,6 +66,10 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 									musicUtility.Rules = rules;
 								}
 
+								bool noUpdateTags = command.DoesOptionExist(
+									"n", "no-update-tags");
+								musicUtility.UpdateTags = !noUpdateTags;
+
 								musicUtility.CleanMusicLibrary();
 							}
 
@@ -113,6 +117,9 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			CommandOption rules = new ("r", "rules", true);
 			IList<CommandOption> options = new List<CommandOption>();
 			options.Add(rules);
+
+			CommandOption noUpdateTags = new ("n", "no-update-tags", false);
+			options.Add(noUpdateTags);
 
 			Command clean = new ("clean", options, 0, "Clean music files");
 			commands.Add(clean);
