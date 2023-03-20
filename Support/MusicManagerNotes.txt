@@ -1,11 +1,9 @@
 Music Library Manager
 
 Tasks
-	Itunes	Do not instantiate iTunes when doing only extract-tags
+	Audio Signature	Connect to AcoustId service
 	Console.WriteLine
-	Add Tests of additional audio files in external script
-	AudioId	Rename Files / Projects to AudioId
-	AudioId	Continue refactor of big function
+	Audio Signature	Add Tests of additional audio files in external script
 	AudioId	Set Logging to AppData
 	Over ride logging directory with environment variable
 	AudioId	Remove warnings from external sources
@@ -88,6 +86,10 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		AudioId	Rename Files / Projects to AudioId
+		AudioId	Continue refactor of big function
+		Itunes	Do not instantiate iTunes when doing only extract-tags
+		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4	
 		Fix Python
 		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
 		Remove empty directories
