@@ -29,6 +29,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 		private string artist;
 
+		private bool updated;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
 		/// </summary>
@@ -38,6 +40,21 @@ namespace DigitalZenWorks.MusicToolKit
 			filePath = file;
 
 			TagFile = TagLib.File.Create(file);
+
+			if ((TagFile.Tag.Performers != null) &&
+				(TagFile.Tag.Performers.Length > 0))
+			{
+				artist = TagFile.Tag.Performers[0];
+			}
+
+			if (string.IsNullOrWhiteSpace(artist))
+			{
+				if ((TagFile.Tag.AlbumArtists != null) &&
+					TagFile.Tag.AlbumArtists.Length > 0)
+				{
+					artist = TagFile.Tag.AlbumArtists[0];
+				}
+			}
 		}
 
 		/// <summary>
@@ -64,7 +81,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Album = value;
+				if ((TagFile.Tag.Album != null &&
+					!TagFile.Tag.Album.Equals(
+						value, StringComparison.Ordinal)) ||
+					(TagFile.Tag.Album == null && value != null))
+				{
+					updated = true;
+					TagFile.Tag.Album = value;
+				}
 			}
 		}
 
@@ -76,29 +100,18 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			get
 			{
-				if (string.IsNullOrWhiteSpace(artist))
-				{
-					if ((TagFile.Tag.Performers != null) &&
-						(TagFile.Tag.Performers.Length > 0))
-					{
-						artist = TagFile.Tag.Performers[0];
-					}
-
-					if (string.IsNullOrWhiteSpace(artist))
-					{
-						if (TagFile.Tag.AlbumArtists.Length > 0)
-						{
-							artist = TagFile.Tag.AlbumArtists[0];
-						}
-					}
-				}
-
 				return artist;
 			}
 
 			set
 			{
-				artist = value;
+				if ((artist != null &&
+					!artist.Equals(value, StringComparison.Ordinal)) ||
+					(artist == null && value != null))
+				{
+					updated = true;
+					artist = value;
+				}
 
 				if ((TagFile.Tag.Performers != null) &&
 					(TagFile.Tag.Performers.Length > 0))
@@ -134,7 +147,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Title = value;
+				if ((TagFile.Tag.Title != null &&
+					!TagFile.Tag.Title.Equals(
+						value, StringComparison.Ordinal)) ||
+					(TagFile.Tag.Title == null && value != null))
+				{
+					updated = true;
+					TagFile.Tag.Title = value;
+				}
 			}
 		}
 
@@ -151,8 +171,47 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Year = value;
+				if (TagFile.Tag.Year != value)
+				{
+					updated = true;
+					TagFile.Tag.Year = value;
+				}
 			}
+		}
+
+		/// <summary>
+		/// Clean tags method.
+		/// </summary>
+		/// <returns>A value indicating whether the tags were updated
+		/// or not.</returns>
+		public bool Clean()
+		{
+			bool isUpdated = false;
+			bool rulesUpdated = false;
+
+			if (rules != null)
+			{
+				rulesUpdated = rules.RunRules(this);
+			}
+
+			bool artistUpdated = UpdateArtistTag(filePath);
+
+			bool albumUpdated = UpdateAlbumTag(filePath);
+
+			bool titleUpdated = UpdateTitleTag();
+
+			bool subTitleUpdated = UpdateSubTitleTag();
+
+			if (rulesUpdated == true || albumUpdated == true ||
+				artistUpdated == true || subTitleUpdated == true ||
+				titleUpdated == true)
+			{
+				Update();
+
+				isUpdated = true;
+			}
+
+			return isUpdated;
 		}
 
 		/// <summary>
@@ -200,33 +259,19 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>A value indicating success or not.</returns>
 		public bool Update()
 		{
-			bool updated = false;
-			bool rulesUpdated = false;
+			bool isUpdated = updated;
 
-			if (rules != null)
-			{
-				rulesUpdated = rules.RunRules(this);
-			}
-
-			bool artistUpdated = UpdateArtistTag(filePath);
-
-			bool albumUpdated = UpdateAlbumTag(filePath);
-
-			bool titleUpdated = UpdateTitleTag();
-
-			bool subTitleUpdated = UpdateSubTitleTag();
-
-			if (rulesUpdated == true || albumUpdated == true ||
-				artistUpdated == true || subTitleUpdated == true ||
-				titleUpdated == true)
+			if (updated == true)
 			{
 				TagFile.Save();
-				updated = true;
 
 				Log.Info("Updated Tags in: " + filePath);
+
+				// reset for next time
+				updated = false;
 			}
 
-			return updated;
+			return isUpdated;
 		}
 
 		/// <summary>

@@ -38,7 +38,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 		private ITunesManager iTunesManager;
 		private Rules rules;
-		private MediaFileTags tags;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MusicManager"/> class.
@@ -95,16 +94,6 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets or sets a value indicating whether the update tags property.
 		/// </summary>
 		public bool UpdateTags { get; set; }
-
-		/// <summary>
-		/// Gets or sets the file tags object.
-		/// </summary>
-		/// <value>The file tags object.</value>
-		public MediaFileTags Tags
-		{
-			get { return tags; }
-			set { tags = value; }
-		}
 
 		/// <summary>
 		/// Gets or sets the rules.
@@ -327,7 +316,8 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				if (sourceFile != null)
 				{
-					tags = new MediaFileTags(sourceFile.FullName, rules);
+					using MediaFileTags tags =
+						new (sourceFile.FullName, rules);
 
 					SortedDictionary<string, object> tagSet = tags.GetTags();
 
@@ -374,6 +364,8 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (file != null)
 			{
+				using MediaFileTags tags = new (file.FullName, rules);
+
 				string path = CreateArtistPathFromTag(file, tags.Artist);
 
 				path = CreateAlbumPathFromTag(path, tags.Album);
@@ -524,12 +516,6 @@ namespace DigitalZenWorks.MusicToolKit
 					iTunesManager.Dispose();
 					iTunesManager = null;
 				}
-
-				if (tags != null)
-				{
-					tags.Dispose();
-					tags = null;
-				}
 			}
 		}
 
@@ -603,8 +589,8 @@ namespace DigitalZenWorks.MusicToolKit
 				if (UpdateTags == true)
 				{
 					// get and update tags
-					tags = new MediaFileTags(file.FullName, rules);
-					tags.Update();
+					using MediaFileTags tags = new (file.FullName, rules);
+					tags.Clean();
 				}
 
 				// update directory and file names

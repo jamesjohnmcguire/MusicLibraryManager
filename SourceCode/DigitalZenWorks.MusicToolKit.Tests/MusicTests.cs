@@ -350,7 +350,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 
 			File.Delete(newFileName);
 
@@ -373,7 +373,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string album = tags.Album;
@@ -394,7 +394,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			string album = tags.Album = "Album (Disk 2)";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 
 			File.Delete(newFileName);
 
@@ -419,7 +419,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.False(result);
 
 			string album = tags.Album;
@@ -566,7 +566,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string album = tags.Album;
@@ -589,7 +589,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string album = tags.Album;
@@ -613,7 +613,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -637,7 +637,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album cd 1";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -661,7 +661,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album {In Heaven}";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -685,7 +685,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album {In Heaven}";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -709,7 +709,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -733,7 +733,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album (Disk 2)";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -757,7 +757,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album[FLAC]";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -781,7 +781,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album[FLAC]";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			File.Delete(newFileName);
@@ -803,7 +803,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string artist = tags.Artist;
@@ -825,7 +825,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string artist = tags.Artist;
@@ -849,7 +849,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string album = tags.Album;
@@ -873,7 +873,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album (Disk 2)";
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string album = tags.Album;
@@ -927,7 +927,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Update();
 
 			tags.Album = "Album";
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.False(result);
 
 			string album = tags.Album;
@@ -949,7 +949,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string title = tags.Title;
@@ -971,7 +971,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Update();
+			bool result = tags.Clean();
 			Assert.True(result);
 
 			string title = tags.Title;
@@ -992,14 +992,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
-			MediaFileTags tags = new (newFileName);
+			using MediaFileTags tags = new (newFileName);
+
+			var test = tags.TagFile.Tag;
+			var test2 = test.Performers;
 
 			// UpdateFile assumes tags have already been cleaned.
 			tags.Album = "Album";
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
-
-			musicManager.Tags = tags;
+			tags.Update();
 
 			FileInfo fileInfo = new (newFileName);
 
@@ -1032,12 +1034,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileSame()
 		{
-			MediaFileTags tags = new (testFile);
+			using MediaFileTags tags = new (testFile);
 			tags.Album = "Album";
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
-
-			musicManager.Tags = tags;
+			tags.Update();
 
 			FileInfo fileInfo = new (testFile);
 
