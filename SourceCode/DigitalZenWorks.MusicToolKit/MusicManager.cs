@@ -364,19 +364,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (file != null)
 			{
-				using MediaFileTags tags = new (file.FullName, rules);
-
-				string path = CreateArtistPathFromTag(file, tags.Artist);
-
-				path = CreateAlbumPathFromTag(path, tags.Album);
-
-				string title = Paths.RemoveIllegalPathCharacters(tags.Title);
-				title = RemoveTrailingNumbers(title);
-
-				title = title.Replace(
-					"  ", " ", StringComparison.OrdinalIgnoreCase);
-
-				string filePath = path + "\\" + title + file.Extension;
+				string filePath = NormalizePath(file);
 
 				if (!filePath.Equals(
 					file.FullName, StringComparison.Ordinal))
@@ -671,6 +659,30 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
+		}
+
+		private string NormalizePath(FileInfo file)
+		{
+			string filePath = null;
+
+			if (file != null)
+			{
+				using MediaFileTags tags = new (file.FullName, rules);
+
+				string path = CreateArtistPathFromTag(file, tags.Artist);
+
+				path = CreateAlbumPathFromTag(path, tags.Album);
+
+				string title = Paths.RemoveIllegalPathCharacters(tags.Title);
+				title = RemoveTrailingNumbers(title);
+
+				title = title.Replace(
+					"  ", " ", StringComparison.OrdinalIgnoreCase);
+
+				filePath = path + "\\" + title + file.Extension;
+			}
+
+			return filePath;
 		}
 	}
 }
