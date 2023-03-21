@@ -1,0 +1,3 @@
+[submodule "SourceCode/UtilitiesNet"]
+	path = SourceCode/UtilitiesNet
+	url = https://github.com/jamesjohnmcguire/UtilitiesNet
