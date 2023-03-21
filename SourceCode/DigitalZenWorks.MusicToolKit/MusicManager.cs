@@ -366,6 +366,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				string filePath = NormalizePath(file);
 
+				// File path has changed
 				if (!filePath.Equals(
 					file.FullName, StringComparison.Ordinal))
 				{
