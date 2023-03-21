@@ -370,13 +370,17 @@ namespace DigitalZenWorks.MusicToolKit
 				if (!filePath.Equals(
 					file.FullName, StringComparison.Ordinal))
 				{
+					// If no file existing with that name, just move it
 					if (!System.IO.File.Exists(filePath))
 					{
 						System.IO.File.Move(file.FullName, filePath);
 					}
 					else
 					{
-						if (filePath.Equals(
+						string existingFile = filePath;
+
+						// There is already a file there with that name...
+						if (existingFile.Equals(
 							file.FullName, StringComparison.OrdinalIgnoreCase))
 						{
 							// Windows special case - The file names differ
@@ -384,16 +388,17 @@ namespace DigitalZenWorks.MusicToolKit
 							// saving with the new name won't work - Windows
 							// will just ignore the case change and keep the
 							// original name.
-							string temporaryFilePath = filePath + ".tmp";
+							string temporaryFilePath = existingFile + ".tmp";
 							System.IO.File.Move(
 								file.FullName, temporaryFilePath);
-							System.IO.File.Move(temporaryFilePath, filePath);
+							System.IO.File.Move(
+								temporaryFilePath, existingFile);
 						}
 						else
 						{
 							// a file is already there, move into duplicates
-							filePath = GetDuplicateLocation(filePath);
-							System.IO.File.Move(file.FullName, filePath);
+							filePath = GetDuplicateLocation(existingFile);
+							System.IO.File.Move(file.FullName, existingFile);
 						}
 					}
 				}

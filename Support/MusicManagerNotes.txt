@@ -1,18 +1,16 @@
 Music Library Manager
 
 Tasks
-	Audio Signature	Connect to AcoustId service
-	Console.WriteLine
 	Audio Signature	Add Tests of additional audio files in external script
-	AudioId	Set Logging to AppData
+	Audio Signature	Set Logging to AppData
 	Over ride logging directory with environment variable
-	AudioId	Remove warnings from external sources
-	AudioId	Clean Up Warnings
-	AudioId	Connect to AcoustId
+	Audio Signature	Remove warnings from external sources
+	Audio Signature	Clean Up Warnings
+	Audio Signature	Connect to AcoustId service
 	Test Beets, MusicBee
 	Itunes	Build non-itunes version
-	Add support for wide char FingerPrint(const wchar_t* filePath)
-	Deal with Multiple Artists, Remove throwing exception
+	Audio Signature	Add support for wide char FingerPrint(const wchar_t* filePath)
+	Deal with Multiple Artists
 	Rules	by getting base element, skipping testing of full namespace / objec name, should a test before hand
 	Artists doesn't exist
 	Rules	GetItemSubject should return an object
@@ -23,8 +21,8 @@ Tasks
 	Refactor ITunesXmlFile
 	Refactor FindDuplicates, into smaller testable methods
 	AcoustID fingerprints
-	GetDefaultRules use FileUtils
-	Don't call GetDefaultRules if rules already exist
+	Rules	GetDefaultRules use FileUtils
+	Rules	Don't call GetDefaultRules if rules already exist
 	items.OrderBy(i => i.Name, StringComparer.Ordinal)
 	SaveTagsToJsonFile, Catch json exceptions
 	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
@@ -34,7 +32,6 @@ Tasks
 	Refactor private MediaFileTags tags to be parameter of specific methods 
 	Refactor AreFileAndTrackTheSame with better internal testing
 	Optimize SaveTagsToJsonFile, so to not save if content is the same
-	#pragma warning disable CS0618 // Type or member is obsolete
 	Keep GetFullPathObject?
 	Unify all tucked away implicit rules, regex's inside private methods, etc
 	Rename to more appropriate name: ConditionNotEmptyTest
@@ -44,8 +41,6 @@ Tasks
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
-	Property set method not found.
-	Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
 	GetPathPartFromTag, RemoveIllegalPathCharactors Refactor
 	many "* 1".* songs
 	convert flac files
@@ -86,6 +81,11 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Property set method not found.
+		Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
+		#pragma warning disable CS0618 // Type or member is obsolete
+		Deal with Multiple Artists, Remove throwing exception
+		Console.WriteLine
 		AudioId	Rename Files / Projects to AudioId
 		AudioId	Continue refactor of big function
 		Itunes	Do not instantiate iTunes when doing only extract-tags
