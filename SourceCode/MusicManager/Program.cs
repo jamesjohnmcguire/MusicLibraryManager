@@ -14,7 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
+
+using CommonLogging = Common.Logging;
 
 [assembly: CLSCompliant(true)]
 
@@ -178,7 +179,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =
-				new Common.Logging.Serilog.SerilogFactoryAdapter();
+				new CommonLogging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }

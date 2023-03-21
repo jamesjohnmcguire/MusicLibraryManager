@@ -310,7 +310,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void DecodeFile()
 		{
 			using NAudioDecoder decoder = new (testFile);
-			AudioConsumer consumer = new AudioConsumer();
+			AudioConsumer consumer = new ();
 
 			bool result = decoder.Decode(consumer, 240);
 

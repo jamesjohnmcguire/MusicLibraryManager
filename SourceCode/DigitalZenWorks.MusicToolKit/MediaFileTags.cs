@@ -21,8 +21,13 @@ namespace DigitalZenWorks.MusicToolKit
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
+#pragma warning disable CA1823
+#pragma warning disable IDE0052
 		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicToolKit.Resources",
+				Assembly.GetExecutingAssembly());
+#pragma warning restore IDE0052
+#pragma warning restore CA1823
 
 		private readonly string filePath;
 		private readonly Rules rules;
