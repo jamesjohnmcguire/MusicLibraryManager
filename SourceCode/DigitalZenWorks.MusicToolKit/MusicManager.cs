@@ -329,6 +329,63 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Update files.
+		/// </summary>
+		/// <remarks>When adjusting the case in the file name parts, always
+		/// need to be aware and compensate for, that Windows will treat file
+		/// names with differnt cases as the same.</remarks>
+		/// <param name="file">The file to update.</param>
+		/// <returns>The updated file.</returns>
+		public static FileInfo UpdateFile(FileInfo file)
+		{
+			if (file != null)
+			{
+				string filePath = NormalizePath(file);
+
+				// File path has changed
+				if (!filePath.Equals(
+					file.FullName, StringComparison.Ordinal))
+				{
+					// If no file existing with that name, just move it
+					if (!System.IO.File.Exists(filePath))
+					{
+						System.IO.File.Move(file.FullName, filePath);
+					}
+					else
+					{
+						string existingFile = filePath;
+
+						// There is already a file there with that name...
+						if (existingFile.Equals(
+							file.FullName, StringComparison.OrdinalIgnoreCase))
+						{
+							// Windows special case - The file names differ
+							// only by case, so need to compensate.  Simply
+							// saving with the new name won't work - Windows
+							// will just ignore the case change and keep the
+							// original name.
+							string temporaryFilePath = existingFile + ".tmp";
+							System.IO.File.Move(
+								file.FullName, temporaryFilePath);
+							System.IO.File.Move(
+								temporaryFilePath, existingFile);
+						}
+						else
+						{
+							// a file is already there, move into duplicates
+							filePath = GetDuplicateLocation(existingFile);
+							System.IO.File.Move(file.FullName, filePath);
+						}
+					}
+				}
+
+				file = new FileInfo(filePath);
+			}
+
+			return file;
+		}
+
+		/// <summary>
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
@@ -404,63 +461,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return destinationFile;
-		}
-
-		/// <summary>
-		/// Update files.
-		/// </summary>
-		/// <remarks>When adjusting the case in the file name parts, always
-		/// need to be aware and compensate for, that Windows will treat file
-		/// names with differnt cases as the same.</remarks>
-		/// <param name="file">The file to update.</param>
-		/// <returns>The updated file.</returns>
-		public FileInfo UpdateFile(FileInfo file)
-		{
-			if (file != null)
-			{
-				string filePath = NormalizePath(file);
-
-				// File path has changed
-				if (!filePath.Equals(
-					file.FullName, StringComparison.Ordinal))
-				{
-					// If no file existing with that name, just move it
-					if (!System.IO.File.Exists(filePath))
-					{
-						System.IO.File.Move(file.FullName, filePath);
-					}
-					else
-					{
-						string existingFile = filePath;
-
-						// There is already a file there with that name...
-						if (existingFile.Equals(
-							file.FullName, StringComparison.OrdinalIgnoreCase))
-						{
-							// Windows special case - The file names differ
-							// only by case, so need to compensate.  Simply
-							// saving with the new name won't work - Windows
-							// will just ignore the case change and keep the
-							// original name.
-							string temporaryFilePath = existingFile + ".tmp";
-							System.IO.File.Move(
-								file.FullName, temporaryFilePath);
-							System.IO.File.Move(
-								temporaryFilePath, existingFile);
-						}
-						else
-						{
-							// a file is already there, move into duplicates
-							filePath = GetDuplicateLocation(existingFile);
-							System.IO.File.Move(file.FullName, filePath);
-						}
-					}
-				}
-
-				file = new FileInfo(filePath);
-			}
-
-			return file;
 		}
 
 		/// <summary>

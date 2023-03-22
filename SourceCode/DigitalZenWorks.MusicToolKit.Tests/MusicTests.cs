@@ -1045,7 +1045,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			FileInfo fileInfo = new (newFileName);
 
-			fileInfo = musicManager.UpdateFile(fileInfo);
+			fileInfo = MusicManager.UpdateFile(fileInfo);
 			newFileName = fileInfo.FullName;
 
 			// Clean up.
@@ -1082,7 +1082,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			FileInfo fileInfo = new (testFile);
 
-			fileInfo = musicManager.UpdateFile(fileInfo);
+			fileInfo = MusicManager.UpdateFile(fileInfo);
 			string newFileName = fileInfo.FullName;
 
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
