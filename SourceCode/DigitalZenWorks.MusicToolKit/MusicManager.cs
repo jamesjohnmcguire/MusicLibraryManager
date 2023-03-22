@@ -122,7 +122,7 @@ namespace DigitalZenWorks.MusicToolKit
 				"  ", " ", StringComparison.OrdinalIgnoreCase);
 
 			string path = Path.Combine(artistPath, albumTag);
-			CreateDirectoryIfNotExists(path);
+			Directory.CreateDirectory(path);
 
 			return path;
 		}
@@ -160,7 +160,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				path = Path.Combine(
 					basePath, artistTag);
-				CreateDirectoryIfNotExists(path);
+				Directory.CreateDirectory(path);
 			}
 
 			return path;
@@ -207,14 +207,14 @@ namespace DigitalZenWorks.MusicToolKit
 						string[] newParts = newList.ToArray();
 						string newPath = string.Join("\\", newParts);
 
-						CreateDirectoryIfNotExists(newPath);
+						Directory.CreateDirectory(newPath);
 
 						while (pathParts.Length > depth + 2)
 						{
 							depth++;
 							newPath += "\\" + pathParts[depth];
 
-							CreateDirectoryIfNotExists(newPath);
+							Directory.CreateDirectory(newPath);
 						}
 
 						destinationPath = newPath + "\\" + pathParts[^1];
@@ -496,7 +496,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
-					CreateDirectoryIfNotExists(tagsOnlyPath);
+					Directory.CreateDirectory(tagsOnlyPath);
 
 					DirectoryInfo directory = new (path);
 
@@ -564,16 +564,6 @@ namespace DigitalZenWorks.MusicToolKit
 					iTunesManager.Dispose();
 					iTunesManager = null;
 				}
-			}
-		}
-
-		private static void CreateDirectoryIfNotExists(string path)
-		{
-			DirectoryInfo directory = new (path);
-
-			if (!directory.Exists)
-			{
-				directory.Create();
 			}
 		}
 
