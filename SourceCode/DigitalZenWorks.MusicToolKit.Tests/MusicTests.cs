@@ -281,20 +281,19 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The create artist path from tag success test.
+		/// The clean artist success test.
 		/// </summary>
 		[Test]
-		public void CreateArtistPathFromTagSuccess()
+		public void CleanArtistSuccess()
 		{
-			FileInfo fileInfo = new (testFile);
-			string path = MusicManager.CleanArtist(fileInfo, "Artist");
+			string path = MusicManager.CleanArtist(testFile, "Artist");
 
 			Assert.IsNotEmpty(path);
 
 			bool exists = Directory.Exists(path);
 			Assert.True(exists);
 
-			fileInfo = new (path);
+			FileInfo fileInfo = new (path);
 
 			string artistPart = fileInfo.Name;
 

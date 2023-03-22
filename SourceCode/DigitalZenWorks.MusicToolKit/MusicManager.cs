@@ -130,17 +130,17 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Create artist path from tag.
 		/// </summary>
-		/// <param name="file">The given file.</param>
+		/// <param name="filePath">The given file.</param>
 		/// <param name="artistTag">The artist tag.</param>
 		/// <returns>A combined file path.</returns>
 		public static string CleanArtist(
-			FileInfo file, string artistTag)
+			string filePath, string artistTag)
 		{
 			string path = null;
 
-			if (file != null)
+			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
+				string basePath = Paths.GetBasePathFromFilePath(filePath);
 
 				artistTag = Paths.RemoveIllegalPathCharacters(artistTag);
 				artistTag = artistTag.TrimEnd('.');
@@ -294,7 +294,8 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					using MediaFileTags tags = new (file.FullName);
 
-					string artistPath = CleanArtist(file, tags.Artist);
+					string artistPath =
+						CleanArtist(file.FullName, tags.Artist);
 
 					album = CreateAlbumPathFromTag(artistPath, tags.Album);
 
