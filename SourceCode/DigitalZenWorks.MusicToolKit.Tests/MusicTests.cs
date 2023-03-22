@@ -287,8 +287,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void CreateArtistPathFromTagSuccess()
 		{
 			FileInfo fileInfo = new (testFile);
-			string path =
-				MusicManager.CreateArtistPathFromTag(fileInfo, "Artist");
+			string path = MusicManager.CleanArtist(fileInfo, "Artist");
 
 			Assert.IsNotEmpty(path);
 

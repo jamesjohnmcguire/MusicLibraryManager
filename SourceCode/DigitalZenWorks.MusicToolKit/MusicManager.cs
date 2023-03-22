@@ -133,7 +133,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="file">The given file.</param>
 		/// <param name="artistTag">The artist tag.</param>
 		/// <returns>A combined file path.</returns>
-		public static string CreateArtistPathFromTag(
+		public static string CleanArtist(
 			FileInfo file, string artistTag)
 		{
 			string path = null;
@@ -294,8 +294,7 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					using MediaFileTags tags = new (file.FullName);
 
-					string artistPath =
-						CreateArtistPathFromTag(file, tags.Artist);
+					string artistPath = CleanArtist(file, tags.Artist);
 
 					album = CreateAlbumPathFromTag(artistPath, tags.Album);
 
