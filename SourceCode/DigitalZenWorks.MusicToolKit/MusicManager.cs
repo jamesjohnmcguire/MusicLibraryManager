@@ -451,8 +451,8 @@ namespace DigitalZenWorks.MusicToolKit
 						else
 						{
 							// a file is already there, move into duplicates
-							existingFile = GetDuplicateLocation(existingFile);
-							System.IO.File.Move(file.FullName, existingFile);
+							filePath = GetDuplicateLocation(existingFile);
+							System.IO.File.Move(file.FullName, filePath);
 						}
 					}
 				}
