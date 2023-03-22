@@ -1,6 +1,9 @@
 Music Library Manager
 
 Tasks
+	Separate out custom rule processing from other operations
+	Tests should use temp path instead of library location?
+	musicManager.LibraryLocation is at roaming
 	Audio Signature	Add Tests of additional audio files in external script
 	Audio Signature	Set Logging to AppData
 	Over ride logging directory with environment variable
@@ -81,6 +84,12 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		CleanArtist, refactor rules processing to go elsewhere
+		Should path operations fail (because of file not existing) when the file isn't actually needed?
+		CreateDirectoryIfNotExists	Not needed?
+		CreateArtistPathFromTag change to CreateArtistPath
+		CreateArtistPathFromTag pass in file.FullName, file
+		Fix Test, Commit
 		Property set method not found.
 		Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
 		#pragma warning disable CS0618 // Type or member is obsolete
