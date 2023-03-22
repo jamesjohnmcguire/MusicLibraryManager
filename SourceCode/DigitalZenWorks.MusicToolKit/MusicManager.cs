@@ -108,62 +108,46 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Create album path from tag.
 		/// </summary>
-		/// <param name="artistPath">The artist path of the file.</param>
-		/// <param name="albumTag">The album tag.</param>
+		/// <param name="album">The album tag.</param>
 		/// <returns>A new combined path.</returns>
-		public static string CreateAlbumPathFromTag(
-			string artistPath, string albumTag)
+		public static string CleanAlbum(string album)
 		{
-			albumTag = Paths.RemoveIllegalPathCharacters(albumTag);
-			albumTag = albumTag.Trim();
-			albumTag = albumTag.TrimEnd('.');
+			album = Paths.RemoveIllegalPathCharacters(album);
+			album = album.Trim();
+			album = album.TrimEnd('.');
 
-			albumTag = albumTag.Replace(
-				"  ", " ", StringComparison.OrdinalIgnoreCase);
+			album =
+				album.Replace("  ", " ", StringComparison.OrdinalIgnoreCase);
 
-			string path = Path.Combine(artistPath, albumTag);
-			Directory.CreateDirectory(path);
-
-			return path;
+			return album;
 		}
 
 		/// <summary>
 		/// Create artist path from tag.
 		/// </summary>
-		/// <param name="filePath">The given file.</param>
-		/// <param name="artistTag">The artist tag.</param>
-		/// <returns>A combined file path.</returns>
-		public static string CleanArtist(
-			string filePath, string artistTag)
+		/// <param name="artist">The artist name.</param>
+		/// <returns>The cleaned artist name.</returns>
+		public static string CleanArtist(string artist)
 		{
-			string path = null;
-
-			if (!string.IsNullOrWhiteSpace(filePath))
+			if (!string.IsNullOrWhiteSpace(artist))
 			{
-				string basePath = Paths.GetBasePathFromFilePath(filePath);
+				artist = Paths.RemoveIllegalPathCharacters(artist);
+				artist = artist.TrimEnd('.');
 
-				artistTag = Paths.RemoveIllegalPathCharacters(artistTag);
-				artistTag = artistTag.TrimEnd('.');
-
-				artistTag = artistTag.Replace(
+				artist = artist.Replace(
 					"  ", " ", StringComparison.OrdinalIgnoreCase);
 
 				string pattern = @"\.{2,}";
 
-				if (Regex.IsMatch(artistTag, pattern))
+				if (Regex.IsMatch(artist, pattern))
 				{
-					artistTag =
-						Regex.Replace(artistTag, pattern, string.Empty);
+					artist = Regex.Replace(artist, pattern, string.Empty);
 				}
 
-				artistTag = artistTag.Trim();
-
-				path = Path.Combine(
-					basePath, artistTag);
-				Directory.CreateDirectory(path);
+				artist = artist.Trim();
 			}
 
-			return path;
+			return artist;
 		}
 
 		/// <summary>
@@ -294,35 +278,28 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					using MediaFileTags tags = new (file.FullName);
 
-					string artistPath =
-						CleanArtist(file.FullName, tags.Artist);
-
-					album = CreateAlbumPathFromTag(artistPath, tags.Album);
-
-					title = Paths.RemoveIllegalPathCharacters(tags.Title);
+					artist = tags.Artist;
+					album = tags.Album;
+					title = tags.Title;
 				}
 
-				title = RemoveTrailingNumbers(title);
+				artist = CleanArtist(artist);
+				album = CleanAlbum(album);
 
+				title = Paths.RemoveIllegalPathCharacters(title);
+				title = RemoveTrailingNumbers(title);
 				title = title.Replace(
 					"  ", " ", StringComparison.OrdinalIgnoreCase);
 
-				if (file.Exists == true)
-				{
-					filePath = album + "\\" + title + file.Extension;
-				}
-				else
-				{
-					filePath = string.Format(
-						CultureInfo.InvariantCulture,
-						@"{1}{0}{2}{0}{3}{0}{4}{5}",
-						Path.DirectorySeparatorChar,
-						basePath,
-						artist,
-						album,
-						title,
-						file.Extension);
-				}
+				filePath = string.Format(
+					CultureInfo.InvariantCulture,
+					@"{1}{0}{2}{0}{3}{0}{4}{5}",
+					Path.DirectorySeparatorChar,
+					basePath,
+					artist,
+					album,
+					title,
+					file.Extension);
 			}
 
 			return filePath;

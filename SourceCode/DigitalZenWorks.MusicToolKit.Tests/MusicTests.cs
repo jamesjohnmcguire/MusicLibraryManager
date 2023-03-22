@@ -257,27 +257,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The create album path from tag success test.
+		/// The clean album success test.
 		/// </summary>
 		[Test]
-		public void CreateAlbumPathFromTagSuccess()
+		public void CleanAlbumSuccess()
 		{
 			string artistPath = Paths.GetArtistPathFromFilePath(testFile);
 
-			string path =
-				MusicManager.CreateAlbumPathFromTag(artistPath, "Album");
-
-			Assert.IsNotEmpty(path);
-
-			bool exists = Directory.Exists(path);
-			Assert.True(exists);
-
-			FileInfo fileInfo = new (path);
-
-			string albumPart = fileInfo.Name;
+			string album = MusicManager.CleanAlbum("Album");
 
 			string expected = "Album";
-			Assert.That(albumPart, Is.EqualTo(expected));
+			Assert.That(album, Is.EqualTo(expected));
 		}
 
 		/// <summary>
@@ -286,19 +276,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CleanArtistSuccess()
 		{
-			string path = MusicManager.CleanArtist(testFile, "Artist");
+			string artist = MusicManager.CleanArtist("Artist");
 
-			Assert.IsNotEmpty(path);
-
-			bool exists = Directory.Exists(path);
-			Assert.True(exists);
-
-			FileInfo fileInfo = new (path);
-
-			string artistPart = fileInfo.Name;
+			Assert.IsNotEmpty(artist);
 
 			string expected = "Artist";
-			Assert.That(artistPart, Is.EqualTo(expected));
+			Assert.That(artist, Is.EqualTo(expected));
 		}
 
 		/// <summary>
