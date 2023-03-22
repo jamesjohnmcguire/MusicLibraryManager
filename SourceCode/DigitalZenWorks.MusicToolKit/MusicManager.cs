@@ -275,6 +275,60 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Normalize path.
+		/// </summary>
+		/// <param name="file">The file to check.</param>
+		/// <returns>The normalized path.</returns>
+		public static string NormalizePath(FileInfo file)
+		{
+			string filePath = null;
+
+			if (file != null)
+			{
+				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
+				string artist = Paths.GetArtistFromPath(file.FullName);
+				string album = Paths.GetAlbumFromPath(file.FullName);
+				string title = Paths.GetTitleFromPath(file.FullName);
+
+				if (file.Exists == true)
+				{
+					using MediaFileTags tags = new (file.FullName);
+
+					string artistPath =
+						CreateArtistPathFromTag(file, tags.Artist);
+
+					album = CreateAlbumPathFromTag(artistPath, tags.Album);
+
+					title = Paths.RemoveIllegalPathCharacters(tags.Title);
+				}
+
+				title = RemoveTrailingNumbers(title);
+
+				title = title.Replace(
+					"  ", " ", StringComparison.OrdinalIgnoreCase);
+
+				if (file.Exists == true)
+				{
+					filePath = album + "\\" + title + file.Extension;
+				}
+				else
+				{
+					filePath = string.Format(
+						CultureInfo.InvariantCulture,
+						@"{1}{0}{2}{0}{3}{0}{4}{5}",
+						Path.DirectorySeparatorChar,
+						basePath,
+						artist,
+						album,
+						title,
+						file.Extension);
+				}
+			}
+
+			return filePath;
+		}
+
+		/// <summary>
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
@@ -665,30 +719,6 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
-		}
-
-		private string NormalizePath(FileInfo file)
-		{
-			string filePath = null;
-
-			if (file != null)
-			{
-				using MediaFileTags tags = new (file.FullName, rules);
-
-				string path = CreateArtistPathFromTag(file, tags.Artist);
-
-				path = CreateAlbumPathFromTag(path, tags.Album);
-
-				string title = Paths.RemoveIllegalPathCharacters(tags.Title);
-				title = RemoveTrailingNumbers(title);
-
-				title = title.Replace(
-					"  ", " ", StringComparison.OrdinalIgnoreCase);
-
-				filePath = path + "\\" + title + file.Extension;
-			}
-
-			return filePath;
 		}
 	}
 }
