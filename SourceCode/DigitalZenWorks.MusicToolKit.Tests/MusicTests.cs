@@ -476,6 +476,48 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The normalize path same test.
+		/// </summary>
+		[Test]
+		public void NormalizePathSame()
+		{
+			string location = musicManager.LibraryLocation;
+
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
+			string fullPath = Path.Combine(location, fileName);
+			FileInfo file = new FileInfo(fullPath);
+
+			string normalizedFilePath = MusicManager.NormalizePath(file);
+
+			bool result =
+				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
+
+			Assert.True(result);
+		}
+
+		/// <summary>
+		/// The normalize path updated test.
+		/// </summary>
+		[Test]
+		public void NormalizePathUpdated()
+		{
+			string location = musicManager.LibraryLocation;
+
+			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love2.mp3";
+			string fullPath = Path.Combine(location, fileName);
+			FileInfo file = new FileInfo(fullPath);
+
+			string normalizedFilePath = MusicManager.NormalizePath(file);
+
+			bool result =
+				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
+
+			Assert.True(result);
+		}
+
+		/// <summary>
 		/// The regex remove result differnt test.
 		/// </summary>
 		[Test]
