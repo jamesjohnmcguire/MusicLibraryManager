@@ -486,7 +486,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
 			string fullPath = Path.Combine(location, fileName);
-			FileInfo file = new FileInfo(fullPath);
+			FileInfo file = new (fullPath);
 
 			string normalizedFilePath = MusicManager.NormalizePath(file);
 
@@ -507,7 +507,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love2.mp3";
 			string fullPath = Path.Combine(location, fileName);
-			FileInfo file = new FileInfo(fullPath);
+			FileInfo file = new (fullPath);
 
 			string normalizedFilePath = MusicManager.NormalizePath(file);
 
