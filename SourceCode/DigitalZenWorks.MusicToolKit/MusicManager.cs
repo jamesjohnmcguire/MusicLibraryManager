@@ -217,48 +217,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Gets the file's hash.
-		/// </summary>
-		/// <param name="filePath">The path of the file.</param>
-		/// <returns>The item's hash encoded in base 64.</returns>
-		public static string GetFileHash(string filePath)
-		{
-			string hashBase64 = null;
-
-			try
-			{
-				if (!string.IsNullOrWhiteSpace(filePath) &&
-					System.IO.File.Exists(filePath))
-				{
-					using FileStream fileStream =
-						System.IO.File.OpenRead(filePath);
-
-					using SHA256 hasher = SHA256.Create();
-
-					byte[] hashValue = hasher.ComputeHash(fileStream);
-					hashBase64 = Convert.ToBase64String(hashValue);
-				}
-			}
-			catch (System.Exception exception) when
-				(exception is ArgumentException ||
-				exception is ArgumentNullException ||
-				exception is ArgumentOutOfRangeException ||
-				exception is DirectoryNotFoundException ||
-				exception is FileNotFoundException ||
-				exception is InvalidCastException ||
-				exception is IOException ||
-				exception is NotSupportedException ||
-				exception is OutOfMemoryException ||
-				exception is PathTooLongException ||
-				exception is UnauthorizedAccessException)
-			{
-				Log.Error(exception.ToString());
-			}
-
-			return hashBase64;
-		}
-
-		/// <summary>
 		/// Normalize path.
 		/// </summary>
 		/// <param name="file">The file to check.</param>
