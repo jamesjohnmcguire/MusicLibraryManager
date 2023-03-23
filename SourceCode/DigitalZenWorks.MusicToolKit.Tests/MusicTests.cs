@@ -219,8 +219,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Talking Heads - Brick(2005)[FLAC]";
 
-			album = album.Replace(
-				"[FLAC]", string.Empty, StringComparison.OrdinalIgnoreCase);
+			album = AlbumRules.RemoveFlac(album);
 
 			Assert.IsNotEmpty(album);
 
