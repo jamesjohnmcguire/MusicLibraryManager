@@ -247,7 +247,7 @@ namespace DigitalZenWorks.MusicToolKit
 				title = Paths.RemoveIllegalPathCharacters(title);
 
 				title = GeneralRules.GetTitleCase(title);
-				title = RemoveTrailingNumbers(title);
+				title = GeneralRules.RemoveTrailingNumbers(title);
 				title = GeneralRules.ApplyGeneralRules(title);
 
 				filePath = string.Format(
@@ -521,13 +521,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return deleted;
-		}
-
-		private static string RemoveTrailingNumbers(string text)
-		{
-			text = Regex.Replace(text, @"\s+\d+$", string.Empty);
-
-			return text;
 		}
 
 		private Rules GetDefaultRules()

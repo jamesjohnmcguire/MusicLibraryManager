@@ -6,6 +6,7 @@
 
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
 {
@@ -42,6 +43,18 @@ namespace DigitalZenWorks.MusicToolKit
 			title = textInfo.ToTitleCase(title);
 
 			return title;
+		}
+
+		/// <summary>
+		/// Remove trailing numbers.
+		/// </summary>
+		/// <param name="text">The text to process.</param>
+		/// <returns>The updated text.</returns>
+		public static string RemoveTrailingNumbers(string text)
+		{
+			text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+
+			return text;
 		}
 	}
 }
