@@ -470,6 +470,7 @@ namespace DigitalZenWorks.MusicToolKit
 			if (!string.IsNullOrEmpty(Title))
 			{
 				Title = GeneralRules.ApplyGeneralRules(Title);
+				Title = GeneralRules.GetTitleCase(Title);
 
 				Title = TitleTagRules.RemoveBracketedSubTitle(Title);
 

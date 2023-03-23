@@ -218,8 +218,6 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			title = GeneralRules.GetTitleCase(title);
-
 			return title;
 		}
 

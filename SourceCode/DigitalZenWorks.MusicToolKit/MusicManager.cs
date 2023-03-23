@@ -245,6 +245,8 @@ namespace DigitalZenWorks.MusicToolKit
 				album = CleanAlbum(album);
 
 				title = Paths.RemoveIllegalPathCharacters(title);
+
+				title = GeneralRules.GetTitleCase(title);
 				title = RemoveTrailingNumbers(title);
 				title = GeneralRules.ApplyGeneralRules(title);
 
