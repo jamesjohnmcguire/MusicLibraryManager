@@ -441,7 +441,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (string.IsNullOrWhiteSpace(previousSubTitle))
 			{
-				string subTitle = TitleTagRules.ExtractSubTitle(Title);
+				string subTitle = TitleRules.ExtractSubTitle(Title);
 
 				if (!string.IsNullOrWhiteSpace(subTitle))
 				{
@@ -472,9 +472,9 @@ namespace DigitalZenWorks.MusicToolKit
 				Title = GeneralRules.ApplyGeneralRules(Title);
 				Title = GeneralRules.GetTitleCase(Title);
 
-				Title = TitleTagRules.RemoveBracketedSubTitle(Title);
+				Title = TitleRules.RemoveBracketedSubTitle(Title);
 
-				Title = TitleTagRules.RemoveArtist(Title, Artist);
+				Title = TitleRules.RemoveArtist(Title, Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Title) &&

@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="TitleTagRules.cs" company="Digital Zen Works">
+// <copyright file="TitleRules.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Title tag rules class.
 	/// </summary>
-	public static class TitleTagRules
+	public static class TitleRules
 	{
 		/// <summary>
 		/// Extract sub title method.
