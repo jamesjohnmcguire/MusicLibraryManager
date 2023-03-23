@@ -246,8 +246,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				title = Paths.RemoveIllegalPathCharacters(title);
 				title = RemoveTrailingNumbers(title);
-				title = title.Replace(
-					"  ", " ", StringComparison.OrdinalIgnoreCase);
+				title = GeneralRules.ApplyGeneralRules(title);
 
 				filePath = string.Format(
 					CultureInfo.InvariantCulture,
