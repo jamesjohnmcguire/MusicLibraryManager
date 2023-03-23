@@ -370,13 +370,13 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Album = GeneralRules.ApplyGeneralRules(Album);
 
-				Album = AlbumTagRules.RemoveCd(Album);
-				Album = AlbumTagRules.RemoveDisc(Album);
-				Album = AlbumTagRules.RemoveFlac(Album);
-				Album = AlbumTagRules.ReplaceCurlyBraces(Album);
-				Album = AlbumTagRules.RemoveCopyAmount(Album);
+				Album = AlbumRules.RemoveCd(Album);
+				Album = AlbumRules.RemoveDisc(Album);
+				Album = AlbumRules.RemoveFlac(Album);
+				Album = AlbumRules.ReplaceCurlyBraces(Album);
+				Album = AlbumRules.RemoveCopyAmount(Album);
 
-				Album = AlbumTagRules.RemoveArtist(Album);
+				Album = AlbumRules.RemoveArtist(Album);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Album) &&
@@ -416,11 +416,11 @@ namespace DigitalZenWorks.MusicToolKit
 				Artist = GeneralRules.ApplyGeneralRules(Artist);
 
 				Artist = GeneralRules.GetTitleCase(Artist);
-				Artist = ArtistTagRules.ApplyExceptions(Artist);
+				Artist = ArtistRules.ApplyExceptions(Artist);
 
-				Artist = ArtistTagRules.ReplaceVariousArtists(
+				Artist = ArtistRules.ReplaceVariousArtists(
 					Artist, TagFile.Tag.Performers[0]);
-				Artist = ArtistTagRules.RemoveAlbum(Artist);
+				Artist = ArtistRules.RemoveAlbum(Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Artist) &&

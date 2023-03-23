@@ -106,7 +106,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh cd 1";
 
-			album = AlbumTagRules.RemoveCd(album);
+			album = AlbumRules.RemoveCd(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -123,7 +123,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Den Bosh";
 			string album = original;
 
-			album = AlbumTagRules.RemoveCd(album);
+			album = AlbumRules.RemoveCd(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -138,7 +138,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh (1)";
 
-			album = AlbumTagRules.RemoveCopyAmount(album);
+			album = AlbumRules.RemoveCopyAmount(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -154,7 +154,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Den Bosh (Nice Day)";
 
-			album = AlbumTagRules.RemoveCopyAmount(album);
+			album = AlbumRules.RemoveCopyAmount(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -170,7 +170,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "Something {In Heaven}";
 
-			album = AlbumTagRules.ReplaceCurlyBraces(album);
+			album = AlbumRules.ReplaceCurlyBraces(album);
 
 			string expected = "Something [In Heaven]";
 			Assert.That(album, Is.EqualTo(expected));
@@ -185,7 +185,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Something In Heaven";
 			string album = original;
 
-			album = AlbumTagRules.ReplaceCurlyBraces(album);
+			album = AlbumRules.ReplaceCurlyBraces(album);
 
 			Assert.That(album, Is.EqualTo(original));
 		}
@@ -198,7 +198,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			string album = "What It Is! Funky Soul And Rare Grooves (Disk 2)";
 
-			album = AlbumTagRules.RemoveDisc(album);
+			album = AlbumRules.RemoveDisc(album);
 
 			Assert.IsNotEmpty(album);
 
@@ -215,7 +215,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string original = "Den Bosh";
 			string album = original;
 
-			album = AlbumTagRules.RemoveDisc(album);
+			album = AlbumRules.RemoveDisc(album);
 
 			Assert.IsNotEmpty(album);
 

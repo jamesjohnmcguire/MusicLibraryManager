@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="AlbumTagRules.cs" company="Digital Zen Works">
+// <copyright file="AlbumRules.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Album tag rules class.
 	/// </summary>
-	public static class AlbumTagRules
+	public static class AlbumRules
 	{
 		/// <summary>
 		/// Remove artist method.

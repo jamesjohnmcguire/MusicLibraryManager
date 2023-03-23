@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="ArtistTagRules.cs" company="Digital Zen Works">
+// <copyright file="ArtistRules.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Artist tag rules class.
 	/// </summary>
-	public static class ArtistTagRules
+	public static class ArtistRules
 	{
 		/// <summary>
 		/// Apply exceptions to artist name.
