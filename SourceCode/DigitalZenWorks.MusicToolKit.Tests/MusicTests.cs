@@ -163,34 +163,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Album replace curly braces method test.
-		/// </summary>
-		[Test]
-		public void AlbumReplaceCurlyBraces()
-		{
-			string album = "Something {In Heaven}";
-
-			album = AlbumRules.ReplaceCurlyBraces(album);
-
-			string expected = "Something [In Heaven]";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Album replace curly braces method test.
-		/// </summary>
-		[Test]
-		public void AlbumReplaceCurlyBracesNoChange()
-		{
-			string original = "Something In Heaven";
-			string album = original;
-
-			album = AlbumRules.ReplaceCurlyBraces(album);
-
-			Assert.That(album, Is.EqualTo(original));
-		}
-
-		/// <summary>
 		/// Album remove disc method test.
 		/// </summary>
 		[Test]
@@ -237,6 +209,34 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string expected = "Talking Heads - Brick(2005)";
 			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album replace curly braces method test.
+		/// </summary>
+		[Test]
+		public void AlbumReplaceCurlyBraces()
+		{
+			string album = "Something {In Heaven}";
+
+			album = AlbumRules.ReplaceCurlyBraces(album);
+
+			string expected = "Something [In Heaven]";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Album replace curly braces method test.
+		/// </summary>
+		[Test]
+		public void AlbumReplaceCurlyBracesNoChange()
+		{
+			string original = "Something In Heaven";
+			string album = original;
+
+			album = AlbumRules.ReplaceCurlyBraces(album);
+
+			Assert.That(album, Is.EqualTo(original));
 		}
 
 		/// <summary>
