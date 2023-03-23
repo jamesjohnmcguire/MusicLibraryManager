@@ -99,6 +99,22 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// Album remove artist method test.
+		/// </summary>
+		[Test]
+		public void AlbumRemoveArtist()
+		{
+			string album = "America - Ventura Highway";
+
+			album = AlbumRules.RemoveArtist(album);
+
+			Assert.IsNotEmpty(album);
+
+			string expected = "Ventura Highway";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// Album remove cd method test.
 		/// </summary>
 		[Test]
