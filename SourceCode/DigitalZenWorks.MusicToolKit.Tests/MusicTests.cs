@@ -256,6 +256,25 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The artist apply exceptions method test.
+		/// </summary>
+		[Test]
+		public void ArtistApplyExceptions()
+		{
+			string fileName = @"Music\10cc\The Very Best Of 10Cc\" +
+				"The Things We Do For Love.mp3";
+
+			string artist = Paths.GetArtistFromPath(fileName);
+
+			Assert.IsNotEmpty(artist);
+
+			artist = ArtistRules.ApplyExceptions(artist);
+
+			string expected = "10cc";
+			Assert.That(artist, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The artist name get from path method test.
 		/// </summary>
 		[Test]
@@ -269,6 +288,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.IsNotEmpty(artist);
 
 			string expected = "10cc";
+			Assert.That(artist, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The artist remove album method test.
+		/// </summary>
+		[Test]
+		public void ArtistRemoveAlbum()
+		{
+			string artist = "America - Ventura Highway";
+			string album = "Ventura Highway";
+
+			artist = ArtistRules.RemoveAlbum(artist);
+
+			Assert.IsNotEmpty(artist);
+
+			string expected = "America";
 			Assert.That(artist, Is.EqualTo(expected));
 		}
 
