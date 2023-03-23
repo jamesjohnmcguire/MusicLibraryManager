@@ -420,7 +420,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				Artist = ArtistRules.ReplaceVariousArtists(
 					Artist, TagFile.Tag.Performers[0]);
-				Artist = ArtistRules.RemoveAlbum(Artist);
+				Artist = ArtistRules.RemoveAlbum(Artist, Album);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Artist) &&
