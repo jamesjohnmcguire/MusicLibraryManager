@@ -17,6 +17,22 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class TitleRules
 	{
 		/// <summary>
+		/// Apply title file rules.
+		/// </summary>
+		/// <param name="title">The title to process.</param>
+		/// <returns>The updated title.</returns>
+		public static string ApplyTitleFileRules(string title)
+		{
+			title = Paths.RemoveIllegalPathCharacters(title);
+
+			title = GeneralRules.GetTitleCase(title);
+			title = GeneralRules.RemoveTrailingNumbers(title);
+			title = GeneralRules.ApplyGeneralRules(title);
+
+			return title;
+		}
+
+		/// <summary>
 		/// Extract sub title method.
 		/// </summary>
 		/// <param name="title">The title to check.</param>

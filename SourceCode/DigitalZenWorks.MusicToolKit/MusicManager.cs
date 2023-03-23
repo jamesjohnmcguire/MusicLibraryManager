@@ -244,11 +244,7 @@ namespace DigitalZenWorks.MusicToolKit
 				artist = CleanArtist(artist);
 				album = CleanAlbum(album);
 
-				title = Paths.RemoveIllegalPathCharacters(title);
-
-				title = GeneralRules.GetTitleCase(title);
-				title = GeneralRules.RemoveTrailingNumbers(title);
-				title = GeneralRules.ApplyGeneralRules(title);
+				title = TitleRules.ApplyTitleFileRules(title);
 
 				filePath = string.Format(
 					CultureInfo.InvariantCulture,
