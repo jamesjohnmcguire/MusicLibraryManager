@@ -376,7 +376,7 @@ namespace DigitalZenWorks.MusicToolKit
 				Album = AlbumRules.ReplaceCurlyBraces(Album);
 				Album = AlbumRules.RemoveCopyAmount(Album);
 
-				Album = AlbumRules.RemoveArtist(Album);
+				Album = AlbumRules.RemoveArtist(Album, Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Album) &&

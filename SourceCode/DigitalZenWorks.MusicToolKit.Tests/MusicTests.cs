@@ -105,8 +105,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void AlbumRemoveArtist()
 		{
 			string album = "America - Ventura Highway";
+			string artist = "America";
 
-			album = AlbumRules.RemoveArtist(album);
+			album = AlbumRules.RemoveArtist(album, artist);
 
 			Assert.IsNotEmpty(album);
 

@@ -18,12 +18,14 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Remove artist method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
+		/// <param name="artist">The artist name to compare.</param>
 		/// <returns>An updated album string.</returns>
-		public static string RemoveArtist(string album)
+		public static string RemoveArtist(string album, string artist)
 		{
 			if (!string.IsNullOrWhiteSpace(album))
 			{
 				string breaker = " - ";
+
 				if (album.Contains(
 					breaker, StringComparison.OrdinalIgnoreCase))
 				{
@@ -33,7 +35,15 @@ namespace DigitalZenWorks.MusicToolKit
 
 					if (parts.Length > 1)
 					{
-						album = parts[1];
+						string artistCompareCheck = parts[0];
+
+						// Confirm that the first part really contains
+						// the artist name.
+						if (artistCompareCheck.Equals(
+							artist, StringComparison.OrdinalIgnoreCase))
+						{
+							album = parts[1];
+						}
 					}
 				}
 			}
