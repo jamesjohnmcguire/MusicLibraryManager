@@ -4,8 +4,8 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.RulesLibrary;
 using System;
+using System.Globalization;
 
 namespace DigitalZenWorks.MusicToolKit
 {
@@ -28,6 +28,20 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return item;
+		}
+
+		/// <summary>
+		/// Get title case.
+		/// </summary>
+		/// <param name="title">The current title.</param>
+		/// <returns>The updated title.</returns>
+		public static string GetTitleCase(string title)
+		{
+			CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+			TextInfo textInfo = cultureInfo.TextInfo;
+			title = textInfo.ToTitleCase(title);
+
+			return title;
 		}
 	}
 }

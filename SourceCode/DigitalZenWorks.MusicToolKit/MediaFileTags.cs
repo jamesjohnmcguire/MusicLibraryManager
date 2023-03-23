@@ -368,7 +368,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				Album = TagRules.Trim(Album);
+				Album = GeneralRules.ApplyGeneralRules(Album);
 
 				Album = AlbumTagRules.RemoveCd(Album);
 				Album = AlbumTagRules.RemoveDisc(Album);
@@ -413,9 +413,9 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
-				Artist = TagRules.Trim(Artist);
+				Artist = GeneralRules.ApplyGeneralRules(Artist);
 
-				Artist = TagRules.GetTitleCase(Artist);
+				Artist = GeneralRules.GetTitleCase(Artist);
 				Artist = ArtistTagRules.ApplyExceptions(Artist);
 
 				Artist = ArtistTagRules.ReplaceVariousArtists(
@@ -469,7 +469,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = TagRules.Trim(Title);
+				Title = GeneralRules.ApplyGeneralRules(Title);
 
 				Title = TitleTagRules.RemoveBracketedSubTitle(Title);
 

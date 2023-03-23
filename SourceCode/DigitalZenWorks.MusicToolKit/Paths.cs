@@ -218,7 +218,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			title = TagRules.GetTitleCase(title);
+			title = GeneralRules.GetTitleCase(title);
 
 			return title;
 		}
