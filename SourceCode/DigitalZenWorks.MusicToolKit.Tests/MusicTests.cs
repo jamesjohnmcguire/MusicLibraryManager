@@ -309,6 +309,22 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The artist replace various artists method test.
+		/// </summary>
+		[Test]
+		public void ArtistReplaceVariousArtists()
+		{
+			string artist = "Various Artists";
+			string replacement = "The Spinners";
+
+			artist = ArtistRules.ReplaceVariousArtists(artist, replacement);
+
+			Assert.IsNotEmpty(artist);
+
+			Assert.That(artist, Is.EqualTo(replacement));
+		}
+
+		/// <summary>
 		/// The clean album success test.
 		/// </summary>
 		[Test]
@@ -1053,6 +1069,53 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.IsNotEmpty(title);
 
 			File.Delete(newFileName);
+
+			string expected = "Sakura";
+			Assert.That(title, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The title extract sub-title test.
+		/// </summary>
+		[Test]
+		public void TitleExtractSubTitle()
+		{
+			string title = "Sakura [Hanami]";
+
+			string subTitle = TitleRules.ExtractSubTitle(title);
+
+			string expected = "Hanami";
+			Assert.That(subTitle, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Title remove artist method test.
+		/// </summary>
+		[Test]
+		public void TitleRemoveArtist()
+		{
+			string title = "America - Ventura Highway";
+			string artist = "America";
+
+			title = TitleRules.RemoveArtist(title, artist);
+
+			Assert.IsNotEmpty(title);
+
+			string expected = "Ventura Highway";
+			Assert.That(title, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Title remove sub-title method test.
+		/// </summary>
+		[Test]
+		public void TitleRemoveSubTitle()
+		{
+			string title = "Sakura [Hanami]";
+
+			title = TitleRules.RemoveBracketedSubTitle(title);
+
+			Assert.IsNotEmpty(title);
 
 			string expected = "Sakura";
 			Assert.That(title, Is.EqualTo(expected));
