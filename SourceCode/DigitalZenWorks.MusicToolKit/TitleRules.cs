@@ -7,6 +7,7 @@
 using DigitalZenWorks.RulesLibrary;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
@@ -17,6 +18,30 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class TitleRules
 	{
 		/// <summary>
+		/// Apply exceptions to title.
+		/// </summary>
+		/// <param name="title">The title.</param>
+		/// <returns>The updated title.</returns>
+		public static string ApplyExceptions(string title)
+		{
+			if (!string.IsNullOrWhiteSpace(title))
+			{
+				Dictionary<string, string> exceptions = new ();
+				exceptions.Add("Oams", "OAMs");
+
+				foreach (KeyValuePair<string, string> exception in exceptions)
+				{
+					title = title.Replace(
+						exception.Key,
+						exception.Value,
+						StringComparison.Ordinal);
+				}
+			}
+
+			return title;
+		}
+
+		/// <summary>
 		/// Apply title file rules.
 		/// </summary>
 		/// <param name="title">The title to process.</param>
@@ -26,6 +51,8 @@ namespace DigitalZenWorks.MusicToolKit
 			title = Paths.RemoveIllegalPathCharacters(title);
 
 			title = GeneralRules.GetTitleCase(title);
+			title = TitleRules.ApplyExceptions(title);
+
 			title = GeneralRules.RemoveTrailingNumbers(title);
 			title = GeneralRules.ApplyGeneralRules(title);
 

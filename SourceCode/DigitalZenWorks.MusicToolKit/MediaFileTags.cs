@@ -471,6 +471,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Title = GeneralRules.ApplyGeneralRules(Title);
 				Title = GeneralRules.GetTitleCase(Title);
+				Title = TitleRules.ApplyExceptions(Title);
 
 				Title = TitleRules.RemoveBracketedSubTitle(Title);
 
