@@ -31,7 +31,7 @@ namespace DigitalZenWorks.MusicToolKit
 					artist = artist.Replace(
 						exception.Key,
 						exception.Value,
-						StringComparison.OrdinalIgnoreCase);
+						StringComparison.Ordinal);
 				}
 			}
 
