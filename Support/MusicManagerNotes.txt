@@ -1,12 +1,16 @@
 Music Library Manager
 
 Tasks
-	Separate out custom rule processing from other operations
+	Add exact duplicate checking functionality
+	Expand UpdateFile Tests, one for file with different name only in case sensitivity
+	Merge iTune properties when deleting a track
+	Make consistent usage of parameter names (text/item)
 	Tests should use temp path instead of library location?
 	musicManager.LibraryLocation is at roaming
+	Over ride logging directory with environment variable
+	Audio Signature	Add HttpTool\SourceCode\WebTools\HttpClientExtended.cs
 	Audio Signature	Add Tests of additional audio files in external script
 	Audio Signature	Set Logging to AppData
-	Over ride logging directory with environment variable
 	Audio Signature	Remove warnings from external sources
 	Audio Signature	Clean Up Warnings
 	Audio Signature	Connect to AcoustId service
@@ -84,6 +88,9 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Move or create tests for new rules classes
+		Separate out custom rule processing from other operations, make into their own classes
+		Move rules from Paths
 		CleanArtist, refactor rules processing to go elsewhere
 		Should path operations fail (because of file not existing) when the file isn't actually needed?
 		CreateDirectoryIfNotExists	Not needed?
