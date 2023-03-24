@@ -4,6 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using DigitalZenWorks.Common.Utilities.Extensions;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -62,9 +63,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The updated title.</returns>
 		public static string GetTitleCase(string title)
 		{
-			CultureInfo cultureInfo = CultureInfo.CurrentCulture;
-			TextInfo textInfo = cultureInfo.TextInfo;
-			title = textInfo.ToTitleCase(title);
+			title = title.ToTitleCase();
 
 			return title;
 		}
