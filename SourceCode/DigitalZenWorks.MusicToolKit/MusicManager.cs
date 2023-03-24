@@ -6,20 +6,16 @@
 
 using Common.Logging;
 using CSCore.XAudio2.X3DAudio;
+using DigitalZenWorks.Common.Utilities;
 using DigitalZenWorks.RulesLibrary;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using TagLib.Mpeg;
 
 [assembly: CLSCompliant(false)]
 
@@ -297,16 +293,25 @@ namespace DigitalZenWorks.MusicToolKit
 							// will just ignore the case change and keep the
 							// original name.
 							string temporaryFilePath = existingFile + ".tmp";
-							System.IO.File.Move(
-								file.FullName, temporaryFilePath);
-							System.IO.File.Move(
-								temporaryFilePath, existingFile);
+							File.Move(file.FullName, temporaryFilePath);
+							File.Move(temporaryFilePath, existingFile);
 						}
 						else
 						{
-							// a file is already there, move into duplicates
-							filePath = GetDuplicateLocation(existingFile);
-							System.IO.File.Move(file.FullName, filePath);
+							bool areExactDuplicates =
+								FileUtils.AreFilesTheSame(
+									existingFile, file.FullName);
+
+							if (areExactDuplicates == true)
+							{
+								File.Delete(file.FullName);
+							}
+							else
+							{
+								// move into duplicates
+								filePath = GetDuplicateLocation(existingFile);
+								File.Move(file.FullName, filePath);
+							}
 						}
 					}
 				}
