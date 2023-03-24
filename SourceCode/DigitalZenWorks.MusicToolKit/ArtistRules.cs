@@ -46,29 +46,11 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>An updated artist string.</returns>
 		public static string RemoveAlbum(string artist, string album)
 		{
-			if (!string.IsNullOrWhiteSpace(artist))
+			if (!string.IsNullOrWhiteSpace(artist) &&
+				!string.IsNullOrWhiteSpace(album))
 			{
-				string breaker = " - ";
-				if (artist.Contains(
-					breaker, StringComparison.OrdinalIgnoreCase))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = artist.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
-
-					if (parts.Length > 1)
-					{
-						string albumCompareCheck = parts[1];
-
-						// Confirm that the first part really contains
-						// the artist name.
-						if (albumCompareCheck.Equals(
-							album, StringComparison.OrdinalIgnoreCase))
-						{
-							artist = parts[0];
-						}
-					}
-				}
+				string compareText = " - " + album;
+				artist = GeneralRules.CompareRemove(artist, compareText);
 			}
 
 			return artist;

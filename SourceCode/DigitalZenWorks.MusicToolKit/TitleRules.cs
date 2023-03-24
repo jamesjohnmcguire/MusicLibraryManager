@@ -76,16 +76,8 @@ namespace DigitalZenWorks.MusicToolKit
 			if (!string.IsNullOrWhiteSpace(title) &&
 				!string.IsNullOrWhiteSpace(artist))
 			{
-				string compareTest = artist + " - ";
-
-				if (title.Contains(
-						compareTest, StringComparison.OrdinalIgnoreCase))
-				{
-					title = title.Replace(
-						compareTest,
-						string.Empty,
-						StringComparison.OrdinalIgnoreCase);
-				}
+				string compareText = artist + " - ";
+				title = GeneralRules.CompareRemove(title, compareText);
 			}
 
 			return title;

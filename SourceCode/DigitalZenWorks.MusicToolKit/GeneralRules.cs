@@ -32,6 +32,30 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Compare and remove, if matched.
+		/// </summary>
+		/// <param name="item">The item to check.</param>
+		/// <param name="compareText">The text to check for.</param>
+		/// <returns>The updated item.</returns>
+		public static string CompareRemove(string item, string compareText)
+		{
+			if (!string.IsNullOrWhiteSpace(item) &&
+				!string.IsNullOrWhiteSpace(compareText))
+			{
+				if (item.Contains(
+					compareText, StringComparison.OrdinalIgnoreCase))
+				{
+					item = item.Replace(
+						compareText,
+						string.Empty,
+						StringComparison.OrdinalIgnoreCase);
+				}
+			}
+
+			return item;
+		}
+
+		/// <summary>
 		/// Get title case.
 		/// </summary>
 		/// <param name="title">The current title.</param>
