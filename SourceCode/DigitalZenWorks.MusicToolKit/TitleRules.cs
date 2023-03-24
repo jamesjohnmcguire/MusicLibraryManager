@@ -43,14 +43,22 @@ namespace DigitalZenWorks.MusicToolKit
 
 			try
 			{
-				string pattern = @" \[.*?\]";
+				string pattern = @" \[(.*?)\]";
 				Match match = Regex.Match(
 					title, pattern, RegexOptions.IgnoreCase);
 
 				if (match.Success == true)
 				{
-					subTitle = match.Value;
-					subTitle = subTitle.Trim();
+					var groups = match.Groups;
+
+					if (groups.Count > 1)
+					{
+						subTitle = match.Groups[1].Value;
+					}
+					else
+					{
+						subTitle = match.Groups[0].Value;
+					}
 				}
 			}
 			catch (Exception exception) when
