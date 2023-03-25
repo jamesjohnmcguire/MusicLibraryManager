@@ -27,7 +27,17 @@ namespace DigitalZenWorks.MusicToolKit
 			if (!string.IsNullOrWhiteSpace(title))
 			{
 				Dictionary<string, string> exceptions = new ();
+				exceptions.Add("I Have a Dream", "I Have A Dream");
+				exceptions.Add(
+					"Lay All Your Love on Me", "Lay All Your Love On Me");
 				exceptions.Add("Oams", "OAMs");
+				exceptions.Add("One of Us", "One Of Us");
+				exceptions.Add("Take a Chance on Me", "Take A Chance On Me");
+				exceptions.Add(
+					"Thank You For the Music", "Thank You For The Music");
+				exceptions.Add("The Name of the Game", "The Name Of The Game");
+				exceptions.Add("Back in Black", "Back In Black");
+				exceptions.Add("Givin the Dog a Bone", "Givin The Dog A Bone");
 
 				foreach (KeyValuePair<string, string> exception in exceptions)
 				{
