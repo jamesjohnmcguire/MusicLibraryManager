@@ -271,8 +271,7 @@ namespace DigitalZenWorks.MusicToolKit
 				string filePath = NormalizePath(file);
 
 				// File path has changed
-				if (!filePath.Equals(
-					file.FullName, StringComparison.Ordinal))
+				if (!filePath.Equals(file.FullName, StringComparison.Ordinal))
 				{
 					// If no file existing with that name, just move it
 					if (!System.IO.File.Exists(filePath))
