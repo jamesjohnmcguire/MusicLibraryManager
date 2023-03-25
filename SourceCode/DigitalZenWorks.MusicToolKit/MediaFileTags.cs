@@ -8,6 +8,7 @@ using Common.Logging;
 using DigitalZenWorks.RulesLibrary;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 
@@ -413,10 +414,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
+				string[] excludes = { "10cc" };
+
 				Artist = GeneralRules.ApplyGeneralRules(Artist);
 
-				Artist = GeneralRules.GetTitleCase(Artist);
-				Artist = ArtistRules.ApplyExceptions(Artist);
+				if (!excludes.Contains(Artist))
+				{
+					Artist = GeneralRules.GetTitleCase(Artist);
+				}
 
 				Artist = ArtistRules.ReplaceVariousArtists(
 					Artist, TagFile.Tag.Performers[0]);
@@ -469,13 +474,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = GeneralRules.ApplyGeneralRules(Title);
-				Title = GeneralRules.GetTitleCase(Title);
-				Title = TitleRules.ApplyExceptions(Title);
-
-				Title = TitleRules.RemoveBracketedSubTitle(Title);
-
-				Title = TitleRules.RemoveArtist(Title, Artist);
+				Title = TitleRules.ApplyTitleFileRules(Title, Artist, false);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Title) &&

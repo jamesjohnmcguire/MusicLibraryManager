@@ -7,7 +7,7 @@
 using DigitalZenWorks.RulesLibrary;
 using Serilog;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
@@ -18,53 +18,39 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class TitleRules
 	{
 		/// <summary>
-		/// Apply exceptions to title.
-		/// </summary>
-		/// <param name="title">The title.</param>
-		/// <returns>The updated title.</returns>
-		public static string ApplyExceptions(string title)
-		{
-			if (!string.IsNullOrWhiteSpace(title))
-			{
-				Dictionary<string, string> exceptions = new ();
-				exceptions.Add("I Have a Dream", "I Have A Dream");
-				exceptions.Add(
-					"Lay All Your Love on Me", "Lay All Your Love On Me");
-				exceptions.Add("Oams", "OAMs");
-				exceptions.Add("One of Us", "One Of Us");
-				exceptions.Add("Take a Chance on Me", "Take A Chance On Me");
-				exceptions.Add(
-					"Thank You For the Music", "Thank You For The Music");
-				exceptions.Add("The Name of the Game", "The Name Of The Game");
-				exceptions.Add("Back in Black", "Back In Black");
-				exceptions.Add("Givin the Dog a Bone", "Givin The Dog A Bone");
-
-				foreach (KeyValuePair<string, string> exception in exceptions)
-				{
-					title = title.Replace(
-						exception.Key,
-						exception.Value,
-						StringComparison.Ordinal);
-				}
-			}
-
-			return title;
-		}
-
-		/// <summary>
 		/// Apply title file rules.
 		/// </summary>
 		/// <param name="title">The title to process.</param>
+		/// <param name="artist">The artist to check for.</param>
+		/// <param name="isFile">Indicates whether this is for a file
+		/// path name.</param>
 		/// <returns>The updated title.</returns>
-		public static string ApplyTitleFileRules(string title)
+		public static string ApplyTitleFileRules(
+			string title, string artist, bool isFile)
 		{
-			title = Paths.RemoveIllegalPathCharacters(title);
+			string[] excludes =
+			{
+				"Back In Black", "Givin The Dog A Bone", "I Have A Dream",
+				"Lay All Your Love On Me", "OAMs", "One Of Us",
+				"Take A Chance On Me", "Thank You For The Music",
+				"The Name Of The Game"
+			};
 
-			title = GeneralRules.GetTitleCase(title);
-			title = TitleRules.ApplyExceptions(title);
+			if (isFile == true)
+			{
+				title = Paths.RemoveIllegalPathCharacters(title);
+			}
 
-			title = GeneralRules.RemoveTrailingNumbers(title);
 			title = GeneralRules.ApplyGeneralRules(title);
+			title = GeneralRules.RemoveTrailingNumbers(title);
+
+			if (!excludes.Contains(title))
+			{
+				title = GeneralRules.GetTitleCase(title);
+			}
+
+			title = RemoveBracketedSubTitle(title);
+			title = RemoveArtist(title, artist);
 
 			return title;
 		}

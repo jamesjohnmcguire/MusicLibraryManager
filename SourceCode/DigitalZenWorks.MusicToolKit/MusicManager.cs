@@ -240,7 +240,7 @@ namespace DigitalZenWorks.MusicToolKit
 				artist = CleanArtist(artist);
 				album = CleanAlbum(album);
 
-				title = TitleRules.ApplyTitleFileRules(title);
+				title = TitleRules.ApplyTitleFileRules(title, artist, true);
 
 				filePath = string.Format(
 					CultureInfo.InvariantCulture,
