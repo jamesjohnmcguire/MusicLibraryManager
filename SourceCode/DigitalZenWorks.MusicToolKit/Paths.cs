@@ -159,7 +159,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				char[] illegalCharactors = new char[]
 				{
-					'<', '>', '"', '?', '*', '\''
+					'<', '>', '"', '?', '*'
 				};
 
 				foreach (char charactor in illegalCharactors)
