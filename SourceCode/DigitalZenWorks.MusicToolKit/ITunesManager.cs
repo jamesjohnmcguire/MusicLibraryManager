@@ -235,7 +235,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					bool isValid = IsValidItunesLocation(track);
 
-					// only update in iTunes, if the noted file doesn't exist.
+					// only update in iTunes, if the location is invalid.
 					if (isValid == false && File.Exists(filePath))
 					{
 						try
