@@ -222,7 +222,8 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="filePath">The file path to update to.</param>
 		/// <returns>A value indicating whether the track location was updated
 		/// or not.</returns>
-		public static bool UpdateItunesLocation(IITTrack track, string filePath)
+		public static bool UpdateItunesLocation(
+			IITTrack track, string filePath)
 		{
 			bool updated = false;
 
@@ -235,26 +236,23 @@ namespace DigitalZenWorks.MusicToolKit
 					bool isValid = IsValidItunesLocation(track);
 
 					// only update in iTunes, if the noted file doesn't exist.
-					if (isValid == false)
+					if (isValid == false && File.Exists(filePath))
 					{
-						if (File.Exists(filePath))
+						try
 						{
-							try
-							{
-								fileTrack.Location = filePath;
-								updated = true;
-							}
-							catch (Exception exception)
-							{
-								// TODO: If you get here, the actual type of
-								// exception, find out why the exception
-								// occured, then find out if the below code
-								// makes any sense
-								Log.Error(exception.ToString());
+							fileTrack.Location = filePath;
+							updated = true;
+						}
+						catch (Exception exception)
+						{
+							// TODO: If you get here, the actual type of
+							// exception, find out why the exception
+							// occured, then find out if the below code
+							// makes any sense
+							Log.Error(exception.ToString());
 
-								// updated = UpdateTrackFromLocation(track, filePath);
-								throw;
-							}
+							// updated = UpdateTrackFromLocation(track, filePath);
+							throw;
 						}
 					}
 				}
