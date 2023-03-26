@@ -28,6 +28,7 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string ApplyTitleFileRules(
 			string title, string artist, bool isFile)
 		{
+#if PROCESS_TITLECASE
 			string[] excludes =
 			{
 				"Back In Black", "Givin The Dog A Bone", "I Have A Dream",
@@ -35,6 +36,7 @@ namespace DigitalZenWorks.MusicToolKit
 				"Take A Chance On Me", "Thank You For The Music",
 				"The Name Of The Game"
 			};
+#endif
 
 			if (isFile == true)
 			{
@@ -44,10 +46,12 @@ namespace DigitalZenWorks.MusicToolKit
 			title = GeneralRules.ApplyGeneralRules(title);
 			title = GeneralRules.RemoveTrailingNumbers(title);
 
+#if PROCESS_TITLECASE
 			if (!excludes.Contains(title))
 			{
 				title = GeneralRules.GetTitleCase(title);
 			}
+#endif
 
 			title = RemoveBracketedSubTitle(title);
 			title = RemoveArtist(title, artist);
