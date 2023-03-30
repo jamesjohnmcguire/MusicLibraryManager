@@ -276,6 +276,9 @@ namespace DigitalZenWorks.MusicToolKit
 					// If no file existing with that name, just move it
 					if (!System.IO.File.Exists(filePath))
 					{
+						string directory = Path.GetDirectoryName(filePath);
+						Directory.CreateDirectory(directory);
+
 						System.IO.File.Move(file.FullName, filePath);
 					}
 					else
