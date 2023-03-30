@@ -354,7 +354,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					IITTrackCollection tracks = playList.Search(
 						searchName,
-						ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+						ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
 
 					if (null == tracks)
 					{
