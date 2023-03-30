@@ -1,10 +1,13 @@
 Music Library Manager
 
 Tasks
+	Add command line option to specify library location
+	iTunes	Check File.Exists at beginning
+	exclude wma
+	Log any and all changes
 	iTunes - StringComparison.OrdinalIgnoreCase?
-	ITPlaylistSearchField.ITPlaylistSearchFieldAll - maybe just title?
 	CleanAlbumSuccess Test	Doesn't really do anything, enhance
-	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating
+	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating, line 242
 	Check HRESULT codes
 	Don't bother trying to import flac files into iTunes
 	Add exact duplicate checking functionality
@@ -96,6 +99,7 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		ITPlaylistSearchField.ITPlaylistSearchFieldAll - maybe just title?
 		Single apostrophe ok in files
 		ApplyExceptions	Need to add and check Artist parameter as well.
 		Move or create tests for new rules classes
