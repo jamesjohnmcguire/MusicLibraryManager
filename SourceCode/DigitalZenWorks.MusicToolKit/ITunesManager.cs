@@ -107,20 +107,27 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (track != null)
 			{
-				if (track.Kind == ITTrackKind.ITTrackKindFile)
-				{
-					IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
+				string songName =
+					Path.GetFileNameWithoutExtension(filePath);
 
-					if (filePath == null && fileTrack.Location == null)
+				if (songName.Equals(
+					track.Name, StringComparison.OrdinalIgnoreCase))
+				{
+					if (track.Kind == ITTrackKind.ITTrackKindFile)
 					{
-						same = true;
-					}
-					else if (filePath != null &&
-						filePath.Equals(
-							fileTrack.Location,
-							StringComparison.OrdinalIgnoreCase))
-					{
-						same = true;
+						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
+
+						if (filePath == null && fileTrack.Location == null)
+						{
+							same = true;
+						}
+						else if (filePath != null &&
+							filePath.Equals(
+								fileTrack.Location,
+								StringComparison.OrdinalIgnoreCase))
+						{
+							same = true;
+						}
 					}
 				}
 			}
@@ -230,30 +237,38 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (track != null)
 			{
-				if (track.Kind == ITTrackKind.ITTrackKindFile)
+				string songName =
+					Path.GetFileNameWithoutExtension(filePath);
+
+				if (songName.Equals(
+					track.Name, StringComparison.OrdinalIgnoreCase))
 				{
-					IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
-
-					bool isValid = IsValidItunesLocation(track);
-
-					// only update in iTunes, if the location is invalid.
-					if (isValid == false && File.Exists(filePath))
+					if (track.Kind == ITTrackKind.ITTrackKindFile)
 					{
-						try
-						{
-							fileTrack.Location = filePath;
-							updated = true;
-						}
-						catch (Exception exception)
-						{
-							// TODO: If you get here, the actual type of
-							// exception, find out why the exception
-							// occured, then find out if the below code
-							// makes any sense
-							Log.Error(exception.ToString());
+						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
 
-							// updated = UpdateTrackFromLocation(track, filePath);
-							throw;
+						bool isValid = IsValidItunesLocation(track);
+
+						// only update in iTunes, if the location is invalid.
+						if (isValid == false && File.Exists(filePath))
+						{
+							try
+							{
+								fileTrack.Location = filePath;
+								updated = true;
+							}
+							catch (Exception exception)
+							{
+								// TODO: If you get here, the actual type of
+								// exception, find out why the exception
+								// occured, then find out if the below code
+								// makes any sense
+								Log.Error(exception.ToString());
+
+								// updated =
+								// UpdateTrackFromLocation(track, filePath);
+								throw;
+							}
 						}
 					}
 				}
@@ -488,7 +503,8 @@ namespace DigitalZenWorks.MusicToolKit
 			// invalid location to update.
 			foreach (IITTrack track in tracks)
 			{
-				updated = UpdateItunesLocation(track, filePath);
+				updated =
+					UpdateItunesLocation(track, filePath);
 
 				if (updated == true)
 				{
