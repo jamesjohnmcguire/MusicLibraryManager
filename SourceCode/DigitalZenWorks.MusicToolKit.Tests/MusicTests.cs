@@ -1018,7 +1018,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateTitleFromPath()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Clean();
@@ -1035,12 +1035,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 		/// <summary>
 		/// The tag file update title from path with rules test.
-		/// </summary>
+			/// </summary>
 		[Test]
 		public void TagFileUpdateTitleFromPathRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
 			bool result = tags.Clean();
