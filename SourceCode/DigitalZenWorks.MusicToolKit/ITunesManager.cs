@@ -341,7 +341,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool updated = false;
 
-			if (file != null)
+			if (file != null && file.Exists)
 			{
 				string[] excludes = { ".flac", ".wma" };
 
