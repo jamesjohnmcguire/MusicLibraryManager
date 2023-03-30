@@ -9,6 +9,7 @@ using iTunesLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -342,40 +343,47 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (file != null)
 			{
-				string searchName =
-					Path.GetFileNameWithoutExtension(file.Name);
+				string[] excludes = { ".flac", ".wma" };
 
-				IITTrackCollection tracks = playList.Search(
-					searchName,
-					ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+				string extension = Path.GetExtension(file.FullName);
 
-				if (null == tracks)
+				if (!excludes.Contains(extension))
 				{
-					// not in collection yet, add it
-					iTunes.LibraryPlaylist.AddFile(file.FullName);
-					updated = true;
-				}
-				else
-				{
-					// tracks is a list of potential matches
-					bool found = false;
+					string searchName =
+						Path.GetFileNameWithoutExtension(file.Name);
 
-					foreach (IITTrack track in tracks)
+					IITTrackCollection tracks = playList.Search(
+						searchName,
+						ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+
+					if (null == tracks)
 					{
-						// Check the file paths.
-						bool same =
-							AreFileAndTrackTheSame(file.FullName, track);
-
-						if (true == same)
-						{
-							found = true;
-							break;
-						}
+						// not in collection yet, add it
+						iTunes.LibraryPlaylist.AddFile(file.FullName);
+						updated = true;
 					}
-
-					if (false == found)
+					else
 					{
-						updated = UpdateOrAddTrack(tracks, file.FullName);
+						// tracks is a list of potential matches
+						bool found = false;
+
+						foreach (IITTrack track in tracks)
+						{
+							// Check the file paths.
+							bool same =
+								AreFileAndTrackTheSame(file.FullName, track);
+
+							if (true == same)
+							{
+								found = true;
+								break;
+							}
+						}
+
+						if (false == found)
+						{
+							updated = UpdateOrAddTrack(tracks, file.FullName);
+						}
 					}
 				}
 			}
