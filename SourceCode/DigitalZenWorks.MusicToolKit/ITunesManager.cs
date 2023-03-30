@@ -488,8 +488,7 @@ namespace DigitalZenWorks.MusicToolKit
 			// invalid location to update.
 			foreach (IITTrack track in tracks)
 			{
-				updated =
-					UpdateItunesLocation(track, filePath);
+				updated = UpdateItunesLocation(track, filePath);
 
 				if (updated == true)
 				{
