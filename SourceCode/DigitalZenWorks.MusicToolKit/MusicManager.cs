@@ -108,12 +108,11 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>A new combined path.</returns>
 		public static string CleanAlbum(string album)
 		{
-			album = Paths.RemoveIllegalPathCharacters(album);
-			album = album.Trim();
-			album = album.TrimEnd('.');
-
-			album =
-				album.Replace("  ", " ", StringComparison.OrdinalIgnoreCase);
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = Paths.RemoveIllegalPathCharacters(album);
+				album = album.TrimEnd('.');
+			}
 
 			return album;
 		}
@@ -130,17 +129,8 @@ namespace DigitalZenWorks.MusicToolKit
 				artist = Paths.RemoveIllegalPathCharacters(artist);
 				artist = artist.TrimEnd('.');
 
-				artist = artist.Replace(
-					"  ", " ", StringComparison.OrdinalIgnoreCase);
-
 				string extraPeriods = @"\.{2,}";
-
-				if (Regex.IsMatch(artist, extraPeriods))
-				{
-					artist = Regex.Replace(artist, extraPeriods, string.Empty);
-				}
-
-				artist = artist.Trim();
+				artist = Regex.Replace(artist, extraPeriods, string.Empty);
 			}
 
 			return artist;
@@ -237,7 +227,10 @@ namespace DigitalZenWorks.MusicToolKit
 					title = tags.Title;
 				}
 
+				artist = GeneralRules.ApplyGeneralRules(artist);
 				artist = CleanArtist(artist);
+
+				album = GeneralRules.ApplyGeneralRules(album);
 				album = CleanAlbum(album);
 
 				title = TitleRules.ApplyTitleFileRules(title, artist, true);
