@@ -133,11 +133,11 @@ namespace DigitalZenWorks.MusicToolKit
 				artist = artist.Replace(
 					"  ", " ", StringComparison.OrdinalIgnoreCase);
 
-				string pattern = @"\.{2,}";
+				string extraPeriods = @"\.{2,}";
 
-				if (Regex.IsMatch(artist, pattern))
+				if (Regex.IsMatch(artist, extraPeriods))
 				{
-					artist = Regex.Replace(artist, pattern, string.Empty);
+					artist = Regex.Replace(artist, extraPeriods, string.Empty);
 				}
 
 				artist = artist.Trim();
