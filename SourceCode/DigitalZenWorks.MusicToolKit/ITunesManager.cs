@@ -115,13 +115,14 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					if (track.Kind == ITTrackKind.ITTrackKindFile)
 					{
-						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
+						IITFileOrCDTrack fileTrack = track as IITFileOrCDTrack;
 
-						if (filePath == null && fileTrack.Location == null)
+						if (filePath == null &&
+							(fileTrack == null || fileTrack.Location == null))
 						{
 							same = true;
 						}
-						else if (filePath != null &&
+						else if (filePath != null && fileTrack != null &&
 							filePath.Equals(
 								fileTrack.Location,
 								StringComparison.OrdinalIgnoreCase))
@@ -155,9 +156,8 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					if (track.Kind == ITTrackKind.ITTrackKindFile)
 					{
-						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
-
-						if (!string.IsNullOrWhiteSpace(fileTrack.Location) &&
+						if (track is IITFileOrCDTrack fileTrack &&
+							!string.IsNullOrWhiteSpace(fileTrack.Location) &&
 							File.Exists(fileTrack.Location))
 						{
 							using MediaFileTags tags = new (filePath);
@@ -211,9 +211,8 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (track != null && track.Kind == ITTrackKind.ITTrackKindFile)
 			{
-				IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
-
-				if (!string.IsNullOrWhiteSpace(fileTrack.Location) ||
+				if (track is IITFileOrCDTrack fileTrack &&
+					!string.IsNullOrWhiteSpace(fileTrack.Location) &&
 					File.Exists(fileTrack.Location))
 				{
 					isValid = true;
@@ -245,12 +244,12 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					if (track.Kind == ITTrackKind.ITTrackKindFile)
 					{
-						IITFileOrCDTrack fileTrack = (IITFileOrCDTrack)track;
-
 						bool isValid = IsValidItunesLocation(track);
 
 						// only update in iTunes, if the location is invalid.
-						if (isValid == false && File.Exists(filePath))
+						if (isValid == false &&
+							track is IITFileOrCDTrack fileTrack &&
+							File.Exists(filePath))
 						{
 							try
 							{
@@ -259,14 +258,14 @@ namespace DigitalZenWorks.MusicToolKit
 							}
 							catch (Exception exception)
 							{
-								// TODO: If you get here, the actual type of
-								// exception, find out why the exception
-								// occured, then find out if the below code
-								// makes any sense
+								// TODO: Note the actual type of exception,
+								// find out why the exception occured, then
+								// find out if the below code makes any
+								// sense
 								Log.Error(exception.ToString());
 
-								// updated =
-								// UpdateTrackFromLocation(track, filePath);
+								// updated = UpdateTrackFromLocation(
+								// track, filePath);
 								throw;
 							}
 						}
