@@ -5,7 +5,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
 {
@@ -14,6 +15,58 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public static class ArtistRules
 	{
+		/// <summary>
+		/// Apply artist general rules.
+		/// </summary>
+		/// <param name="artist">The artist text.</param>
+		/// <param name="album">The album text to remove.</param>
+		/// <param name="performer">The performer tag to check.</param>
+		/// <returns>The updated artist text.</returns>
+		public static string ArtistGeneralRules(
+			string artist, string album, string performer)
+		{
+			string[] excludes = { "10cc" };
+			string extraPeriods = @"\.{2,}";
+
+			if (!string.IsNullOrWhiteSpace(artist))
+			{
+				artist = GeneralRules.ApplyGeneralRules(artist);
+
+				if (!excludes.Contains(artist))
+				{
+					artist = GeneralRules.GetTitleCase(artist);
+				}
+
+				artist = ReplaceVariousArtists(artist, performer);
+				artist = RemoveAlbum(artist, album);
+
+				artist = Regex.Replace(artist, extraPeriods, string.Empty);
+			}
+
+			return artist;
+		}
+
+		/// <summary>
+		/// Create artist path from tag.
+		/// </summary>
+		/// <param name="artist">The artist text.</param>
+		/// <param name="album">The album text to remove.</param>
+		/// <param name="performer">The performer tag to check.</param>
+		/// <returns>The updated artist text.</returns>
+		public static string CleanArtistFilePath(
+			string artist, string album, string performer)
+		{
+			if (!string.IsNullOrWhiteSpace(artist))
+			{
+				artist = ArtistGeneralRules(artist, album, performer);
+
+				artist = Paths.RemoveIllegalPathCharacters(artist);
+				artist = artist.TrimEnd('.');
+			}
+
+			return artist;
+		}
+
 		/// <summary>
 		/// Remove album method.
 		/// </summary>

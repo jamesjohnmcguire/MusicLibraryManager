@@ -15,6 +15,48 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class AlbumRules
 	{
 		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="album">The album tag.</param>
+		/// <param name="artist">The artist text to remove.</param>
+		/// <returns>A new combined path.</returns>
+		public static string AlbumGeneralRules(string album, string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = GeneralRules.ApplyGeneralRules(album);
+
+				album = ReplaceCurlyBraces(album);
+				album = RemoveCd(album);
+				album = RemoveDisc(album);
+				album = RemoveFlac(album);
+				album = RemoveCopyAmount(album);
+				album = RemoveArtist(album, artist);
+			}
+
+			return album;
+		}
+
+		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="album">The album tag.</param>
+		/// <param name="artist">The artist text to remove.</param>
+		/// <returns>A new combined path.</returns>
+		public static string CleanAlbumFilePath(string album, string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = AlbumGeneralRules(album, artist);
+
+				album = Paths.RemoveIllegalPathCharacters(album);
+				album = album.TrimEnd('.');
+			}
+
+			return album;
+		}
+
+		/// <summary>
 		/// Remove artist method.
 		/// </summary>
 		/// <param name="album">The album string.</param>

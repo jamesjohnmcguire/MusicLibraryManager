@@ -369,22 +369,13 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				Album = GeneralRules.ApplyGeneralRules(Album);
+				Album = AlbumRules.AlbumGeneralRules(Album, Artist);
 
-				Album = AlbumRules.RemoveCd(Album);
-				Album = AlbumRules.RemoveDisc(Album);
-				Album = AlbumRules.RemoveFlac(Album);
-				Album = AlbumRules.ReplaceCurlyBraces(Album);
-				Album = AlbumRules.RemoveCopyAmount(Album);
-
-				Album = AlbumRules.RemoveArtist(Album, Artist);
-			}
-
-			if (!string.IsNullOrWhiteSpace(Album) &&
-				!Album.Equals(previousAlbum, StringComparison.Ordinal))
-			{
-				updated = true;
-				Log.Info("Updating Album Tag");
+				if (!Album.Equals(previousAlbum, StringComparison.Ordinal))
+				{
+					updated = true;
+					Log.Info("Updating Album Tag");
+				}
 			}
 
 			return updated;
@@ -414,25 +405,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
-				string[] excludes = { "10cc" };
+				Artist = ArtistRules.ArtistGeneralRules(
+					Artist, Album, TagFile.Tag.Performers[0]);
 
-				Artist = GeneralRules.ApplyGeneralRules(Artist);
-
-				if (!excludes.Contains(Artist))
+				if (!Artist.Equals(previousArtist, StringComparison.Ordinal))
 				{
-					Artist = GeneralRules.GetTitleCase(Artist);
+					updated = true;
+					Log.Info("Updating Artist Tag");
 				}
-
-				Artist = ArtistRules.ReplaceVariousArtists(
-					Artist, TagFile.Tag.Performers[0]);
-				Artist = ArtistRules.RemoveAlbum(Artist, Album);
-			}
-
-			if (!string.IsNullOrWhiteSpace(Artist) &&
-				!Artist.Equals(previousArtist, StringComparison.Ordinal))
-			{
-				updated = true;
-				Log.Info("Updating Artist Tag");
 			}
 
 			return updated;

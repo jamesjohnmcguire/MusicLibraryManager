@@ -311,9 +311,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CleanAlbumSuccess()
 		{
-			string artistPath = Paths.GetArtistPathFromFilePath(testFile);
+			string album = "America - Somewhere  in *Heaven.";
+			string artist = "America";
 
-			string album = MusicManager.CleanAlbum("Somewhere  in *Heaven.");
+			album = AlbumRules.CleanAlbumFilePath(album, artist);
 
 			string expected = "Somewhere in Heaven";
 			Assert.That(album, Is.EqualTo(expected));
@@ -325,7 +326,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void CleanArtistSuccess()
 		{
-			string artist = MusicManager.CleanArtist("?Jefferson  Airplane..");
+			string artist = ArtistRules.CleanArtistFilePath(
+				"?Jefferson  Airplane..", null, null);
 
 			Assert.IsNotEmpty(artist);
 

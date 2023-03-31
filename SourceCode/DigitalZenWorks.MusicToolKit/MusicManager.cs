@@ -11,6 +11,7 @@ using DigitalZenWorks.RulesLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -99,41 +100,6 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			get { return rules; }
 			set { rules = value; }
-		}
-
-		/// <summary>
-		/// Create album path from tag.
-		/// </summary>
-		/// <param name="album">The album tag.</param>
-		/// <returns>A new combined path.</returns>
-		public static string CleanAlbum(string album)
-		{
-			if (!string.IsNullOrWhiteSpace(album))
-			{
-				album = Paths.RemoveIllegalPathCharacters(album);
-				album = album.TrimEnd('.');
-			}
-
-			return album;
-		}
-
-		/// <summary>
-		/// Create artist path from tag.
-		/// </summary>
-		/// <param name="artist">The artist name.</param>
-		/// <returns>The cleaned artist name.</returns>
-		public static string CleanArtist(string artist)
-		{
-			if (!string.IsNullOrWhiteSpace(artist))
-			{
-				artist = Paths.RemoveIllegalPathCharacters(artist);
-				artist = artist.TrimEnd('.');
-
-				string extraPeriods = @"\.{2,}";
-				artist = Regex.Replace(artist, extraPeriods, string.Empty);
-			}
-
-			return artist;
 		}
 
 		/// <summary>
@@ -227,12 +193,8 @@ namespace DigitalZenWorks.MusicToolKit
 					title = tags.Title;
 				}
 
-				artist = GeneralRules.ApplyGeneralRules(artist);
-				artist = CleanArtist(artist);
-
-				album = GeneralRules.ApplyGeneralRules(album);
-				album = CleanAlbum(album);
-
+				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
+				album = AlbumRules.CleanAlbumFilePath(album, artist);
 				title = TitleRules.ApplyTitleFileRules(title, artist, true);
 
 				filePath = string.Format(
