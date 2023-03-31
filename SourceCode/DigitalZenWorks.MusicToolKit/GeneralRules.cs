@@ -26,7 +26,7 @@ namespace DigitalZenWorks.MusicToolKit
 			if (item != null)
 			{
 				item = item.Trim();
-				item = item.Replace("  ", " ", StringComparison.OrdinalIgnoreCase);
+				item = Regex.Replace(item, @"\s+", " ");
 			}
 
 			return item;
