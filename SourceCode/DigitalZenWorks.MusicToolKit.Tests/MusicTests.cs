@@ -1122,10 +1122,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Title = "Sakura";
 			tags.Update();
 
-			FileInfo fileInfo = new (newFileName);
-
-			fileInfo = MusicManager.UpdateFile(fileInfo);
-			newFileName = fileInfo.FullName;
+			newFileName = MusicManager.UpdateFile(newFileName);
 
 			// Clean up.
 			File.Delete(newFileName);
@@ -1161,8 +1158,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			FileInfo fileInfo = new (testFile);
 
-			fileInfo = MusicManager.UpdateFile(fileInfo);
-			string newFileName = fileInfo.FullName;
+			string newFileName = MusicManager.UpdateFile(testFile);
 
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
 
