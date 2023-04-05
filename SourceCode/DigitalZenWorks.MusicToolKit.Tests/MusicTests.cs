@@ -371,96 +371,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Instance Album remove cd method test.
-		/// </summary>
-		[Test]
-		public void InstanceAlbumRemoveCd()
-		{
-			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
-
-			using MediaFileTags tags = new (newFileName);
-			tags.Album = "Album cd 1";
-
-			bool result = tags.Clean();
-
-			File.Delete(newFileName);
-
-			Assert.True(result);
-
-			string album = tags.Album;
-			Assert.IsNotEmpty(album);
-
-			string expected = "Album";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Instance Album remove cd no change test.
-		/// </summary>
-		[Test]
-		public void InstanceAlbumRemoveCdNoChange()
-		{
-			string original = "Album";
-			using MediaFileTags tags = new (testFile);
-			tags.Album = original;
-
-			bool result = tags.Clean();
-			Assert.True(result);
-
-			string album = tags.Album;
-			Assert.IsNotEmpty(album);
-
-			Assert.That(album, Is.EqualTo(original));
-		}
-
-		/// <summary>
-		/// Instance Album remove disc method test.
-		/// </summary>
-		[Test]
-		public void InstanceAlbumRemoveDisc()
-		{
-			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
-
-			using MediaFileTags tags = new (newFileName);
-			string album = tags.Album = "Album (Disk 2)";
-
-			bool result = tags.Clean();
-
-			File.Delete(newFileName);
-
-			Assert.True(result);
-
-			album = tags.Album;
-			Assert.IsNotEmpty(album);
-
-			string expected = "Album";
-			Assert.That(album, Is.EqualTo(expected));
-		}
-
-		/// <summary>
-		/// Instance Album remove cd no change test.
-		/// </summary>
-		[Test]
-		public void InstanceAlbumRemoveDiscNoChange()
-		{
-			string original = "Album";
-			using MediaFileTags tags = new (testFile);
-			tags.Album = original;
-			tags.Artist = "Artist";
-			tags.Title = "Sakura";
-
-			bool result = tags.Clean();
-			Assert.False(result);
-
-			string album = tags.Album;
-			Assert.IsNotEmpty(album);
-
-			Assert.That(album, Is.EqualTo(original));
-		}
-
-		/// <summary>
 		/// The run rule disc check method.
 		/// </summary>
 		[Test]
@@ -627,6 +537,96 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.True(result);
 
 			Assert.That(filePath, Is.EqualTo(destinationFile));
+		}
+
+		/// <summary>
+		/// Tag file Album remove cd method test.
+		/// </summary>
+		[Test]
+		public void TagFileAlbumRemoveCd()
+		{
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
+
+			using MediaFileTags tags = new(newFileName);
+			tags.Album = "Album cd 1";
+
+			bool result = tags.Clean();
+
+			File.Delete(newFileName);
+
+			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Tag file Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void TagFileInstanceAlbumRemoveCdNoChange()
+		{
+			string original = "Album";
+			using MediaFileTags tags = new(testFile);
+			tags.Album = original;
+
+			bool result = tags.Clean();
+			Assert.True(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// Tag file Album remove disc method test.
+		/// </summary>
+		[Test]
+		public void TagFileAlbumRemoveDisc()
+		{
+			string newFileName =
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+
+			using MediaFileTags tags = new(newFileName);
+			string album = tags.Album = "Album (Disk 2)";
+
+			bool result = tags.Clean();
+
+			File.Delete(newFileName);
+
+			Assert.True(result);
+
+			album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			string expected = "Album";
+			Assert.That(album, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Tag file Album remove cd no change test.
+		/// </summary>
+		[Test]
+		public void TagFileAlbumRemoveDiscNoChange()
+		{
+			string original = "Album";
+			using MediaFileTags tags = new(testFile);
+			tags.Album = original;
+			tags.Artist = "Artist";
+			tags.Title = "Sakura";
+
+			bool result = tags.Clean();
+			Assert.False(result);
+
+			string album = tags.Album;
+			Assert.IsNotEmpty(album);
+
+			Assert.That(album, Is.EqualTo(original));
 		}
 
 		/// <summary>
