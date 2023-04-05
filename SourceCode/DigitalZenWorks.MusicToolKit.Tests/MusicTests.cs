@@ -428,9 +428,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love.mp3";
 			string fullPath = Path.Combine(location, fileName);
-			FileInfo file = new (fullPath);
 
-			string normalizedFilePath = MusicManager.NormalizePath(file);
+			string normalizedFilePath = MusicManager.NormalizePath(fullPath);
 
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
@@ -449,9 +448,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 				"The Things We Do For Love2.mp3";
 			string fullPath = Path.Combine(location, fileName);
-			FileInfo file = new (fullPath);
 
-			string normalizedFilePath = MusicManager.NormalizePath(file);
+			string normalizedFilePath = MusicManager.NormalizePath(fullPath);
 
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
@@ -548,7 +546,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
 
-			using MediaFileTags tags = new(newFileName);
+			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
 
 			bool result = tags.Clean();
@@ -571,7 +569,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileInstanceAlbumRemoveCdNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new(testFile);
+			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 
 			bool result = tags.Clean();
@@ -592,7 +590,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
 
-			using MediaFileTags tags = new(newFileName);
+			using MediaFileTags tags = new (newFileName);
 			string album = tags.Album = "Album (Disk 2)";
 
 			bool result = tags.Clean();
@@ -615,7 +613,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileAlbumRemoveDiscNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new(testFile);
+			using MediaFileTags tags = new (testFile);
 			tags.Album = original;
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";

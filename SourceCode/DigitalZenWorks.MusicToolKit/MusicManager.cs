@@ -171,22 +171,20 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Normalize path.
 		/// </summary>
-		/// <param name="file">The file to check.</param>
+		/// <param name="filePath">The file path to check.</param>
 		/// <returns>The normalized path.</returns>
-		public static string NormalizePath(FileInfo file)
+		public static string NormalizePath(string filePath)
 		{
-			string filePath = null;
-
-			if (file != null)
+			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string basePath = Paths.GetBasePathFromFilePath(file.FullName);
-				string artist = Paths.GetArtistFromPath(file.FullName);
-				string album = Paths.GetAlbumFromPath(file.FullName);
-				string title = Paths.GetTitleFromPath(file.FullName);
+				string basePath = Paths.GetBasePathFromFilePath(filePath);
+				string artist = Paths.GetArtistFromPath(filePath);
+				string album = Paths.GetAlbumFromPath(filePath);
+				string title = Paths.GetTitleFromPath(filePath);
 
-				if (file.Exists == true)
+				if (File.Exists(filePath))
 				{
-					using MediaFileTags tags = new (file.FullName);
+					using MediaFileTags tags = new (filePath);
 
 					artist = tags.Artist;
 					album = tags.Album;
@@ -197,6 +195,8 @@ namespace DigitalZenWorks.MusicToolKit
 				album = AlbumRules.CleanAlbumFilePath(album, artist);
 				title = TitleRules.ApplyTitleFileRules(title, artist, true);
 
+				string extension = Path.GetExtension(filePath);
+
 				filePath = string.Format(
 					CultureInfo.InvariantCulture,
 					@"{1}{0}{2}{0}{3}{0}{4}{5}",
@@ -205,7 +205,7 @@ namespace DigitalZenWorks.MusicToolKit
 					artist,
 					album,
 					title,
-					file.Extension);
+					extension);
 			}
 
 			return filePath;
@@ -223,7 +223,7 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (file != null)
 			{
-				string filePath = NormalizePath(file);
+				string filePath = NormalizePath(file.FullName);
 
 				// File path has changed
 				if (!filePath.Equals(file.FullName, StringComparison.Ordinal))
