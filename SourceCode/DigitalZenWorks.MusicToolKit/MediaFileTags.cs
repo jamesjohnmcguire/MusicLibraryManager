@@ -53,11 +53,7 @@ namespace DigitalZenWorks.MusicToolKit
 				Album = Paths.GetAlbumFromPath(file);
 			}
 
-			if ((TagFile.Tag.Performers != null) &&
-				(TagFile.Tag.Performers.Length > 0))
-			{
-				artist = TagFile.Tag.Performers[0];
-			}
+			artist = GetFirstPerformerSafe();
 
 			if (string.IsNullOrWhiteSpace(artist))
 			{
@@ -76,7 +72,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (string.IsNullOrWhiteSpace(TagFile.Tag.Title))
 			{
-				// Tags seem to empty, attempt to get from file path.
 				Title = Paths.GetTitleFromPath(file);
 			}
 		}
@@ -313,6 +308,19 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
+		private string GetFirstPerformerSafe()
+		{
+			string peformer = null;
+
+			if ((TagFile.Tag.Performers != null) &&
+				(TagFile.Tag.Performers.Length > 0))
+			{
+				peformer = TagFile.Tag.Performers[0];
+			}
+
+			return peformer;
+		}
+
 		private SortedDictionary<string, object> GetTagFromPropertyInfo(
 			SortedDictionary<string, object> tags, PropertyInfo propertyInfo)
 		{
@@ -404,10 +412,7 @@ namespace DigitalZenWorks.MusicToolKit
 			bool updated = false;
 			string previousArtist = Artist;
 
-			if (TagFile.Tag.Performers.Length > 0)
-			{
-				Artist = TagFile.Tag.Performers[0];
-			}
+			Artist = GetFirstPerformerSafe();
 
 			if (string.IsNullOrWhiteSpace(Artist) &&
 				TagFile.Tag.AlbumArtists.Length > 0)
@@ -423,8 +428,9 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
+				string performer = GetFirstPerformerSafe();
 				Artist = ArtistRules.ArtistGeneralRules(
-					Artist, Album, TagFile.Tag.Performers[0]);
+					Artist, Album, performer);
 
 				if (!Artist.Equals(previousArtist, StringComparison.Ordinal))
 				{
