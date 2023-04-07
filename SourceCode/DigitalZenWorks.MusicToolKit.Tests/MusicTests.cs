@@ -1035,7 +1035,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 		/// <summary>
 		/// The tag file update title from path with rules test.
-			/// </summary>
+		/// </summary>
 		[Test]
 		public void TagFileUpdateTitleFromPathRules()
 		{
@@ -1111,35 +1111,13 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
-			using MediaFileTags tags = new (newFileName);
-
-			var test = tags.TagFile.Tag;
-			var test2 = test.Performers;
-
-			// UpdateFile assumes tags have already been cleaned.
-			tags.Album = "Album";
-			tags.Artist = "Artist";
-			tags.Title = "Sakura";
-			tags.Update();
-
 			newFileName = MusicManager.UpdateFile(newFileName);
+
+			string basePath = Paths.GetBasePathFromFilePath(testFile);
+			string expected = basePath + @"\Artist\Album\Sakura.mp4";
 
 			// Clean up.
 			File.Delete(newFileName);
-
-			string basePath = Paths.GetBasePathFromFilePath(testFile);
-
-			// Need to go 1 up actually.
-			// basePath = Path.GetDirectoryName(basePath);
-			string newBasePath =
-				basePath + 2.ToString(CultureInfo.InvariantCulture);
-
-			if (Directory.Exists(newBasePath))
-			{
-				Directory.Delete(newBasePath, true);
-			}
-
-			string expected = newBasePath + @"\Artist\Album\Sakura.mp4";
 
 			Assert.That(newFileName, Is.EqualTo(expected));
 		}
@@ -1150,18 +1128,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileSame()
 		{
-			using MediaFileTags tags = new (testFile);
-			tags.Album = "Album";
-			tags.Artist = "Artist";
-			tags.Title = "Sakura";
-			tags.Update();
-
-			FileInfo fileInfo = new (testFile);
-
 			string newFileName = MusicManager.UpdateFile(testFile);
 
 			string basePath = Paths.GetBasePathFromFilePath(testFile);
-
 			string expected =
 				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
