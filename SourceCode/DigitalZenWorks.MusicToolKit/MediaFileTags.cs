@@ -47,6 +47,12 @@ namespace DigitalZenWorks.MusicToolKit
 
 			TagFile = TagLib.File.Create(file);
 
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Album))
+			{
+				// Tags seem to empty, attempt to get from file path.
+				Album = Paths.GetAlbumFromPath(file);
+			}
+
 			if ((TagFile.Tag.Performers != null) &&
 				(TagFile.Tag.Performers.Length > 0))
 			{
@@ -60,6 +66,18 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					artist = TagFile.Tag.AlbumArtists[0];
 				}
+			}
+
+			if (string.IsNullOrWhiteSpace(artist))
+			{
+				// Tags seem to empty, attempt to get from file path.
+				artist = Paths.GetArtistFromPath(file);
+			}
+
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Title))
+			{
+				// Tags seem to empty, attempt to get from file path.
+				Title = Paths.GetTitleFromPath(file);
 			}
 		}
 
