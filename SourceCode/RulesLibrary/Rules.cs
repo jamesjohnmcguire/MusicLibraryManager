@@ -73,7 +73,7 @@ namespace DigitalZenWorks.RulesLibrary
 		{
 			bool updated = false;
 
-			if (item != null)
+			if (rules != null && item != null)
 			{
 				foreach (Rule rule in rules)
 				{
