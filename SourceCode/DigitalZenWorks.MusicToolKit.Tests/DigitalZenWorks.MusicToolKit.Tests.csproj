@@ -58,7 +58,7 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="stylecop.json" />
-		<EmbeddedResource Include="sakura.mp4" />
+		<EmbeddedResource Include="Sakura.mp4" />
 		<EmbeddedResource Include="XMLFile.xml" />
 	</ItemGroup>
 

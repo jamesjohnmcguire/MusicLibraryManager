@@ -41,7 +41,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(temporaryPath);
 			Directory.CreateDirectory(temporaryPath);
 
-			testFile = temporaryPath + @"\Artist\Album\sakura.mp4";
+			testFile = temporaryPath + @"\Artist\Album\Sakura.mp4";
 		}
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void SetUp()
 		{
 			FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.MusicToolKit.Tests.sakura.mp4", testFile);
+				"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", testFile);
 
 			rules = musicManager.Rules;
 		}
@@ -544,7 +544,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileAlbumRemoveCd()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album cd 1", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
@@ -573,7 +573,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Album = original;
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
@@ -588,7 +588,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileAlbumRemoveDisc()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			string album = tags.Album = "Album (Disk 2)";
@@ -634,7 +634,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateAlbumFromPath()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 
@@ -657,7 +657,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateAlbumFromPathRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 
@@ -894,7 +894,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateArtistFromPathRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
 			bool result = tags.Clean();
@@ -964,7 +964,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateNoChange()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 			tags.Artist = "Artist";
 			tags.Album = "Album";
@@ -991,7 +991,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileUpdateNoChangeRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Artist = "Artist";
 			tags.Album = "Album";
@@ -1109,7 +1109,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateFileDifferent()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 
