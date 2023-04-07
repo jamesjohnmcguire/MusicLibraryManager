@@ -112,7 +112,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			string resourceName =
 				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
-			Assembly thisAssembly = Assembly.GetCallingAssembly();
+			Assembly thisAssembly = Assembly.GetExecutingAssembly();
 
 			using (Stream templateObjectStream =
 				thisAssembly.GetManifestResourceStream(resourceName))
