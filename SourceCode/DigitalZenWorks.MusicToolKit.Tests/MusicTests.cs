@@ -22,12 +22,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class MusicTests : IDisposable
+	public class MusicTests : BaseTestsSupport, IDisposable
 	{
 		private MusicManager musicManager;
 		private Rules rules;
-		private string temporaryPath;
-		private string testFile;
 
 		/// <summary>
 		/// The one time setup method.
@@ -36,12 +34,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void OneTimeSetUp()
 		{
 			musicManager = new MusicManager(false);
-
-			temporaryPath = Path.GetTempFileName();
-			File.Delete(temporaryPath);
-			Directory.CreateDirectory(temporaryPath);
-
-			testFile = temporaryPath + @"\Artist\Album\Sakura.mp4";
 		}
 
 		/// <summary>
@@ -51,7 +43,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void SetUp()
 		{
 			FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", testFile);
+				"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", TestFile);
 
 			rules = musicManager.Rules;
 		}
@@ -62,13 +54,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[OneTimeTearDown]
 		public void OneTimeTearDown()
 		{
-			bool result = Directory.Exists(temporaryPath);
-
-			if (true == result)
-			{
-				Directory.Delete(temporaryPath, true);
-			}
-
 			Dispose();
 		}
 
@@ -341,7 +326,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void DecodeFile()
 		{
-			using NAudioDecoder decoder = new (testFile);
+			using NAudioDecoder decoder = new (TestFile);
 			AudioConsumer consumer = new ();
 
 			bool result = decoder.Decode(consumer, 240);
@@ -376,7 +361,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void MediaFileGetTagsCheck()
 		{
-			using MediaFileTags tags = new (testFile, rules);
+			using MediaFileTags tags = new (TestFile, rules);
 
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -522,8 +507,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void SaveTagsToJsonFileSuccess()
 		{
-			FileInfo fileInfo = new (testFile);
-			string destinationPath = Path.GetDirectoryName(testFile);
+			FileInfo fileInfo = new (TestFile);
+			string destinationPath = Path.GetDirectoryName(TestFile);
 			string filePath =
 				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
@@ -569,7 +554,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileInstanceAlbumRemoveCdNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new (testFile);
+			using MediaFileTags tags = new (TestFile);
 			tags.Album = original;
 
 			bool result = tags.Clean();
@@ -613,7 +598,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void TagFileAlbumRemoveDiscNoChange()
 		{
 			string original = "Album";
-			using MediaFileTags tags = new (testFile);
+			using MediaFileTags tags = new (TestFile);
 			tags.Album = original;
 			tags.Artist = "Artist";
 			tags.Title = "Sakura";
@@ -1113,7 +1098,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			newFileName = MusicManager.UpdateFile(newFileName);
 
-			string basePath = Paths.GetBasePathFromFilePath(testFile);
+			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected = basePath + @"\Artist\Album\Sakura.mp4";
 
 			// Clean up.
@@ -1128,9 +1113,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileSame()
 		{
-			string newFileName = MusicManager.UpdateFile(testFile);
+			string newFileName = MusicManager.UpdateFile(TestFile);
 
-			string basePath = Paths.GetBasePathFromFilePath(testFile);
+			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected =
 				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
@@ -1153,24 +1138,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 					musicManager = null;
 				}
 			}
-		}
-
-		/// <summary>
-		/// Make test file copy.
-		/// </summary>
-		/// <param name="directory">The directory to create.</param>
-		/// <param name="fileName">The file name to create.</param>
-		/// <returns>The file path of the copy file.</returns>
-		private string MakeTestFileCopy(string directory, string fileName)
-		{
-			string newPath = temporaryPath + directory;
-			Directory.CreateDirectory(newPath);
-
-			string newFileName = newPath + @"\" + fileName;
-
-			File.Copy(testFile, newFileName);
-
-			return newFileName;
 		}
 	}
 }
