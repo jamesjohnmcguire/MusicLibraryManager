@@ -557,7 +557,8 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 
 				// update directory and file names
-				file = UpdateFile(file);
+				string updatedFilePath = UpdateFile(file.FullName);
+				file = new (updatedFilePath);
 
 				if (iTunesManager.IsItunesEnabled == true)
 				{
