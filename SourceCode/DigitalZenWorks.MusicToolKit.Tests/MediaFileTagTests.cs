@@ -34,10 +34,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The run rule disc check method.
+		/// Get tags check test.
 		/// </summary>
 		[Test]
-		public void MediaFileGetTagsCheck()
+		public void GetTagsCheck()
 		{
 			using MediaFileTags tags = new (TestFile, rules);
 
@@ -56,10 +56,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Tag file Album remove cd method test.
+		/// Album remove cd test.
 		/// </summary>
 		[Test]
-		public void TagFileAlbumRemoveCd()
+		public void AlbumRemoveCd()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album cd 1", "Sakura.mp4");
@@ -81,10 +81,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Tag file Album remove cd no change test.
+		/// Album remove cd no change test.
 		/// </summary>
 		[Test]
-		public void TagFileInstanceAlbumRemoveCdNoChange()
+		public void AlbumRemoveCdNoChange()
 		{
 			string original = "Album";
 			using MediaFileTags tags = new (TestFile);
@@ -100,10 +100,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Tag file Album remove disc method test.
+		/// Album remove disc test.
 		/// </summary>
 		[Test]
-		public void TagFileAlbumRemoveDisc()
+		public void AlbumRemoveDisc()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
@@ -125,10 +125,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Tag file Album remove cd no change test.
+		/// Album remove cd no change test.
 		/// </summary>
 		[Test]
-		public void TagFileAlbumRemoveDiscNoChange()
+		public void AlbumRemoveDiscNoChange()
 		{
 			string original = "Album";
 			using MediaFileTags tags = new (TestFile);
@@ -146,10 +146,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album from path test.
+		/// Update album from path test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumFromPath()
+		public void UpdateAlbumFromPath()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -169,10 +169,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album from path with rules test.
+		/// Update album from path with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumFromPathRules()
+		public void UpdateAlbumFromPathRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -192,10 +192,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove cd test.
+		/// Update album remove cd test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveCd()
+		public void UpdateAlbumRemoveCd()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
@@ -216,10 +216,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove cd with rules test.
+		/// Update album remove cd with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveCdRules()
+		public void UpdateAlbumRemoveCdRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
@@ -240,10 +240,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove curly braces test.
+		/// Update album remove curly braces test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveCurlyBraces()
+		public void UpdateAlbumRemoveCurlyBraces()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "sakura.mp4");
@@ -264,10 +264,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove curly braces with rules test.
+		/// Update album remove curly braces with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveCurlyBracesRules()
+		public void UpdateAlbumRemoveCurlyBracesRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "sakura.mp4");
@@ -288,10 +288,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove disc test.
+		/// Update album remove disc test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveDisc()
+		public void UpdateAlbumRemoveDisc()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
@@ -312,10 +312,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove disc with rules test.
+		/// Update album remove disc with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveDiscRules()
+		public void UpdateAlbumRemoveDiscRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
@@ -336,10 +336,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove flac test.
+		/// Update album remove flac test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveFlac()
+		public void UpdateAlbumRemoveFlac()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album[FLAC]", "sakura.mp4");
@@ -360,10 +360,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update album remove flac with rules test.
+		/// Update album remove flac with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateAlbumRemoveFlacRules()
+		public void UpdateAlbumRemoveFlacRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album[FLAC]", "sakura.mp4");
@@ -384,10 +384,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update artist from path test.
+		/// Update artist from path test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateArtistFromPath()
+		public void UpdateArtistFromPath()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
@@ -406,10 +406,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update artist from path with rules test.
+		/// Update artist from path with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateArtistFromPathRules()
+		public void UpdateArtistFromPathRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -428,10 +428,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update change test.
+		/// Update change test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateChange()
+		public void UpdateChange()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
@@ -452,10 +452,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update change with rules test.
+		/// Update change with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateChangeRules()
+		public void UpdateChangeRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
@@ -476,10 +476,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update no change test.
+		/// Update no change test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateNoChange()
+		public void UpdateNoChange()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -503,10 +503,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update no change with rules test.
+		/// Update no change with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateNoChangeRules()
+		public void UpdateNoChangeRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -530,10 +530,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update title from path test.
+		/// Update title from path test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateTitleFromPath()
+		public void UpdateTitleFromPath()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
@@ -552,10 +552,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The tag file update title from path with rules test.
+		/// Update title from path with rules test.
 		/// </summary>
 		[Test]
-		public void TagFileUpdateTitleFromPathRules()
+		public void UpdateTitleFromPathRules()
 		{
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
