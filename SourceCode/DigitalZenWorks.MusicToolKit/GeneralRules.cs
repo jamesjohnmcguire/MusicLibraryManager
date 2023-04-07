@@ -75,7 +75,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The updated text.</returns>
 		public static string RemoveTrailingNumbers(string text)
 		{
-			text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+			if (!string.IsNullOrWhiteSpace(text))
+			{
+				text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+			}
 
 			return text;
 		}

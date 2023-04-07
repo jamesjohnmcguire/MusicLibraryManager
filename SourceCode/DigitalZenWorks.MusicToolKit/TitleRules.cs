@@ -28,6 +28,8 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string ApplyTitleFileRules(
 			string title, string artist, bool isFile)
 		{
+			if (!string.IsNullOrWhiteSpace(title))
+			{
 #if PROCESS_TITLECASE
 			string[] excludes =
 			{
@@ -38,13 +40,13 @@ namespace DigitalZenWorks.MusicToolKit
 			};
 #endif
 
-			if (isFile == true)
-			{
-				title = Paths.RemoveIllegalPathCharacters(title);
-			}
+				if (isFile == true)
+				{
+					title = Paths.RemoveIllegalPathCharacters(title);
+				}
 
-			title = GeneralRules.ApplyGeneralRules(title);
-			title = GeneralRules.RemoveTrailingNumbers(title);
+				title = GeneralRules.ApplyGeneralRules(title);
+				title = GeneralRules.RemoveTrailingNumbers(title);
 
 #if PROCESS_TITLECASE
 			if (!excludes.Contains(title))
@@ -53,8 +55,9 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 #endif
 
-			title = RemoveBracketedSubTitle(title);
-			title = RemoveArtist(title, artist);
+				title = RemoveBracketedSubTitle(title);
+				title = RemoveArtist(title, artist);
+			}
 
 			return title;
 		}

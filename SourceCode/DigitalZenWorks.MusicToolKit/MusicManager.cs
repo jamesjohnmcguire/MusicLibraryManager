@@ -186,9 +186,20 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					using MediaFileTags tags = new (filePath);
 
-					artist = tags.Artist;
-					album = tags.Album;
-					title = tags.Title;
+					if (!string.IsNullOrWhiteSpace(tags.Artist))
+					{
+						artist = tags.Artist;
+					}
+
+					if (!string.IsNullOrWhiteSpace(tags.Album))
+					{
+						album = tags.Album;
+					}
+
+					if (!string.IsNullOrWhiteSpace(tags.Title))
+					{
+						title = tags.Title;
+					}
 				}
 
 				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
