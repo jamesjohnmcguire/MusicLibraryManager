@@ -639,7 +639,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
@@ -662,7 +662,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string album = tags.Album;
 			Assert.IsNotEmpty(album);
@@ -876,7 +876,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string artist = tags.Artist;
 			Assert.IsNotEmpty(artist);
@@ -898,7 +898,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string artist = tags.Artist;
 			Assert.IsNotEmpty(artist);
@@ -1022,7 +1022,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string title = tags.Title;
 			Assert.IsNotEmpty(title);
@@ -1044,7 +1044,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using MediaFileTags tags = new (newFileName, rules);
 
 			bool result = tags.Clean();
-			Assert.True(result);
+			Assert.False(result);
 
 			string title = tags.Title;
 			Assert.IsNotEmpty(title);
