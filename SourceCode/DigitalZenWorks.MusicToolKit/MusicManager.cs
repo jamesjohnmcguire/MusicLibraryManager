@@ -59,7 +59,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			libraryTagsOnlyDirectoryLocation = libraryLocation + " Tags Only";
 
-			GetDefaultRules();
+			rules = GetDefaultRules();
 		}
 
 		/// <summary>
@@ -100,6 +100,33 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			get { return rules; }
 			set { rules = value; }
+		}
+
+		/// <summary>
+		/// Get default rules.
+		/// </summary>
+		/// <returns>A new rules object.</returns>
+		public static Rules GetDefaultRules()
+		{
+			string contents = null;
+
+			string resourceName =
+				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
+			Assembly thisAssembly = Assembly.GetCallingAssembly();
+
+			using (Stream templateObjectStream =
+				thisAssembly.GetManifestResourceStream(resourceName))
+			{
+				if (templateObjectStream != null)
+				{
+					using StreamReader reader = new (templateObjectStream);
+					contents = reader.ReadToEnd();
+				}
+			}
+
+			Rules rules = new (contents);
+
+			return rules;
 		}
 
 		/// <summary>
@@ -513,29 +540,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return deleted;
-		}
-
-		private Rules GetDefaultRules()
-		{
-			string contents = null;
-
-			string resourceName =
-				"DigitalZenWorks.MusicToolKit.DefaultRules.json";
-			Assembly thisAssembly = Assembly.GetCallingAssembly();
-
-			using (Stream templateObjectStream =
-				thisAssembly.GetManifestResourceStream(resourceName))
-			{
-				if (templateObjectStream != null)
-				{
-					using StreamReader reader = new (templateObjectStream);
-					contents = reader.ReadToEnd();
-				}
-			}
-
-			rules = new Rules(contents);
-
-			return rules;
 		}
 
 		private void CleanFile(FileInfo file)
