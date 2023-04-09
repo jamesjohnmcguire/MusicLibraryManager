@@ -26,7 +26,31 @@ namespace DigitalZenWorks.MusicToolKit
 			if (item != null)
 			{
 				item = item.Trim();
+
+				// Remove extra spaces.
 				item = Regex.Replace(item, @"\s+", " ");
+
+				item = CapitalizeFirstCharacter(item);
+			}
+
+			return item;
+		}
+
+		/// <summary>
+		/// Capitalize First Character.
+		/// </summary>
+		/// <param name="item">The item to process.</param>
+		/// <returns>The updated item.</returns>
+		public static string CapitalizeFirstCharacter(string item)
+		{
+			if (!string.IsNullOrWhiteSpace(item))
+			{
+				char first = item[0];
+				first = char.ToUpper(first, CultureInfo.InvariantCulture);
+
+				string remaining = item.Substring(1);
+
+				item = string.Concat(first, remaining);
 			}
 
 			return item;

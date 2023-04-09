@@ -294,6 +294,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// The clean album success test.
 		/// </summary>
 		[Test]
+		public void CapitalizeFirstCharacter()
+		{
+			string title = "sakura";
+
+			title = GeneralRules.CapitalizeFirstCharacter(title);
+
+			string expected = "Sakura";
+			Assert.That(title, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// The clean album success test.
+		/// </summary>
+		[Test]
 		public void CleanAlbumSuccess()
 		{
 			string album = "America - Somewhere  in *Heaven.";
