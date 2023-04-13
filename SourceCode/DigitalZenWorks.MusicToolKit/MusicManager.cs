@@ -264,7 +264,8 @@ namespace DigitalZenWorks.MusicToolKit
 				string normalizedfilePath = NormalizePath(filePath);
 
 				// File path has changed
-				if (!normalizedfilePath.Equals(filePath, StringComparison.Ordinal))
+				if (!normalizedfilePath.Equals(
+					filePath, StringComparison.Ordinal))
 				{
 					// If no file existing with that name, just move it
 					if (!System.IO.File.Exists(normalizedfilePath))
@@ -311,9 +312,9 @@ namespace DigitalZenWorks.MusicToolKit
 							}
 						}
 					}
-				}
 
-				filePath = normalizedfilePath;
+					filePath = normalizedfilePath;
+				}
 			}
 
 			return filePath;
