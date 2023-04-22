@@ -1,24 +1,24 @@
 Music Library Manager
 
 Tasks
+	Tests	tests for empty tags
+	Tests	Add tests for when the first character is lower case
+	Tests	In test like TagFileUpdateTitleFromPath, Specify if no change or change is expected
+	Tests	Add tests for non-exact duplicates found
+	Tests	Expand UpdateFile Tests, one for file with different name only in case sensitivity
+	If not title case, at least capitalize first character
 	Add command line option to specify library location
-	iTunes	Check File.Exists at beginning
-	exclude wma
 	Log any and all changes
-	iTunes - StringComparison.OrdinalIgnoreCase?
-	CleanAlbumSuccess Test	Doesn't really do anything, enhance
-	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating, line 242
-	Check HRESULT codes
-	Don't bother trying to import flac files into iTunes
+	iTunes	If Location differs by only case sensitivity, update to match current file
 	Add exact duplicate checking functionality
 	File Segment AC / DC?
 	Convert Flac to iTunes support format
-	Expand UpdateFile Tests, one for file with different name only in case sensitivity
 	Merge iTune properties when deleting a track
 	Make consistent usage of parameter names (text/item)
 	Tests should use temp path instead of library location?
 	musicManager.LibraryLocation is at roaming
 	Over ride logging directory with environment variable
+	Rules	Constructor, if content is empty, throw exception?
 	Audio Signature	Add HttpTool\SourceCode\WebTools\HttpClientExtended.cs
 	Audio Signature	Add Tests of additional audio files in external script
 	Audio Signature	Set Logging to AppData
@@ -99,6 +99,13 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Separate out tests into different classes
+		Tests	Review and improve tags.Clean tests
+		Tests	CleanAlbumSuccess Test	Doesn't really do anything, enhance
+		iTunes	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating, line 242
+		Don't bother trying to import flac files into iTunes
+		iTunes	Check File.Exists at beginning
+		exclude wma
 		ITPlaylistSearchField.ITPlaylistSearchFieldAll - maybe just title?
 		Single apostrophe ok in files
 		ApplyExceptions	Need to add and check Artist parameter as well.
@@ -699,3 +706,5 @@ Beets
 File Reading
 	Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
 Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
+
+https://titlecaseconverter.com/rules/
