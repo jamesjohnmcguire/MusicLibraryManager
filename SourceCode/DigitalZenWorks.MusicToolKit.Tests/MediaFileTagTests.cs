@@ -198,7 +198,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveCd()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album cd 1", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album cd 1";
@@ -222,7 +222,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveCdRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album cd 1", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album cd 1", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album cd 1";
@@ -246,7 +246,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveCurlyBraces()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album {In Heaven}";
@@ -270,7 +270,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveCurlyBracesRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album {In Heaven}", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album {In Heaven}";
@@ -294,7 +294,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveDisc()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
@@ -318,7 +318,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveDiscRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album (Disk 2)";
@@ -342,7 +342,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveFlac()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album[FLAC]", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album[FLAC]", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album[FLAC]";
@@ -366,7 +366,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateAlbumRemoveFlacRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album[FLAC]", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album[FLAC]", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album[FLAC]";
@@ -390,7 +390,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateArtistFromPath()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album Name", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
 			bool result = tags.Clean();
@@ -434,7 +434,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateChange()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName);
 			tags.Album = "Album (Disk 2)";
@@ -458,7 +458,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void UpdateChangeRules()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			using MediaFileTags tags = new (newFileName, rules);
 			tags.Album = "Album (Disk 2)";
