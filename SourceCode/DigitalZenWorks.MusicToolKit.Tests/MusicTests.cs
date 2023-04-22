@@ -562,23 +562,124 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// The update file different test.
+		/// The update file case difference test.
 		/// </summary>
 		[Test]
-		public void UpdateFileDifferent()
+		public void UpdateFileCaseDifference()
 		{
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+				MakeTestFileCopy(@"\Artist\Album", "sakura test.mp4");
 
 			newFileName = MusicManager.UpdateFile(newFileName);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
+			string expected = basePath + @"\Artist\Album\Sakura test.mp4";
+
+			Assert.That(newFileName, Is.EqualTo(expected));
+
+			bool exists = File.Exists(newFileName);
+			Assert.True(exists);
+
+			// Clean up.
+			File.Delete(newFileName);
+		}
+
+		/// <summary>
+		/// The update file different - moved test.
+		/// </summary>
+		[Test]
+		public void UpdateFileDifferentMoved()
+		{
+			string originalFileName =
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+
+			// Delete original test file, so that we can move the normalized
+			// File there.
+			File.Delete(TestFile);
+
+			string newFileName = MusicManager.UpdateFile(originalFileName);
+
+			// The un-normalized file should have been moved.
+			bool exists = File.Exists(originalFileName);
+			Assert.False(exists);
+
+			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected = basePath + @"\Artist\Album\Sakura.mp4";
+
+			Assert.That(newFileName, Is.EqualTo(expected));
+
+			exists = File.Exists(newFileName);
+			Assert.True(exists);
+
+			// Clean up.
+			File.Delete(newFileName);
+		}
+
+		/// <summary>
+		/// The update file different - moved to duplicates test.
+		/// </summary>
+		[Test]
+		public void UpdateFileDifferentMovedToDuplicates()
+		{
+			string originalFileName =
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+
+			// Update file, so it is not quite the same as original.
+			using MediaFileTags tags = new (originalFileName);
+
+			tags.Year = 1975;
+			tags.Update();
+
+			string newFileName = MusicManager.UpdateFile(originalFileName);
+
+			string basePath = Paths.GetBasePathFromFilePath(TestFile);
+
+			string newBasePath = basePath + "2";
+			string expected = newBasePath + @"\Artist\Album\Sakura.mp4";
+
+			Assert.That(newFileName, Is.EqualTo(expected));
+
+			bool exists = File.Exists(newFileName);
+			Assert.True(exists);
+
+			// The updated file should have been moved to duplicates.
+			exists = File.Exists(originalFileName);
+			Assert.False(exists);
 
 			// Clean up.
 			File.Delete(newFileName);
 
+			if (Directory.Exists(newBasePath))
+			{
+				Directory.Delete(newBasePath, true);
+			}
+		}
+
+		/// <summary>
+		/// The update file different - exact duplicate test.
+		/// </summary>
+		[Test]
+		public void UpdateFileExactDuplicate()
+		{
+			string originalFileName =
+				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+
+			string newFileName = MusicManager.UpdateFile(originalFileName);
+
+			// The un-normalized file should have been deleted.
+			bool exists = File.Exists(originalFileName);
+			Assert.False(exists);
+
+			string basePath = Paths.GetBasePathFromFilePath(TestFile);
+			string expected = basePath + @"\Artist\Album\Sakura.mp4";
+
 			Assert.That(newFileName, Is.EqualTo(expected));
+
+			exists = File.Exists(newFileName);
+			Assert.True(exists);
+
+			// Clean up.
+			File.Delete(newFileName);
 		}
 
 		/// <summary>
@@ -594,6 +695,9 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Path.Combine(basePath, @"Artist\Album\Sakura.mp4");
 
 			Assert.That(newFileName, Is.EqualTo(expected));
+
+			bool exists = File.Exists(newFileName);
+			Assert.True(exists);
 		}
 
 		/// <summary>
