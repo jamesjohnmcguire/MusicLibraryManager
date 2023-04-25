@@ -1,13 +1,7 @@
 Music Library Manager
 
 Tasks
-	Tests	tests for empty tags
-	Tests	Add tests for when the first character is lower case
 	Tests	In test like TagFileUpdateTitleFromPath, Specify if no change or change is expected
-	Tests	Add tests for non-exact duplicates found
-	Tests	Expand UpdateFile Tests, one for file with different name only in case sensitivity
-	If not title case, at least capitalize first character
-	Add command line option to specify library location
 	Log any and all changes
 	iTunes	If Location differs by only case sensitivity, update to match current file
 	Add exact duplicate checking functionality
@@ -99,6 +93,12 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Tests	tests for empty tags
+		Tests	Add tests for when the first character is lower case
+		Tests	Add tests for non-exact duplicates found
+		Tests	Expand UpdateFile Tests, one for file with different name only in case sensitivity
+		If not title case, at least capitalize first character
+		Add command line option to specify library location
 		Separate out tests into different classes
 		Tests	Review and improve tags.Clean tests
 		Tests	CleanAlbumSuccess Test	Doesn't really do anything, enhance
