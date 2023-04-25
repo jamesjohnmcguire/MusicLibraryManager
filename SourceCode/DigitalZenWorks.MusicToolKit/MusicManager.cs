@@ -30,10 +30,10 @@ namespace DigitalZenWorks.MusicToolKit
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
-		private readonly string libraryLocation;
 		private readonly string libraryTagsOnlyDirectoryLocation;
 
 		private ITunesManager iTunesManager;
+		private string libraryLocation;
 		private Rules rules;
 
 		/// <summary>
@@ -79,12 +79,13 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Gets the library location.
+		/// Gets or sets the library location.
 		/// </summary>
 		/// <value>The library location.</value>
 		public string LibraryLocation
 		{
-			get { return libraryLocation; }
+			get => libraryLocation;
+			set => libraryLocation = value;
 		}
 
 		/// <summary>
