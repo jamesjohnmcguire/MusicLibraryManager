@@ -1,6 +1,12 @@
 Music Library Manager
 
 Tasks
+	Add Methods to match commands - ExtractTags
+	[2023-04-30 18:52:10 INF] Tags Saved to: c:\Users\JamesMc\Data\External\Entertainment\Music Tags Only\The Lovin' Spoonful\The Lovin' Spoonful - Greatest Hits (2000)\20.-Lonely (Instrumental).flac.json
+	[2023-04-30 18:52:17 ERR] TagLib.CorruptFileException: FLAC stream not found at starting position.
+	previousArtist	"Julie Driscoll, Brian Auger & The Trinity"	string
+	performer	"Kool & The Gang"	string
+	exception	{"FLAC stream not found at starting position."}	System.Exception {TagLib.CorruptFileException}
 	Tests	In test like TagFileUpdateTitleFromPath, Specify if no change or change is expected
 	Log any and all changes
 	iTunes	If Location differs by only case sensitivity, update to match current file
