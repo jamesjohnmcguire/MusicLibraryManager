@@ -261,6 +261,8 @@ namespace DigitalZenWorks.MusicToolKit
 				if (name.Equals(
 						"EndTag", StringComparison.OrdinalIgnoreCase) ||
 					name.Equals(
+						"Pictures", StringComparison.OrdinalIgnoreCase) ||
+					name.Equals(
 						"StartTag", StringComparison.OrdinalIgnoreCase))
 				{
 					continue;
