@@ -37,7 +37,11 @@ namespace DigitalZenWorks.MusicToolKit
 					artist = GeneralRules.GetTitleCase(artist);
 				}
 
-				artist = ReplaceVariousArtists(artist, performer);
+				if (!string.IsNullOrWhiteSpace(performer))
+				{
+					artist = ReplaceVariousArtists(artist, performer);
+				}
+
 				artist = RemoveAlbum(artist, album);
 
 				artist = Regex.Replace(artist, extraPeriods, string.Empty);
