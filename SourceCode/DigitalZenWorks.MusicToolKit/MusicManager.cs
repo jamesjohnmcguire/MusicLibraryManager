@@ -150,9 +150,9 @@ namespace DigitalZenWorks.MusicToolKit
 
 				while (false == locationOk)
 				{
-					string basePath = Paths.GetBasePathFromFilePath(path);
-					string newBasePath = basePath +
-						tries.ToString(CultureInfo.InvariantCulture);
+					string newBasePath = GetDuplicateLocationByNumber(
+						path, tries);
+
 					FileInfo fileInfo = new (newBasePath);
 					string baseName = fileInfo.Name;
 
@@ -544,6 +544,21 @@ namespace DigitalZenWorks.MusicToolKit
 			return deleted;
 		}
 
+		private static string GetDuplicateLocationByNumber(
+			string path, int number)
+		{
+			string locationPath = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				string basePath = Paths.GetBasePathFromFilePath(path);
+				locationPath = basePath +
+					number.ToString(CultureInfo.InvariantCulture);
+			}
+
+			return locationPath;
+		}
+
 		private void CleanFile(FileInfo file)
 		{
 			try
@@ -637,6 +652,13 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
+		}
+
+		public string GetOriginalLocation(string duplicatePath)
+		{
+			string originalPath = null;
+
+			return originalPath;
 		}
 	}
 }
