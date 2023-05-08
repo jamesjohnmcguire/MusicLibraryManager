@@ -370,6 +370,38 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Recollect duplicates.
+		/// </summary>
+		/// <param name="libraryPath">The library path.</param>
+		public void RecollectDuplicates(string libraryPath)
+		{
+			if (!string.IsNullOrWhiteSpace(libraryPath))
+			{
+				bool locationOk;
+				int duplicateNumer = 2;
+
+				do
+				{
+					string duplicatePath = GetDuplicateLocationByNumber(
+						libraryPath, duplicateNumer);
+
+					locationOk = Directory.Exists(duplicatePath);
+
+					if (locationOk == true)
+					{
+						// recurse into directories
+
+						// for each file
+						// create file path to the original
+						// check to see if exists
+						// if not, move
+					}
+				}
+				while (locationOk == true);
+			}
+		}
+
+		/// <summary>
 		/// Save tags to json file method.
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
