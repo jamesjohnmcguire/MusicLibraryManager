@@ -110,13 +110,16 @@ namespace DigitalZenWorks.MusicToolKit
 				string songName =
 					Path.GetFileNameWithoutExtension(filePath);
 
-				if (songName.Equals(
-					track.Name, StringComparison.OrdinalIgnoreCase))
-				{
-					if (track.Kind == ITTrackKind.ITTrackKindFile)
-					{
-						IITFileOrCDTrack fileTrack = track as IITFileOrCDTrack;
+				// Normalize track name, as it may have been distorted
+				// elsewhere.
+				string trackName =
+					TitleRules.ApplyTitleFileRules(track.Name, null, true);
 
+				if (songName.Equals(
+					trackName, StringComparison.OrdinalIgnoreCase))
+				{
+					if (track is IITFileOrCDTrack fileTrack)
+					{
 						if (filePath == null &&
 							(fileTrack == null || fileTrack.Location == null))
 						{
@@ -239,16 +242,28 @@ namespace DigitalZenWorks.MusicToolKit
 				string songName =
 					Path.GetFileNameWithoutExtension(filePath);
 
+				// Normalize track name, as it may have been distorted
+				// elsewhere.
+				string trackName =
+					TitleRules.ApplyTitleFileRules(track.Name, null, true);
+
 				if (songName.Equals(
-					track.Name, StringComparison.OrdinalIgnoreCase))
+					trackName, StringComparison.OrdinalIgnoreCase))
 				{
-					if (track.Kind == ITTrackKind.ITTrackKindFile)
+					if (track is IITFileOrCDTrack fileTrack)
 					{
+						if (!trackName.Equals(
+							track.Name, StringComparison.OrdinalIgnoreCase))
+						{
+							// The track name needed to be normalized, so need to
+							// update that in iTunes.
+							fileTrack.Name = trackName;
+						}
+
 						bool isValid = IsValidItunesLocation(track);
 
 						// only update in iTunes, if the location is invalid.
 						if (isValid == false &&
-							track is IITFileOrCDTrack fileTrack &&
 							File.Exists(filePath))
 						{
 							try
