@@ -1,6 +1,10 @@
 Music Library Manager
 
 Tasks
+	Music2 Tags Only\Bob Dylan With Johnny Cash\Girl From The North Country
+	help	does nothing
+	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
+	RemoveDeadTracks as command API
 	Add Methods to match commands - ExtractTags
 	[2023-04-30 18:52:10 INF] Tags Saved to: c:\Users\JamesMc\Data\External\Entertainment\Music Tags Only\The Lovin' Spoonful\The Lovin' Spoonful - Greatest Hits (2000)\20.-Lonely (Instrumental).flac.json
 	[2023-04-30 18:52:17 ERR] TagLib.CorruptFileException: FLAC stream not found at starting position.
@@ -99,6 +103,7 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Remove Pictures from extracted tags
 		Tests	tests for empty tags
 		Tests	Add tests for when the first character is lower case
 		Tests	Add tests for non-exact duplicates found
@@ -714,3 +719,7 @@ File Reading
 Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
 
 https://titlecaseconverter.com/rules/
+
+
+	\path\to\music\artist\album\song
+	\path\to\music2\artist\album\song
