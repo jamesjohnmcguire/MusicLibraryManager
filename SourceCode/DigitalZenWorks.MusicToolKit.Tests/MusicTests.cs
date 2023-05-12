@@ -291,6 +291,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The artist replace various artists method test.
+		/// </summary>
+		[Test]
+		public void ArtistReplaceVariousArtistsNotNull()
+		{
+			string original = "Various Artists";
+			string replacement = null;
+
+			string artist =
+				ArtistRules.ReplaceVariousArtists(original, replacement);
+
+			Assert.IsNotEmpty(artist);
+
+			Assert.That(artist, Is.EqualTo(original));
+		}
+
+		/// <summary>
 		/// The clean album success test.
 		/// </summary>
 		[Test]
