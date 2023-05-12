@@ -212,14 +212,11 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool isValid = false;
 
-			if (track != null && track.Kind == ITTrackKind.ITTrackKindFile)
+			if (track != null && track is IITFileOrCDTrack fileTrack &&
+				!string.IsNullOrWhiteSpace(fileTrack.Location) &&
+				File.Exists(fileTrack.Location))
 			{
-				if (track is IITFileOrCDTrack fileTrack &&
-					!string.IsNullOrWhiteSpace(fileTrack.Location) &&
-					File.Exists(fileTrack.Location))
-				{
-					isValid = true;
-				}
+				isValid = true;
 			}
 
 			return isValid;
