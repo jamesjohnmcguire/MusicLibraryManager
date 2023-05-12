@@ -98,10 +98,11 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string ReplaceVariousArtists(
 			string artist, string replacement)
 		{
-			if (!string.IsNullOrWhiteSpace(artist))
+			if (!string.IsNullOrWhiteSpace(artist) &&
+				!string.IsNullOrWhiteSpace(replacement))
 			{
 				if (artist.ToUpperInvariant().Equals(
-						"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
+					"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
 				{
 					artist = replacement;
 				}
