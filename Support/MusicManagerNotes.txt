@@ -1,6 +1,11 @@
 Music Library Manager
 
 Tasks
+	Clean seems to be needed to run several times, in a row to 'catch' all the variants.  For some reason, not finding or processing all of the songs present.
+	Clean seems to be not catching the extra numbers at the end: Danny Singing With Mom and Dad, 1.wav
+	If song is an exact duplicate and then deleted, it should also be removed from iTunes.  This eventually happens, I think because of RemoveDeadTracks, but it should happen more immediately.
+	ReplaceVariousArtists Check for null or empty for replacement
+	File ending with comma?	Danny Singing With Mom and Dad, 1.wav	Entertainment\Music\Unknown Artist\Unknown Album\
 	Music2 Tags Only\Bob Dylan With Johnny Cash\Girl From The North Country
 	help	does nothing
 	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
@@ -716,10 +721,30 @@ Beets
 	https://beets.readthedocs.io/en/v1.6.0/guides/main.html
 File Reading
 	Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
-Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
-
-https://titlecaseconverter.com/rules/
-
-
+Audio Signatures
+	Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
+Title Case
+	https://titlecaseconverter.com/rules/
+Recollect Duplicates
 	\path\to\music\artist\album\song
 	\path\to\music2\artist\album\song
+iTunes Program Flow
+	UpdateItunes
+		playList.Search
+		if none
+			LibraryPlaylist.AddFile
+*		for each track
+			check if same (AreFileAndTrackTheSame)
+		if none same
+			UpdateOrAddTrack
+*				for each track
+					UpdateItunesLocation
+						trackName = TitleRules.ApplyTitleFileRules
+						if same
+							update track name
+							IsValidItunesLocation
+								if File.Exists(fileTrack.Location)
+							if invalid
+								fileTrack.Location = filePath;
+				if not updated
+					LibraryPlaylist.AddFile
