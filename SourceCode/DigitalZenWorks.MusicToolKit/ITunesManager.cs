@@ -120,12 +120,11 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					if (track is IITFileOrCDTrack fileTrack)
 					{
-						if (filePath == null &&
-							(fileTrack == null || fileTrack.Location == null))
+						if (filePath == null && fileTrack.Location == null)
 						{
 							same = true;
 						}
-						else if (filePath != null && fileTrack != null &&
+						else if (filePath != null &&
 							filePath.Equals(
 								fileTrack.Location,
 								StringComparison.OrdinalIgnoreCase))
