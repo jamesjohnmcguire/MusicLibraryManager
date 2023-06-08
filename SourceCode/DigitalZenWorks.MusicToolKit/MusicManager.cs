@@ -49,15 +49,20 @@ namespace DigitalZenWorks.MusicToolKit
 				Environment.SpecialFolderOption.Create);
 			libraryLocation = baseDataDirectory + applicationDataDirectory;
 
-			iTunesManager = new ITunesManager(enableItunes);
+			bool iTunesExist = ITunesManager.DoesItunesExist();
 
-			if (iTunesManager.IsItunesEnabled == true)
+			if (iTunesExist == true && enableItunes == true)
 			{
-				libraryLocation = iTunesManager.ItunesLibraryLocation;
-				libraryLocation = libraryLocation.Trim('\\');
-			}
+				iTunesManager = new ITunesManager(enableItunes);
 
-			libraryTagsOnlyDirectoryLocation = libraryLocation + " Tags Only";
+				if (iTunesManager.IsItunesEnabled == true)
+				{
+					libraryLocation = iTunesManager.ItunesLibraryLocation;
+					libraryLocation = libraryLocation.Trim('\\');
+				}
+
+				libraryTagsOnlyDirectoryLocation = libraryLocation + " Tags Only";
+			}
 
 			rules = GetDefaultRules();
 		}

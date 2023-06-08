@@ -139,6 +139,18 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Does iTunes exist method.
+		/// </summary>
+		/// <returns>A value indicating whether the iTunes application exists
+		/// or not.</returns>
+		public static bool DoesItunesExist()
+		{
+			bool exists = File.Exists(@"C:\Program Files\iTunes\iTunes.exe");
+
+			return exists;
+		}
+
+		/// <summary>
 		/// Are file and track the same method.
 		/// </summary>
 		/// <param name="filePath">The file path to check.</param>
