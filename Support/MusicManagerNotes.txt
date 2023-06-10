@@ -604,21 +604,34 @@ Resources
 			https://github.com/acoustid/chromaprint
 			https://github.com/wo80/AcoustID.NET
 			https://oxygene.sk/2011/01/how-does-chromaprint-work/
-	c# itunes api
-		http://www.joshkunz.com/iTunesControl/
-		http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
-		http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
-		http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
-		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-		https://www.google.com/#q=c%23+iTunes
-		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
-		http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
-		http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
-		https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
-		https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
-		http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
-		http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
-		https://taglib.github.io/api/annotated.html
+	iTunes
+		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
+		https://support.apple.com/en-us/HT201596
+		http://samsoft.org.uk/iTunes/scripts.asp
+		http://www.everythingitunes.com/os/windows/category/scripts/
+		http://dougscripts.com/itunes/itinfo/windowshelp.php
+	iTunes Development
+		itunes build options
+			set environment variable for conditional build inclusion
+			include hard-coded reference to Interop.iTunesLib.dll
+			create tlb, tlh files?
+		Reference
+			https://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp/76423905#76423905
+		iTunes api
+			http://www.joshkunz.com/iTunesControl/
+			http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
+			http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
+			http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
+			https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+			https://www.google.com/#q=c%23+iTunes
+			http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
+			http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
+			http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
+			https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
+			https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
+			http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
+			http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
+			https://taglib.github.io/api/annotated.html
 		http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
 		http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
 		https://naudio.codeplex.com/
@@ -626,13 +639,6 @@ Resources
 		http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
 		http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
 		https://musicbrainz.org/doc/Beginners_Guide
-	iTunes
-		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-		https://support.apple.com/en-us/HT201596
-		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-		http://samsoft.org.uk/iTunes/scripts.asp
-		http://www.everythingitunes.com/os/windows/category/scripts/
-		http://dougscripts.com/itunes/itinfo/windowshelp.php
 	Xml
 		http://stackoverflow.com/questions/55828/how-does-one-parse-xml-files
 		https://github.com/mercury2269/ITunesManager
