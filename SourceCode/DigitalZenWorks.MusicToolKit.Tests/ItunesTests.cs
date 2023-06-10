@@ -25,7 +25,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void AreFileAndTrackTheSameYes()
 		{
-			using ITunesManager iTunesManager = new (true);
+			using ITunesManager iTunesManager = new ();
 
 			iTunesApp iTunes = iTunesManager.ItunesCom;
 
@@ -63,7 +63,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetItunesPathDepth()
 		{
-			using ITunesManager iTunesManager = new (true);
+			using ITunesManager iTunesManager = new ();
 			string location = iTunesManager.ItunesLibraryLocation;
 			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
@@ -76,7 +76,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void ITunesPathLocation()
 		{
-			using ITunesManager iTunesManager = new (true);
+			using ITunesManager iTunesManager = new ();
 			string location = iTunesManager.ItunesLibraryLocation;
 
 			Assert.IsNotEmpty(location);
@@ -125,7 +125,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void LoadiTunesXmlFile()
 		{
-			using ITunesManager iTunesManager = new (true);
+			using ITunesManager iTunesManager = new ();
 			string xmlFilePath = iTunesManager.ITunesLibraryXMLPath;
 
 			Dictionary<string, object> result =
@@ -172,7 +172,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateItunes()
 		{
-			using ITunesManager iTunesManager = new (true);
+			using ITunesManager iTunesManager = new ();
 
 			string location = iTunesManager.ItunesLibraryLocation;
 

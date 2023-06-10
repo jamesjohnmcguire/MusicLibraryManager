@@ -33,32 +33,27 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ITunesManager"/> class.
 		/// </summary>
-		/// <param name="enableItunes">Indicates whether to instanciate
-		/// the iTunes Application.</param>
-		public ITunesManager(bool enableItunes)
+		public ITunesManager()
 		{
-			if (enableItunes == true)
+			try
 			{
-				try
-				{
-					// Create a reference to iTunes
-					iTunes = new iTunesLib.iTunesApp();
-				}
-				catch (System.Runtime.InteropServices.COMException exception)
-				{
-					Log.Warn(exception.ToString());
-				}
+				// Create a reference to iTunes
+				iTunes = new iTunesLib.iTunesApp();
+			}
+			catch (System.Runtime.InteropServices.COMException exception)
+			{
+				Log.Warn(exception.ToString());
+			}
 
-				if (iTunes != null)
-				{
-					isItunesEnabled = true;
+			if (iTunes != null)
+			{
+				isItunesEnabled = true;
 
-					playList = iTunes.LibraryPlaylist;
-					iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
+				playList = iTunes.LibraryPlaylist;
+				iTunesLibraryXMLPath = iTunes.LibraryXMLPath;
 
-					ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
-					iTunesLibraryLocation = iTunesXmlFile.ITunesFolderLocation;
-				}
+				ITunesXmlFile iTunesXmlFile = new (iTunesLibraryXMLPath);
+				iTunesLibraryLocation = iTunesXmlFile.ITunesFolderLocation;
 			}
 		}
 

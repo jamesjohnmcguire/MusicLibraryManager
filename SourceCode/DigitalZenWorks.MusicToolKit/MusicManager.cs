@@ -53,7 +53,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (iTunesExist == true && enableItunes == true)
 			{
-				iTunesManager = new ITunesManager(enableItunes);
+				iTunesManager = new ITunesManager();
 
 				if (iTunesManager.IsItunesEnabled == true)
 				{
