@@ -96,6 +96,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Gets or sets a value indicating whether the update tags property.
 		/// </summary>
+		/// <value>A value indicating whether the update tags property.</value>
 		public bool UpdateTags { get; set; }
 
 		/// <summary>
@@ -689,13 +690,6 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
-		}
-
-		public string GetOriginalLocation(string duplicatePath)
-		{
-			string originalPath = null;
-
-			return originalPath;
 		}
 	}
 }
