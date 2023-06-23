@@ -14,7 +14,7 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(UseItunes)' == 'true'">
 		<COMReference Include="iTunesLib">
 		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
 		<VersionMajor>1</VersionMajor>
@@ -24,6 +24,14 @@
 		<Isolated>False</Isolated>
 		<EmbedInteropTypes>True</EmbedInteropTypes>
 		</COMReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UseItunes)' != 'true'">
+		<Reference Include="Interop.iTunesLib, Version=1.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+			<EmbedInteropTypes>True</EmbedInteropTypes>
+			<HintPath>Interop.iTunesLib.dll</HintPath>
+			<SpecificVersion>False</SpecificVersion>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
