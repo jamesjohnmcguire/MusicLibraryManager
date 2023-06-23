@@ -11,13 +11,13 @@
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2023</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.5.185.0</FileVersion>
+		<FileVersion>0.6.188.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net7.0-windows</TargetFramework>
-		<Version>0.5.185</Version>
+		<Version>0.6.188</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
