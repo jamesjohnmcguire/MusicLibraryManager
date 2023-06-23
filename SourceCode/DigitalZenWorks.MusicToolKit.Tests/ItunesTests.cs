@@ -64,10 +64,15 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void GetItunesPathDepth()
 		{
 			using ITunesManager iTunesManager = new ();
-			string location = iTunesManager.ItunesLibraryLocation;
-			int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
+			iTunesApp iTunes = iTunesManager.ItunesCom;
 
-			Assert.GreaterOrEqual(iTunesDepth, 6);
+			if (iTunes != null)
+			{
+				string location = iTunesManager.ItunesLibraryLocation;
+				int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
+
+				Assert.GreaterOrEqual(iTunesDepth, 6);
+			}
 		}
 
 		/// <summary>
@@ -126,15 +131,20 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		public void LoadiTunesXmlFile()
 		{
 			using ITunesManager iTunesManager = new ();
-			string xmlFilePath = iTunesManager.ITunesLibraryXMLPath;
+			iTunesApp iTunes = iTunesManager.ItunesCom;
 
-			Dictionary<string, object> result =
-				ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
+			if (iTunes != null)
+			{
+				string xmlFilePath = iTunesManager.ITunesLibraryXMLPath;
 
-			Assert.NotNull(result);
+				Dictionary<string, object> result =
+					ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
 
-			int count = result.Count;
-			Assert.GreaterOrEqual(count, 1);
+				Assert.NotNull(result);
+
+				int count = result.Count;
+				Assert.GreaterOrEqual(count, 1);
+			}
 		}
 
 		/// <summary>
@@ -174,16 +184,21 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			using ITunesManager iTunesManager = new ();
 
-			string location = iTunesManager.ItunesLibraryLocation;
+			iTunesApp iTunes = iTunesManager.ItunesCom;
 
-			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
-				"The Things We Do For Love.mp3";
-			string fullPath = Path.Combine(location, fileName);
-			FileInfo fileInfo = new (fullPath);
+			if (iTunes != null)
+			{
+				string location = iTunesManager.ItunesLibraryLocation;
 
-			bool updated = iTunesManager.UpdateItunes(fileInfo);
+				string fileName = @"Music\10cc\The Very Best Of 10cc\" +
+					"The Things We Do For Love.mp3";
+				string fullPath = Path.Combine(location, fileName);
+				FileInfo fileInfo = new (fullPath);
 
-			Assert.False(updated);
+				bool updated = iTunesManager.UpdateItunes(fileInfo);
+
+				Assert.False(updated);
+			}
 		}
 	}
 }
