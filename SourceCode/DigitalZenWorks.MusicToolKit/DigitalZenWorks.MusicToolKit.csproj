@@ -31,9 +31,6 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(UseItunes)' != 'true'">
-		<!--COMFileReference Include="Interop.iTunesLib.dll">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</COMFileReference-->
 		<Reference Include="Interop.iTunesLib, Version=1.13.0.0, Culture=neutral, processorArchitecture=MSIL">
 			<EmbedInteropTypes>True</EmbedInteropTypes>
 			<HintPath>Interop.iTunesLib.dll</HintPath>
