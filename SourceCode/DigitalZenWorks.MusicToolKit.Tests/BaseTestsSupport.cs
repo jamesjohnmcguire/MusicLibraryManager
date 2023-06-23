@@ -28,6 +28,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// <summary>
 		/// Gets the test file.
 		/// </summary>
+		/// <value>The test file.</value>
 		public string TestFile { get => testFile; }
 
 		/// <summary>
