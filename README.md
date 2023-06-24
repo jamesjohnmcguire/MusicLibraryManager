@@ -35,7 +35,7 @@ Currently, the rules and options on how to process are a bit 'baked in'.  Next s
 
 ## Building
 
-If you have iTunes installed, you should set the UseItunes environment variable to 'true', such as SET UseItunes=true and / or SETX UseItunes true.  Otherwise, it will build with a pre-generated Interop.iTunesLib.dll.  I
+If you have iTunes installed, you should set the UseItunes environment variable to 'true', such as SET UseItunes=true and / or SETX UseItunes true.  Otherwise, it will build with a pre-generated Interop.iTunesLib.dll.
 
 ## Contributing
 
