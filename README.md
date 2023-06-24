@@ -29,7 +29,13 @@ Refer to 'Usage' section below.
 
 All usual disclaimers are applicable.  Not responsible for damage or loss.  Backup! Backup! Backup! before usage
 
+Previously, iTunes was required to be installed before using.  This requirement now seems to be removed.  But it is still a bit fresh.  Obvisously, if iTunes is not installed, none of the iTunes functionality will be available.
+
 Currently, the rules and options on how to process are a bit 'baked in'.  Next step is to extract those rules and options, so that people can customize to their own likings.
+
+## Building
+
+If you have iTunes installed, you should set the UseItunes environment variable to 'true', such as SET UseItunes=true and / or SETX UseItunes true.  Otherwise, it will build with a pre-generated Interop.iTunesLib.dll.  I
 
 ## Contributing
 
