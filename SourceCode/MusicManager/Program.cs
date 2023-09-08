@@ -14,7 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
+
+using CommonLogging = Common.Logging;
 
 [assembly: CLSCompliant(true)]
 
@@ -59,12 +60,24 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 							{
 								using MusicToolKit.MusicManager musicUtility =
 									new (true);
+
+								string location = GetLocation(command);
+
+								if (!string.IsNullOrWhiteSpace(location))
+								{
+									musicUtility.LibraryLocation = location;
+								}
+
 								Rules rules = GetRulesData(command);
 
 								if (rules != null)
 								{
 									musicUtility.Rules = rules;
 								}
+
+								bool noUpdateTags = command.DoesOptionExist(
+									"n", "no-update-tags");
+								musicUtility.UpdateTags = !noUpdateTags;
 
 								musicUtility.CleanMusicLibrary();
 							}
@@ -110,18 +123,39 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			help.Description = "Show this information";
 			commands.Add(help);
 
-			CommandOption rules = new ("r", "rules", true);
 			IList<CommandOption> options = new List<CommandOption>();
+
+			CommandOption location = new ("l", "location", true);
+			options.Add(location);
+
+			Command extractTags =
+				new ("extract-tags", options, 0, "Extract Tags Information");
+			commands.Add(extractTags);
+
+			CommandOption rules = new ("r", "rules", true);
 			options.Add(rules);
+
+			CommandOption noUpdateTags = new ("n", "no-update-tags", false);
+			options.Add(noUpdateTags);
 
 			Command clean = new ("clean", options, 0, "Clean music files");
 			commands.Add(clean);
 
-			Command extractTags = new ("extract-tags");
-			extractTags.Description = "Extract tag info";
-			commands.Add(extractTags);
-
 			return commands;
+		}
+
+		private static string GetLocation(Command command)
+		{
+			string location = null;
+
+			CommandOption optionFound = command.GetOption("l", "location");
+
+			if (optionFound != null)
+			{
+				location = optionFound.Parameter;
+			}
+
+			return location;
 		}
 
 		private static Rules GetRulesData(Command command)
@@ -171,7 +205,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =
-				new Common.Logging.Serilog.SerilogFactoryAdapter();
+				new CommonLogging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="AlbumTagRules.cs" company="Digital Zen Works">
+// <copyright file="AlbumRules.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -12,30 +12,63 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Album tag rules class.
 	/// </summary>
-	public static class AlbumTagRules
+	public static class AlbumRules
 	{
+		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="album">The album tag.</param>
+		/// <param name="artist">The artist text to remove.</param>
+		/// <returns>A new combined path.</returns>
+		public static string AlbumGeneralRules(string album, string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = GeneralRules.ApplyGeneralRules(album);
+
+				album = ReplaceCurlyBraces(album);
+				album = RemoveCd(album);
+				album = RemoveDisc(album);
+				album = RemoveFlac(album);
+				album = RemoveCopyAmount(album);
+				album = RemoveArtist(album, artist);
+			}
+
+			return album;
+		}
+
+		/// <summary>
+		/// Create album path from tag.
+		/// </summary>
+		/// <param name="album">The album tag.</param>
+		/// <param name="artist">The artist text to remove.</param>
+		/// <returns>A new combined path.</returns>
+		public static string CleanAlbumFilePath(string album, string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(album))
+			{
+				album = AlbumGeneralRules(album, artist);
+
+				album = Paths.RemoveIllegalPathCharacters(album);
+				album = album.TrimEnd('.');
+			}
+
+			return album;
+		}
+
 		/// <summary>
 		/// Remove artist method.
 		/// </summary>
 		/// <param name="album">The album string.</param>
+		/// <param name="artist">The artist name to compare.</param>
 		/// <returns>An updated album string.</returns>
-		public static string RemoveArtist(string album)
+		public static string RemoveArtist(string album, string artist)
 		{
-			if (!string.IsNullOrWhiteSpace(album))
+			if (!string.IsNullOrWhiteSpace(album) &&
+				!string.IsNullOrWhiteSpace(artist))
 			{
-				string breaker = " - ";
-				if (album.Contains(
-					breaker, StringComparison.OrdinalIgnoreCase))
-				{
-					string[] separators = new string[] { breaker };
-					string[] parts = album.Split(
-						separators, StringSplitOptions.RemoveEmptyEntries);
-
-					if (parts.Length > 1)
-					{
-						album = parts[1];
-					}
-				}
+				string compareText = artist + " - ";
+				album = GeneralRules.CompareRemove(album, compareText);
 			}
 
 			return album;

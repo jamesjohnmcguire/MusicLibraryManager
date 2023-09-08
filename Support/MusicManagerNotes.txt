@@ -1,20 +1,45 @@
 Music Library Manager
 
 Tasks
-	Itunes	Do not instantiate iTunes when doing only extract-tags
-	Console.WriteLine
-	Add Tests of additional audio files in external script
-	AudioId	Rename Files / Projects to AudioId
-	AudioId	Continue refactor of big function
-	AudioId	Set Logging to AppData
+	Error	CS1056	Unexpected character ' AssemblyInfo.cs
+	Clean seems to be needed to run several times, in a row to 'catch' all the variants.  For some reason, not finding or processing all of the songs present.
+	Clean seems to be not catching the extra numbers at the end: Danny Singing With Mom and Dad, 1.wav
+	If song is an exact duplicate and then deleted, it should also be removed from iTunes.  This eventually happens, I think because of RemoveDeadTracks, but it should happen more immediately.
+	ReplaceVariousArtists Check for null or empty for replacement
+	That Lady, Part 1 (The one gets removed)
+	File ending with comma?	Danny Singing With Mom and Dad, 1.wav	Entertainment\Music\Unknown Artist\Unknown Album\
+	Music2 Tags Only\Bob Dylan With Johnny Cash\Girl From The North Country
+	help	does nothing
+	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
+	RemoveDeadTracks as command API
+	Add Methods to match commands - ExtractTags
+	[2023-04-30 18:52:10 INF] Tags Saved to: c:\Users\JamesMc\Data\External\Entertainment\Music Tags Only\The Lovin' Spoonful\The Lovin' Spoonful - Greatest Hits (2000)\20.-Lonely (Instrumental).flac.json
+	[2023-04-30 18:52:17 ERR] TagLib.CorruptFileException: FLAC stream not found at starting position.
+	previousArtist	"Julie Driscoll, Brian Auger & The Trinity"	string
+	performer	"Kool & The Gang"	string
+	exception	{"FLAC stream not found at starting position."}	System.Exception {TagLib.CorruptFileException}
+	Tests	In test like TagFileUpdateTitleFromPath, Specify if no change or change is expected
+	Log any and all changes
+	iTunes	If Location differs by only case sensitivity, update to match current file
+	Add exact duplicate checking functionality
+	File Segment AC / DC?
+	Convert Flac to iTunes support format
+	Merge iTune properties when deleting a track
+	Make consistent usage of parameter names (text/item)
+	Tests should use temp path instead of library location?
+	musicManager.LibraryLocation is at roaming
 	Over ride logging directory with environment variable
-	AudioId	Remove warnings from external sources
-	AudioId	Clean Up Warnings
-	AudioId	Connect to AcoustId
+	Rules	Constructor, if content is empty, throw exception?
+	Audio Signature	Add HttpTool\SourceCode\WebTools\HttpClientExtended.cs
+	Audio Signature	Add Tests of additional audio files in external script
+	Audio Signature	Set Logging to AppData
+	Audio Signature	Remove warnings from external sources
+	Audio Signature	Clean Up Warnings
+	Audio Signature	Connect to AcoustId service
 	Test Beets, MusicBee
 	Itunes	Build non-itunes version
-	Add support for wide char FingerPrint(const wchar_t* filePath)
-	Deal with Multiple Artists, Remove throwing exception
+	Audio Signature	Add support for wide char FingerPrint(const wchar_t* filePath)
+	Deal with Multiple Artists
 	Rules	by getting base element, skipping testing of full namespace / objec name, should a test before hand
 	Artists doesn't exist
 	Rules	GetItemSubject should return an object
@@ -25,8 +50,8 @@ Tasks
 	Refactor ITunesXmlFile
 	Refactor FindDuplicates, into smaller testable methods
 	AcoustID fingerprints
-	GetDefaultRules use FileUtils
-	Don't call GetDefaultRules if rules already exist
+	Rules	GetDefaultRules use FileUtils
+	Rules	Don't call GetDefaultRules if rules already exist
 	items.OrderBy(i => i.Name, StringComparer.Ordinal)
 	SaveTagsToJsonFile, Catch json exceptions
 	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
@@ -36,7 +61,6 @@ Tasks
 	Refactor private MediaFileTags tags to be parameter of specific methods 
 	Refactor AreFileAndTrackTheSame with better internal testing
 	Optimize SaveTagsToJsonFile, so to not save if content is the same
-	#pragma warning disable CS0618 // Type or member is obsolete
 	Keep GetFullPathObject?
 	Unify all tucked away implicit rules, regex's inside private methods, etc
 	Rename to more appropriate name: ConditionNotEmptyTest
@@ -46,8 +70,6 @@ Tasks
 	Catch Exceptions from ReadAllText, IsMatch
 	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
 	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
-	Property set method not found.
-	Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
 	GetPathPartFromTag, RemoveIllegalPathCharactors Refactor
 	many "* 1".* songs
 	convert flac files
@@ -88,6 +110,40 @@ Tasks
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
 
 	Finished
+		Remove Pictures from extracted tags
+		Tests	tests for empty tags
+		Tests	Add tests for when the first character is lower case
+		Tests	Add tests for non-exact duplicates found
+		Tests	Expand UpdateFile Tests, one for file with different name only in case sensitivity
+		If not title case, at least capitalize first character
+		Add command line option to specify library location
+		Separate out tests into different classes
+		Tests	Review and improve tags.Clean tests
+		Tests	CleanAlbumSuccess Test	Doesn't really do anything, enhance
+		iTunes	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating, line 242
+		Don't bother trying to import flac files into iTunes
+		iTunes	Check File.Exists at beginning
+		exclude wma
+		ITPlaylistSearchField.ITPlaylistSearchFieldAll - maybe just title?
+		Single apostrophe ok in files
+		ApplyExceptions	Need to add and check Artist parameter as well.
+		Move or create tests for new rules classes
+		Separate out custom rule processing from other operations, make into their own classes
+		Move rules from Paths
+		CleanArtist, refactor rules processing to go elsewhere
+		Should path operations fail (because of file not existing) when the file isn't actually needed?
+		CreateDirectoryIfNotExists	Not needed?
+		CreateArtistPathFromTag change to CreateArtistPath
+		CreateArtistPathFromTag pass in file.FullName, file
+		Fix Test, Commit
+		Property set method not found.
+		Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
+		#pragma warning disable CS0618 // Type or member is obsolete
+		Deal with Multiple Artists, Remove throwing exception
+		Console.WriteLine
+		AudioId	Rename Files / Projects to AudioId
+		AudioId	Continue refactor of big function
+		Itunes	Do not instantiate iTunes when doing only extract-tags
 		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4	
 		Fix Python
 		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
@@ -555,21 +611,34 @@ Resources
 			https://github.com/acoustid/chromaprint
 			https://github.com/wo80/AcoustID.NET
 			https://oxygene.sk/2011/01/how-does-chromaprint-work/
-	c# itunes api
-		http://www.joshkunz.com/iTunesControl/
-		http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
-		http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
-		http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
-		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-		https://www.google.com/#q=c%23+iTunes
-		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
-		http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
-		http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
-		https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
-		https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
-		http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
-		http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
-		https://taglib.github.io/api/annotated.html
+	iTunes
+		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
+		https://support.apple.com/en-us/HT201596
+		http://samsoft.org.uk/iTunes/scripts.asp
+		http://www.everythingitunes.com/os/windows/category/scripts/
+		http://dougscripts.com/itunes/itinfo/windowshelp.php
+	iTunes Development
+		itunes build options
+			set environment variable for conditional build inclusion
+			include hard-coded reference to Interop.iTunesLib.dll
+			create tlb, tlh files?
+		Reference
+			https://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp/76423905#76423905
+		iTunes api
+			http://www.joshkunz.com/iTunesControl/
+			http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
+			http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
+			http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
+			https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+			https://www.google.com/#q=c%23+iTunes
+			http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
+			http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
+			http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
+			https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
+			https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
+			http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
+			http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
+			https://taglib.github.io/api/annotated.html
 		http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
 		http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
 		https://naudio.codeplex.com/
@@ -577,13 +646,6 @@ Resources
 		http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
 		http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
 		https://musicbrainz.org/doc/Beginners_Guide
-	iTunes
-		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-		https://support.apple.com/en-us/HT201596
-		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-		http://samsoft.org.uk/iTunes/scripts.asp
-		http://www.everythingitunes.com/os/windows/category/scripts/
-		http://dougscripts.com/itunes/itinfo/windowshelp.php
 	Xml
 		http://stackoverflow.com/questions/55828/how-does-one-parse-xml-files
 		https://github.com/mercury2269/ITunesManager
@@ -672,4 +734,30 @@ Beets
 	https://beets.readthedocs.io/en/v1.6.0/guides/main.html
 File Reading
 	Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
-Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
+Audio Signatures
+	Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
+Title Case
+	https://titlecaseconverter.com/rules/
+Recollect Duplicates
+	\path\to\music\artist\album\song
+	\path\to\music2\artist\album\song
+iTunes Program Flow
+	UpdateItunes
+		playList.Search
+		if none
+			LibraryPlaylist.AddFile
+*		for each track
+			check if same (AreFileAndTrackTheSame)
+		if none same
+			UpdateOrAddTrack
+*				for each track
+					UpdateItunesLocation
+						trackName = TitleRules.ApplyTitleFileRules
+						if same
+							update track name
+							IsValidItunesLocation
+								if File.Exists(fileTrack.Location)
+							if invalid
+								fileTrack.Location = filePath;
+				if not updated
+					LibraryPlaylist.AddFile

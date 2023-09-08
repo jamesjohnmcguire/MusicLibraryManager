@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="TitleTagRules.cs" company="Digital Zen Works">
+// <copyright file="TitleRules.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -7,6 +7,7 @@
 using DigitalZenWorks.RulesLibrary;
 using Serilog;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DigitalZenWorks.MusicToolKit
@@ -14,8 +15,53 @@ namespace DigitalZenWorks.MusicToolKit
 	/// <summary>
 	/// Title tag rules class.
 	/// </summary>
-	public static class TitleTagRules
+	public static class TitleRules
 	{
+		/// <summary>
+		/// Apply title file rules.
+		/// </summary>
+		/// <param name="title">The title to process.</param>
+		/// <param name="artist">The artist to check for.</param>
+		/// <param name="isFile">Indicates whether this is for a file
+		/// path name.</param>
+		/// <returns>The updated title.</returns>
+		public static string ApplyTitleFileRules(
+			string title, string artist, bool isFile)
+		{
+			if (!string.IsNullOrWhiteSpace(title))
+			{
+#if PROCESS_TITLECASE
+			string[] excludes =
+			{
+				"Back In Black", "Givin The Dog A Bone", "I Have A Dream",
+				"Lay All Your Love On Me", "OAMs", "One Of Us",
+				"Take A Chance On Me", "Thank You For The Music",
+				"The Name Of The Game"
+			};
+#endif
+
+				if (isFile == true)
+				{
+					title = Paths.RemoveIllegalPathCharacters(title);
+				}
+
+				title = GeneralRules.ApplyGeneralRules(title);
+				title = GeneralRules.RemoveTrailingNumbers(title);
+
+#if PROCESS_TITLECASE
+			if (!excludes.Contains(title))
+			{
+				title = GeneralRules.GetTitleCase(title);
+			}
+#endif
+
+				title = RemoveBracketedSubTitle(title);
+				title = RemoveArtist(title, artist);
+			}
+
+			return title;
+		}
+
 		/// <summary>
 		/// Extract sub title method.
 		/// </summary>
@@ -27,14 +73,22 @@ namespace DigitalZenWorks.MusicToolKit
 
 			try
 			{
-				string pattern = @" \[.*?\]";
+				string pattern = @" \[(.*?)\]";
 				Match match = Regex.Match(
 					title, pattern, RegexOptions.IgnoreCase);
 
 				if (match.Success == true)
 				{
-					subTitle = match.Value;
-					subTitle = subTitle.Trim();
+					var groups = match.Groups;
+
+					if (groups.Count > 1)
+					{
+						subTitle = match.Groups[1].Value;
+					}
+					else
+					{
+						subTitle = match.Groups[0].Value;
+					}
 				}
 			}
 			catch (Exception exception) when
@@ -60,16 +114,8 @@ namespace DigitalZenWorks.MusicToolKit
 			if (!string.IsNullOrWhiteSpace(title) &&
 				!string.IsNullOrWhiteSpace(artist))
 			{
-				string compareTest = artist + " - ";
-
-				if (title.Contains(
-						compareTest, StringComparison.OrdinalIgnoreCase))
-				{
-					title = title.Replace(
-						compareTest,
-						string.Empty,
-						StringComparison.OrdinalIgnoreCase);
-				}
+				string compareText = artist + " - ";
+				title = GeneralRules.CompareRemove(title, compareText);
 			}
 
 			return title;

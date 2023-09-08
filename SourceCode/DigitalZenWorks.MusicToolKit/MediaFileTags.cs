@@ -8,6 +8,7 @@ using Common.Logging;
 using DigitalZenWorks.RulesLibrary;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 
@@ -21,13 +22,20 @@ namespace DigitalZenWorks.MusicToolKit
 		private static readonly ILog Log = LogManager.GetLogger(
 			MethodBase.GetCurrentMethod().DeclaringType);
 
+#pragma warning disable CA1823
+#pragma warning disable IDE0052
 		private static readonly ResourceManager StringTable =
-			new ("DigitalZenWorks.MusicToolKit.Resources", Assembly.GetExecutingAssembly());
+			new ("DigitalZenWorks.MusicToolKit.Resources",
+				Assembly.GetExecutingAssembly());
+#pragma warning restore IDE0052
+#pragma warning restore CA1823
 
 		private readonly string filePath;
 		private readonly Rules rules;
 
 		private string artist;
+
+		private bool updated;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MediaFileTags"/> class.
@@ -38,6 +46,34 @@ namespace DigitalZenWorks.MusicToolKit
 			filePath = file;
 
 			TagFile = TagLib.File.Create(file);
+
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Album))
+			{
+				// Tags seem to empty, attempt to get from file path.
+				Album = Paths.GetAlbumFromPath(file);
+			}
+
+			artist = GetFirstPerformerSafe();
+
+			if (string.IsNullOrWhiteSpace(artist))
+			{
+				if ((TagFile.Tag.AlbumArtists != null) &&
+					TagFile.Tag.AlbumArtists.Length > 0)
+				{
+					artist = TagFile.Tag.AlbumArtists[0];
+				}
+			}
+
+			if (string.IsNullOrWhiteSpace(artist))
+			{
+				// Tags seem to empty, attempt to get from file path.
+				artist = Paths.GetArtistFromPath(file);
+			}
+
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Title))
+			{
+				Title = Paths.GetTitleFromPath(file);
+			}
 		}
 
 		/// <summary>
@@ -64,7 +100,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Album = value;
+				if ((TagFile.Tag.Album != null &&
+					!TagFile.Tag.Album.Equals(
+						value, StringComparison.Ordinal)) ||
+					(TagFile.Tag.Album == null && value != null))
+				{
+					updated = true;
+					TagFile.Tag.Album = value;
+				}
 			}
 		}
 
@@ -76,29 +119,18 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			get
 			{
-				if (string.IsNullOrWhiteSpace(artist))
-				{
-					if ((TagFile.Tag.Performers != null) &&
-						(TagFile.Tag.Performers.Length > 0))
-					{
-						artist = TagFile.Tag.Performers[0];
-					}
-
-					if (string.IsNullOrWhiteSpace(artist))
-					{
-						if (TagFile.Tag.AlbumArtists.Length > 0)
-						{
-							artist = TagFile.Tag.AlbumArtists[0];
-						}
-					}
-				}
-
 				return artist;
 			}
 
 			set
 			{
-				artist = value;
+				if ((artist != null &&
+					!artist.Equals(value, StringComparison.Ordinal)) ||
+					(artist == null && value != null))
+				{
+					updated = true;
+					artist = value;
+				}
 
 				if ((TagFile.Tag.Performers != null) &&
 					(TagFile.Tag.Performers.Length > 0))
@@ -134,7 +166,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Title = value;
+				if ((TagFile.Tag.Title != null &&
+					!TagFile.Tag.Title.Equals(
+						value, StringComparison.Ordinal)) ||
+					(TagFile.Tag.Title == null && value != null))
+				{
+					updated = true;
+					TagFile.Tag.Title = value;
+				}
 			}
 		}
 
@@ -151,8 +190,47 @@ namespace DigitalZenWorks.MusicToolKit
 
 			set
 			{
-				TagFile.Tag.Year = value;
+				if (TagFile.Tag.Year != value)
+				{
+					updated = true;
+					TagFile.Tag.Year = value;
+				}
 			}
+		}
+
+		/// <summary>
+		/// Clean tags method.
+		/// </summary>
+		/// <returns>A value indicating whether the tags were updated
+		/// or not.</returns>
+		public bool Clean()
+		{
+			bool isUpdated = false;
+			bool rulesUpdated = false;
+
+			if (rules != null)
+			{
+				rulesUpdated = rules.RunRules(this);
+			}
+
+			bool artistUpdated = UpdateArtistTag(filePath);
+
+			bool albumUpdated = UpdateAlbumTag(filePath);
+
+			bool titleUpdated = UpdateTitleTag();
+
+			bool subTitleUpdated = UpdateSubTitleTag();
+
+			if (rulesUpdated == true || albumUpdated == true ||
+				artistUpdated == true || subTitleUpdated == true ||
+				titleUpdated == true)
+			{
+				Update();
+
+				isUpdated = true;
+			}
+
+			return isUpdated;
 		}
 
 		/// <summary>
@@ -183,6 +261,8 @@ namespace DigitalZenWorks.MusicToolKit
 				if (name.Equals(
 						"EndTag", StringComparison.OrdinalIgnoreCase) ||
 					name.Equals(
+						"Pictures", StringComparison.OrdinalIgnoreCase) ||
+					name.Equals(
 						"StartTag", StringComparison.OrdinalIgnoreCase))
 				{
 					continue;
@@ -200,33 +280,19 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>A value indicating success or not.</returns>
 		public bool Update()
 		{
-			bool updated = false;
-			bool rulesUpdated = false;
+			bool isUpdated = updated;
 
-			if (rules != null)
-			{
-				rulesUpdated = rules.RunRules(this);
-			}
-
-			bool artistUpdated = UpdateArtistTag(filePath);
-
-			bool albumUpdated = UpdateAlbumTag(filePath);
-
-			bool titleUpdated = UpdateTitleTag();
-
-			bool subTitleUpdated = UpdateSubTitleTag();
-
-			if (rulesUpdated == true || albumUpdated == true ||
-				artistUpdated == true || subTitleUpdated == true ||
-				titleUpdated == true)
+			if (updated == true)
 			{
 				TagFile.Save();
-				updated = true;
 
 				Log.Info("Updated Tags in: " + filePath);
+
+				// reset for next time
+				updated = false;
 			}
 
-			return updated;
+			return isUpdated;
 		}
 
 		/// <summary>
@@ -242,6 +308,19 @@ namespace DigitalZenWorks.MusicToolKit
 				TagFile.Dispose();
 				TagFile = null;
 			}
+		}
+
+		private string GetFirstPerformerSafe()
+		{
+			string peformer = null;
+
+			if ((TagFile.Tag.Performers != null) &&
+				(TagFile.Tag.Performers.Length > 0))
+			{
+				peformer = TagFile.Tag.Performers[0];
+			}
+
+			return peformer;
 		}
 
 		private SortedDictionary<string, object> GetTagFromPropertyInfo(
@@ -318,22 +397,13 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Album))
 			{
-				Album = TagRules.Trim(Album);
+				Album = AlbumRules.AlbumGeneralRules(Album, Artist);
 
-				Album = AlbumTagRules.RemoveCd(Album);
-				Album = AlbumTagRules.RemoveDisc(Album);
-				Album = AlbumTagRules.RemoveFlac(Album);
-				Album = AlbumTagRules.ReplaceCurlyBraces(Album);
-				Album = AlbumTagRules.RemoveCopyAmount(Album);
-
-				Album = AlbumTagRules.RemoveArtist(Album);
-			}
-
-			if (!string.IsNullOrWhiteSpace(Album) &&
-				!Album.Equals(previousAlbum, StringComparison.Ordinal))
-			{
-				updated = true;
-				Log.Info("Updating Album Tag");
+				if (!Album.Equals(previousAlbum, StringComparison.Ordinal))
+				{
+					updated = true;
+					Log.Info("Updating Album Tag");
+				}
 			}
 
 			return updated;
@@ -344,10 +414,7 @@ namespace DigitalZenWorks.MusicToolKit
 			bool updated = false;
 			string previousArtist = Artist;
 
-			if (TagFile.Tag.Performers.Length > 0)
-			{
-				Artist = TagFile.Tag.Performers[0];
-			}
+			Artist = GetFirstPerformerSafe();
 
 			if (string.IsNullOrWhiteSpace(Artist) &&
 				TagFile.Tag.AlbumArtists.Length > 0)
@@ -363,21 +430,15 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(Artist))
 			{
-				Artist = TagRules.Trim(Artist);
+				string performer = GetFirstPerformerSafe();
+				Artist = ArtistRules.ArtistGeneralRules(
+					Artist, Album, performer);
 
-				Artist = TagRules.GetTitleCase(Artist);
-				Artist = ArtistTagRules.ApplyExceptions(Artist);
-
-				Artist = ArtistTagRules.ReplaceVariousArtists(
-					Artist, TagFile.Tag.Performers[0]);
-				Artist = ArtistTagRules.RemoveAlbum(Artist);
-			}
-
-			if (!string.IsNullOrWhiteSpace(Artist) &&
-				!Artist.Equals(previousArtist, StringComparison.Ordinal))
-			{
-				updated = true;
-				Log.Info("Updating Artist Tag");
+				if (!Artist.Equals(previousArtist, StringComparison.Ordinal))
+				{
+					updated = true;
+					Log.Info("Updating Artist Tag");
+				}
 			}
 
 			return updated;
@@ -391,7 +452,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (string.IsNullOrWhiteSpace(previousSubTitle))
 			{
-				string subTitle = TitleTagRules.ExtractSubTitle(Title);
+				string subTitle = TitleRules.ExtractSubTitle(Title);
 
 				if (!string.IsNullOrWhiteSpace(subTitle))
 				{
@@ -419,11 +480,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = TagRules.Trim(Title);
-
-				Title = TitleTagRules.RemoveBracketedSubTitle(Title);
-
-				Title = TitleTagRules.RemoveArtist(Title, Artist);
+				Title = TitleRules.ApplyTitleFileRules(Title, Artist, false);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Title) &&

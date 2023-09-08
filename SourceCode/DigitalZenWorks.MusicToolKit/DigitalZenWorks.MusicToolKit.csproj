@@ -10,17 +10,17 @@
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2023 James John McGuire</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>0.5.184.0</FileVersion>
+		<FileVersion>0.6.188.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Platforms>x64</Platforms>
 		<TargetFramework>net7.0-windows</TargetFramework>
-		<Version>0.5.184</Version>
+		<Version>0.6.188</Version>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(UseItunes)' == 'true'">
 		<COMReference Include="iTunesLib">
 		<Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
 		<VersionMajor>1</VersionMajor>
@@ -32,13 +32,22 @@
 		</COMReference>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(UseItunes)' != 'true'">
+		<Reference Include="Interop.iTunesLib, Version=1.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+			<EmbedInteropTypes>True</EmbedInteropTypes>
+			<HintPath>Interop.iTunesLib.dll</HintPath>
+			<SpecificVersion>False</SpecificVersion>
+		</Reference>
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
 		<PackageReference Include="CSCore" Version="1.2.1.2" />
+		<PackageReference Include="DigitalZenWorks.Common.Utilities" Version="1.3.66" />
 		<PackageReference Include="NAudio" Version="2.1.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Serilog" Version="2.12.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />

@@ -159,7 +159,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				char[] illegalCharactors = new char[]
 				{
-					'<', '>', '"', '?', '*', '\''
+					'<', '>', '"', '?', '*'
 				};
 
 				foreach (char charactor in illegalCharactors)
@@ -217,8 +217,6 @@ namespace DigitalZenWorks.MusicToolKit
 					title = Path.GetFileNameWithoutExtension(title);
 				}
 			}
-
-			title = TagRules.GetTitleCase(title);
 
 			return title;
 		}
