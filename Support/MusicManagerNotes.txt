@@ -1,6 +1,9 @@
 Music Library Manager
 
 Tasks
+	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
+	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
+	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
 	Error	CS1056	Unexpected character ' AssemblyInfo.cs
 	Clean seems to be needed to run several times, in a row to 'catch' all the variants.  For some reason, not finding or processing all of the songs present.
 	Clean seems to be not catching the extra numbers at the end: Danny Singing With Mom and Dad, 1.wav
@@ -756,3 +759,5 @@ iTunes Program Flow
 								fileTrack.Location = filePath;
 				if not updated
 					LibraryPlaylist.AddFile
+
+iTunes supports m4a
