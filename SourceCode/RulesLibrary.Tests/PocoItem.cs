@@ -4,7 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace RulesLibrary.Tests
+namespace DigitalZenWorks.RulesLibrary.Tests
 {
 	/// <summary>
 	/// Plain old class object item.
