@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RulesLibrary", "RulesLibrar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RulesLibrary.Tests", "RulesLibrary.Tests\RulesLibrary.Tests.csproj", "{917566E4-CB49-4F79-B11B-73038EE73E57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilitiesNET", "UtilitiesNet\UtilitiesNET.csproj", "{33C4E73A-8126-43A2-A466-6D2DDCB8E297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilitiesNET", "UtilitiesNet\UtilitiesNetLibrary\UtilitiesNET.csproj", "{33C4E73A-8126-43A2-A466-6D2DDCB8E297}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilitiesNetTests", "UtilitiesNet\UtilitiesNetTests\UtilitiesNetTests.csproj", "{C54EE5D8-14D3-4A49-B32D-FACF7BE8BFA5}"
 EndProject
