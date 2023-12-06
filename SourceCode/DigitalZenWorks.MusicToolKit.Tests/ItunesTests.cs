@@ -38,7 +38,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 					searchName,
 					ITPlaylistSearchField.ITPlaylistSearchFieldAll);
 
-				Assert.NotNull(tracks);
+				Assert.That(tracks, Is.Not.Null);
 
 				if (null != tracks)
 				{
@@ -51,7 +51,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 					{
 						bool same = ITunesManager.AreFileAndTrackTheSame(
 							fileName, track);
-						Assert.True(same);
+						Assert.That(same, Is.True);
 					}
 				}
 			}
@@ -71,7 +71,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				string location = iTunesManager.ItunesLibraryLocation;
 				int iTunesDepth = Paths.GetItunesDirectoryDepth(location);
 
-				Assert.GreaterOrEqual(iTunesDepth, 6);
+				Assert.That(iTunesDepth, Is.GreaterThanOrEqualTo(6));
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using ITunesManager iTunesManager = new ();
 			string location = iTunesManager.ItunesLibraryLocation;
 
-			Assert.IsNotEmpty(location);
+			Assert.That(location, Is.Not.Empty);
 		}
 
 		/// <summary>
@@ -102,9 +102,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Assert.Throws<FileNotFoundException>(() =>
 				iTunesXmlFile = new ITunesXmlFile(nonExistantFilePath));
 
-			Assert.NotNull(exception);
-
-			Assert.Null(iTunesXmlFile);
+			Assert.That(exception, Is.Not.Null);
+			Assert.That(iTunesXmlFile, Is.Null);
 		}
 
 		/// <summary>
@@ -121,7 +120,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			ITunesXmlFile iTunesXmlFile = new (xmlFile);
 
-			Assert.NotNull(iTunesXmlFile);
+			Assert.That(iTunesXmlFile, Is.Not.Null);
 		}
 
 		/// <summary>
@@ -140,10 +139,10 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Dictionary<string, object> result =
 					ITunesXmlFile.LoadItunesXmlFile(xmlFilePath);
 
-				Assert.NotNull(result);
+				Assert.That(result, Is.Not.Null);
 
 				int count = result.Count;
-				Assert.GreaterOrEqual(count, 1);
+				Assert.That(count, Is.GreaterThanOrEqualTo(1));
 			}
 		}
 
@@ -159,7 +158,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Dictionary<string, object> result =
 				ITunesXmlFile.LoadItunesXmlFile(temporaryPath);
 
-			Assert.Null(result);
+			Assert.That(result, Is.Null);
 		}
 
 		/// <summary>
@@ -173,7 +172,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Dictionary<string, object> result =
 				ITunesXmlFile.LoadItunesXmlFile(temporaryPath);
 
-			Assert.Null(result);
+			Assert.That(result, Is.Null);
 		}
 
 		/// <summary>
@@ -197,7 +196,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 				bool updated = iTunesManager.UpdateItunes(fileInfo);
 
-				Assert.False(updated);
+				Assert.That(updated, Is.False);
 			}
 		}
 	}

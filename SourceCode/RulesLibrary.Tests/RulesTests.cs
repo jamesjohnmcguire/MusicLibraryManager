@@ -6,8 +6,6 @@
 
 using DigitalZenWorks.Common.Utilities;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
-using RulesLibrary.Tests;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,7 +92,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			string subject = "Something else";
 
 			bool result = rule.ConditionEqualsTest(subject);
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -112,7 +110,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			string subject = "Album";
 
 			bool result = rule.ConditionEqualsTest(subject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -132,7 +130,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			tags.Property1 = "Album";
 
 			bool result = rule.ConditionNotEqualsTest(tags, subject);
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -152,7 +150,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			tags.Property1 = subject;
 
 			bool result = rule.ConditionNotEqualsTest(tags, subject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -164,7 +162,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			object subject = DateTime.Now;
 
 			bool result = Rule.ConditionNotEmptyTest(subject);
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -177,13 +175,13 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			object subject = album;
 
 			bool result = Rule.ConditionNotEmptyTest(subject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string[] subjects = new string[] { "Album" };
 			subject = subjects;
 
 			result = Rule.ConditionNotEmptyTest(subject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -203,7 +201,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				Operation.Remove);
 
 			bool result = rule.ConditionRegexMatch(subject);
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -223,7 +221,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				Operation.Remove);
 
 			bool result = rule.ConditionRegexMatch(subject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -279,7 +277,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 				bool result = rule.Run(tags);
 
-				Assert.True(result);
+				Assert.That(result, Is.True);
 
 				if (index == 0)
 				{
@@ -331,11 +329,11 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		{
 			string baseItem = Rule.GetObjectBaseElement(null);
 
-			Assert.Null(baseItem);
+			Assert.That(baseItem, Is.Null);
 
 			baseItem = Rule.GetObjectBaseElement(string.Empty);
 
-			Assert.Null(baseItem);
+			Assert.That(baseItem, Is.Null);
 		}
 
 		/// <summary>
@@ -357,10 +355,10 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void GetRuleByName()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 
 			Rule rule = testRules.GetRuleByName("RemoveDiscFromAlbum");
-			Assert.NotNull(rule);
+			Assert.That(testRules, Is.Not.Null);
 		}
 
 		/// <summary>
@@ -369,12 +367,12 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void GetRulesList()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 
 			IList<Rule> rulesList = testRules.RulesList;
 			int count = rulesList.Count;
 
-			Assert.GreaterOrEqual(count, 1);
+			Assert.That(count, Is.GreaterThanOrEqualTo(1));
 		}
 
 		/// <summary>
@@ -395,7 +393,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool conditionMet = rule.IsConditionMet(tags, original);
 
-			Assert.False(conditionMet);
+			Assert.That(conditionMet, Is.False);
 		}
 
 		/// <summary>
@@ -416,7 +414,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool conditionMet = rule.IsConditionMet(tags, original);
 
-			Assert.True(conditionMet);
+			Assert.That(conditionMet, Is.True);
 		}
 
 		/// <summary>
@@ -425,7 +423,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void CheckForRules()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 		}
 
 		/// <summary>
@@ -446,7 +444,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool result = rule.Action(
 				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -465,7 +463,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool result = rule.Action(
 				tags, "Property1", "What It Is! Funky Soul And Rare Grooves");
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string album = tags.Property1;
 			string expected = "What It Is! Funky Soul And Rare Grooves";
@@ -487,7 +485,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				Operation.Remove);
 
 			bool result = rule.CheckNextRule(tags);
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -531,7 +529,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				chainRule);
 
 			bool result = rule.CheckNextRule(tags);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -579,7 +577,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool result = rule.Run(tags);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string test = tags.Property1;
 			Assert.That(test, Is.EqualTo(
@@ -592,14 +590,14 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void RunRuleDiscCheckByName()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 
 			Rule rule = testRules.GetRuleByName("RemoveDiscFromAlbum");
-			Assert.NotNull(rule);
+			Assert.That(rule, Is.Not.Null);
 
 			bool result = rule.Run(tags);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string test = tags.Property1;
 			Assert.That(test, Is.EqualTo(
@@ -612,11 +610,11 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void RunRulesUpdated()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 
 			bool result = testRules.RunRules(tags);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string test = tags.Property1;
 			Assert.That(test, Is.EqualTo(
@@ -665,7 +663,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 
 			bool result = rule.Run(tags);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string test = tags.PropertySet[0];
 
@@ -678,14 +676,14 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		[Test]
 		public void RunRuleVariousArtistsCheckByName()
 		{
-			Assert.NotNull(testRules);
+			Assert.That(testRules, Is.Not.Null);
 
 			Rule rule = testRules.GetRuleByName("ReplaceVariousArtists");
-			Assert.NotNull(rule);
+			Assert.That(rule, Is.Not.Null);
 
 			bool result = rule.Run(tags);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string test = tags.PropertySet[0];
 
@@ -702,7 +700,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 				"What It Is! Funky Soul And Rare Grooves";
 
 			bool result = Rule.SetItemSubject(tags, "PropertySet", newSubject);
-			Assert.True(result);
+			Assert.That(result, Is.True);
 
 			string subject = Rule.GetItemSubject(tags, "PropertySet");
 			Assert.That(subject, Is.EqualTo(newSubject));
