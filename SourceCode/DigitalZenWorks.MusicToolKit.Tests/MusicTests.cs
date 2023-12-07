@@ -408,7 +408,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			int count1 = rules.RulesList.Count;
 			int count2 = rules2.RulesList.Count;
-			Assert.AreEqual(count1, count2);
+			Assert.That(count2, Is.EqualTo(count2));
 		}
 
 		/// <summary>
