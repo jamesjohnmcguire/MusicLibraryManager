@@ -511,6 +511,24 @@ namespace DigitalZenWorks.MusicToolKit
 			return deadTrack;
 		}
 
+		private bool IsTrackWithinLibraryPath(IITTrack track)
+		{
+			bool isWithIn = false;
+
+			if (track != null && track is IITFileOrCDTrack fileTrack)
+			{
+				string filePath = fileTrack.Location;
+
+				if (filePath.StartsWith(
+					iTunesLibraryLocation, StringComparison.OrdinalIgnoreCase))
+				{
+					isWithIn = true;
+				}
+			}
+
+			return isWithIn;
+		}
+
 		private bool UpdateOrAddTrack(
 			IITTrackCollection tracks, string filePath)
 		{
