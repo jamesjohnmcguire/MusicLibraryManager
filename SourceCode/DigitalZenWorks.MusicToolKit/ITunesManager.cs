@@ -356,8 +356,8 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
 			IITTrackCollection tracks = mainLibrary.Tracks;
-			Dictionary<string, IITTrack> trackCollection = new ();
-			List<IITTrack> duplicateTracks = new ();
+			Dictionary<string, IITTrack> trackCollection = [];
+			List<IITTrack> duplicateTracks = [];
 			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
@@ -385,7 +385,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (file != null && file.Exists)
 			{
-				string[] excludes = { ".flac", ".wma" };
+				string[] excludes = [".flac", ".wma"];
 
 				string extension = Path.GetExtension(file.FullName);
 
@@ -463,15 +463,15 @@ namespace DigitalZenWorks.MusicToolKit
 				string trackKey =
 					fileTrack.Name + fileTrack.Artist + fileTrack.Album;
 
-				if (!trackCollection.ContainsKey(trackKey))
+				if (!trackCollection.TryGetValue(trackKey, out IITTrack value))
 				{
 					trackCollection.Add(trackKey, fileTrack);
 				}
 				else
 				{
-					if ((trackCollection[trackKey].Album !=
+					if ((value.Album !=
 							fileTrack.Album) ||
-						(trackCollection[trackKey].Artist !=
+						(value.Artist !=
 							fileTrack.Artist))
 					{
 						trackCollection.Add(trackKey, fileTrack);
@@ -521,6 +521,22 @@ namespace DigitalZenWorks.MusicToolKit
 			return deadTrack;
 		}
 
+		private static string GetItunesLibraryFilePath(string sourceFile)
+		{
+			string filePath = null;
+			string artistPath =
+				Paths.GetArtistPathFromFilePath(sourceFile);
+
+			if (!string.IsNullOrWhiteSpace(artistPath))
+			{
+				using ITunesManager manager = new ();
+
+				filePath = manager.iTunesLibraryLocation + artistPath;
+			}
+
+			return filePath;
+		}
+
 		private string UpdateTrackSymLinkLocation(
 			IITFileOrCDTrack fileTrack, string symLinkTarget)
 		{
@@ -542,22 +558,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return newLocation;
-		}
-
-		private static string GetItunesLibraryFilePath(string sourceFile)
-		{
-			string filePath = null;
-			string artistPath =
-				Paths.GetArtistPathFromFilePath(sourceFile);
-
-			if (!string.IsNullOrWhiteSpace(artistPath))
-			{
-				using ITunesManager manager = new ();
-
-				filePath = manager.iTunesLibraryLocation + artistPath;
-			}
-
-			return filePath;
 		}
 
 		private bool IsFileWithinLibraryPath(string filePath)

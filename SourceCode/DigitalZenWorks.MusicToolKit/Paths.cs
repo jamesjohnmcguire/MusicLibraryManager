@@ -256,10 +256,10 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (!string.IsNullOrWhiteSpace(path))
 			{
-				char[] illegalCharactors = new char[]
-				{
+				char[] illegalCharactors =
+				[
 					'<', '>', '"', '?', '*'
-				};
+				];
 
 				foreach (char charactor in illegalCharactors)
 				{
@@ -273,7 +273,7 @@ namespace DigitalZenWorks.MusicToolKit
 					}
 				}
 
-				illegalCharactors = new char[] { ':', '/', '\\', '|' };
+				illegalCharactors = [':', '/', '\\', '|'];
 
 				foreach (char charactor in illegalCharactors)
 				{
@@ -291,10 +291,20 @@ namespace DigitalZenWorks.MusicToolKit
 			return path;
 		}
 
+		/// <summary>
+		/// Replaces the path with the specified library location.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
+		/// <param name="libraryPath">The library path.</param>
+		/// <returns>The updated path.</returns>
 		public static string ReplaceLibraryPath(
 			string filePath, string libraryPath)
 		{
-			libraryPath = libraryPath.TrimEnd(Path.DirectorySeparatorChar);
+			if (!string.IsNullOrWhiteSpace(libraryPath))
+			{
+				libraryPath = libraryPath.TrimEnd(Path.DirectorySeparatorChar);
+			}
+
 			string rightSidePath = GetBaseSubPathFromFilePathRightSide(
 				filePath, 4);
 			string newPath = libraryPath + rightSidePath;
@@ -380,7 +390,7 @@ namespace DigitalZenWorks.MusicToolKit
 				List<string> list = new (pathParts);
 				list.RemoveAt(7);
 
-				pathParts = list.ToArray();
+				pathParts = [.. list];
 				newPath = string.Join("\\", pathParts);
 			}
 

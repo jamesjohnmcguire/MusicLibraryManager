@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -125,7 +126,8 @@ namespace DigitalZenWorks.MusicToolKit
 						Dictionary<string, object>.ValueCollection values =
 								tracksDictionary.Values;
 
-						foreach (Dictionary<string, object> value in values)
+						foreach (Dictionary<string, object> value in
+							values.Cast<Dictionary<string, object>>())
 						{
 							Dictionary<string, object> strs2 = value;
 							ITunesXmlFile.SetToHTMLDecode("Name", ref strs2);
@@ -228,7 +230,7 @@ namespace DigitalZenWorks.MusicToolKit
 					case "string":
 						return currentElement.InnerText;
 					case "dict":
-						Dictionary<string, object> strs = new ();
+						Dictionary<string, object> strs = [];
 						for (int i = 0; i <= currentElement.ChildNodes.Count - 2; i += 2)
 						{
 							string str1 = (string)ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[i]);
@@ -238,7 +240,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 						return strs;
 					case "array":
-						ArrayList arrayLists = new ();
+						ArrayList arrayLists = [];
 						for (int j = 0; j <= currentElement.ChildNodes.Count - 1; j++)
 						{
 							arrayLists.Add(ITunesXmlFile.ReadKeyAsDictionaryEntry(currentElement.ChildNodes[j]));
@@ -254,19 +256,24 @@ namespace DigitalZenWorks.MusicToolKit
 			return null;
 		}
 
-		private static void SetToHTMLDecode(string key, ref Dictionary<string, object> thisDict)
+		private static void SetToHTMLDecode(
+			string key, ref Dictionary<string, object> thisDict)
 		{
-			if (thisDict.ContainsKey(key))
+			if (thisDict.TryGetValue(key, out object? value))
 			{
-				thisDict[key] = WebUtility.HtmlDecode((string)thisDict[key]);
+				string decodedValue = value as string;
+				thisDict[key] = WebUtility.HtmlDecode(decodedValue);
 			}
 		}
 
-		private static void SetToURLDecode(string key, ref Dictionary<string, object> thisDict)
+		private static void SetToURLDecode(
+			string key, ref Dictionary<string, object> thisDict)
 		{
-			if (thisDict.ContainsKey(key))
+			if (thisDict.TryGetValue(key, out object value))
 			{
-				thisDict[key] = ITunesXmlFile.GetURLDecodeOfString((string)thisDict[key]);
+				string encodedValue = value as string;
+				thisDict[key] =
+					ITunesXmlFile.GetURLDecodeOfString(encodedValue);
 			}
 		}
 

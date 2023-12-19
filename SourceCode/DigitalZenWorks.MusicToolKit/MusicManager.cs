@@ -174,7 +174,7 @@ namespace DigitalZenWorks.MusicToolKit
 							newList.RemoveAt(newList.Count - 1);
 						}
 
-						string[] newParts = newList.ToArray();
+						string[] newParts = [.. newList];
 						string newPath = string.Join("\\", newParts);
 
 						Directory.CreateDirectory(newPath);
@@ -254,6 +254,38 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return filePath;
+		}
+
+		/// <summary>
+		/// Recollect duplicates.
+		/// </summary>
+		/// <param name="libraryPath">The library path.</param>
+		public static void RecollectDuplicates(string libraryPath)
+		{
+			if (!string.IsNullOrWhiteSpace(libraryPath))
+			{
+				bool locationOk;
+				int duplicateNumer = 2;
+
+				do
+				{
+					string duplicatePath = GetDuplicateLocationByNumber(
+						libraryPath, duplicateNumer);
+
+					locationOk = Directory.Exists(duplicatePath);
+
+					if (locationOk == true)
+					{
+						// recurse into directories
+
+						// for each file
+						// create file path to the original
+						// check to see if exists
+						// if not, move
+					}
+				}
+				while (locationOk == true);
+			}
 		}
 
 		/// <summary>
@@ -376,38 +408,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Recollect duplicates.
-		/// </summary>
-		/// <param name="libraryPath">The library path.</param>
-		public void RecollectDuplicates(string libraryPath)
-		{
-			if (!string.IsNullOrWhiteSpace(libraryPath))
-			{
-				bool locationOk;
-				int duplicateNumer = 2;
-
-				do
-				{
-					string duplicatePath = GetDuplicateLocationByNumber(
-						libraryPath, duplicateNumer);
-
-					locationOk = Directory.Exists(duplicatePath);
-
-					if (locationOk == true)
-					{
-						// recurse into directories
-
-						// for each file
-						// create file path to the original
-						// check to see if exists
-						// if not, move
-					}
-				}
-				while (locationOk == true);
-			}
-		}
-
-		/// <summary>
 		/// Save tags to json file method.
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
@@ -477,17 +477,17 @@ namespace DigitalZenWorks.MusicToolKit
 			try
 			{
 				string[] excludes =
-				{
+				[
 					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
 					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
 					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
 					".url", ".xls", ".zip"
-				};
+				];
 
 				string[] includes =
-				{
+				[
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				};
+				];
 
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
@@ -645,9 +645,9 @@ namespace DigitalZenWorks.MusicToolKit
 			try
 			{
 				string[] includes =
-				{
+				[
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				};
+				];
 
 				if (Directory.Exists(path))
 				{
