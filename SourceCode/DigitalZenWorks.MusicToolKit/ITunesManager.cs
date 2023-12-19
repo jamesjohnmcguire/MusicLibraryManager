@@ -110,8 +110,8 @@ namespace DigitalZenWorks.MusicToolKit
 				string trackName =
 					TitleRules.ApplyTitleFileRules(track.Name, null, true);
 
-				if (songName.Equals(
-					trackName, StringComparison.OrdinalIgnoreCase))
+				if (trackName.Equals(
+					songName, StringComparison.OrdinalIgnoreCase))
 				{
 					if (track is IITFileOrCDTrack fileTrack)
 					{
@@ -119,12 +119,22 @@ namespace DigitalZenWorks.MusicToolKit
 						{
 							same = true;
 						}
-						else if (filePath != null &&
-							filePath.Equals(
+						else if (filePath != null)
+						{
+							if (filePath.Equals(
 								fileTrack.Location,
 								StringComparison.OrdinalIgnoreCase))
-						{
-							same = true;
+							{
+								same = true;
+							}
+							else
+							{
+								// Check for sym link hell.
+								using ITunesManager manager = new ();
+
+								same = manager.IsTrackPathSymLink(
+									filePath, fileTrack.Location);
+							}
 						}
 					}
 				}
@@ -511,6 +521,91 @@ namespace DigitalZenWorks.MusicToolKit
 			return deadTrack;
 		}
 
+		private string UpdateTrackSymLinkLocation(
+			IITFileOrCDTrack fileTrack, string symLinkTarget)
+		{
+			string newLocation;
+
+			bool inside = IsFileWithinLibraryPath(symLinkTarget);
+
+			if (inside == true)
+			{
+				fileTrack.Location = newLocation = symLinkTarget;
+			}
+			else
+			{
+				string newTargetPath =
+					GetItunesLibraryFilePath(symLinkTarget);
+				File.Move(symLinkTarget, newTargetPath);
+
+				fileTrack.Location = newLocation = newTargetPath;
+			}
+
+			return newLocation;
+		}
+
+		private static string GetItunesLibraryFilePath(string sourceFile)
+		{
+			string filePath = null;
+			string artistPath =
+				Paths.GetArtistPathFromFilePath(sourceFile);
+
+			if (!string.IsNullOrWhiteSpace(artistPath))
+			{
+				using ITunesManager manager = new ();
+
+				filePath = manager.iTunesLibraryLocation + artistPath;
+			}
+
+			return filePath;
+		}
+
+		private bool IsFileWithinLibraryPath(string filePath)
+		{
+			bool isWithIn = false;
+
+			if (!string.IsNullOrWhiteSpace(filePath))
+			{
+				if (filePath.StartsWith(
+					iTunesLibraryLocation, StringComparison.OrdinalIgnoreCase))
+				{
+					isWithIn = true;
+				}
+			}
+
+			return isWithIn;
+		}
+
+		private bool IsTrackPathSymLink(string filePath, string trackLocation)
+		{
+			bool isSymLink = false;
+
+			bool exists =
+				File.Exists(trackLocation);
+
+			if (exists == true)
+			{
+				bool check =
+					Paths.DoesPathContainItunesSymLink(
+						trackLocation);
+
+				if (check == true)
+				{
+					string library = ItunesLibraryLocation;
+					string checkPath =
+						Paths.ReplaceLibraryPath(trackLocation, library);
+
+					if (filePath.Equals(
+						checkPath, StringComparison.OrdinalIgnoreCase))
+					{
+						isSymLink = true;
+					}
+				}
+			}
+
+			return isSymLink;
+		}
+
 		private bool IsTrackWithinLibraryPath(IITTrack track)
 		{
 			bool isWithIn = false;
@@ -519,11 +614,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				string filePath = fileTrack.Location;
 
-				if (filePath.StartsWith(
-					iTunesLibraryLocation, StringComparison.OrdinalIgnoreCase))
-				{
-					isWithIn = true;
-				}
+				isWithIn = IsFileWithinLibraryPath(filePath);
 			}
 
 			return isWithIn;

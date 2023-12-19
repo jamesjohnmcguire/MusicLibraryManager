@@ -17,6 +17,40 @@ namespace DigitalZenWorks.MusicToolKit
 	public static class Paths
 	{
 		/// <summary>
+		/// Checks if the path contain a sym link to itunes.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>A value that indicates whether the path contains a
+		/// sym link to iTunes or not.</returns>
+		public static bool DoesPathContainItunesSymLink(string filePath)
+		{
+			bool iTunesSymLink = false;
+
+			if (!string.IsNullOrWhiteSpace(filePath))
+			{
+				string basePath = GetLibraryFromPath(filePath);
+				FileInfo basePathInfo = new (basePath);
+
+#if NET6_0_OR_GREATER
+				string target = basePathInfo.LinkTarget;
+#else
+				string target = null;
+
+				bool reparsePoint = 
+					basePathInfo.Attributes.HasFlag(
+					FileAttributes.ReparsePoint);
+#endif
+
+				if (target != null)
+				{
+					iTunesSymLink = true;
+				}
+			}
+
+			return iTunesSymLink;
+		}
+
+		/// <summary>
 		/// Get album from path method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
@@ -73,20 +107,73 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The base part of the path.</returns>
 		public static string GetBasePathFromFilePath(string path)
 		{
+			string basePath = GetBaseSubPathFromFilePath(path, 3);
+
+			return basePath;
+		}
+
+		/// <summary>
+		/// Get the base path from the file path method.
+		/// </summary>
+		/// <remarks>This assumes the file path ends with the format of:
+		/// Artist\Album\Song.ext.</remarks>
+		/// <param name="path">The full path of the file.</param>
+		/// <param name="depth">The depth of the path segments.</param>
+		/// <returns>The base part of the path.</returns>
+		public static string GetBaseSubPathFromFilePath(string path, int depth)
+		{
 			string basePath = null;
 
 			if (!string.IsNullOrWhiteSpace(path))
 			{
-				int depth = GetDirectoryCount(path);
+				int totalDepth = GetDirectoryCount(path);
 
-				if (depth > 3)
+				if (totalDepth > depth)
 				{
 					basePath = path;
 
-					for (int index = 0; index < 3; index++)
+					for (int index = 0; index < depth; index++)
 					{
 						basePath = Path.GetDirectoryName(basePath);
 					}
+				}
+			}
+
+			return basePath;
+		}
+
+		/// <summary>
+		/// Get the base path from the file path method.
+		/// </summary>
+		/// <remarks>This assumes the file path ends with the format of:
+		/// Artist\Album\Song.ext.</remarks>
+		/// <param name="path">The full path of the file.</param>
+		/// <param name="depth">The depth of the path segments.</param>
+		/// <returns>The base part of the path.</returns>
+		public static string GetBaseSubPathFromFilePathRightSide(
+			string path, int depth)
+		{
+			string basePath = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int totalDepth = GetDirectoryCount(path);
+
+				if (totalDepth > depth)
+				{
+					int segments = totalDepth - depth;
+
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					for (int index = segments; index < totalDepth; index++)
+					{
+						basePath += @"\" + pathParts[index];
+					}
+				}
+				else
+				{
+					basePath = path;
 				}
 			}
 
@@ -116,6 +203,18 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return depth;
+		}
+
+		/// <summary>
+		/// Get library from path method.
+		/// </summary>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The library part of the path.</returns>
+		public static string GetLibraryFromPath(string path)
+		{
+			string library = GetBaseSubPathFromFilePath(path, 4);
+
+			return library;
 		}
 
 		/// <summary>
@@ -190,6 +289,17 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return path;
+		}
+
+		public static string ReplaceLibraryPath(
+			string filePath, string libraryPath)
+		{
+			libraryPath = libraryPath.TrimEnd(Path.DirectorySeparatorChar);
+			string rightSidePath = GetBaseSubPathFromFilePathRightSide(
+				filePath, 4);
+			string newPath = libraryPath + rightSidePath;
+
+			return newPath;
 		}
 
 		/// <summary>
