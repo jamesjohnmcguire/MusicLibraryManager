@@ -9,6 +9,9 @@ dotnet_style_collection_initializer	= false
 # CA1819: Properties should not return arrays
 dotnet_diagnostic.CA1819.severity = none
 
+# SA1010: Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1010.severity = none
+
 # NUnit2001: Consider using Assert.That(expr, Is.False) instead of Assert.False(expr)
 dotnet_diagnostic.NUnit2001.severity = none
 
