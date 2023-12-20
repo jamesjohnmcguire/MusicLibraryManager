@@ -255,46 +255,42 @@ namespace DigitalZenWorks.MusicToolKit
 				string songName =
 					Path.GetFileNameWithoutExtension(filePath);
 
-				// Normalize track name, as it may have been distorted
-				// elsewhere.
-				string trackName =
-					TitleRules.ApplyTitleFileRules(track.Name, null, true);
-
-				if (songName.Equals(
-					trackName, StringComparison.OrdinalIgnoreCase))
+				if (track is IITFileOrCDTrack fileTrack)
 				{
-					if (track is IITFileOrCDTrack fileTrack)
+					// Normalize track name, as it may have been distorted
+					// elsewhere.
+					string trackName = TitleRules.ApplyTitleFileRules(
+						fileTrack.Name, null, true);
+
+					if (!trackName.Equals(
+						fileTrack.Name, StringComparison.OrdinalIgnoreCase))
 					{
-						if (!trackName.Equals(
-							track.Name, StringComparison.OrdinalIgnoreCase))
-						{
-							// The track name needed to be normalized, so need to
-							// update that in iTunes.
-							fileTrack.Name = trackName;
-						}
+						// The track name needed to be normalized, so need
+						// to update that in iTunes.
+						fileTrack.Name = trackName;
+					}
+
+					if (filePath != null)
+					{
+						// Deal with sym link hell.
+						using ITunesManager manager = new ();
 
 						bool isValid = IsValidItunesLocation(track);
+						bool isSymLinkSame = manager.IsTrackPathSymLink(
+							filePath, fileTrack.Location);
 
-						// only update in iTunes, if the location is invalid.
-						if (isValid == false &&
-							File.Exists(filePath))
+						if (isValid == false || isSymLinkSame == true)
 						{
-							try
+							if (!filePath.Equals(
+								fileTrack.Location,
+								StringComparison.OrdinalIgnoreCase))
 							{
+								// Prefer target location.
 								fileTrack.Location = filePath;
-								updated = true;
-							}
-							catch (Exception exception)
-							{
-								// TODO: Note the actual type of exception,
-								// find out why the exception occured, then
-								// find out if the below code makes any
-								// sense
-								Log.Error(exception.ToString());
 
-								// updated = UpdateTrackFromLocation(
-								// track, filePath);
-								throw;
+								string message =
+									"Updated " + trackName + " to " + filePath;
+								Log.Info(message);
 							}
 						}
 					}
@@ -418,6 +414,7 @@ namespace DigitalZenWorks.MusicToolKit
 							if (true == same)
 							{
 								found = true;
+								UpdateItunesLocation(track, file.FullName);
 								break;
 							}
 						}
@@ -537,6 +534,29 @@ namespace DigitalZenWorks.MusicToolKit
 			return filePath;
 		}
 
+		private static bool UpdateFileTrackLocation(
+			IITFileOrCDTrack fileTrack, string filePath)
+		{
+			bool updated = false;
+
+			try
+			{
+				fileTrack.Location = filePath;
+				updated = true;
+			}
+			catch (Exception exception)
+			{
+				// TODO: Note the actual type of exception,
+				// find out why the exception occured, then
+				// find out if the below code makes any
+				// sense
+				Log.Error(exception.ToString());
+				throw;
+			}
+
+			return updated;
+		}
+
 		private string UpdateTrackSymLinkLocation(
 			IITFileOrCDTrack fileTrack, string symLinkTarget)
 		{
@@ -580,14 +600,11 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool isSymLink = false;
 
-			bool exists =
-				File.Exists(trackLocation);
+			bool exists = File.Exists(trackLocation);
 
 			if (exists == true)
 			{
-				bool check =
-					Paths.DoesPathContainItunesSymLink(
-						trackLocation);
+				bool check = Paths.DoesPathContainItunesSymLink(trackLocation);
 
 				if (check == true)
 				{
