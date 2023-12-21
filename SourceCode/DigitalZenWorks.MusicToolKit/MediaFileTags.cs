@@ -480,7 +480,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrEmpty(Title))
 			{
-				Title = TitleRules.ApplyTitleFileRules(Title, Artist, false);
+				Title = TitleRules.ApplyTitleRules(Title, Artist);
 			}
 
 			if (!string.IsNullOrWhiteSpace(Title) &&

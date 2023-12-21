@@ -22,11 +22,25 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="title">The title to process.</param>
 		/// <param name="artist">The artist to check for.</param>
-		/// <param name="isFile">Indicates whether this is for a file
-		/// path name.</param>
 		/// <returns>The updated title.</returns>
-		public static string ApplyTitleFileRules(
-			string title, string artist, bool isFile)
+		public static string ApplyTitleFileRules(string title, string artist)
+		{
+			if (!string.IsNullOrWhiteSpace(title))
+			{
+				title = Paths.RemoveIllegalPathCharacters(title);
+
+				title = ApplyTitleRules(title, artist);
+			}
+
+			return title;
+		}
+		/// <summary>
+		/// Apply title rules.
+		/// </summary>
+		/// <param name="title">The title to process.</param>
+		/// <param name="artist">The artist to check for.</param>
+		/// <returns>The updated title.</returns>
+		public static string ApplyTitleRules(string title, string artist)
 		{
 			if (!string.IsNullOrWhiteSpace(title))
 			{
@@ -39,11 +53,6 @@ namespace DigitalZenWorks.MusicToolKit
 				"The Name Of The Game"
 			};
 #endif
-
-				if (isFile == true)
-				{
-					title = Paths.RemoveIllegalPathCharacters(title);
-				}
 
 				title = GeneralRules.ApplyGeneralRules(title);
 				title = GeneralRules.RemoveTrailingNumbers(title);
