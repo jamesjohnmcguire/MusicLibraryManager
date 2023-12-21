@@ -289,8 +289,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 			if (!string.IsNullOrWhiteSpace(innerText))
 			{
-				Log.Info("value: " + innerText);
-
 				value = innerText;
 			}
 
