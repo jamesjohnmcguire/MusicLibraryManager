@@ -390,7 +390,7 @@ namespace DigitalZenWorks.MusicToolKit
 			if (iTunesManager.IsItunesEnabled == true)
 			{
 				// Operate on the iTunes data store
-				iTunesManager.DeleteDeadTracks();
+				iTunesManager.DeleteEmptyTracks();
 			}
 
 			return 0;
@@ -615,7 +615,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (iTunesManager.IsItunesEnabled == true)
 				{
-					iTunesManager.UpdateItunes(file);
+					iTunesManager.UpdateItunesLibrary(file);
 				}
 			}
 			catch (Exception exception) when

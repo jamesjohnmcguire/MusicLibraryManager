@@ -49,7 +49,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 					// tracks is a list of potential matches
 					foreach (IITTrack track in tracks)
 					{
-						bool same = ITunesManager.AreFileAndTrackTheSame(
+						bool same = iTunesManager.IsFileAndTrackSame(
 							fileName, track);
 						Assert.That(same, Is.True);
 					}
@@ -194,7 +194,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				string fullPath = Path.Combine(location, fileName);
 				FileInfo fileInfo = new (fullPath);
 
-				bool updated = iTunesManager.UpdateItunes(fileInfo);
+				bool updated = iTunesManager.UpdateItunesLibrary(fileInfo);
 
 				Assert.That(updated, Is.False);
 			}
