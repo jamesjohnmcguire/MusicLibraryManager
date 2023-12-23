@@ -2,20 +2,33 @@ Music Library Manager
 
 Tasks
 	Log when adding new file to iTunes
-	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
-	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
-	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
-	Error	CS1056	Unexpected character ' AssemblyInfo.cs
+	Review "Oh Word" from "Oh Word?"
+	Merge Back In Library Variants	Deleting file from Server: 13 Jimmy Bishop Christmas Column.m4a	Merge 'iTunes Media.bak'
+	Review Add to iTunes Directory
+	Fill out getting reparse point for target frameworks < .net 6	c# ReparsePoint	https://gist.github.com/LGM-AdrianHum/260bc9ab3c4cd49bc8617a2abe84ca74	https://stackoverflow.com/questions/2302416/how-to-obtain-the-target-of-a-symbolic-link-or-reparse-point-using-net
+	<Nullable>enable</Nullable>	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	ITunesXmlFile.cs	260
+	make parameter ordering consistent	track then filename
+	--prefer-link-targets
+	Deal with redundant tracks
+	Add tests for FindDuplicates
+	Refactor FindDuplicates?
+	Tags	TagLib.CorruptFileException: FLAC stream not found at starting position.	The Lovin' Spoonful - Revelation Revolution '69.flac	MediaFileTags.cs:line 48
+	Tags	Get original album name - Guardians of the Galaxy -  Awesome Mix Vol. 1
+	Add Config file that includes library (sub)directories
+	help	does nothing
+	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
+	RemoveDeadTracks as command API
+	File ending with comma?	Danny Singing With Mom and Dad, 1.wav	Entertainment\Music\Unknown Artist\Unknown Album\
+	Review	That Lady, Part 1 (The one gets removed)
 	Clean seems to be needed to run several times, in a row to 'catch' all the variants.  For some reason, not finding or processing all of the songs present.
 	Clean seems to be not catching the extra numbers at the end: Danny Singing With Mom and Dad, 1.wav
 	If song is an exact duplicate and then deleted, it should also be removed from iTunes.  This eventually happens, I think because of RemoveDeadTracks, but it should happen more immediately.
 	ReplaceVariousArtists Check for null or empty for replacement
-	That Lady, Part 1 (The one gets removed)
-	File ending with comma?	Danny Singing With Mom and Dad, 1.wav	Entertainment\Music\Unknown Artist\Unknown Album\
+	Error	CS1056	Unexpected character ' AssemblyInfo.cs
+	Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
+	Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
+	Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
 	Music2 Tags Only\Bob Dylan With Johnny Cash\Girl From The North Country
-	help	does nothing
-	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
-	RemoveDeadTracks as command API
 	Add Methods to match commands - ExtractTags
 	[2023-04-30 18:52:10 INF] Tags Saved to: c:\Users\JamesMc\Data\External\Entertainment\Music Tags Only\The Lovin' Spoonful\The Lovin' Spoonful - Greatest Hits (2000)\20.-Lonely (Instrumental).flac.json
 	[2023-04-30 18:52:17 ERR] TagLib.CorruptFileException: FLAC stream not found at starting position.
@@ -364,14 +377,26 @@ Design
 	Get other unit test in line with new approach
 Notes
 	FileTypes Client Support
-		.aifc		Apple
-		.alac	lossless	Apple Lossless Audio Codec
-		.flac	lossless	Not supported in iTunes
-		.m3u
-		.m4a	lossless	iTunes Supported
-		.mp3
-		.wav	Not supported in iTunes
-		.wma	Not supported in iTunes
+		aa audible files
+		aifc		Apple
+		alac	lossless	Apple Lossless Audio Codec
+		flac	lossless	Not supported in iTunes
+		m3u
+		m4a	Apple lossless	iTunes Supported
+		mp3
+		wav
+		wma	Not supported in iTunes
+		iTunes Supported File Types
+			aa
+			aac
+			aiff
+			m4a apple lossless
+			m4p
+			m4v
+			mov
+			mp3
+			mp4	mpeg-4
+			wav
 	Locations
 		C:\Users\JamesMc\Music\iTunes
 		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes	Not changed for quite a while
@@ -578,14 +603,17 @@ Resources
 	c# mp3 get raw stream
 		https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
 		https://github.com/naudio/NAudio
-	Music Brainz
-		https://musicbrainz.org/doc/MusicBrainz_API/Search
-		https://github.com/metabrainz/picard
-		https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
-	Other Services
-		https://getmusicbee.com/help/api/
-		https://beets.readthedocs.io/en/stable/guides/main.html
-		https://getmusicbee.com/addons/s/?type=2
+	Other Software
+		Beets
+			https://beets.readthedocs.io/en/v1.6.0/guides/main.html
+		Music Brainz
+			https://musicbrainz.org/doc/MusicBrainz_API/Search
+			https://github.com/metabrainz/picard
+			https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
+		Other Services
+			https://getmusicbee.com/help/api/
+			https://beets.readthedocs.io/en/stable/guides/main.html
+			https://getmusicbee.com/addons/s/?type=2
 	Rules
 		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
 		https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
@@ -679,8 +707,6 @@ Resources
 
 		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
 		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-	Packages
-		https://github.com/JamesNK/Newtonsoft.Json
 	Regex
 		http://regexstorm.net/tester
 		c# regex replace backets
@@ -757,5 +783,8 @@ FFMpeg
 		target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
 		target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
 		target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
-Beets
-	https://beets.readthedocs.io/en/v1.6.0/guides/main.html
+Tests
+	clean --location c:\Users\User\Data\External\Entertainment\Music --no-update-tags
+	clean --location D:\Users\JamesMc\Data\External\iTunes Media\MusicCatalog --no-update-tags
+	clean --location "D:\Users\JamesMc\Data\External\iTunes Media\MusicCatalog" --no-update-tags
+	clean --no-update-tags
