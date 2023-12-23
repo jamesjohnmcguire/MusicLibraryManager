@@ -235,7 +235,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
 				album = AlbumRules.CleanAlbumFilePath(album, artist);
-				title = TitleRules.ApplyTitleFileRules(title, artist, true);
+				title = TitleRules.ApplyTitleFileRules(title, artist);
 
 				string extension = Path.GetExtension(filePath);
 
