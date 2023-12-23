@@ -34,6 +34,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			return title;
 		}
+
 		/// <summary>
 		/// Apply title rules.
 		/// </summary>
