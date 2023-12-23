@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 [assembly: CLSCompliant(false)]
 
@@ -646,7 +647,11 @@ namespace DigitalZenWorks.MusicToolKit
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
 				];
 
-				if (Directory.Exists(path))
+				bool exists = Directory.Exists(path);
+
+				bool isStandard = IsStandardLibraryDirectory(path);
+
+				if (exists == true && isStandard == true)
 				{
 					DirectoryInfo directory = new (path);
 
@@ -687,6 +692,48 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
+		}
+
+		private bool IsStandardLibraryDirectory(string path)
+		{
+			bool isStandardLibraryDirectory = false;
+
+			string musicPath =
+				LibraryLocation + Path.DirectorySeparatorChar + "Music";
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				if (path.Equals(
+					LibraryLocation, StringComparison.OrdinalIgnoreCase) ||
+					path.Equals(
+					musicPath, StringComparison.OrdinalIgnoreCase))
+				{
+					isStandardLibraryDirectory = true;
+				}
+				else if (path.StartsWith(
+					musicPath, StringComparison.OrdinalIgnoreCase))
+				{
+					int begin = musicPath.Length;
+					string remaining = path[begin..];
+					int end = remaining.IndexOf(
+						Path.DirectorySeparatorChar,
+						StringComparison.OrdinalIgnoreCase);
+
+					if (end < 1)
+					{
+						isStandardLibraryDirectory = true;
+					}
+					else
+					{
+						string subSegment = path.Substring(begin, end);
+
+						isStandardLibraryDirectory =
+							Regex.IsMatch(subSegment, @"\d+$");
+					}
+				}
+			}
+
+			return isStandardLibraryDirectory;
 		}
 	}
 }
