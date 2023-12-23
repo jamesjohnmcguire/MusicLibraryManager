@@ -408,7 +408,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			int count1 = rules.RulesList.Count;
 			int count2 = rules2.RulesList.Count;
-			Assert.That(count2, Is.EqualTo(count2));
+			Assert.That(count2, Is.EqualTo(count1));
 		}
 
 		/// <summary>
@@ -527,9 +527,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				destinationPath + "\\" + fileInfo.Name + ".json";
 
 			bool result = File.Exists(destinationFile);
-			Assert.That(result, Is.True);
 
-			Assert.That(filePath, Is.EqualTo(destinationFile));
+			Assert.Multiple(() =>
+			{
+				Assert.That(result, Is.True);
+				Assert.That(filePath, Is.EqualTo(destinationFile));
+			});
 		}
 
 		/// <summary>

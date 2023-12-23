@@ -102,8 +102,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				Assert.Throws<FileNotFoundException>(() =>
 				iTunesXmlFile = new ITunesXmlFile(nonExistantFilePath));
 
-			Assert.That(exception, Is.Not.Null);
-			Assert.That(iTunesXmlFile, Is.Null);
+			Assert.Multiple(() =>
+			{
+				Assert.That(exception, Is.Not.Null);
+				Assert.That(iTunesXmlFile, Is.Null);
+			});
 		}
 
 		/// <summary>
