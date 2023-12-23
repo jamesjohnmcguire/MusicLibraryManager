@@ -23,11 +23,9 @@ namespace DigitalZenWorks.MusicToolKit
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 #pragma warning disable CA1823
-#pragma warning disable IDE0052
 		private static readonly ResourceManager StringTable =
 			new ("DigitalZenWorks.MusicToolKit.Resources",
 				Assembly.GetExecutingAssembly());
-#pragma warning restore IDE0052
 #pragma warning restore CA1823
 
 		private readonly string filePath;
@@ -139,9 +137,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 				else
 				{
-					string[] artists = new string[1];
-					artists[0] = artist;
-
+					string[] artists = [artist];
 					TagFile.Tag.Performers = artists;
 				}
 			}
@@ -248,7 +244,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The full set of tags.</returns>
 		public SortedDictionary<string, object> GetTags()
 		{
-			SortedDictionary<string, object> tags = new ();
+			SortedDictionary<string, object> tags = [];
 
 			Type tagType = TagFile.Tag.GetType();
 

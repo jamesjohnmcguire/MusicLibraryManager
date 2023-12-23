@@ -48,7 +48,7 @@ namespace DigitalZenWorks.MusicToolKit
 				char first = item[0];
 				first = char.ToUpper(first, CultureInfo.InvariantCulture);
 
-				string remaining = item.Substring(1);
+				string remaining = item[1..];
 
 				item = string.Concat(first, remaining);
 			}
