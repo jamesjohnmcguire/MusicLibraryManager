@@ -208,6 +208,23 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Adds the file.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>True.</returns>
+		public bool AddFile(string filePath)
+		{
+			// not in collection yet, add it
+			string message =
+				"Adding to iTunes Library: " + filePath;
+			Log.Info(message);
+
+			iTunes.LibraryPlaylist.AddFile(filePath);
+
+			return true;
+		}
+
+		/// <summary>
 		/// Delete empty tracks method.
 		/// </summary>
 		/// <returns>The number of empty tracks removed.</returns>
@@ -332,9 +349,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					if (null == tracks)
 					{
-						// not in collection yet, add it
-						iTunes.LibraryPlaylist.AddFile(file.FullName);
-						updated = true;
+						updated = AddFile(file.FullName);
 					}
 					else
 					{
@@ -348,9 +363,7 @@ namespace DigitalZenWorks.MusicToolKit
 						}
 						else
 						{
-							// not in collection yet, add it
-							iTunes.LibraryPlaylist.AddFile(file.FullName);
-							updated = true;
+							updated = AddFile(file.FullName);
 						}
 					}
 				}
@@ -386,10 +399,6 @@ namespace DigitalZenWorks.MusicToolKit
 						StringComparison.OrdinalIgnoreCase))
 					{
 						updated = UpdateFileTrackLocation(fileTrack, filePath);
-
-						string message =
-							"Updated " + track.Name + " to " + filePath;
-						Log.Info(message);
 					}
 				}
 			}
@@ -483,6 +492,10 @@ namespace DigitalZenWorks.MusicToolKit
 
 			try
 			{
+				string message =
+					"Updating " + fileTrack.Name + " to " + filePath;
+				Log.Info(message);
+
 				fileTrack.Location = filePath;
 				updated = true;
 			}
