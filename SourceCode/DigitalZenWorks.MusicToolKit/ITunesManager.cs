@@ -249,6 +249,11 @@ namespace DigitalZenWorks.MusicToolKit
 
 					if (emptyTrack == true)
 					{
+						string message =
+							"Deleting Empty Track from iTunes library: " +
+							fileTrack.Name;
+						Log.Warn(message);
+
 						fileTrack.Delete();
 
 						emptyFound++;
