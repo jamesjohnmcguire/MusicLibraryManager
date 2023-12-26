@@ -501,10 +501,8 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 			catch (Exception exception)
 			{
-				// TODO: Note the actual type of exception,
-				// find out why the exception occured, then
-				// find out if the below code makes any
-				// sense
+				// TODO: Note the actual type of exception, find out why the
+				// exception occured and if anything can be done about it.
 				Log.Error(exception.ToString());
 				throw;
 			}
