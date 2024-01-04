@@ -11,24 +11,3 @@ dotnet_diagnostic.CA1819.severity = none
 
 # SA1010: Opening square brackets should be spaced correctly
 dotnet_diagnostic.SA1010.severity = none
-
-# NUnit2001: Consider using Assert.That(expr, Is.False) instead of Assert.False(expr)
-dotnet_diagnostic.NUnit2001.severity = none
-
-# NUnit2004: Consider using Assert.That(expr, Is.True) instead of Assert.True(expr)
-dotnet_diagnostic.NUnit2004.severity = none
-
-# NUnit2005: Consider using Assert.That(actual, Is.EqualTo(expected)) instead of Assert.AreEqual(expected, actual)
-dotnet_diagnostic.NUnit2005.severity = none
-
-# NUnit2016: Consider using Assert.That(expr, Is.Null) instead of Assert.Null(expr)
-dotnet_diagnostic.NUnit2016.severity = none
-
-# NUnit2018: Consider using Assert.That(expr, Is.Not.Null) instead of Assert.NotNull(expr)
-dotnet_diagnostic.NUnit2018.severity = none
-
-# NUnit2028: Consider using Assert.That(actual, Is.GreaterThanOrEqualTo(expected)) instead of Assert.GreaterOrEqual(actual, expected)
-dotnet_diagnostic.NUnit2028.severity = none
-
-# NUnit2036: Consider using Assert.That(collection, Is.Not.Empty) instead of Assert.IsNotEmpty(collection)
-dotnet_diagnostic.NUnit2036.severity = none
