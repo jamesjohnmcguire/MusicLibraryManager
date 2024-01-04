@@ -57,53 +57,56 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 					switch (command.Name)
 					{
 						case "clean":
+						{
+							using MusicToolKit.MusicManager musicUtility =
+								new (true);
+
+							string configurationFile =
+								Configuration.GetConfigurationFile(command);
+
+							string location = GetLocation(command);
+
+							if (!string.IsNullOrWhiteSpace(location))
 							{
-								using MusicToolKit.MusicManager musicUtility =
-									new (true);
-
-								string location = GetLocation(command);
-
-								if (!string.IsNullOrWhiteSpace(location))
-								{
-									musicUtility.LibraryLocation = location;
-								}
-
-								Rules rules = GetRulesData(command);
-
-								if (rules != null)
-								{
-									musicUtility.Rules = rules;
-								}
-
-								bool noUpdateTags = command.DoesOptionExist(
-									"n", "no-update-tags");
-								musicUtility.UpdateTags = !noUpdateTags;
-
-								musicUtility.CleanMusicLibrary();
+								musicUtility.LibraryLocation = location;
 							}
 
-							break;
+							Rules rules = GetRulesData(command);
+
+							if (rules != null)
+							{
+								musicUtility.Rules = rules;
+							}
+
+							bool noUpdateTags = command.DoesOptionExist(
+								"n", "no-update-tags");
+							musicUtility.UpdateTags = !noUpdateTags;
+
+							musicUtility.CleanMusicLibrary();
+						}
+
+						break;
 						case "extract-tags":
+						{
+							using MusicToolKit.MusicManager musicUtility =
+								new (false);
+
+							if (command.Parameters.Count > 0)
 							{
-								using MusicToolKit.MusicManager musicUtility =
-									new (false);
+								string location = command.Parameters[0];
+								string tagsOnlyLocation =
+									location + " Tags Only";
 
-								if (command.Parameters.Count > 0)
-								{
-									string location = command.Parameters[0];
-									string tagsOnlyLocation =
-										location + " Tags Only";
-
-									musicUtility.UpdateLibraryTagsOnly(
-										location, tagsOnlyLocation);
-								}
-								else
-								{
-									musicUtility.UpdateLibraryTagsOnly();
-								}
+								musicUtility.UpdateLibraryTagsOnly(
+									location, tagsOnlyLocation);
 							}
+							else
+							{
+								musicUtility.UpdateLibraryTagsOnly();
+							}
+						}
 
-							break;
+						break;
 					}
 				}
 			}

@@ -4,13 +4,51 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System.IO;
+using DigitalZenWorks.CommandLine.Commands;
 using System;
+using System.IO;
 
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
 	internal static class Configuration
 	{
+		public static string GetConfigurationFile(Command command)
+		{
+			string location;
+
+			CommandOption optionFound = command.GetOption("c", "config");
+
+			if (optionFound != null)
+			{
+				location = optionFound.Parameter;
+			}
+			else
+			{
+				location = GetDefaultConfigurationFile();
+			}
+
+			return location;
+		}
+
+		public static string GetDefaultConfigurationFile()
+		{
+			string configurationFile = null;
+
+			string dataPath = GetDefaultDataLocation();
+
+			// Will use existing directory or create it.
+			Directory.CreateDirectory(dataPath);
+
+			string configFile = dataPath + @"\MusicManager.json";
+
+			if (File.Exists(configFile))
+			{
+				configurationFile = configFile;
+			}
+
+			return configurationFile;
+		}
+
 		public static string GetDefaultDataLocation()
 		{
 			string defaultDataLocation;
