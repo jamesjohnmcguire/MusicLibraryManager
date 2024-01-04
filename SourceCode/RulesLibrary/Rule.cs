@@ -340,9 +340,8 @@ namespace DigitalZenWorks.RulesLibrary
 					}
 					else if (propertyValue is string[])
 					{
-						string[] newValueArray = new string[1];
-						newValueArray[0] = (string)newValue;
-
+						string textValue = (string)newValue;
+						string[] newValueArray = [textValue];
 						propertyInfo.SetValue(item, newValueArray, null);
 						result = true;
 					}

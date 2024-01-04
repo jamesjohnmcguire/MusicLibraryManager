@@ -177,7 +177,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			bool result = Rule.ConditionNotEmptyTest(subject);
 			Assert.That(result, Is.True);
 
-			string[] subjects = new string[] { "Album" };
+			string[] subjects = ["Album"];
 			subject = subjects;
 
 			result = Rule.ConditionNotEmptyTest(subject);
@@ -358,7 +358,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 			Assert.That(testRules, Is.Not.Null);
 
 			Rule rule = testRules.GetRuleByName("RemoveDiscFromAlbum");
-			Assert.That(testRules, Is.Not.Null);
+			Assert.That(rule, Is.Not.Null);
 		}
 
 		/// <summary>

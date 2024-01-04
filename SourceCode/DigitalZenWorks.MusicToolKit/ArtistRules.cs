@@ -25,7 +25,7 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string ArtistGeneralRules(
 			string artist, string album, string performer)
 		{
-			string[] excludes = { "10cc", "ABBA", "AC/DC" };
+			string[] excludes = ["10cc", "ABBA", "AC/DC"];
 			string extraPeriods = @"\.{2,}";
 
 			if (!string.IsNullOrWhiteSpace(artist))

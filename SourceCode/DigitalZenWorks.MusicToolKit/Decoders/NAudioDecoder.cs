@@ -85,24 +85,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 		private static WaveStream OpenWaveStream(string file)
 		{
-			WaveStream waveStream;
-
 			string extension = Path.GetExtension(file);
 			extension = extension.ToUpperInvariant();
-
-			switch (extension)
+			WaveStream waveStream = extension switch
 			{
-				case ".MP3":
-					waveStream = new Mp3FileReader(file);
-					break;
-				case ".WAV":
-					waveStream = new WaveFileReader(file);
-					break;
-				default:
-					waveStream = new MediaFoundationReader(file);
-					break;
-			}
-
+				".MP3" => new Mp3FileReader(file),
+				".WAV" => new WaveFileReader(file),
+				_ => new MediaFoundationReader(file),
+			};
 			return waveStream;
 		}
 
