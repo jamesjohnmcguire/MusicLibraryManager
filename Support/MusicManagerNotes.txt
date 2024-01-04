@@ -1,8 +1,9 @@
 Music Library Manager
 
 Tasks
-	Log when adding new file to iTunes
+	Stand By Me	Ben E King	Still empty		External/iTunes Media/Music/Compilations/S*/Stand By Me.mp3
 	Review "Oh Word" from "Oh Word?"
+	Problem with ending number	The Very Best Of Ben E. King\Supernatural Thing, Pt. 1.mp3
 	Merge Back In Library Variants	Deleting file from Server: 13 Jimmy Bishop Christmas Column.m4a	Merge 'iTunes Media.bak'
 	Review Add to iTunes Directory
 	Fill out getting reparse point for target frameworks < .net 6	c# ReparsePoint	https://gist.github.com/LGM-AdrianHum/260bc9ab3c4cd49bc8617a2abe84ca74	https://stackoverflow.com/questions/2302416/how-to-obtain-the-target-of-a-symbolic-link-or-reparse-point-using-net
@@ -125,8 +126,10 @@ Tasks
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
 	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
+	iTunes	Investigate Automatically Add to iTunes
 
 	Finished
+		Log when adding new file to iTunes
 		Remove Pictures from extracted tags
 		Tests	tests for empty tags
 		Tests	Add tests for when the first character is lower case
@@ -666,6 +669,8 @@ Resources
 			https://github.com/acoustid/chromaprint
 			https://github.com/wo80/AcoustID.NET
 			https://oxygene.sk/2011/01/how-does-chromaprint-work/
+	Converters
+		https://videoconvert.minitool.com/video-converter/itunes-music-format.html
 	iTunes
 		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
 		https://support.apple.com/en-us/HT201596
