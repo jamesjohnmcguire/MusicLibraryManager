@@ -4,9 +4,27 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using System.IO;
+using System;
+
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
-	internal class Configuration
+	internal static class Configuration
 	{
+		public static string GetDefaultDataLocation()
+		{
+			string defaultDataLocation;
+
+			string baseDataDirectory = Environment.GetFolderPath(
+				Environment.SpecialFolder.ApplicationData,
+				Environment.SpecialFolderOption.Create);
+
+			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
+
+			defaultDataLocation =
+				Path.Combine(baseDataDirectory, applicationDataDirectory);
+
+			return defaultDataLocation;
+		}
 	}
 }

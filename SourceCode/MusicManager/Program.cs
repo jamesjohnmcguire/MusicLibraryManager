@@ -148,13 +148,11 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 
 		private static void LogInitialization()
 		{
-			string applicationDataDirectory = @"DigitalZenWorks\MusicManager";
-			string baseDataDirectory = Environment.GetFolderPath(
-				Environment.SpecialFolder.ApplicationData,
-				Environment.SpecialFolderOption.Create) + @"\" +
-				applicationDataDirectory;
+			string applicationDataDirectory =
+				Configuration.GetDefaultDataLocation();
+			string logFilePath =
+				Path.Combine(applicationDataDirectory, "MusicManager.log");
 
-			string logFilePath = baseDataDirectory + @"\MusicManager.log";
 			const string outputTemplate =
 				"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] " +
 				"{Message:lj}{NewLine}{Exception}";
