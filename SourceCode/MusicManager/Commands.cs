@@ -15,26 +15,29 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 		{
 			IList<Command> commands = new List<Command>();
 
-			Command help = new("help");
+			Command help = new ("help");
 			help.Description = "Show this information";
 			commands.Add(help);
 
 			IList<CommandOption> options = new List<CommandOption>();
 
-			CommandOption location = new("l", "location", true);
+			CommandOption configFile = new ("c", "config", true);
+			options.Add(configFile);
+
+			CommandOption location = new ("l", "location", true);
 			options.Add(location);
 
 			Command extractTags =
-				new("extract-tags", options, 0, "Extract Tags Information");
+				new ("extract-tags", options, 0, "Extract Tags Information");
 			commands.Add(extractTags);
 
-			CommandOption rules = new("r", "rules", true);
+			CommandOption rules = new ("r", "rules", true);
 			options.Add(rules);
 
-			CommandOption noUpdateTags = new("n", "no-update-tags", false);
+			CommandOption noUpdateTags = new ("n", "no-update-tags", false);
 			options.Add(noUpdateTags);
 
-			Command clean = new("clean", options, 0, "Clean music files");
+			Command clean = new ("clean", options, 0, "Clean music files");
 			commands.Add(clean);
 
 			return commands;
