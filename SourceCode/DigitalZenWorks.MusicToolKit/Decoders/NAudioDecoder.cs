@@ -3,17 +3,16 @@
 // Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
+using Common.Logging;
+using NAudio.Wave;
+using System;
+using System.Buffers;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace DigitalZenWorks.MusicToolKit
 {
-	using Common.Logging;
-	using NAudio.Wave;
-	using System;
-	using System.Buffers;
-	using System.IO;
-	using System.Reflection;
-	using System.Runtime.InteropServices;
-
 	/// <summary>
 	/// Decode using the NAudio library.
 	/// </summary>
