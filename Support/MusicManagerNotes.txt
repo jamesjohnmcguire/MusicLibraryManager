@@ -607,16 +607,20 @@ Resources
 		https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
 		https://github.com/naudio/NAudio
 	Other Software
-		Beets
-			https://beets.readthedocs.io/en/v1.6.0/guides/main.html
 		Music Brainz
 			https://musicbrainz.org/doc/MusicBrainz_API/Search
 			https://github.com/metabrainz/picard
 			https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
-		Other Services
-			https://getmusicbee.com/help/api/
+			https://acoustid.org/webservice
+		Beets
+			music beets pip
 			https://beets.readthedocs.io/en/stable/guides/main.html
-			https://getmusicbee.com/addons/s/?type=2
+			https://github.com/beetbox/beets
+			https://beets.io/
+	Other Services
+		https://getmusicbee.com/help/api/
+		https://beets.readthedocs.io/en/stable/guides/main.html
+		https://getmusicbee.com/addons/s/?type=2
 	Rules
 		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
 		https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
