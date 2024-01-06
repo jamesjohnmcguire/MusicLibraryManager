@@ -1,10 +1,10 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="PocoItem.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace RulesLibrary.Tests
+namespace DigitalZenWorks.RulesLibrary.Tests
 {
 	/// <summary>
 	/// Plain old class object item.

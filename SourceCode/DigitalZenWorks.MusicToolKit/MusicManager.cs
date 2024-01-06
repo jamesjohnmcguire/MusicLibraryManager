@@ -1,17 +1,15 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="MusicManager.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
 using Common.Logging;
-using CSCore.XAudio2.X3DAudio;
 using DigitalZenWorks.Common.Utilities;
 using DigitalZenWorks.RulesLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Formats.Tar;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -174,7 +172,7 @@ namespace DigitalZenWorks.MusicToolKit
 							newList.RemoveAt(newList.Count - 1);
 						}
 
-						string[] newParts = newList.ToArray();
+						string[] newParts = [.. newList];
 						string newPath = string.Join("\\", newParts);
 
 						Directory.CreateDirectory(newPath);
@@ -238,7 +236,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
 				album = AlbumRules.CleanAlbumFilePath(album, artist);
-				title = TitleRules.ApplyTitleFileRules(title, artist, true);
+				title = TitleRules.ApplyTitleFileRules(title, artist);
 
 				string extension = Path.GetExtension(filePath);
 
@@ -254,6 +252,38 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return filePath;
+		}
+
+		/// <summary>
+		/// Recollect duplicates.
+		/// </summary>
+		/// <param name="libraryPath">The library path.</param>
+		public static void RecollectDuplicates(string libraryPath)
+		{
+			if (!string.IsNullOrWhiteSpace(libraryPath))
+			{
+				bool locationOk;
+				int duplicateNumer = 2;
+
+				do
+				{
+					string duplicatePath = GetDuplicateLocationByNumber(
+						libraryPath, duplicateNumer);
+
+					locationOk = Directory.Exists(duplicatePath);
+
+					if (locationOk == true)
+					{
+						// recurse into directories
+
+						// for each file
+						// create file path to the original
+						// check to see if exists
+						// if not, move
+					}
+				}
+				while (locationOk == true);
+			}
 		}
 
 		/// <summary>
@@ -360,7 +390,7 @@ namespace DigitalZenWorks.MusicToolKit
 			if (iTunesManager.IsItunesEnabled == true)
 			{
 				// Operate on the iTunes data store
-				iTunesManager.DeleteDeadTracks();
+				iTunesManager.DeleteEmptyTracks();
 			}
 
 			return 0;
@@ -373,38 +403,6 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
-		/// Recollect duplicates.
-		/// </summary>
-		/// <param name="libraryPath">The library path.</param>
-		public void RecollectDuplicates(string libraryPath)
-		{
-			if (!string.IsNullOrWhiteSpace(libraryPath))
-			{
-				bool locationOk;
-				int duplicateNumer = 2;
-
-				do
-				{
-					string duplicatePath = GetDuplicateLocationByNumber(
-						libraryPath, duplicateNumer);
-
-					locationOk = Directory.Exists(duplicatePath);
-
-					if (locationOk == true)
-					{
-						// recurse into directories
-
-						// for each file
-						// create file path to the original
-						// check to see if exists
-						// if not, move
-					}
-				}
-				while (locationOk == true);
-			}
 		}
 
 		/// <summary>
@@ -477,17 +475,17 @@ namespace DigitalZenWorks.MusicToolKit
 			try
 			{
 				string[] excludes =
-				{
+				[
 					".crd", ".cue", ".doc", ".gif", ".gz", ".htm", ".ini",
 					".jpeg", ".jpg", ".lit", ".log", ".m3u", ".nfo", ".opf",
 					".pdf", ".plist", ".png", ".psp", ".sav", ".sfv", ".txt",
 					".url", ".xls", ".zip"
-				};
+				];
 
 				string[] includes =
-				{
+				[
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				};
+				];
 
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
@@ -617,7 +615,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (iTunesManager.IsItunesEnabled == true)
 				{
-					iTunesManager.UpdateItunes(file);
+					iTunesManager.UpdateItunesLibrary(file);
 				}
 			}
 			catch (Exception exception) when
@@ -645,11 +643,15 @@ namespace DigitalZenWorks.MusicToolKit
 			try
 			{
 				string[] includes =
-				{
+				[
 					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				};
+				];
 
-				if (Directory.Exists(path))
+				bool exists = Directory.Exists(path);
+
+				bool isStandard = IsStandardLibraryDirectory(path);
+
+				if (exists == true && isStandard == true)
 				{
 					DirectoryInfo directory = new (path);
 
@@ -690,6 +692,48 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				Log.Error(exception.ToString());
 			}
+		}
+
+		private bool IsStandardLibraryDirectory(string path)
+		{
+			bool isStandardLibraryDirectory = false;
+
+			string musicPath =
+				LibraryLocation + Path.DirectorySeparatorChar + "Music";
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				if (path.Equals(
+					LibraryLocation, StringComparison.OrdinalIgnoreCase) ||
+					path.Equals(
+					musicPath, StringComparison.OrdinalIgnoreCase))
+				{
+					isStandardLibraryDirectory = true;
+				}
+				else if (path.StartsWith(
+					musicPath, StringComparison.OrdinalIgnoreCase))
+				{
+					int begin = musicPath.Length;
+					string remaining = path[begin..];
+					int end = remaining.IndexOf(
+						Path.DirectorySeparatorChar,
+						StringComparison.OrdinalIgnoreCase);
+
+					if (end < 1)
+					{
+						isStandardLibraryDirectory = true;
+					}
+					else
+					{
+						string subSegment = path.Substring(begin, end);
+
+						isStandardLibraryDirectory =
+							Regex.IsMatch(subSegment, @"\d+$");
+					}
+				}
+			}
+
+			return isStandardLibraryDirectory;
 		}
 	}
 }

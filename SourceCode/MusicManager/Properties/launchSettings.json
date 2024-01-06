@@ -2,7 +2,7 @@
   "profiles": {
     "MusicManager": {
       "commandName": "Project",
-      "commandLineArgs": "clean --location c:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music"
+      "commandLineArgs": "clean --no-update-tags"
     }
   }
 }

@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="ITunesManager.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -89,51 +89,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Are file and track the same method.
-		/// </summary>
-		/// <param name="filePath">The file path to check.</param>
-		/// <param name="track">The iTunes track to check.</param>
-		/// <returns>A value indicating whether they are the same
-		/// or not.</returns>
-		public static bool AreFileAndTrackTheSame(
-			string filePath, IITTrack track)
-		{
-			bool same = false;
-
-			if (track != null)
-			{
-				string songName =
-					Path.GetFileNameWithoutExtension(filePath);
-
-				// Normalize track name, as it may have been distorted
-				// elsewhere.
-				string trackName =
-					TitleRules.ApplyTitleFileRules(track.Name, null, true);
-
-				if (songName.Equals(
-					trackName, StringComparison.OrdinalIgnoreCase))
-				{
-					if (track is IITFileOrCDTrack fileTrack)
-					{
-						if (filePath == null && fileTrack.Location == null)
-						{
-							same = true;
-						}
-						else if (filePath != null &&
-							filePath.Equals(
-								fileTrack.Location,
-								StringComparison.OrdinalIgnoreCase))
-						{
-							same = true;
-						}
-					}
-				}
-			}
-
-			return same;
-		}
-
-		/// <summary>
 		/// Does iTunes exist method.
 		/// </summary>
 		/// <returns>A value indicating whether the iTunes application exists
@@ -157,41 +112,33 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			bool same = false;
 
-			if (!string.IsNullOrWhiteSpace(filePath) &&
-				File.Exists(filePath) &&
-				track != null)
+			if (File.Exists(filePath) && track != null)
 			{
 				try
 				{
-					if (track.Kind == ITTrackKind.ITTrackKindFile)
+					if (track is IITFileOrCDTrack fileTrack &&
+						File.Exists(fileTrack.Location))
 					{
-						if (track is IITFileOrCDTrack fileTrack &&
-							!string.IsNullOrWhiteSpace(fileTrack.Location) &&
-							File.Exists(fileTrack.Location))
+						using MediaFileTags tags = new (filePath);
+
+						string album1 = fileTrack.Album;
+						string album2 = tags.Album;
+						string artist1 = fileTrack.Artist;
+						string artist2 = tags.Artist;
+						string title1 = fileTrack.Name;
+						string title2 = tags.Title;
+						int year1 = fileTrack.Year;
+						int year2 = (int)tags.Year;
+
+						if (album1.Equals(
+							album2, StringComparison.OrdinalIgnoreCase) &&
+							artist1.Equals(
+							artist2, StringComparison.OrdinalIgnoreCase) &&
+							title1.Equals(
+							title2, StringComparison.OrdinalIgnoreCase) &&
+							year1 == year2)
 						{
-							using MediaFileTags tags = new (filePath);
-
-							string album1 = fileTrack.Album;
-							string album2 = tags.Album;
-							string artist1 = fileTrack.Artist;
-							string artist2 = tags.Artist;
-							string title1 = fileTrack.Name;
-							string title2 = tags.Title;
-							int year1 = fileTrack.Year;
-							int year2 = (int)tags.Year;
-
-							if (album1.Equals(
-								album2, StringComparison.OrdinalIgnoreCase) &&
-								artist1.Equals(
-									artist2,
-									StringComparison.OrdinalIgnoreCase) &&
-								title1.Equals(
-									title2,
-									StringComparison.OrdinalIgnoreCase) &&
-								year1 == year2)
-							{
-								same = true;
-							}
+							same = true;
 						}
 					}
 				}
@@ -207,19 +154,33 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Is valid iTunes location method.
+		/// Gets the iTunes supported file types.
+		/// </summary>
+		/// <returns>The iTunes supported file types.</returns>
+		public static string[] GetSupportedFileTypes()
+		{
+			string[] supportedTpes =
+			[
+				".aa", ".aac", ".aiff", ".m4a", ".m4p", ".m4v", ".mov",
+				".mp3", ".mp4", ".wav"
+			];
+
+			return supportedTpes;
+		}
+
+		/// <summary>
+		/// Is valid iTunes track location method.
 		/// </summary>
 		/// <remarks>This method will check if the location property within
 		/// iTunes point to a valid file.</remarks>
 		/// <param name="track">The track to check.</param>
 		/// <returns>True if the iTunes location is valid,
 		/// otherwise false.</returns>
-		public static bool IsValidItunesLocation(IITTrack track)
+		public static bool IsValidTrackLocation(IITTrack track)
 		{
 			bool isValid = false;
 
 			if (track != null && track is IITFileOrCDTrack fileTrack &&
-				!string.IsNullOrWhiteSpace(fileTrack.Location) &&
 				File.Exists(fileTrack.Location))
 			{
 				isValid = true;
@@ -229,78 +190,47 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Update iTunes location method.
+		/// Updates the track information.
 		/// </summary>
-		/// <param name="track">The track to update.</param>
-		/// <param name="filePath">The file path to update to.</param>
-		/// <returns>A value indicating whether the track location was updated
-		/// or not.</returns>
-		public static bool UpdateItunesLocation(
-			IITTrack track, string filePath)
+		/// <param name="track">The track.</param>
+		/// <param name="artist">The artist.</param>
+		/// <param name="album">The album.</param>
+		/// <param name="title">The title.</param>
+		public static void UpdateTrackInformation(
+			IITTrack track, string artist, string album, string title)
 		{
-			bool updated = false;
-
 			if (track != null)
 			{
-				string songName =
-					Path.GetFileNameWithoutExtension(filePath);
-
-				// Normalize track name, as it may have been distorted
-				// elsewhere.
-				string trackName =
-					TitleRules.ApplyTitleFileRules(track.Name, null, true);
-
-				if (songName.Equals(
-					trackName, StringComparison.OrdinalIgnoreCase))
-				{
-					if (track is IITFileOrCDTrack fileTrack)
-					{
-						if (!trackName.Equals(
-							track.Name, StringComparison.OrdinalIgnoreCase))
-						{
-							// The track name needed to be normalized, so need to
-							// update that in iTunes.
-							fileTrack.Name = trackName;
-						}
-
-						bool isValid = IsValidItunesLocation(track);
-
-						// only update in iTunes, if the location is invalid.
-						if (isValid == false &&
-							File.Exists(filePath))
-						{
-							try
-							{
-								fileTrack.Location = filePath;
-								updated = true;
-							}
-							catch (Exception exception)
-							{
-								// TODO: Note the actual type of exception,
-								// find out why the exception occured, then
-								// find out if the below code makes any
-								// sense
-								Log.Error(exception.ToString());
-
-								// updated = UpdateTrackFromLocation(
-								// track, filePath);
-								throw;
-							}
-						}
-					}
-				}
+				track.Artist = artist;
+				track.Album = album;
+				track.Name = title;
 			}
-
-			return updated;
 		}
 
 		/// <summary>
-		/// Delete dead tracks method.
+		/// Adds the file.
 		/// </summary>
-		/// <returns>The number of dead tracks removed.</returns>
-		public int DeleteDeadTracks()
+		/// <param name="filePath">The file path.</param>
+		/// <returns>True.</returns>
+		public bool AddFile(string filePath)
 		{
-			int numberDeadFound = 0;
+			// not in collection yet, add it
+			string message =
+				"Adding to iTunes Library: " + filePath;
+			Log.Info(message);
+
+			iTunes.LibraryPlaylist.AddFile(filePath);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Delete empty tracks method.
+		/// </summary>
+		/// <returns>The number of empty tracks removed.</returns>
+		public int DeleteEmptyTracks()
+		{
+			int emptyFound = 0;
 
 			if (iTunes != null)
 			{
@@ -309,24 +239,29 @@ namespace DigitalZenWorks.MusicToolKit
 				IITFileOrCDTrack fileTrack;
 
 				int trackCount = tracks.Count;
-				int numberChecked = 0;
 
 				for (int index = 1; index <= trackCount; index++)
 				{
-					// only work with files
+					// only work with tracks as files
 					fileTrack = tracks[index] as IITFileOrCDTrack;
-					bool deadTrack = CheckForDeadTrack(fileTrack);
 
-					if (deadTrack == true)
+					bool emptyTrack = IsTrackLocationEmpty(fileTrack);
+
+					if (emptyTrack == true)
 					{
-						numberDeadFound++;
-					}
+						string message =
+							"Deleting Empty Track from iTunes library: " +
+							fileTrack.Name;
+						Log.Warn(message);
 
-					numberChecked++;
+						fileTrack.Delete();
+
+						emptyFound++;
+					}
 				}
 			}
 
-			return numberDeadFound;
+			return emptyFound;
 		}
 
 		/// <summary>
@@ -346,8 +281,8 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			IITLibraryPlaylist mainLibrary = iTunes.LibraryPlaylist;
 			IITTrackCollection tracks = mainLibrary.Tracks;
-			Dictionary<string, IITTrack> trackCollection = new ();
-			List<IITTrack> duplicateTracks = new ();
+			Dictionary<string, IITTrack> trackCollection = [];
+			List<IITTrack> duplicateTracks = [];
 			IITFileOrCDTrack fileTrack;
 
 			int trackCount = tracks.Count;
@@ -364,58 +299,111 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Update file in iTunes.
+		/// Is the file and track the same method.
+		/// </summary>
+		/// <param name="filePath">The file path to check.</param>
+		/// <param name="track">The iTunes track to check.</param>
+		/// <returns>A value indicating whether they are the same
+		/// or not.</returns>
+		public bool IsFileAndTrackSame(string filePath, IITTrack track)
+		{
+			bool same = false;
+
+			if (track != null)
+			{
+				string songName =
+					Path.GetFileNameWithoutExtension(filePath);
+
+				// Normalize track name, as it may have been distorted
+				// elsewhere.
+				string trackName =
+					TitleRules.ApplyTitleRules(track.Name, null);
+
+				if (trackName.Equals(
+					songName, StringComparison.OrdinalIgnoreCase))
+				{
+					if (track is IITFileOrCDTrack fileTrack)
+					{
+						same = IsFileAndTrackLocationSame(filePath, fileTrack);
+					}
+				}
+			}
+
+			return same;
+		}
+
+		/// <summary>
+		/// Update file in iTunes library.
 		/// </summary>
 		/// <param name="file">The file to update.</param>
 		/// <returns>Indicates whether the actual iTunes library was updated
 		/// or not.</returns>
-		public bool UpdateItunes(FileInfo file)
+		public bool UpdateItunesLibrary(FileInfo file)
 		{
 			bool updated = false;
 
-			if (file != null && file.Exists)
+			if (file != null && file.Exists == true)
 			{
-				string[] excludes = { ".flac", ".wma" };
-
 				string extension = Path.GetExtension(file.FullName);
+				string[] supportedTypes = GetSupportedFileTypes();
 
-				if (!excludes.Contains(extension))
+				if (supportedTypes.Contains(extension))
 				{
-					string searchName =
-						Path.GetFileNameWithoutExtension(file.Name);
-
-					IITTrackCollection tracks = playList.Search(
-						searchName,
-						ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
+					// tracks is a list of potential matches
+					IITTrackCollection tracks = GetPossibleTracks(file.Name);
 
 					if (null == tracks)
 					{
-						// not in collection yet, add it
-						iTunes.LibraryPlaylist.AddFile(file.FullName);
-						updated = true;
+						updated = AddFile(file.FullName);
 					}
 					else
 					{
-						// tracks is a list of potential matches
-						bool found = false;
+						IITTrack matchingTrack =
+							GetMatchingTrack(tracks, file.FullName);
 
-						foreach (IITTrack track in tracks)
+						if (matchingTrack != null)
 						{
-							// Check the file paths.
-							bool same =
-								AreFileAndTrackTheSame(file.FullName, track);
-
-							if (true == same)
-							{
-								found = true;
-								break;
-							}
+							updated = UpdateItunesLocation(
+								matchingTrack, file.FullName);
 						}
-
-						if (false == found)
+						else
 						{
-							updated = UpdateOrAddTrack(tracks, file.FullName);
+							updated = AddFile(file.FullName);
 						}
+					}
+				}
+			}
+
+			return updated;
+		}
+
+		/// <summary>
+		/// Update iTunes location method.
+		/// </summary>
+		/// <param name="track">The track to update.</param>
+		/// <param name="filePath">The file path to update to.</param>
+		/// <returns>A value indicating whether the track location was updated
+		/// or not.</returns>
+		public bool UpdateItunesLocation(IITTrack track, string filePath)
+		{
+			bool updated = false;
+
+			if (track != null &&
+				track is IITFileOrCDTrack fileTrack &&
+				filePath != null)
+			{
+				// Deal with sym link hell.
+				bool isValid = IsValidTrackLocation(track);
+				bool isSymLinkSame = IsTrackPathSymLink(
+					filePath, fileTrack.Location);
+
+				if (isValid == false || isSymLinkSame == true)
+				{
+					if (!filePath.Equals(
+						fileTrack.Location,
+						StringComparison.OrdinalIgnoreCase))
+					{
+						updated = UpdateFileTrackLocation(fileTrack, filePath);
 					}
 				}
 			}
@@ -446,23 +434,22 @@ namespace DigitalZenWorks.MusicToolKit
 			ref List<IITTrack> duplicateTracks,
 			IITFileOrCDTrack fileTrack)
 		{
-			// is this a file track?
-			if ((null != fileTrack) &&
-				(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+			if (fileTrack != null)
 			{
 				string trackKey =
 					fileTrack.Name + fileTrack.Artist + fileTrack.Album;
 
-				if (!trackCollection.ContainsKey(trackKey))
+				bool exists =
+					trackCollection.TryGetValue(trackKey, out IITTrack value);
+
+				if (exists == false)
 				{
 					trackCollection.Add(trackKey, fileTrack);
 				}
 				else
 				{
-					if ((trackCollection[trackKey].Album !=
-							fileTrack.Album) ||
-						(trackCollection[trackKey].Artist !=
-							fileTrack.Artist))
+					if ((value.Album != fileTrack.Album) ||
+						(value.Artist != fileTrack.Artist))
 					{
 						trackCollection.Add(trackKey, fileTrack);
 					}
@@ -482,23 +469,15 @@ namespace DigitalZenWorks.MusicToolKit
 			return trackCollection;
 		}
 
-		private static bool CheckForDeadTrack(IITFileOrCDTrack fileTrack)
+		private static bool IsTrackLocationEmpty(IITFileOrCDTrack fileTrack)
 		{
-			bool deadTrack = false;
+			bool emptyTrack = false;
 
 			try
 			{
-				// is this a file track?
-				if ((null != fileTrack) &&
-					(fileTrack.Kind == ITTrackKind.ITTrackKindFile))
+				if (fileTrack != null)
 				{
-					if (string.IsNullOrWhiteSpace(fileTrack.Location) ||
-						!File.Exists(fileTrack.Location))
-					{
-						deadTrack = true;
-
-						fileTrack.Delete();
-					}
+					emptyTrack = !File.Exists(fileTrack.Location);
 				}
 			}
 			catch (Exception exception) when
@@ -508,122 +487,191 @@ namespace DigitalZenWorks.MusicToolKit
 				Log.Error(exception.ToString());
 			}
 
-			return deadTrack;
+			return emptyTrack;
 		}
 
-		private bool UpdateOrAddTrack(
-			IITTrackCollection tracks, string filePath)
+		private static bool UpdateFileTrackLocation(
+			IITFileOrCDTrack fileTrack, string filePath)
 		{
-			bool updated = false;
+			bool updated;
 
-			// Check to see if there is an existing track with an
-			// invalid location to update.
-			foreach (IITTrack track in tracks)
+			try
 			{
-				updated = UpdateItunesLocation(track, filePath);
+				string message =
+					"Updating " + fileTrack.Name + " to " + filePath;
+				Log.Info(message);
 
-				if (updated == true)
-				{
-					// Only update one, to avoid duplicates.
-					break;
-				}
-			}
-
-			if (updated == false)
-			{
-				// not in collection yet, add it
-				iTunes.LibraryPlaylist.AddFile(filePath);
+				fileTrack.Location = filePath;
 				updated = true;
+			}
+			catch (Exception exception)
+			{
+				// TODO: Note the actual type of exception, find out why the
+				// exception occured and if anything can be done about it.
+				Log.Error(exception.ToString());
+				throw;
 			}
 
 			return updated;
 		}
 
-		private bool UpdateTrackFromLocation(
-			IITTrack track, string musicFilePath)
+		private string GetItunesLibraryFilePath(string sourceFile)
 		{
-			bool result = false;
+			string filePath = null;
 
-			string album = track.Album;
-			string artist = track.Artist;
-			string comment = track.Comment;
-			string composer = track.Composer;
-			int discCount = track.DiscCount;
-			int discNumber = track.DiscNumber;
-			string genre = track.Genre;
-			string grouping = track.Grouping;
-			string name = track.Name;
-			int playedCount = track.PlayedCount;
-			DateTime playedDate = track.PlayedDate;
-			int rating = track.Rating;
-			int trackCount = track.TrackCount;
-			int trackNumber = track.TrackNumber;
-			int year = track.Year;
+			string artistPath =
+				Paths.GetArtistPathFromFilePath(sourceFile);
 
-			int count = iTunes.LibraryPlaylist.Tracks.Count;
+			if (!string.IsNullOrWhiteSpace(artistPath))
+			{
+				filePath = iTunesLibraryLocation + artistPath;
+			}
 
-			iTunes.LibraryPlaylist.AddFile(musicFilePath);
+			return filePath;
+		}
+
+		private IITTrack GetMatchingTrack(
+			IITTrackCollection tracks, string fileName)
+		{
+			IITTrack matchingTrack = null;
+
+			foreach (IITTrack track in tracks)
+			{
+				bool same = IsFileAndTrackSame(fileName, track);
+
+				if (true == same)
+				{
+					matchingTrack = track;
+					break;
+				}
+			}
+
+			return matchingTrack;
+		}
+
+		private IITTrackCollection GetPossibleTracks(string name)
+		{
+			string searchName = Path.GetFileNameWithoutExtension(name);
 
 			IITTrackCollection tracks = playList.Search(
-				name, ITPlaylistSearchField.ITPlaylistSearchFieldAll);
+				searchName,
+				ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
 
-			if (null != tracks)
+			return tracks;
+		}
+
+		/// <summary>
+		/// Are file and track the same method.
+		/// </summary>
+		/// <param name="filePath">The file path to check.</param>
+		/// <param name="fileTrack">The iTunes file track to check.</param>
+		/// <returns>A value indicating whether they are the same
+		/// or not.</returns>
+		private bool IsFileAndTrackLocationSame(
+			string filePath, IITFileOrCDTrack fileTrack)
+		{
+			bool same = false;
+
+			if (filePath == null && fileTrack.Location == null)
 			{
-				foreach (IITTrack foundTrack in tracks)
+				same = true;
+			}
+			else if (filePath != null)
+			{
+				if (filePath.Equals(
+					fileTrack.Location, StringComparison.OrdinalIgnoreCase))
 				{
-					bool same = AreFileAndTrackTheSame(musicFilePath, track);
+					same = true;
+				}
+				else
+				{
+					// Check for sym link hell.
+					same = IsTrackPathSymLink(
+						filePath, fileTrack.Location);
+				}
+			}
 
-					if (true == same)
+			return same;
+		}
+
+		private bool IsFileWithinLibraryPath(string filePath)
+		{
+			bool isWithIn = false;
+
+			if (!string.IsNullOrWhiteSpace(filePath))
+			{
+				if (filePath.StartsWith(
+					iTunesLibraryLocation, StringComparison.OrdinalIgnoreCase))
+				{
+					isWithIn = true;
+				}
+			}
+
+			return isWithIn;
+		}
+
+		private bool IsTrackPathSymLink(string filePath, string trackLocation)
+		{
+			bool isSymLink = false;
+
+			bool exists = File.Exists(trackLocation);
+
+			if (exists == true)
+			{
+				bool check = Paths.DoesPathContainItunesSymLink(trackLocation);
+
+				if (check == true)
+				{
+					string library = ItunesLibraryLocation;
+					string checkPath =
+						Paths.ReplaceLibraryPath(trackLocation, library);
+
+					if (filePath.Equals(
+						checkPath, StringComparison.OrdinalIgnoreCase))
 					{
-						if (foundTrack.Kind == ITTrackKind.ITTrackKindFile)
-						{
-							IITFileOrCDTrack fileTrack =
-								(IITFileOrCDTrack)foundTrack;
-
-							try
-							{
-								fileTrack.Location = musicFilePath;
-							}
-							catch (Exception exception)
-							{
-								Log.Error(exception.ToString());
-
-								throw;
-							}
-
-							foundTrack.Artist = artist;
-							foundTrack.Album = album;
-							foundTrack.PlayedCount = playedCount;
-							foundTrack.Rating = rating;
-							foundTrack.Comment = comment;
-							foundTrack.Composer = composer;
-							foundTrack.DiscCount = discCount;
-							foundTrack.DiscNumber = discNumber;
-							foundTrack.Genre = genre;
-							foundTrack.Grouping = grouping;
-							foundTrack.Name = name;
-							foundTrack.PlayedCount = playedCount;
-							foundTrack.PlayedDate = playedDate;
-							foundTrack.Rating = rating;
-							foundTrack.TrackCount = trackCount;
-							foundTrack.TrackNumber = trackNumber;
-							foundTrack.Year = year;
-						}
-
-						result = true;
-						break;
+						isSymLink = true;
 					}
 				}
 			}
 
-			int newCount = iTunes.LibraryPlaylist.Tracks.Count;
+			return isSymLink;
+		}
 
-			if (newCount > count)
+		private bool IsTrackWithinLibraryPath(IITTrack track)
+		{
+			bool isWithIn = false;
+
+			if (track != null && track is IITFileOrCDTrack fileTrack)
 			{
-				track.Delete();
+				string filePath = fileTrack.Location;
+
+				isWithIn = IsFileWithinLibraryPath(filePath);
 			}
 
-			return result;
+			return isWithIn;
+		}
+
+		private string UpdateTrackSymLinkLocation(
+			IITFileOrCDTrack fileTrack, string symLinkTarget)
+		{
+			string newLocation;
+
+			bool inside = IsFileWithinLibraryPath(symLinkTarget);
+
+			if (inside == true)
+			{
+				fileTrack.Location = newLocation = symLinkTarget;
+			}
+			else
+			{
+				string newTargetPath =
+					GetItunesLibraryFilePath(symLinkTarget);
+				File.Move(symLinkTarget, newTargetPath);
+
+				fileTrack.Location = newLocation = newTargetPath;
+			}
+
+			return newLocation;
 		}
 	}
 }

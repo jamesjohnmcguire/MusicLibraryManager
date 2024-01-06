@@ -3,7 +3,7 @@
   "settings": {
     "documentationRules": {
       "companyName": "Digital Zen Works",
-      "copyrightText": "Copyright © 2019 - 2023 {companyName}. All Rights Reserved.",
+      "copyrightText": "Copyright © 2019 - 2024 {companyName}. All Rights Reserved.",
       "xmlHeader": true,
       "fileNamingConvention": "metadata"
     },

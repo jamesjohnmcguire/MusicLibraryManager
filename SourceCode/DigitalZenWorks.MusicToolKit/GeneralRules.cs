@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="GeneralRules.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +48,7 @@ namespace DigitalZenWorks.MusicToolKit
 				char first = item[0];
 				first = char.ToUpper(first, CultureInfo.InvariantCulture);
 
-				string remaining = item.Substring(1);
+				string remaining = item[1..];
 
 				item = string.Concat(first, remaining);
 			}

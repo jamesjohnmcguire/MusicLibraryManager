@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="NAudioDecoder.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -91,24 +91,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 		private static WaveStream OpenWaveStream(string file)
 		{
-			WaveStream waveStream;
-
 			string extension = Path.GetExtension(file);
 			extension = extension.ToUpperInvariant();
-
-			switch (extension)
+			WaveStream waveStream = extension switch
 			{
-				case ".MP3":
-					waveStream = new Mp3FileReader(file);
-					break;
-				case ".WAV":
-					waveStream = new WaveFileReader(file);
-					break;
-				default:
-					waveStream = new MediaFoundationReader(file);
-					break;
-			}
-
+				".MP3" => new Mp3FileReader(file),
+				".WAV" => new WaveFileReader(file),
+				_ => new MediaFoundationReader(file),
+			};
 			return waveStream;
 		}
 

@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="ArtistRules.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -25,7 +25,7 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string ArtistGeneralRules(
 			string artist, string album, string performer)
 		{
-			string[] excludes = { "10cc", "ABBA", "AC/DC" };
+			string[] excludes = ["10cc", "ABBA", "AC/DC"];
 			string extraPeriods = @"\.{2,}";
 
 			if (!string.IsNullOrWhiteSpace(artist))

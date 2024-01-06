@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="MusicTests.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2023 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +78,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = Paths.GetAlbumFromPath(fileName);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "The Very Best Of 10cc";
 			Assert.That(album, Is.EqualTo(expected));
@@ -95,7 +95,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveArtist(album, artist);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Ventura Highway";
 			Assert.That(album, Is.EqualTo(expected));
@@ -111,7 +111,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCd(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh";
 			Assert.That(album, Is.EqualTo(expected));
@@ -128,7 +128,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCd(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
 		}
@@ -143,7 +143,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCopyAmount(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh";
 			Assert.That(album, Is.EqualTo(expected));
@@ -159,7 +159,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCopyAmount(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh (Nice Day)";
 			Assert.That(album, Is.EqualTo(expected));
@@ -175,7 +175,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveDisc(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
 			Assert.That(album, Is.EqualTo(expected));
@@ -192,7 +192,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveDisc(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
 		}
@@ -207,7 +207,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveFlac(album);
 
-			Assert.IsNotEmpty(album);
+			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Talking Heads - Brick(2005)";
 			Assert.That(album, Is.EqualTo(expected));
@@ -252,7 +252,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string artist = Paths.GetArtistFromPath(fileName);
 
-			Assert.IsNotEmpty(artist);
+			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "10cc";
 			Assert.That(artist, Is.EqualTo(expected));
@@ -269,7 +269,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			artist = ArtistRules.RemoveAlbum(artist, album);
 
-			Assert.IsNotEmpty(artist);
+			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "America";
 			Assert.That(artist, Is.EqualTo(expected));
@@ -286,7 +286,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			artist = ArtistRules.ReplaceVariousArtists(artist, replacement);
 
-			Assert.IsNotEmpty(artist);
+			Assert.That(artist, Is.Not.Empty);
 
 			Assert.That(artist, Is.EqualTo(replacement));
 		}
@@ -303,7 +303,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string artist =
 				ArtistRules.ReplaceVariousArtists(original, replacement);
 
-			Assert.IsNotEmpty(artist);
+			Assert.That(artist, Is.Not.Empty);
 
 			Assert.That(artist, Is.EqualTo(original));
 		}
@@ -346,7 +346,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string artist = ArtistRules.CleanArtistFilePath(
 				"?Jefferson  Airplane..", null, null);
 
-			Assert.IsNotEmpty(artist);
+			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "Jefferson Airplane";
 			Assert.That(artist, Is.EqualTo(expected));
@@ -363,7 +363,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			bool result = decoder.Decode(consumer, 240);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -405,7 +405,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			bool contains = duplicateLocation.Contains(
 				"Music2", StringComparison.Ordinal);
 
-			Assert.True(contains);
+			Assert.That(contains, Is.True);
 		}
 
 		/// <summary>
@@ -430,7 +430,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			int count1 = rules.RulesList.Count;
 			int count2 = rules2.RulesList.Count;
-			Assert.AreEqual(count1, count2);
+			Assert.That(count2, Is.EqualTo(count1));
 		}
 
 		/// <summary>
@@ -450,7 +450,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -470,7 +470,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
 
-			Assert.True(result);
+			Assert.That(result, Is.True);
 		}
 
 		/// <summary>
@@ -486,7 +486,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			bool result = original.Equals(content, StringComparison.Ordinal);
 
-			Assert.False(result);
+			Assert.That(result, Is.False);
 		}
 
 		/// <summary>
@@ -529,7 +529,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string filePath =
 				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
-			Assert.Null(filePath);
+			Assert.That(filePath, Is.Null);
 		}
 
 		/// <summary>
@@ -543,14 +543,18 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string filePath =
 				musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
 
-			Assert.NotNull(filePath);
+			Assert.That(filePath, Is.Not.Null);
+
 			string destinationFile =
 				destinationPath + "\\" + fileInfo.Name + ".json";
 
 			bool result = File.Exists(destinationFile);
-			Assert.True(result);
 
-			Assert.That(filePath, Is.EqualTo(destinationFile));
+			Assert.Multiple(() =>
+			{
+				Assert.That(result, Is.True);
+				Assert.That(filePath, Is.EqualTo(destinationFile));
+			});
 		}
 
 		/// <summary>
@@ -578,7 +582,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			title = TitleRules.RemoveArtist(title, artist);
 
-			Assert.IsNotEmpty(title);
+			Assert.That(title, Is.Not.Empty);
 
 			string expected = "Ventura Highway";
 			Assert.That(title, Is.EqualTo(expected));
@@ -594,7 +598,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			title = TitleRules.RemoveBracketedSubTitle(title);
 
-			Assert.IsNotEmpty(title);
+			Assert.That(title, Is.Not.Empty);
 
 			string expected = "Sakura";
 			Assert.That(title, Is.EqualTo(expected));
@@ -617,7 +621,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 
 			bool exists = File.Exists(newFileName);
-			Assert.True(exists);
+			Assert.That(exists, Is.True);
 
 			// Clean up.
 			File.Delete(newFileName);
@@ -640,7 +644,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			// The un-normalized file should have been moved.
 			bool exists = File.Exists(originalFileName);
-			Assert.False(exists);
+			Assert.That(exists, Is.False);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected = basePath + @"\Artist\Album\Sakura.mp4";
@@ -648,7 +652,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 
 			exists = File.Exists(newFileName);
-			Assert.True(exists);
+			Assert.That(exists, Is.True);
 
 			// Clean up.
 			File.Delete(newFileName);
@@ -679,11 +683,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 
 			bool exists = File.Exists(newFileName);
-			Assert.True(exists);
+			Assert.That(exists, Is.True);
 
 			// The updated file should have been moved to duplicates.
 			exists = File.Exists(originalFileName);
-			Assert.False(exists);
+			Assert.That(exists, Is.False);
 
 			// Clean up.
 			File.Delete(newFileName);
@@ -707,7 +711,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			// The un-normalized file should have been deleted.
 			bool exists = File.Exists(originalFileName);
-			Assert.False(exists);
+			Assert.That(exists, Is.False);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected = basePath + @"\Artist\Album\Sakura.mp4";
@@ -715,7 +719,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 
 			exists = File.Exists(newFileName);
-			Assert.True(exists);
+			Assert.That(exists, Is.True);
 
 			// Clean up.
 			File.Delete(newFileName);
@@ -736,7 +740,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(newFileName, Is.EqualTo(expected));
 
 			bool exists = File.Exists(newFileName);
-			Assert.True(exists);
+			Assert.That(exists, Is.True);
 		}
 
 		/// <summary>
