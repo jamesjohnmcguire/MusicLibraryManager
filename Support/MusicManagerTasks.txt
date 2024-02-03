@@ -1,4 +1,7 @@
 Music Library Manager Tasks
+	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj cannot be found.
+	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
+	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj cannot be found.
 	Save Breakpoints
 	Review "Oh Word" from "Oh Word?"
 	Problem with ending number	The Very Best Of Ben E. King\Supernatural Thing, Pt. 1.mp3
