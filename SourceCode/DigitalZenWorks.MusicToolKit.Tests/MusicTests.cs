@@ -423,7 +423,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"The Things We Do For Love.mp3";
 			string fullPath = Path.Combine(location, fileName);
 
-			string normalizedFilePath = MusicManager.NormalizePath(fullPath);
+			string normalizedFilePath = musicManager.NormalizePath(fullPath);
 
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
@@ -443,7 +443,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"The Things We Do For Love2.mp3";
 			string fullPath = Path.Combine(location, fileName);
 
-			string normalizedFilePath = MusicManager.NormalizePath(fullPath);
+			string normalizedFilePath = musicManager.NormalizePath(fullPath);
 
 			bool result =
 				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
@@ -591,7 +591,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string newFileName =
 				MakeTestFileCopy(@"\Artist\Album", "sakura test.mp4");
 
-			newFileName = MusicManager.UpdateFile(newFileName);
+			newFileName = musicManager.UpdateFile(newFileName);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected = basePath + @"\Artist\Album\Sakura test.mp4";
@@ -618,7 +618,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			// File there.
 			File.Delete(TestFile);
 
-			string newFileName = MusicManager.UpdateFile(originalFileName);
+			string newFileName = musicManager.UpdateFile(originalFileName);
 
 			// The un-normalized file should have been moved.
 			bool exists = File.Exists(originalFileName);
@@ -651,7 +651,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			tags.Year = 1975;
 			tags.Update();
 
-			string newFileName = MusicManager.UpdateFile(originalFileName);
+			string newFileName = musicManager.UpdateFile(originalFileName);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 
@@ -685,7 +685,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string originalFileName =
 				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
-			string newFileName = MusicManager.UpdateFile(originalFileName);
+			string newFileName = musicManager.UpdateFile(originalFileName);
 
 			// The un-normalized file should have been deleted.
 			bool exists = File.Exists(originalFileName);
@@ -709,7 +709,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileSame()
 		{
-			string newFileName = MusicManager.UpdateFile(TestFile);
+			string newFileName = musicManager.UpdateFile(TestFile);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
 			string expected =

@@ -205,11 +205,23 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <param name="filePath">The file path to check.</param>
 		/// <returns>The normalized path.</returns>
-		public static string NormalizePath(string filePath)
+		public string NormalizePath(string filePath)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string basePath = Paths.GetBasePathFromFilePath(filePath);
+				string basePath = null;
+				bool isStandard = IsStandardLibraryDirectory(filePath);
+
+				if (isStandard == true)
+				{
+					basePath = Paths.GetBasePathFromFilePath(filePath);
+				}
+				else
+				{
+					basePath = LibraryLocation +
+						Path.DirectorySeparatorChar + "Music";
+				}
+
 				string artist = Paths.GetArtistFromPath(filePath);
 				string album = Paths.GetAlbumFromPath(filePath);
 				string title = Paths.GetTitleFromPath(filePath);
@@ -294,7 +306,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// names with differnt cases as the same.</remarks>
 		/// <param name="filePath">The file path to update.</param>
 		/// <returns>The updated file path.</returns>
-		public static string UpdateFile(string filePath)
+		public string UpdateFile(string filePath)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
@@ -367,7 +379,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The updated file.</returns>
 		[Obsolete("UpdateFile(FileInfo) is deprecated, " +
 			"please use UpdateFile(string) instead.")]
-		public static FileInfo UpdateFile(FileInfo file)
+		public FileInfo UpdateFile(FileInfo file)
 		{
 			if (file != null)
 			{
@@ -649,9 +661,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				bool exists = Directory.Exists(path);
 
-				bool isStandard = IsStandardLibraryDirectory(path);
-
-				if (exists == true && isStandard == true)
+				if (exists == true)
 				{
 					DirectoryInfo directory = new (path);
 
