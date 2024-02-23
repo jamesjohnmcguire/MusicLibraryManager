@@ -1,4 +1,7 @@
 Music Library Manager Tasks
+	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active	
+	AddFile	{"Value does not fall within the expected range."}	System.Exception {System.ArgumentException}
+	UpdateFile	{"Could not find a part of the path."}	System.Exception {System.IO.DirectoryNotFoundException}
 	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj cannot be found.
 	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
 	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj cannot be found.
