@@ -327,6 +327,20 @@ namespace DigitalZenWorks.MusicToolKit
 						same = IsFileAndTrackLocationSame(filePath, fileTrack);
 					}
 				}
+				else
+				{
+					songName = songName.Replace(
+						" -", ":", StringComparison.OrdinalIgnoreCase);
+
+					if (trackName.Equals(
+						songName, StringComparison.OrdinalIgnoreCase))
+					{
+						if (track is IITFileOrCDTrack fileTrack)
+						{
+							same = IsFileAndTrackLocationSame(filePath, fileTrack);
+						}
+					}
+				}
 			}
 
 			return same;
@@ -552,6 +566,10 @@ namespace DigitalZenWorks.MusicToolKit
 		private IITTrackCollection GetPossibleTracks(string name)
 		{
 			string searchName = Path.GetFileNameWithoutExtension(name);
+
+			searchName = searchName.Replace(",", "");
+			searchName = searchName.Replace(".", "");
+			searchName = searchName.Replace("-", "");
 
 			IITTrackCollection tracks = playList.Search(
 				searchName,

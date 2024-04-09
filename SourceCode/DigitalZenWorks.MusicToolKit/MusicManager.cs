@@ -201,15 +201,87 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Recollect duplicates.
+		/// </summary>
+		/// <param name="libraryPath">The library path.</param>
+		public static void RecollectDuplicates(string libraryPath)
+		{
+			if (!string.IsNullOrWhiteSpace(libraryPath))
+			{
+				bool locationOk;
+				int duplicateNumer = 2;
+
+				do
+				{
+					string duplicatePath = GetDuplicateLocationByNumber(
+						libraryPath, duplicateNumer);
+
+					locationOk = Directory.Exists(duplicatePath);
+
+					if (locationOk == true)
+					{
+						// recurse into directories
+
+						// for each file
+						// create file path to the original
+						// check to see if exists
+						// if not, move
+					}
+				}
+				while (locationOk == true);
+			}
+		}
+
+		/// <summary>
+		/// Clean music library method.
+		/// </summary>
+		/// <returns>A value indicating success or not.</returns>
+		public int CleanMusicLibrary()
+		{
+			// Operate on the actual music files in the file system
+			CleanFiles(libraryLocation);
+
+			if (iTunesManager.IsItunesEnabled == true)
+			{
+				// Operate on the iTunes data store
+				iTunesManager.DeleteEmptyTracks();
+			}
+
+			return 0;
+		}
+
+		/// <summary>
+		/// Dispose method.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
 		/// Normalize path.
 		/// </summary>
 		/// <param name="filePath">The file path to check.</param>
 		/// <returns>The normalized path.</returns>
-		public static string NormalizePath(string filePath)
+		public string NormalizePath(string filePath)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string basePath = Paths.GetBasePathFromFilePath(filePath);
+				string basePath;
+
+				bool isStandard = IsStandardLibraryDirectory(filePath);
+
+				if (isStandard == true)
+				{
+					basePath = Paths.GetBasePathFromFilePath(filePath);
+				}
+				else
+				{
+					basePath = LibraryLocation +
+						Path.DirectorySeparatorChar + "Music";
+				}
+
 				string artist = Paths.GetArtistFromPath(filePath);
 				string album = Paths.GetAlbumFromPath(filePath);
 				string title = Paths.GetTitleFromPath(filePath);
@@ -255,35 +327,54 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Recollect duplicates.
+		/// Save tags to json file method.
 		/// </summary>
-		/// <param name="libraryPath">The library path.</param>
-		public static void RecollectDuplicates(string libraryPath)
+		/// <param name="sourceFile">The source file.</param>
+		/// <param name="destinationPath">The destination path.</param>
+		/// <returns>The file path of the saved file.</returns>
+		public string SaveTagsToJsonFile(
+			FileInfo sourceFile, string destinationPath)
 		{
-			if (!string.IsNullOrWhiteSpace(libraryPath))
+			string destinationFile = null;
+
+			try
 			{
-				bool locationOk;
-				int duplicateNumer = 2;
-
-				do
+				if (sourceFile != null)
 				{
-					string duplicatePath = GetDuplicateLocationByNumber(
-						libraryPath, duplicateNumer);
+					using MediaFileTags tags =
+						new (sourceFile.FullName, rules);
 
-					locationOk = Directory.Exists(duplicatePath);
+					SortedDictionary<string, object> tagSet = tags.GetTags();
 
-					if (locationOk == true)
+					JsonSerializerSettings jsonSettings = new ();
+					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+					jsonSettings.ContractResolver =
+						new OrderedContractResolver();
+
+					string json = JsonConvert.SerializeObject(
+						tagSet, Formatting.Indented, jsonSettings);
+
+					if (!string.IsNullOrWhiteSpace(json))
 					{
-						// recurse into directories
+						destinationFile =
+							destinationPath + "\\" + sourceFile.Name + ".json";
 
-						// for each file
-						// create file path to the original
-						// check to see if exists
-						// if not, move
+						System.IO.File.WriteAllText(destinationFile, json);
 					}
+
+					Log.Info("Tags Saved to: " + destinationFile);
 				}
-				while (locationOk == true);
 			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is TagLib.CorruptFileException ||
+				exception is TagLib.UnsupportedFormatException)
+			{
+				Log.Error(exception.ToString());
+				Log.Error("File is: " + sourceFile);
+			}
+
+			return destinationFile;
 		}
 
 		/// <summary>
@@ -294,7 +385,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// names with differnt cases as the same.</remarks>
 		/// <param name="filePath">The file path to update.</param>
 		/// <returns>The updated file path.</returns>
-		public static string UpdateFile(string filePath)
+		public string UpdateFile(string filePath)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
@@ -367,7 +458,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <returns>The updated file.</returns>
 		[Obsolete("UpdateFile(FileInfo) is deprecated, " +
 			"please use UpdateFile(string) instead.")]
-		public static FileInfo UpdateFile(FileInfo file)
+		public FileInfo UpdateFile(FileInfo file)
 		{
 			if (file != null)
 			{
@@ -376,84 +467,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return file;
-		}
-
-		/// <summary>
-		/// Clean music library method.
-		/// </summary>
-		/// <returns>A value indicating success or not.</returns>
-		public int CleanMusicLibrary()
-		{
-			// Operate on the actual music files in the file system
-			CleanFiles(libraryLocation);
-
-			if (iTunesManager.IsItunesEnabled == true)
-			{
-				// Operate on the iTunes data store
-				iTunesManager.DeleteEmptyTracks();
-			}
-
-			return 0;
-		}
-
-		/// <summary>
-		/// Dispose method.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
-		/// Save tags to json file method.
-		/// </summary>
-		/// <param name="sourceFile">The source file.</param>
-		/// <param name="destinationPath">The destination path.</param>
-		/// <returns>The file path of the saved file.</returns>
-		public string SaveTagsToJsonFile(
-			FileInfo sourceFile, string destinationPath)
-		{
-			string destinationFile = null;
-
-			try
-			{
-				if (sourceFile != null)
-				{
-					using MediaFileTags tags =
-						new (sourceFile.FullName, rules);
-
-					SortedDictionary<string, object> tagSet = tags.GetTags();
-
-					JsonSerializerSettings jsonSettings = new ();
-					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-					jsonSettings.ContractResolver =
-						new OrderedContractResolver();
-
-					string json = JsonConvert.SerializeObject(
-						tagSet, Formatting.Indented, jsonSettings);
-
-					if (!string.IsNullOrWhiteSpace(json))
-					{
-						destinationFile =
-							destinationPath + "\\" + sourceFile.Name + ".json";
-
-						System.IO.File.WriteAllText(destinationFile, json);
-					}
-
-					Log.Info("Tags Saved to: " + destinationFile);
-				}
-			}
-			catch (Exception exception) when
-				(exception is ArgumentException ||
-				exception is TagLib.CorruptFileException ||
-				exception is TagLib.UnsupportedFormatException)
-			{
-				Log.Error(exception.ToString());
-				Log.Error("File is: " + sourceFile);
-			}
-
-			return destinationFile;
 		}
 
 		/// <summary>
@@ -649,9 +662,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 				bool exists = Directory.Exists(path);
 
-				bool isStandard = IsStandardLibraryDirectory(path);
-
-				if (exists == true && isStandard == true)
+				if (exists == true)
 				{
 					DirectoryInfo directory = new (path);
 
