@@ -382,7 +382,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"hCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRR" +
 				"gAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA";
 
-			string audioSignature = AudioSignature.GetAudioSignature(testFile);
+			string audioSignature = AudioSignature.GetAudioSignature(TestFile);
 
 			Assert.That(audioSignature, Is.EqualTo(intended));
 		}
