@@ -181,6 +181,24 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get directory depth count.
+		/// </summary>
+		/// <param name="fileName">The file path to check.</param>
+		/// <returns>The count of directory levels.</returns>
+		public static int GetDirectoryCount(string fileName)
+		{
+			int depth = -1;
+
+			if (!string.IsNullOrWhiteSpace(fileName))
+			{
+				string[] parts = fileName.Split(Path.DirectorySeparatorChar);
+				depth = parts.Length;
+			}
+
+			return depth;
+		}
+
+		/// <summary>
 		/// Get iTunes directory depth method.
 		/// </summary>
 		/// <param name="iTunesPath">The iTunes path.</param>
@@ -339,14 +357,6 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return title;
-		}
-
-		private static int GetDirectoryCount(string fileName)
-		{
-			string[] parts = fileName.Split(Path.DirectorySeparatorChar);
-			int depth = parts.Length;
-
-			return depth;
 		}
 
 		private static string GetPartFromPath(string path, int partDepth)
