@@ -13,13 +13,13 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 	{
 		public static IList<Command> GetCommands()
 		{
-			IList<Command> commands = new List<Command>();
+			List<Command> commands = [];
 
 			Command help = new ("help");
 			help.Description = "Show this information";
 			commands.Add(help);
 
-			IList<CommandOption> options = new List<CommandOption>();
+			List<CommandOption> options = [];
 
 			CommandOption configFile = new ("c", "config", true);
 			options.Add(configFile);
