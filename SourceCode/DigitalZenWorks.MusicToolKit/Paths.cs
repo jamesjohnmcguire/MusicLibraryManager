@@ -266,6 +266,35 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get title from path method.
+		/// </summary>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The title part of the path.</returns>
+		public static string GetTitleFromPath(string path)
+		{
+			string title = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int depth = GetDirectoryCount(path);
+
+				if (depth > 0)
+				{
+					// Assuming the last part of the path structure has the
+					// song title.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int titleSegment = pathParts.Length - 1;
+					title = pathParts[titleSegment];
+					title = Path.GetFileNameWithoutExtension(title);
+				}
+			}
+
+			return title;
+		}
+
+		/// <summary>
 		/// Get path part from tag method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
@@ -328,35 +357,6 @@ namespace DigitalZenWorks.MusicToolKit
 			string newPath = libraryPath + rightSidePath;
 
 			return newPath;
-		}
-
-		/// <summary>
-		/// Get title from path method.
-		/// </summary>
-		/// <param name="path">The full path of the file.</param>
-		/// <returns>The title part of the path.</returns>
-		public static string GetTitleFromPath(string path)
-		{
-			string title = null;
-
-			if (!string.IsNullOrWhiteSpace(path))
-			{
-				int depth = GetDirectoryCount(path);
-
-				if (depth > 0)
-				{
-					// Assuming the last part of the path structure has the
-					// song title.
-					string[] pathParts =
-						path.Split(Path.DirectorySeparatorChar);
-
-					int titleSegment = pathParts.Length - 1;
-					title = pathParts[titleSegment];
-					title = Path.GetFileNameWithoutExtension(title);
-				}
-			}
-
-			return title;
 		}
 
 		private static string GetPartFromPath(string path, int partDepth)
