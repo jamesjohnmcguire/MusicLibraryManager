@@ -71,6 +71,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string newFileName = newPath + @"\" + fileName;
 
+			if (File.Exists(newFileName))
+			{
+				File.Delete(newFileName);
+			}
+
 			File.Copy(testFile, newFileName);
 
 			return newFileName;
