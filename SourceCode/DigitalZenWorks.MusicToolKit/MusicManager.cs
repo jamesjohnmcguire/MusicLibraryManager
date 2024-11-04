@@ -271,6 +271,9 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
+				string musicPath =
+					LibraryLocation + Path.DirectorySeparatorChar + "Music";
+
 				string basePath = Paths.GetBasePathFromFilePath(filePath);
 
 				if (useDefaultLibraryPath == true)
@@ -279,14 +282,13 @@ namespace DigitalZenWorks.MusicToolKit
 
 					if (isStandard == false)
 					{
-						basePath = LibraryLocation +
-							Path.DirectorySeparatorChar + "Music";
+						basePath = musicPath;
 					}
 				}
 
-				string artist = Paths.GetArtistFromPath(filePath);
-				string album = Paths.GetAlbumFromPath(filePath);
-				string title = Paths.GetTitleFromPath(filePath);
+				string artist = Paths.GetArtistFromPath(musicPath, filePath);
+				string album = Paths.GetAlbumFromPath(musicPath, filePath);
+				string title = Paths.GetTitleFromPath(musicPath, filePath);
 
 				if (File.Exists(filePath))
 				{
