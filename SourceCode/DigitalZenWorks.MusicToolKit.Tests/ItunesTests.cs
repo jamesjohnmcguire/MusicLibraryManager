@@ -84,6 +84,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using ITunesManager iTunesManager = new ();
 			string location = iTunesManager.ItunesLibraryLocation;
 
+			Assert.That(location, Is.Not.Null);
 			Assert.That(location, Is.Not.Empty);
 		}
 

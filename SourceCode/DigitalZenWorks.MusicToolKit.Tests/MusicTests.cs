@@ -77,6 +77,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string album = Paths.GetAlbumFromPath(fileName);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "The Very Best Of 10cc";
@@ -94,6 +95,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveArtist(album, artist);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Ventura Highway";
@@ -110,6 +112,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCd(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh";
@@ -127,6 +130,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCd(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -142,6 +146,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCopyAmount(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh";
@@ -158,6 +163,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveCopyAmount(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Den Bosh (Nice Day)";
@@ -174,6 +180,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveDisc(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "What It Is! Funky Soul And Rare Grooves";
@@ -191,6 +198,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveDisc(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -206,6 +214,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			album = AlbumRules.RemoveFlac(album);
 
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Talking Heads - Brick(2005)";
@@ -251,6 +260,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string artist = Paths.GetArtistFromPath(fileName);
 
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "10cc";
@@ -268,6 +278,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			artist = ArtistRules.RemoveAlbum(artist, album);
 
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "America";
@@ -285,6 +296,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			artist = ArtistRules.ReplaceVariousArtists(artist, replacement);
 
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			Assert.That(artist, Is.EqualTo(replacement));
@@ -302,6 +314,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string artist =
 				ArtistRules.ReplaceVariousArtists(original, replacement);
 
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			Assert.That(artist, Is.EqualTo(original));
@@ -345,6 +358,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			string artist = ArtistRules.CleanArtistFilePath(
 				"?Jefferson  Airplane..", null, null);
 
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			string expected = "Jefferson Airplane";
@@ -560,6 +574,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			title = TitleRules.RemoveArtist(title, artist);
 
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			string expected = "Ventura Highway";
@@ -576,6 +591,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			title = TitleRules.RemoveBracketedSubTitle(title);
 
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			string expected = "Sakura";

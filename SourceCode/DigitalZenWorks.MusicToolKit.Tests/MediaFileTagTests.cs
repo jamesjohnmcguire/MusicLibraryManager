@@ -74,6 +74,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -94,6 +95,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -118,6 +120,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -140,6 +143,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -160,6 +164,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -183,6 +188,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -209,6 +215,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -233,6 +240,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -257,6 +265,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album [In Heaven]";
@@ -281,6 +290,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album [In Heaven]";
@@ -305,6 +315,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -329,6 +340,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -353,6 +365,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -377,6 +390,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -397,6 +411,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string artist = tags.Artist;
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -419,6 +434,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string artist = tags.Artist;
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -443,6 +459,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -467,6 +484,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -494,6 +512,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -521,6 +540,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -543,6 +563,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string title = tags.Title;
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -565,6 +586,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string title = tags.Title;
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			File.Delete(newFileName);
