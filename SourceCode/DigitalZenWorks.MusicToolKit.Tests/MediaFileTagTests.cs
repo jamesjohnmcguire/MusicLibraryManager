@@ -160,8 +160,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string album = tags.Album;
 			Assert.That(album, Is.Not.Null);
@@ -184,8 +184,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string album = tags.Album;
 			Assert.That(album, Is.Not.Null);
@@ -407,8 +407,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string artist = tags.Artist;
 			Assert.That(artist, Is.Not.Null);
@@ -430,8 +430,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string artist = tags.Artist;
 			Assert.That(artist, Is.Not.Null);
@@ -559,8 +559,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string title = tags.Title;
 			Assert.That(title, Is.Not.Null);
@@ -582,8 +582,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string title = tags.Title;
 			Assert.That(title, Is.Not.Null);

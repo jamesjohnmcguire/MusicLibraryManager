@@ -26,6 +26,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		private string testFile;
 
 		/// <summary>
+		/// Gets the temporary path.
+		/// </summary>
+		/// <value>The temporary path.</value>
+		public string TemporaryPath { get => temporaryPath; }
+
+		/// <summary>
 		/// Gets the test file.
 		/// </summary>
 		/// <value>The test file.</value>
@@ -41,7 +47,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(temporaryPath);
 			Directory.CreateDirectory(temporaryPath);
 
-			testFile = temporaryPath + @"\Artist\Album\Sakura.mp4";
+			testFile = temporaryPath + @"\Music\Artist\Album\Sakura.mp4";
 		}
 
 		/// <summary>

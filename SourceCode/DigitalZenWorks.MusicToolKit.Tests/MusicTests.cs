@@ -604,13 +604,17 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileCaseDifference()
 		{
+			string albumPath = @"\Music\Artist\Album";
 			string newFileName =
-				MakeTestFileCopy(@"\Artist\Album", "sakura test.mp4");
+				MakeTestFileCopy(albumPath, "sakura test.mp4");
+
+			musicManager.LibraryLocation = TemporaryPath;
 
 			newFileName = musicManager.UpdateFile(newFileName, false);
 
 			string basePath = Paths.GetBasePathFromFilePath(TestFile);
-			string expected = basePath + @"\Artist\Album\Sakura test.mp4";
+			string expected =
+				basePath + @"\Artist\Album\Sakura test.mp4";
 
 			Assert.That(newFileName, Is.EqualTo(expected));
 
@@ -627,8 +631,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileDifferentMoved()
 		{
-			string originalFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+			string originalFileName = MakeTestFileCopy(
+				@"\Music\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			// Delete original test file, so that we can move the normalized
 			// File there.
@@ -659,8 +663,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileDifferentMovedToDuplicates()
 		{
-			string originalFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+			string originalFileName = MakeTestFileCopy(
+				@"\Music\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			// Update file, so it is not quite the same as original.
 			using MediaFileTags tags = new (originalFileName);
@@ -700,8 +704,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void UpdateFileExactDuplicate()
 		{
-			string originalFileName =
-				MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
+			string originalFileName = MakeTestFileCopy(
+				@"\Music\Artist\Album (Disk 2)", "Sakura.mp4");
 
 			string newFileName =
 				musicManager.UpdateFile(originalFileName, false);
