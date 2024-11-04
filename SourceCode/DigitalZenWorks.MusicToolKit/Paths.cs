@@ -332,6 +332,7 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string GetTitleFromPath(string libraryPath, string path)
 		{
 			string title = GetPartFromPath(libraryPath, path, 1);
+			title = Path.GetFileNameWithoutExtension(title);
 
 			return title;
 		}
