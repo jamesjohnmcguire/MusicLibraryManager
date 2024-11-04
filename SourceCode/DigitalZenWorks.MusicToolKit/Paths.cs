@@ -372,7 +372,7 @@ namespace DigitalZenWorks.MusicToolKit
 				int depth = GetDirectoryCount(path);
 				depth -= basePathDepth;
 
-				if (depth > partDepth)
+				if (depth >= partDepth)
 				{
 					// Assuming file has path structure ending with
 					// artist/album/song.
