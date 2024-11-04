@@ -63,6 +63,20 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get album from path method.
+		/// </summary>
+		/// <param name="libraryPath">The full path of the
+		/// base library.</param>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The album part of the path.</returns>
+		public static string GetAlbumFromPath(string libraryPath, string path)
+		{
+			string album = GetPartFromPath(libraryPath, path, 2);
+
+			return album;
+		}
+
+		/// <summary>
 		/// Get artist from path method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
@@ -70,6 +84,20 @@ namespace DigitalZenWorks.MusicToolKit
 		public static string GetArtistFromPath(string path)
 		{
 			string artist = GetPartFromPath(path, 3);
+
+			return artist;
+		}
+
+		/// <summary>
+		/// Get artist from path method.
+		/// </summary>
+		/// <param name="libraryPath">The full path of the
+		/// base library.</param>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The artist part of the path.</returns>
+		public static string GetArtistFromPath(string libraryPath, string path)
+		{
+			string artist = GetPartFromPath(libraryPath, path, 3);
 
 			return artist;
 		}
@@ -295,6 +323,20 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get title from path method.
+		/// </summary>
+		/// <param name="libraryPath">The full path of the
+		/// base library.</param>
+		/// <param name="path">The full path of the file.</param>
+		/// <returns>The title part of the path.</returns>
+		public static string GetTitleFromPath(string libraryPath, string path)
+		{
+			string title = GetPartFromPath(libraryPath, path, 1);
+
+			return title;
+		}
+
+		/// <summary>
 		/// Get path part from tag method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
@@ -359,18 +401,24 @@ namespace DigitalZenWorks.MusicToolKit
 			return newPath;
 		}
 
+		private static string GetPartFromPath(string path, int partDepth)
+		{
+			string part = GetPartFromPath(null, path, partDepth);
+
+			return part;
+		}
+
 		private static string GetPartFromPath(
-			string path, int partDepth)
+			string libraryPath, string path, int partDepth)
 		{
 			string part = null;
 
 			if (!string.IsNullOrWhiteSpace(path))
 			{
-				string basePath = GetBasePathFromFilePath(path);
-				int basePathDepth = GetDirectoryCount(basePath);
+				int libraryPathDepth = GetDirectoryCount(libraryPath);
 
 				int depth = GetDirectoryCount(path);
-				depth -= basePathDepth;
+				depth -= libraryPathDepth;
 
 				if (depth >= partDepth)
 				{
