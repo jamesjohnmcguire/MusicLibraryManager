@@ -263,23 +263,25 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Normalize path.
 		/// </summary>
 		/// <param name="filePath">The file path to check.</param>
+		/// <param name="useDefaultLibraryPath">Indicates whether to use the
+		/// default media library path or not.</param>
 		/// <returns>The normalized path.</returns>
-		public string NormalizePath(string filePath)
+		public string NormalizePath(
+			string filePath, bool useDefaultLibraryPath = true)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string basePath;
+				string basePath = Paths.GetBasePathFromFilePath(filePath);
 
-				bool isStandard = IsStandardLibraryDirectory(filePath);
+				if (useDefaultLibraryPath == true)
+				{
+					bool isStandard = IsStandardLibraryDirectory(filePath);
 
-				if (isStandard == true)
-				{
-					basePath = Paths.GetBasePathFromFilePath(filePath);
-				}
-				else
-				{
-					basePath = LibraryLocation +
-						Path.DirectorySeparatorChar + "Music";
+					if (isStandard == false)
+					{
+						basePath = LibraryLocation +
+							Path.DirectorySeparatorChar + "Music";
+					}
 				}
 
 				string artist = Paths.GetArtistFromPath(filePath);
@@ -384,12 +386,16 @@ namespace DigitalZenWorks.MusicToolKit
 		/// need to be aware and compensate for, that Windows will treat file
 		/// names with differnt cases as the same.</remarks>
 		/// <param name="filePath">The file path to update.</param>
+		/// <param name="useDefaultLibraryPath">Indicates whether to use the
+		/// default media library path or not.</param>
 		/// <returns>The updated file path.</returns>
-		public string UpdateFile(string filePath)
+		public string UpdateFile(
+			string filePath, bool useDefaultLibraryPath = true)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
-				string normalizedfilePath = NormalizePath(filePath);
+				string normalizedfilePath =
+					NormalizePath(filePath, useDefaultLibraryPath);
 
 				// File path has changed
 				if (!normalizedfilePath.Equals(
