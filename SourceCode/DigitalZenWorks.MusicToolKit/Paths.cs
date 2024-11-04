@@ -359,13 +359,18 @@ namespace DigitalZenWorks.MusicToolKit
 			return newPath;
 		}
 
-		private static string GetPartFromPath(string path, int partDepth)
+		private static string GetPartFromPath(
+			string path, int partDepth)
 		{
 			string part = null;
 
 			if (!string.IsNullOrWhiteSpace(path))
 			{
+				string basePath = GetBasePathFromFilePath(path);
+				int basePathDepth = GetDirectoryCount(basePath);
+
 				int depth = GetDirectoryCount(path);
+				depth -= basePathDepth;
 
 				if (depth > partDepth)
 				{
