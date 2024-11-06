@@ -264,6 +264,40 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Get path segment from path based on depth.
+		/// </summary>
+		/// <param name="libraryPath">The library path.</param>
+		/// <param name="path">The path to check.</param>
+		/// <param name="partDepth">The depth of the segment to check.</param>
+		/// <returns>The path segment or null upon failure.</returns>
+		public static string GetPartFromPath(
+			string libraryPath, string path, int partDepth)
+		{
+			string part = null;
+
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				int libraryPathDepth = GetDirectoryCount(libraryPath);
+
+				int depth = GetDirectoryCount(path);
+				depth -= libraryPathDepth;
+
+				if (depth >= partDepth)
+				{
+					// Assuming file has path structure ending with
+					// artist/album/song.
+					string[] pathParts =
+						path.Split(Path.DirectorySeparatorChar);
+
+					int segment = pathParts.Length - partDepth;
+					part = pathParts[segment];
+				}
+			}
+
+			return part;
+		}
+
+		/// <summary>
 		/// Get path part method.
 		/// </summary>
 		/// <param name="path">The full path of the file.</param>
@@ -405,33 +439,6 @@ namespace DigitalZenWorks.MusicToolKit
 		private static string GetPartFromPath(string path, int partDepth)
 		{
 			string part = GetPartFromPath(null, path, partDepth);
-
-			return part;
-		}
-
-		private static string GetPartFromPath(
-			string libraryPath, string path, int partDepth)
-		{
-			string part = null;
-
-			if (!string.IsNullOrWhiteSpace(path))
-			{
-				int libraryPathDepth = GetDirectoryCount(libraryPath);
-
-				int depth = GetDirectoryCount(path);
-				depth -= libraryPathDepth;
-
-				if (depth >= partDepth)
-				{
-					// Assuming file has path structure ending with
-					// artist/album/song.
-					string[] pathParts =
-						path.Split(Path.DirectorySeparatorChar);
-
-					int segment = pathParts.Length - partDepth;
-					part = pathParts[segment];
-				}
-			}
 
 			return part;
 		}

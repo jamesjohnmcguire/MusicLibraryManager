@@ -280,14 +280,15 @@ namespace DigitalZenWorks.MusicToolKit
 
 				string basePath = Paths.GetBasePathFromFilePath(filePath);
 
-				if (useDefaultLibraryPath == true)
-				{
-					bool isStandard = IsStandardLibraryDirectory(filePath);
+				bool isStandard = IsStandardLibraryDirectory(filePath);
 
-					if (isStandard == false)
-					{
-						basePath = musicPath;
-					}
+				bool pathPartsCheck =
+					ArePathPartsIncluded(musicPath, filePath);
+
+				if ((useDefaultLibraryPath == true && isStandard == false) ||
+					pathPartsCheck == false)
+				{
+					basePath = musicPath;
 				}
 
 				string artist =
@@ -574,6 +575,23 @@ namespace DigitalZenWorks.MusicToolKit
 					iTunesManager = null;
 				}
 			}
+		}
+
+		private static bool ArePathPartsIncluded(
+			string libraryPath, string filePath)
+		{
+			bool included = false;
+
+			string artist = Paths.GetPartFromPath(libraryPath, filePath, 3);
+			string album = Paths.GetPartFromPath(libraryPath, filePath, 2);
+
+			if (!string.IsNullOrWhiteSpace(artist) &&
+				!string.IsNullOrWhiteSpace(album))
+			{
+				included = true;
+			}
+
+			return included;
 		}
 
 		private static bool DeleteEmptyDirectory(string path)
