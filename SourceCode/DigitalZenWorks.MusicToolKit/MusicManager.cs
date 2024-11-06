@@ -265,9 +265,13 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <param name="filePath">The file path to check.</param>
 		/// <param name="useDefaultLibraryPath">Indicates whether to use the
 		/// default media library path or not.</param>
+		/// <param name="useTags">Indicates whether use the file tags in
+		/// determining the file location.</param>
 		/// <returns>The normalized path.</returns>
 		public string NormalizePath(
-			string filePath, bool useDefaultLibraryPath = true)
+			string filePath,
+			bool useDefaultLibraryPath = true,
+			bool useTags = true)
 		{
 			if (!string.IsNullOrWhiteSpace(filePath))
 			{
@@ -286,33 +290,24 @@ namespace DigitalZenWorks.MusicToolKit
 					}
 				}
 
-				string artist = Paths.GetArtistFromPath(musicPath, filePath);
-				string album = Paths.GetAlbumFromPath(musicPath, filePath);
-				string title = Paths.GetTitleFromPath(musicPath, filePath);
+				string artist =
+					GetArtistPathSegment(musicPath, filePath, null, null);
+				string album =
+					GetAlbumPathSegment(musicPath, filePath, artist, null);
+				string title =
+					GetTitlePathSegment(musicPath, filePath, artist, null);
 
-				if (File.Exists(filePath))
+				if (useTags == true)
 				{
 					using MediaFileTags tags = new (filePath);
 
-					if (!string.IsNullOrWhiteSpace(tags.Artist))
-					{
-						artist = tags.Artist;
-					}
-
-					if (!string.IsNullOrWhiteSpace(tags.Album))
-					{
-						album = tags.Album;
-					}
-
-					if (!string.IsNullOrWhiteSpace(tags.Title))
-					{
-						title = tags.Title;
-					}
+					artist =
+						GetArtistPathSegment(musicPath, filePath, null, tags);
+					album =
+						GetAlbumPathSegment(musicPath, filePath, artist, tags);
+					title =
+						GetTitlePathSegment(musicPath, filePath, artist, tags);
 				}
-
-				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
-				album = AlbumRules.CleanAlbumFilePath(album, artist);
-				title = TitleRules.ApplyTitleFileRules(title, artist);
 
 				string extension = Path.GetExtension(filePath);
 
@@ -601,6 +596,62 @@ namespace DigitalZenWorks.MusicToolKit
 			return deleted;
 		}
 
+		private static string GetAlbumPathSegment(
+			string musicPath,
+			string filePath,
+			string artist,
+			MediaFileTags tags)
+		{
+			string pathSegment = null;
+
+			string album = Paths.GetAlbumFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Album))
+				{
+					album = tags.Album;
+				}
+			}
+
+			pathSegment = AlbumRules.CleanAlbumFilePath(album, artist);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Album Information Unavailable";
+			}
+
+			return pathSegment;
+		}
+
+		private static string GetArtistPathSegment(
+			string musicPath,
+			string filePath,
+			string album,
+			MediaFileTags tags)
+		{
+			string pathSegment = null;
+
+			string artist = Paths.GetArtistFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Artist))
+				{
+					artist = tags.Artist;
+				}
+			}
+
+			pathSegment = ArtistRules.CleanArtistFilePath(artist, album, null);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Unknown Artist";
+			}
+
+			return pathSegment;
+		}
+
 		private static string GetDuplicateLocationByNumber(
 			string path, int number)
 		{
@@ -614,6 +665,34 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return locationPath;
+		}
+
+		private static string GetTitlePathSegment(
+			string musicPath,
+			string filePath,
+			string artist,
+			MediaFileTags tags)
+		{
+			string pathSegment = null;
+
+			string title = Paths.GetTitleFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Title))
+				{
+					title = tags.Title;
+				}
+			}
+
+			pathSegment = TitleRules.ApplyTitleFileRules(title, artist);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Title Information Unavailable";
+			}
+
+			return pathSegment;
 		}
 
 		private void CleanFile(FileInfo file)
