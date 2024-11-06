@@ -431,6 +431,8 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void NormalizePathSame()
 		{
+			using MusicManager musicManager = new (true);
+
 			string location = musicManager.LibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
@@ -439,10 +441,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			string normalizedFilePath = musicManager.NormalizePath(fullPath);
 
-			bool result =
-				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
-
-			Assert.That(result, Is.True);
+			Assert.That(normalizedFilePath, Is.EqualTo(fullPath));
 		}
 
 		/// <summary>
@@ -451,16 +450,23 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void NormalizePathUpdated()
 		{
+			using MusicManager musicManager = new (true);
+
 			string location = musicManager.LibraryLocation;
 
 			string fileName = @"Music\10cc\The Very Best Of 10cc\" +
-				"The Things We Do For Love2.mp3";
+				"The Things We Do For Love 2.mp3";
 			string fullPath = Path.Combine(location, fileName);
 
-			string normalizedFilePath = musicManager.NormalizePath(fullPath);
+			string normalizedFilePath =
+				musicManager.NormalizePath(fullPath, true, false);
+
+			string expectedFileName = @"Music\10cc\The Very Best Of 10cc\" +
+				"The Things We Do For Love.mp3";
+			string expected = Path.Combine(location, expectedFileName);
 
 			bool result =
-				fullPath.Equals(normalizedFilePath, StringComparison.Ordinal);
+				expected.Equals(normalizedFilePath, StringComparison.Ordinal);
 
 			Assert.That(result, Is.True);
 		}
