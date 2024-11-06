@@ -620,8 +620,6 @@ namespace DigitalZenWorks.MusicToolKit
 			string artist,
 			MediaFileTags tags)
 		{
-			string pathSegment = null;
-
 			string album = Paths.GetAlbumFromPath(musicPath, filePath);
 
 			if (tags != null)
@@ -632,7 +630,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			pathSegment = AlbumRules.CleanAlbumFilePath(album, artist);
+			string pathSegment = AlbumRules.CleanAlbumFilePath(album, artist);
 
 			if (string.IsNullOrWhiteSpace(pathSegment))
 			{
@@ -648,8 +646,6 @@ namespace DigitalZenWorks.MusicToolKit
 			string album,
 			MediaFileTags tags)
 		{
-			string pathSegment = null;
-
 			string artist = Paths.GetArtistFromPath(musicPath, filePath);
 
 			if (tags != null)
@@ -660,7 +656,8 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			pathSegment = ArtistRules.CleanArtistFilePath(artist, album, null);
+			string pathSegment = ArtistRules.CleanArtistFilePath(
+				artist, album, null);
 
 			if (string.IsNullOrWhiteSpace(pathSegment))
 			{
@@ -691,8 +688,6 @@ namespace DigitalZenWorks.MusicToolKit
 			string artist,
 			MediaFileTags tags)
 		{
-			string pathSegment = null;
-
 			string title = Paths.GetTitleFromPath(musicPath, filePath);
 
 			if (tags != null)
@@ -703,7 +698,7 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 			}
 
-			pathSegment = TitleRules.ApplyTitleFileRules(title, artist);
+			string pathSegment = TitleRules.ApplyTitleFileRules(title, artist);
 
 			if (string.IsNullOrWhiteSpace(pathSegment))
 			{
