@@ -10,8 +10,6 @@ using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 
 [assembly: CLSCompliant(false)]
@@ -465,10 +463,32 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"The Things We Do For Love.mp3";
 			string expected = Path.Combine(location, expectedFileName);
 
-			bool result =
-				expected.Equals(normalizedFilePath, StringComparison.Ordinal);
+			Assert.That(normalizedFilePath, Is.EqualTo(expected));
+		}
 
-			Assert.That(result, Is.True);
+		/// <summary>
+		/// The normalize path only title segment existing test.
+		/// </summary>
+		[Test]
+		public void NormalizePathOnlyTitle()
+		{
+			using MusicManager musicManager = new (true);
+
+			string location = musicManager.LibraryLocation;
+
+			string fileName = @"Music\Jimi Hendrix   The Star Spangled " +
+				"Banner  American Anthem   Live at Woodstock 1969.mp3";
+			string fullPath = Path.Combine(location, fileName);
+
+			string normalizedFilePath =
+				musicManager.NormalizePath(fullPath, true, false);
+
+			string expectedFileName = @"Music\Unknown Artist\Album " +
+				@"Information Unavailable\Jimi Hendrix The Star Spangled " +
+				"Banner American Anthem Live at Woodstock 1969.mp3";
+			string expected = Path.Combine(location, expectedFileName);
+
+			Assert.That(normalizedFilePath, Is.EqualTo(expected));
 		}
 
 		/// <summary>
