@@ -424,6 +424,29 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
+		/// The normalize path album segment missing test.
+		/// </summary>
+		[Test]
+		public void NormalizePathAlbumMissing()
+		{
+			using MusicManager musicManager = new (true);
+
+			string location = musicManager.LibraryLocation;
+
+			string fileName = @"Music\Golden Earring\Radar Love.mp3";
+			string fullPath = Path.Combine(location, fileName);
+
+			string normalizedFilePath =
+				musicManager.NormalizePath(fullPath, true, false);
+
+			string expectedFileName = @"Music\Golden Earring\Album " +
+				@"Information Unavailable\Radar Love.mp3";
+			string expected = Path.Combine(location, expectedFileName);
+
+			Assert.That(normalizedFilePath, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// The normalize path same test.
 		/// </summary>
 		[Test]
