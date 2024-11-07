@@ -310,6 +310,17 @@ namespace DigitalZenWorks.MusicToolKit
 						GetTitlePathSegment(musicPath, filePath, artist, tags);
 				}
 
+				int depth = Paths.GetDirectoryCount(filePath);
+				int libraryPathDepth = Paths.GetDirectoryCount(basePath);
+				depth -= libraryPathDepth;
+
+				if (depth == 2)
+				{
+					// Missing album segment.
+					album = "Album Information Unavailable";
+					artist = Paths.GetPartFromPath(basePath, filePath, 2);
+				}
+
 				string extension = Path.GetExtension(filePath);
 
 				filePath = string.Format(
