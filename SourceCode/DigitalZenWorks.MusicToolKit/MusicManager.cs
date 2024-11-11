@@ -317,6 +317,7 @@ namespace DigitalZenWorks.MusicToolKit
 				if (depth == 2)
 				{
 					// Missing album segment.
+					Log.Warn("Missing Album Information: " + filePath);
 					album = "Album Information Unavailable";
 					artist = Paths.GetPartFromPath(basePath, filePath, 2);
 				}
@@ -415,8 +416,10 @@ namespace DigitalZenWorks.MusicToolKit
 					{
 						string directory =
 							Path.GetDirectoryName(normalizedfilePath);
+						Log.Info("Creating Directory: " + directory);
 						Directory.CreateDirectory(directory);
 
+						Log.Info("Moving File: " + normalizedfilePath);
 						System.IO.File.Move(filePath, normalizedfilePath);
 					}
 					else
@@ -432,6 +435,8 @@ namespace DigitalZenWorks.MusicToolKit
 							// saving with the new name won't work - Windows
 							// will just ignore the case change and keep the
 							// original name.
+							Log.Info("Renaming to Title Case: " +
+								existingFile + " from: " + filePath);
 							string temporaryFilePath = existingFile + ".tmp";
 							File.Move(filePath, temporaryFilePath);
 							File.Move(temporaryFilePath, existingFile);
@@ -444,11 +449,16 @@ namespace DigitalZenWorks.MusicToolKit
 
 							if (areExactDuplicates == true)
 							{
+								Log.Info(
+									"Deleting Exact Duplicate: " + filePath);
 								File.Delete(filePath);
 							}
 							else
 							{
 								// move into duplicates
+								Log.Info(
+									"Moving duplicate file: " +
+									normalizedfilePath);
 								normalizedfilePath =
 									GetDuplicateLocation(existingFile);
 								File.Move(filePath, normalizedfilePath);
