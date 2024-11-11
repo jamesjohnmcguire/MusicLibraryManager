@@ -574,10 +574,13 @@ namespace DigitalZenWorks.MusicToolKit
 				".", string.Empty, StringComparison.OrdinalIgnoreCase);
 			searchName = searchName.Replace(
 				"-", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				"'", " ", StringComparison.OrdinalIgnoreCase);
 #else
 			searchName = searchName.Replace(",", string.Empty);
 			searchName = searchName.Replace(".", string.Empty);
 			searchName = searchName.Replace("-", string.Empty);
+			searchName = searchName.Replace("'", " ");
 #endif
 
 			IITTrackCollection tracks = playList.Search(
