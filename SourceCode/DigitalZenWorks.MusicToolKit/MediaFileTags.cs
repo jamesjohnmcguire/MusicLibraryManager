@@ -45,12 +45,6 @@ namespace DigitalZenWorks.MusicToolKit
 
 			TagFile = TagLib.File.Create(file);
 
-			if (string.IsNullOrWhiteSpace(TagFile.Tag.Album))
-			{
-				// Tags seem to empty, attempt to get from file path.
-				Album = Paths.GetAlbumFromPath(file);
-			}
-
 			artist = GetFirstPerformerSafe();
 
 			if (string.IsNullOrWhiteSpace(artist))
@@ -60,17 +54,6 @@ namespace DigitalZenWorks.MusicToolKit
 				{
 					artist = TagFile.Tag.AlbumArtists[0];
 				}
-			}
-
-			if (string.IsNullOrWhiteSpace(artist))
-			{
-				// Tags seem to empty, attempt to get from file path.
-				artist = Paths.GetArtistFromPath(file);
-			}
-
-			if (string.IsNullOrWhiteSpace(TagFile.Tag.Title))
-			{
-				Title = Paths.GetTitleFromPath(file);
 			}
 		}
 
@@ -197,9 +180,11 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Clean tags method.
 		/// </summary>
+		/// <param name="useFilePath">Indicates whether to use the file path
+		/// segments, when a tag is empty.</param>
 		/// <returns>A value indicating whether the tags were updated
 		/// or not.</returns>
-		public bool Clean()
+		public bool Clean(bool useFilePath = false)
 		{
 			bool isUpdated = false;
 			bool rulesUpdated = false;
@@ -209,11 +194,11 @@ namespace DigitalZenWorks.MusicToolKit
 				rulesUpdated = rules.RunRules(this);
 			}
 
-			bool artistUpdated = UpdateArtistTag(filePath);
+			bool artistUpdated = UpdateArtistTag(filePath, useFilePath);
 
-			bool albumUpdated = UpdateAlbumTag(filePath);
+			bool albumUpdated = UpdateAlbumTag(filePath, useFilePath);
 
-			bool titleUpdated = UpdateTitleTag();
+			bool titleUpdated = UpdateTitleTag(useFilePath);
 
 			bool subTitleUpdated = UpdateSubTitleTag();
 
@@ -289,6 +274,29 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return isUpdated;
+		}
+
+		/// <summary>
+		/// Update tags from the file path segments.
+		/// </summary>
+		/// <param name="force">Indicates whether to always update the tags or
+		/// only when the tags are empty.</param>
+		public void UpdateTagsFromFilPath(bool force = false)
+		{
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Album) || force == true)
+			{
+				Album = Paths.GetAlbumFromPath(filePath);
+			}
+
+			if (string.IsNullOrWhiteSpace(Artist) || force == true)
+			{
+				Artist = Paths.GetArtistFromPath(filePath);
+			}
+
+			if (string.IsNullOrWhiteSpace(TagFile.Tag.Title) || force == true)
+			{
+				Title = Paths.GetTitleFromPath(filePath);
+			}
 		}
 
 		/// <summary>
@@ -379,14 +387,13 @@ namespace DigitalZenWorks.MusicToolKit
 			return tags;
 		}
 
-		private bool UpdateAlbumTag(string fileName)
+		private bool UpdateAlbumTag(string fileName, bool useFilePath)
 		{
 			bool updated = false;
 			Album = TagFile.Tag.Album;
 			string previousAlbum = Album;
 
-			// tags are toast, attempt to get from file name
-			if (string.IsNullOrWhiteSpace(Album))
+			if (string.IsNullOrWhiteSpace(Album) && useFilePath == true)
 			{
 				Album = Paths.GetAlbumFromPath(fileName);
 			}
@@ -405,7 +412,7 @@ namespace DigitalZenWorks.MusicToolKit
 			return updated;
 		}
 
-		private bool UpdateArtistTag(string fileName)
+		private bool UpdateArtistTag(string fileName, bool useFilePath)
 		{
 			bool updated = false;
 			string previousArtist = Artist;
@@ -418,9 +425,8 @@ namespace DigitalZenWorks.MusicToolKit
 				Artist = TagFile.Tag.AlbumArtists[0];
 			}
 
-			if (string.IsNullOrWhiteSpace(Artist))
+			if (string.IsNullOrWhiteSpace(Artist) && useFilePath == true)
 			{
-				// attempt to get from filename
 				Artist = Paths.GetArtistFromPath(fileName);
 			}
 
@@ -462,14 +468,14 @@ namespace DigitalZenWorks.MusicToolKit
 			return updated;
 		}
 
-		private bool UpdateTitleTag()
+		private bool UpdateTitleTag(bool useFilePath)
 		{
 			bool updated = false;
 
 			Title = TagFile.Tag.Title;
 			string previousTitle = Title;
 
-			if (string.IsNullOrEmpty(Title))
+			if (string.IsNullOrEmpty(Title) && useFilePath == true)
 			{
 				Title = Paths.GetTitleFromPath(filePath);
 			}

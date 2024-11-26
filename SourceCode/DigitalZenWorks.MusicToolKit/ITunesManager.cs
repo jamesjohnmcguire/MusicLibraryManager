@@ -567,9 +567,21 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			string searchName = Path.GetFileNameWithoutExtension(name);
 
-			searchName = searchName.Replace(",", "");
-			searchName = searchName.Replace(".", "");
-			searchName = searchName.Replace("-", "");
+#if NET6_0_OR_GREATER || NETSTANDARD2_1
+			searchName = searchName.Replace(
+				",", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				".", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				"-", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				"'", " ", StringComparison.OrdinalIgnoreCase);
+#else
+			searchName = searchName.Replace(",", string.Empty);
+			searchName = searchName.Replace(".", string.Empty);
+			searchName = searchName.Replace("-", string.Empty);
+			searchName = searchName.Replace("'", " ");
+#endif
 
 			IITTrackCollection tracks = playList.Search(
 				searchName,

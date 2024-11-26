@@ -485,3 +485,23 @@ Tests
 	clean --location D:\Users\JamesMc\Data\External\iTunes Media\MusicCatalog --no-update-tags
 	clean --location "D:\Users\JamesMc\Data\External\iTunes Media\MusicCatalog" --no-update-tags
 	clean --no-update-tags
+Music Manager
+	Dashes in Songs
+		C:\Users\JamesMc\Music\iTunes\iTunes Media\Music\Bob Dylan\Greatest Hits\The Times They Are A-Changin'.m4a
+		filePath = "
+		C:\Users\JamesMc\Music\iTunes\iTunes Media\Music\Bob Dylan\Greatest Hits\The Times They Are A-Changin'.m4a"
+		Song actually has been already added
+
+		Song name needs to be modified before calling GetPossibleTracks, just like in IsFileAndTrackSame, refactor and use same code as common code
+
+		The Times They Are A-Changin'
+		C:\Users\JamesMc\Music\iTunes\iTunes Media\Music\Bob Dylan\Greatest Hits\The Times They Are A-Changin'.m4a
+
+	file.FullName = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\20Th Century\\Very Best\\WISHES〜I'll be there〜.mp3"
+
+	searchName = "WISHES〜I'll be there〜"
+	searchName	"WISHES〜Ill be there〜"	string
+
+	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
+	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\The Commodore Master Takes\\How Am I to Know.mp3"
+	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Bruce Springsteen\\Live 1975-1985\\Paradise By The C.m4a"
