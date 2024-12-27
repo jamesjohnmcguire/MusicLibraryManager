@@ -1,4 +1,5 @@
 Music Library Manager Tasks
+	GitHub	A new security advisory on log4net affects 1 of your repositories	log4net (NuGet) used in 1 repository
 	Add multi-framework target support
 	Arrange Tests Alphabetically
 	Revise MediaTags
