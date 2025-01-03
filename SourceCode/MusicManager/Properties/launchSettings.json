@@ -2,7 +2,7 @@
   "profiles": {
     "MusicManager": {
       "commandName": "Project",
-      "commandLineArgs": "clean --no-update-tags"
+      "commandLineArgs": "extract-tags"
     }
   }
 }

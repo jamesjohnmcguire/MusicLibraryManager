@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="ConditionalType.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
