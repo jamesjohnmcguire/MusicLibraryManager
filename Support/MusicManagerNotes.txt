@@ -505,3 +505,13 @@ Music Manager
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\The Commodore Master Takes\\How Am I to Know.mp3"
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Bruce Springsteen\\Live 1975-1985\\Paradise By The C.m4a"
+Music Manager
+	git branch -a
+	* development
+	  feature/acoust-id
+	  main
+
+	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj'.  MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj
+	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj'.  MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
+
+	Current Solution Contains Incorrect Configuration Mappings
