@@ -519,3 +519,11 @@ Music Manager
 	extract-tags
 	clean --no-update-tags
 	Add a Test Music Library
+Music Manager
+	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
+	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment\Music
+
+	Revisit iTunes Path Structure
+
+	FileInfo?		public string SaveTagsToJsonFile(
+				FileInfo sourceFile, string destinationPath)
