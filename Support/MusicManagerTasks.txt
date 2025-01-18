@@ -1,26 +1,23 @@
 Music Library Manager Tasks
+	Change UseItunes Environment Variable to ItunesAvailable
 	Add multi-framework target support
-	Arrange Tests Alphabetically
 	Revise MediaTags
-	Fix Unit Tests
-	Add Fail test for GetArtistPathFromPath
-	Add Unit Tests for recent changes
+	Tests	Add Fail test for GetArtistPathFromPath
+	Tests	Add Unit Tests for recent changes
+	Tests	Add test fir AlbumGeneralRules
 	Add depreciation warnings
 	Rename to Default	IsStandardLibraryDirectory
 	Shouldn't this in Title case?	"Sakura test"
-	Add test fir AlbumGeneralRules
-	This is set a lot, should it be default?
-			string musicPath =
-				LibraryLocation + Path.DirectorySeparatorChar + "Music";
+	This is set a lot, should it be default?	string musicPath =	LibraryLocation + Path.DirectorySeparatorChar + "Music";
 	Always returns false		public bool UpdateItunesLocation(IITTrack track, string filePath)
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Bob Dylan\\Greatest Hits\\The Times They Are A-Changin'.m4a"
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\The Complete Decca Recordings II\\Keeps on A-Rainin'.mp3"
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\David Bowie\\Hunky Dory\\The Bewlay Brothers[].mp3"
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Diana Ross & the Supremes and the Temptations\\Motown Classics -  The Soul Of A Nation\\I'm Gonna Make You Love Me.mp3"
-	C:\Users\JamesMc\Music\iTunes\iTunes Media\Music\Gordon Lightfoot\Over 60 Minutes With\Steel Rail Blues.mp3	Message	"Could not find a part of the path."	System.IO.DirectoryNotFoundException
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Green Day\\The best of\\The Best Of_Track18.mp3"
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\It's a Beautiful Day\\Choice Quality Stuff... Anytime\\Bitter Wine.mp3"
-	C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
+	Music\\Bob Dylan\\Greatest Hits\\The Times They Are A-Changin'.m4a"
+	Music\\Billie Holiday\\The Complete Decca Recordings II\\Keeps on A-Rainin'.mp3"
+	Music\\David Bowie\\Hunky Dory\\The Bewlay Brothers[].mp3"
+	Music\\Diana Ross & the Supremes and the Temptations\\Motown Classics -  The Soul Of A Nation\\I'm Gonna Make You Love Me.mp3"
+	Gordon Lightfoot\Over 60 Minutes With\Steel Rail Blues.mp3	Message	"Could not find a part of the path."	System.IO.DirectoryNotFoundException
+	Music\\Green Day\\The best of\\The Best Of_Track18.mp3"
+	Music\\It's a Beautiful Day\\Choice Quality Stuff... Anytime\\Bitter Wine.mp3"
+	Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
 	Why return bool when no check? AddFile iTunes
 
 	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active	
@@ -168,6 +165,8 @@ Music Library Manager Tasks
 		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
 		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
 	Finished
+		Tests	Arrange Tests Alphabetically
+		Fix Unit Tests
 		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
 		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
 		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
