@@ -515,3 +515,15 @@ Music Manager
 	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj'.  MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
 
 	Current Solution Contains Incorrect Configuration Mappings
+Music Manager
+	extract-tags
+	clean --no-update-tags
+	Add a Test Music Library
+Music Manager
+	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
+	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment\Music
+
+	Revisit iTunes Path Structure
+
+	FileInfo?		public string SaveTagsToJsonFile(
+				FileInfo sourceFile, string destinationPath)
