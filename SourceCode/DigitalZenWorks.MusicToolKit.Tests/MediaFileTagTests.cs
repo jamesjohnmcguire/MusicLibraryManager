@@ -34,28 +34,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		}
 
 		/// <summary>
-		/// Get tags check test.
-		/// </summary>
-		[Test]
-		public void GetTagsCheck()
-		{
-			using MediaFileTags tags = new (TestFile, rules);
-
-			string original =
-				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
-			tags.Album = original;
-
-			tags.Artist = "The Solos";
-			tags.Update();
-
-			SortedDictionary<string, object> tagSet = tags.GetTags();
-
-			Assert.That(tags, Is.Not.Null);
-			Assert.That(tags.TagFile, Is.Not.Null);
-			Assert.That(tagSet, Is.Not.Null);
-		}
-
-		/// <summary>
 		/// Album remove cd test.
 		/// </summary>
 		[Test]
@@ -147,6 +125,28 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// Get tags check test.
+		/// </summary>
+		[Test]
+		public void GetTagsCheck()
+		{
+			using MediaFileTags tags = new(TestFile, rules);
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Album = original;
+
+			tags.Artist = "The Solos";
+			tags.Update();
+
+			SortedDictionary<string, object> tagSet = tags.GetTags();
+
+			Assert.That(tags, Is.Not.Null);
+			Assert.That(tags.TagFile, Is.Not.Null);
+			Assert.That(tagSet, Is.Not.Null);
 		}
 
 		/// <summary>
