@@ -1,4 +1,7 @@
 Music Library Manager Tasks
+	Current Configuration contains incorrect mappings
+	error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint.vcxproj
+	error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
 	Change UseItunes Environment Variable to ItunesAvailable
 	Add multi-framework target support
 	Revise MediaTags
