@@ -1,7 +1,6 @@
 Music Library Manager Tasks
-	Current Configuration contains incorrect mappings
-	error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint.vcxproj
-	error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
+	Cannot open include file: 'chromaprint.h': No such file or directory
+	cannot open file 'SourceCode\Bin\Debug\x64\AudioSignature.lib'
 	Change UseItunes Environment Variable to ItunesAvailable
 	Add multi-framework target support
 	Revise MediaTags
@@ -26,9 +25,6 @@ Music Library Manager Tasks
 	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active	
 	AddFile	{"Value does not fall within the expected range."}	System.Exception {System.ArgumentException}
 	UpdateFile	{"Could not find a part of the path."}	System.Exception {System.IO.DirectoryNotFoundException}
-	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj cannot be found.
-	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
-	WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj cannot be found.
 	Save Breakpoints
 	Review "Oh Word" from "Oh Word?"
 	Problem with ending number	The Very Best Of Ben E. King\Supernatural Thing, Pt. 1.mp3
@@ -168,6 +164,10 @@ Music Library Manager Tasks
 		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
 		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
 	Finished
+		Current Solution Contains Incorrect Configuration Mappings
+		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint.vcxproj
+		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
+		WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
 		Tests	Arrange Tests Alphabetically
 		Fix Unit Tests
 		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 

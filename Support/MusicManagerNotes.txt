@@ -197,6 +197,8 @@ Notes
 		Building ChromaPrint
 			CD ChromaPrint
 			cmake -G "Visual Studio 17 2022" -A x64
+			CD src/cmd
+			cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="C:\util\VcPkg\scripts\buildsystems\vcpkg.cmake" -DCMAKE_MODULE_PATH="C:\util\VcPkg\installed\x64-windows\share\ffmpeg"
 		FFMPeg
 			Building FFMpeg
 				cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
@@ -206,6 +208,28 @@ Notes
 				target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
 				target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
 				target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
+		Resources
+			Audio Identifiers
+			AcoustID fingerprints
+				https://oxygene.sk/2011/01/how-does-chromaprint-work/
+				https://www.quora.com/How-do-music-identification-applications-like-Shazam-SoundHound-and-musiXmatch-acoustic-fingerprinting-work
+				https://meinantoyuriawan.medium.com/recreate-a-simple-shazam-apps-ddc0e91b3c49
+				https://www.toptal.com/algorithms/shazam-it-music-processing-fingerprinting-and-recognition
+				ChromaPrint
+					https://acoustid.org/chromaprint
+					https://github.com/acoustid/chromaprint
+					https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
+					https://community.chocolatey.org/packages/chromaprint
+					https://beets.readthedocs.io/en/v1.6.0/plugins/chroma.html
+					Alternates
+						https://github.com/wo80/AcoustID.NET
+						https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
+						https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
+						https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
+						https://github.com/protyposis/Aurio
+						http://aurio.protyposis.net/
+				https://github.com/addictedcs/soundfingerprinting
+				https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
 	File Reading
 		Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
 	Audio Signatures
@@ -362,10 +386,6 @@ Resources
 			https://musicbrainz.org/doc/MusicBrainz_Database/Schema
 
 			https://en.wikipedia.org/wiki/List_of_online_music_databases
-		AcoustID fingerprints
-			https://github.com/acoustid/chromaprint
-			https://github.com/wo80/AcoustID.NET
-			https://oxygene.sk/2011/01/how-does-chromaprint-work/
 	Converters
 		https://videoconvert.minitool.com/video-converter/itunes-music-format.html
 	iTunes
@@ -438,25 +458,6 @@ Resources
 			https://stackoverflow.com/questions/42549288/how-do-i-convert-audio-file-to-m4a-with-320kbps-with-naudio
 		naudio decode 16 bit
 			https://stackoverflow.com/questions/13995259/naudio-convert-32-bit-wav-to-16-bit-wav
-	Audio Identifiers
-		https://www.quora.com/How-do-music-identification-applications-like-Shazam-SoundHound-and-musiXmatch-acoustic-fingerprinting-work
-		https://meinantoyuriawan.medium.com/recreate-a-simple-shazam-apps-ddc0e91b3c49
-		https://www.toptal.com/algorithms/shazam-it-music-processing-fingerprinting-and-recognition
-		ChromaPrint
-			https://acoustid.org/chromaprint
-			https://github.com/acoustid/chromaprint
-			https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
-			https://community.chocolatey.org/packages/chromaprint
-			https://beets.readthedocs.io/en/v1.6.0/plugins/chroma.html
-			Alternates
-				https://github.com/wo80/AcoustID.NET
-				https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
-				https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
-				https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
-				https://github.com/protyposis/Aurio
-				http://aurio.protyposis.net/
-		https://github.com/addictedcs/soundfingerprinting
-		https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
 	Libraries
 		https://gstreamer.freedesktop.org/
 		Essentia
@@ -510,11 +511,6 @@ Music Manager
 	* development
 	  feature/acoust-id
 	  main
-
-	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj'.  MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj
-	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj'.  MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
-
-	Current Solution Contains Incorrect Configuration Mappings
 Music Manager
 	extract-tags
 	clean --no-update-tags
