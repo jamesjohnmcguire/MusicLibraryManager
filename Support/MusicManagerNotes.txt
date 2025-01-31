@@ -527,3 +527,98 @@ Music Manager
 
 	FileInfo?		public string SaveTagsToJsonFile(
 				FileInfo sourceFile, string destinationPath)
+Convert Flac
+	@echo off
+	REM Converts a FLAC file to AAC using FFmpeg
+	REM Usage: convert_flac_to_aac.bat input.flac output.aac
+
+	IF "%~1"=="" (
+		echo Please provide the input FLAC file.
+		echo Usage: %0 input.flac [output.aac]
+		exit /b 1
+	)
+
+	IF "%~2"=="" (
+		set OUTPUT_FILE=%~n1.aac
+	) ELSE (
+		set OUTPUT_FILE=%~2
+	)
+
+	ffmpeg -i "%~1" -c:a aac -b:a 192k "%OUTPUT_FILE%"
+
+	IF %ERRORLEVEL% EQU 0 (
+		echo Conversion successful: %OUTPUT_FILE%
+	) ELSE (
+		echo Conversion failed.
+	)
+	pause
+
+	convert_flac_to_alac.bat input.flac output.m4a
+
+
+	using System;
+	using System.Diagnostics;
+	using System.IO;
+
+	public class AudioConverter
+	{
+		public static void ConvertFlacToAlac(string inputFilePath, string outputFilePath)
+		{
+			// Ensure FFmpeg is installed and available in the system PATH
+			if (!File.Exists(inputFilePath))
+			{
+				throw new FileNotFoundException("Input file not found.", inputFilePath);
+			}
+
+			// If output file path is not provided, create one with the same name but .m4a extension
+			if (string.IsNullOrEmpty(outputFilePath))
+			{
+				outputFilePath = Path.ChangeExtension(inputFilePath, ".m4a");
+			}
+
+			// Use FFmpeg to convert FLAC to ALAC
+			string ffmpegArguments = $"-i \"{inputFilePath}\" -c:a alac \"{outputFilePath}\"";
+			ProcessStartInfo processStartInfo = new ProcessStartInfo
+			{
+				FileName = "ffmpeg",
+				Arguments = ffmpegArguments,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				UseShellExecute = false,
+				CreateNoWindow = true
+			};
+
+			using (Process process = new Process { StartInfo = processStartInfo })
+			{
+				process.Start();
+
+				// Capture output and error streams
+				string output = process.StandardOutput.ReadToEnd();
+				string error = process.StandardError.ReadToEnd();
+
+				process.WaitForExit();
+
+				if (process.ExitCode != 0)
+				{
+					throw new Exception($"FFmpeg conversion failed: {error}");
+				}
+
+				Console.WriteLine($"Conversion successful: {outputFilePath}");
+			}
+		}
+	}
+iTunes
+	iTunes Library Management Tools:
+
+	iTunes: The official iTunes software itself provides robust tools for managing your library, including adding, removing, and organizing media files.
+	MusicBee: A powerful music manager and player that can import your iTunes library and provide additional management features.
+	MediaMonkey: Another alternative that can also manage your iTunes library with advanced tagging and organization features.
+
+	iTunes Library Toolkit: A tool that provides various utilities for managing your iTunes library, including finding and removing duplicates, exporting playlists, and more.
+	TuneUp Media: An iTunes plugin that helps clean up your music library by fixing mislabeled songs, finding album artwork, and more.
+Music Manager
+	Add Test Music Library
+	Add ItunesAvailable Environment Variable to Documentation
+	Add Conditional #define based on ItunesAvailable
+	Move iTunes functionality to PlugIn
+
