@@ -17,13 +17,18 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioSignature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="AudioSignature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioSignature.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="AudioSignature.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
