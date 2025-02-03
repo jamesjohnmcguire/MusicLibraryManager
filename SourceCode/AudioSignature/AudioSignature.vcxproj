@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<CharacterSet>MultiByte</CharacterSet>
+		<CharacterSet>Unicode</CharacterSet>
 		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<GenerateManifest>true</GenerateManifest>
 		<Keyword>Win32Proj</Keyword>
@@ -60,6 +60,7 @@
 
 	<ItemDefinitionGroup>
 		<ClCompile>
+			<AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
 			<AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
 			<ExceptionHandling>Sync</ExceptionHandling>
 			<LanguageStandard>stdcpp20</LanguageStandard>
@@ -138,11 +139,11 @@
 		</ProjectReference>
 	</ItemGroup>
 
-	<ItemGroup>
+	<!--ItemGroup>
 		<CopyFileToFolders Include="..\ChromaPrint\src\Debug\chromaprint.dll">
 			<FileType>Document</FileType>
 		</CopyFileToFolders>
-	</ItemGroup>
+	</ItemGroup-->
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
