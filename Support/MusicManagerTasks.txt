@@ -1,6 +1,5 @@
 Music Library Manager Tasks
-	Cannot open include file: 'chromaprint.h': No such file or directory
-	cannot open file 'SourceCode\Bin\Debug\x64\AudioSignature.lib'
+	Include Chromaprint Test Projects
 	Change UseItunes Environment Variable to ItunesAvailable
 	Add multi-framework target support
 	Revise MediaTags
@@ -164,6 +163,8 @@ Music Library Manager Tasks
 		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
 		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
 	Finished
+		Cannot open include file: 'chromaprint.h': No such file or directory
+		cannot open file 'SourceCode\Bin\Debug\x64\AudioSignature.lib'
 		Current Solution Contains Incorrect Configuration Mappings
 		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint.vcxproj
 		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
