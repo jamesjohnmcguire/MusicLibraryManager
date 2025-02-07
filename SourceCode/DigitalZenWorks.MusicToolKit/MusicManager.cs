@@ -30,6 +30,17 @@ namespace DigitalZenWorks.MusicToolKit
 
 		private readonly string libraryTagsOnlyDirectoryLocation;
 
+		// Total Possible List
+		// "3GP", "8SVX", "AA", "AAC", "AAX", "ACT", "AIFF", "ALAC", "AMR",
+		// "APE", "AU", "AWB", "CDA", "DSS", "DVF", "FLAC", "GSM", "IKLAX",
+		// "IVS", "M4A", "M4B", "M4P", "MMF", "MOGG", "MOVPKG", "MP3", "MPC",
+		// "MSV", "NMF", "OGA", "OGG", "OPUS", "RA", "RAW", "RF64", "RM",
+		// "SLN", "TTA", "VOC", "VOX", "WAV", "WEBM", "WMA", "WV"
+		private readonly string[] audioFileExtensions =
+		[
+			".AIFC", ".ALAC", ".FLAC", ".M4A", ".MP3", ".WAV", "WEBM", ".WMA"
+		];
+
 		private ITunesManager iTunesManager;
 		private string libraryLocation;
 		private Rules rules;
@@ -520,11 +531,6 @@ namespace DigitalZenWorks.MusicToolKit
 					".url", ".xls", ".zip"
 				];
 
-				string[] includes =
-				[
-					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				];
-
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
 					Directory.CreateDirectory(tagsOnlyPath);
@@ -535,7 +541,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					foreach (FileInfo file in files)
 					{
-						if (includes.Contains(
+						if (audioFileExtensions.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
 							SaveTagsToJsonFile(file, tagsOnlyPath);
@@ -776,11 +782,6 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			try
 			{
-				string[] includes =
-				[
-					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				];
-
 				bool exists = Directory.Exists(path);
 
 				if (exists == true)
@@ -791,7 +792,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					foreach (FileInfo file in files)
 					{
-						if (includes.Contains(
+						if (audioFileExtensions.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
 							CleanFile(file);
