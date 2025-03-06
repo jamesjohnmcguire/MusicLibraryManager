@@ -1,4 +1,19 @@
 Music Library Manager Tasks
+	Add Test Music Library
+	Add ItunesAvailable Environment Variable to Documentation
+	Add Conditional #define based on ItunesAvailable
+	Move iTunes functionality to PlugIn
+	Make plan for moving "Bravos" to "Lost Bravos"	Move Bravos to "Los Bravos"	First, check tags and resolve
+	Investigate Metadata Support   | ID3v1, ID3v2        | MP4 metadata atoms
+	Clean Up MediaWavCompare.cmd, add c# equiv
+	Investigate AtomicParsley (AtomicParsley file.m4a -t) and ExifTool (exiftool file.m4a)
+	Remove temp wav files
+	Adjust MediaSaveLossyM4a.cmd to use source bitrate -b:a 192, maybe ask gpt
+	Verify	Add Script to convert wma to m4a
+	Integrate	Add Code to convert wma to m4a
+	Backup WMA Files	Move to backup location, all wma files
+	later
+		Resolve installing libfdk_aac	Then use ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
 	Include Chromaprint Test Projects
 	Change UseItunes Environment Variable to ItunesAvailable
 	Add multi-framework target support
@@ -163,6 +178,11 @@ Music Library Manager Tasks
 		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
 		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
 	Finished
+		mediainfo install
+		Review CoPilot Chat and copy over all relevant notes
+		Listen Once and move to backup Music5\Bravos
+		Extract and Compare Raw Version  of 'Black Is Black' from Music3 & Music4
+		Deal with Music3, Music4\Bravos\Black Is Black, if audio is different, choose best
 		Cannot open include file: 'chromaprint.h': No such file or directory
 		cannot open file 'SourceCode\Bin\Debug\x64\AudioSignature.lib'
 		Current Solution Contains Incorrect Configuration Mappings
