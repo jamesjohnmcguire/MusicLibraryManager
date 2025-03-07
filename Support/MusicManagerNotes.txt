@@ -1288,3 +1288,5 @@ Music Manager
 
 	What about MP3 files?  Are they always lossy?
 	Yes, MP3 files are always lossy. The MP3 (MPEG-1 Audio Layer III) format uses a compression algorithm that removes some of the audio data to reduce the file size, which results in a loss of quality. This lossy compression is a trade-off between file size and audio quality.
+Music Manager
+	https://acoustid.org/webservice
