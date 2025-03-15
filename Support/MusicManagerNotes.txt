@@ -1290,3 +1290,29 @@ Music Manager
 	Yes, MP3 files are always lossy. The MP3 (MPEG-1 Audio Layer III) format uses a compression algorithm that removes some of the audio data to reduce the file size, which results in a loss of quality. This lossy compression is a trade-off between file size and audio quality.
 Music Manager
 	https://acoustid.org/webservice
+Script
+	@echo off
+	REM Converts a FLAC file to ALAC using FFmpeg
+	REM Usage: convert_flac_to_alac.bat input.flac output.m4a
+
+	IF "%~1"=="" (
+		echo Please provide the input FLAC file.
+		echo Usage: %0 input.flac [output.m4a]
+		exit /b 1
+	)
+
+	IF "%~2"=="" (
+		set OUTPUT_FILE=%~n1.m4a
+	) ELSE (
+		set OUTPUT_FILE=%~2
+	)
+
+	ffmpeg -i "%~1" -c:a alac "%OUTPUT_FILE%"
+
+	IF %ERRORLEVEL% EQU 0 (
+		echo Conversion successful: %OUTPUT_FILE%
+	) ELSE (
+		echo Conversion failed.
+	)
+
+	convert_flac_to_alac.bat input.flac output.m4a
