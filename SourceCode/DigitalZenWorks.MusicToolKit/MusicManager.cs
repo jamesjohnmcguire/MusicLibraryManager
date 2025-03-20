@@ -378,20 +378,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 					SortedDictionary<string, object> tagSet = tags.GetTags();
 
-					JsonSerializerSettings jsonSettings = new ();
-					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-					jsonSettings.ContractResolver =
-						new OrderedContractResolver();
+					string jsonText = ConvertTagsToJsonText(tagSet);
 
-					string json = JsonConvert.SerializeObject(
-						tagSet, Formatting.Indented, jsonSettings);
-
-					if (!string.IsNullOrWhiteSpace(json))
+					if (!string.IsNullOrWhiteSpace(jsonText))
 					{
 						destinationFile =
 							destinationPath + "\\" + sourceFile.Name + ".json";
 
-						System.IO.File.WriteAllText(destinationFile, json);
+						System.IO.File.WriteAllText(destinationFile, jsonText);
 					}
 
 					Log.Info("Tags Saved to: " + destinationFile);
@@ -628,6 +622,31 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return included;
+		}
+
+		private static string ConvertTagsToJsonText(
+			SortedDictionary<string, object> tagSet)
+		{
+			string jsonText = null;
+
+			try
+			{
+				JsonSerializerSettings jsonSettings = new();
+				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+				jsonSettings.ContractResolver =
+					new OrderedContractResolver();
+
+				jsonText = JsonConvert.SerializeObject(
+					tagSet, Formatting.Indented, jsonSettings);
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is JsonException)
+			{
+				Log.Error(exception.ToString());
+			}
+
+			return jsonText;
 		}
 
 		private static bool DeleteEmptyDirectory(string path)
