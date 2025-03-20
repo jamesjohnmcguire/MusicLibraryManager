@@ -17,7 +17,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// iTunes tests class.
 	/// </summary>
 	[TestFixture]
-	internal class ItunesTests
+	internal sealed class ItunesTests
 	{
 		/// <summary>
 		/// The are file and track the same yes test.

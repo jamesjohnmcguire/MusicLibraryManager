@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>MusicManager</AssemblyName>
 		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>

@@ -9,7 +9,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	/// <summary>
 	/// Plain old class object item.
 	/// </summary>
-	internal class PocoItem
+	internal sealed class PocoItem
 	{
 		/// <summary>
 		/// Gets or sets the property 1.
@@ -21,12 +21,12 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		/// Gets or sets the PropertySet.
 		/// </summary>
 		/// <value>The artists.</value>
-		public virtual string[] PropertySet { get; set; }
+		public string[] PropertySet { get; set; }
 
 		/// <summary>
 		/// Gets or sets the PropertySet2.
 		/// </summary>
 		/// <value>The artists.</value>
-		public virtual string[] PropertySet2 { get; set; }
+		public string[] PropertySet2 { get; set; }
 	}
 }

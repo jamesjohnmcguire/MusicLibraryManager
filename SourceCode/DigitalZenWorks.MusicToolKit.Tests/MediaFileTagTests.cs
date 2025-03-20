@@ -17,7 +17,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Media file tag tests class.
 	/// </summary>
 	[TestFixture]
-	internal class MediaFileTagTests : BaseTestsSupport
+	internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		private Rules rules;
 
@@ -144,9 +144,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			SortedDictionary<string, object> tagSet = tags.GetTags();
 
-			Assert.That(tags, Is.Not.Null);
-			Assert.That(tags.TagFile, Is.Not.Null);
-			Assert.That(tagSet, Is.Not.Null);
+			using (Assert.EnterMultipleScope())
+			{
+				Assert.That(tags, Is.Not.Null);
+				Assert.That(tags.TagFile, Is.Not.Null);
+				Assert.That(tagSet, Is.Not.Null);
+			}
 		}
 
 		/// <summary>
