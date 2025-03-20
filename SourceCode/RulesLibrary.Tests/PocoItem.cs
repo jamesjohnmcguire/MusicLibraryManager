@@ -9,7 +9,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	/// <summary>
 	/// Plain old class object item.
 	/// </summary>
-	public class PocoItem
+	internal class PocoItem
 	{
 		/// <summary>
 		/// Gets or sets the property 1.

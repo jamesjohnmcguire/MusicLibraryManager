@@ -18,7 +18,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	/// Rules tests class.
 	/// </summary>
 	[TestFixture]
-	public class RulesTests
+	internal sealed class RulesTests
 	{
 		private string rulesFileContent;
 		private PocoItem tags;
