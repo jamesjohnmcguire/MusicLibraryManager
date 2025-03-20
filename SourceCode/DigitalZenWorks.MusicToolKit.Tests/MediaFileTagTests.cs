@@ -17,7 +17,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Media file tag tests class.
 	/// </summary>
 	[TestFixture]
-	public class MediaFileTagTests : BaseTestsSupport
+	internal class MediaFileTagTests : BaseTestsSupport
 	{
 		private Rules rules;
 
@@ -133,7 +133,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetTagsCheck()
 		{
-			using MediaFileTags tags = new(TestFile, rules);
+			using MediaFileTags tags = new (TestFile, rules);
 
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";

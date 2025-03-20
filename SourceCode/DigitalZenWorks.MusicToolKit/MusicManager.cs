@@ -631,7 +631,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 			try
 			{
-				JsonSerializerSettings jsonSettings = new();
+				JsonSerializerSettings jsonSettings = new ();
 				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
 				jsonSettings.ContractResolver =
 					new OrderedContractResolver();

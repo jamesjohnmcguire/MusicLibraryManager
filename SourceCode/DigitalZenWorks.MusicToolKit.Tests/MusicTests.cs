@@ -20,7 +20,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class MusicTests : BaseTestsSupport, IDisposable
+	internal class MusicTests : BaseTestsSupport, IDisposable
 	{
 		private MusicManager musicManager;
 		private Rules rules;
