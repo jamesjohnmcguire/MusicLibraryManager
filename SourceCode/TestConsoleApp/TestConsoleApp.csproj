@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>TestConsoleApp</AssemblyName>
 		<AssemblyVersion>0.1.0.176</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
@@ -15,7 +14,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<NeutralLanguage>en</NeutralLanguage>
-		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.5.184</Version>

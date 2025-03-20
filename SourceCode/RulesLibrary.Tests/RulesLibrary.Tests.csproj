@@ -2,14 +2,12 @@
 
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>DigitalZenWorks.RulesLibrary.Tests</AssemblyName>
 		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
 		<NoWarn>NU1701</NoWarn>
-		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net9.0</TargetFramework>
 	</PropertyGroup>
