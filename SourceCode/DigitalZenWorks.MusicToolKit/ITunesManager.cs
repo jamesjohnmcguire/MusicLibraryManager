@@ -124,7 +124,9 @@ namespace DigitalZenWorks.MusicToolKit
 				}
 				catch (Exception exception) when
 					(exception is ArgumentException ||
-					exception is ArgumentNullException)
+					exception is ArgumentNullException ||
+					exception is TagLib.CorruptFileException ||
+					exception is TagLib.UnsupportedFormatException)
 				{
 					Log.Error(exception.ToString());
 				}

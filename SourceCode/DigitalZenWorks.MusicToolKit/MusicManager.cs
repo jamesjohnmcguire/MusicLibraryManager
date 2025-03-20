@@ -311,14 +311,23 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (useTags == true)
 				{
-					using MediaFileTags tags = new (filePath);
+					try
+					{
+						using MediaFileTags tags = new (filePath);
 
-					artist =
-						GetArtistPathSegment(musicPath, filePath, null, tags);
-					album =
-						GetAlbumPathSegment(musicPath, filePath, artist, tags);
-					title =
-						GetTitlePathSegment(musicPath, filePath, artist, tags);
+						artist = GetArtistPathSegment(
+							musicPath, filePath, null, tags);
+						album = GetAlbumPathSegment(
+							musicPath, filePath, artist, tags);
+						title = GetTitlePathSegment(
+							musicPath, filePath, artist, tags);
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
 				}
 
 				int depth = Paths.GetDirectoryCount(filePath);
@@ -745,8 +754,17 @@ namespace DigitalZenWorks.MusicToolKit
 				if (UpdateTags == true)
 				{
 					// get and update tags
-					using MediaFileTags tags = new (file.FullName, rules);
-					tags.Clean();
+					try
+					{
+						using MediaFileTags tags = new (file.FullName, rules);
+						tags.Clean();
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
 				}
 
 				// update directory and file names
