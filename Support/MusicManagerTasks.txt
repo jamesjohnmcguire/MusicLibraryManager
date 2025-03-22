@@ -1,4 +1,15 @@
+Sprints
+	Flac to Aliec
+	Move low rated Music
+	Start Using Chromaprints
 Music Library Manager Tasks
+	MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs(262,44): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+	MusicLibraryManager\SourceCode\MusicManager\Program.cs(27,22): warning CA1515: Because an application's API isn't typically referenced from outside the assembly, types can be made internal
+	Clean	iTunes	Add to PlayLists
+	Clean	iTunes	Copy iTunes Rating to Tags
+	Entertainment Tags Only	Process Music, Music2, etc
+	Process image files
+	git clean -n -xdf --exclude="SourceCode/MusicManager/Properties/"
 	Add Test Music Library
 	Add ItunesAvailable Environment Variable to Documentation
 	Add Conditional #define based on ItunesAvailable
