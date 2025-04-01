@@ -11,7 +11,7 @@ namespace Music
 	/// <summary>
 	/// Dbx to pst program class.
 	/// </summary>
-	public static class Program
+	internal static class Program
 	{
 		/// <summary>
 		/// The program's main entry point.

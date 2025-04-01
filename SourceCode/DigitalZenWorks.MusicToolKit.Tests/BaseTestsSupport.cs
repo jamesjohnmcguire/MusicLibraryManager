@@ -20,7 +20,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Base test support class.
 	/// </summary>
 	[SetUpFixture]
-	public class BaseTestsSupport
+	internal class BaseTestsSupport
 	{
 		private string temporaryPath;
 		private string testFile;

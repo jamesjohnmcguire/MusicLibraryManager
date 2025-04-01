@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "MusicManager": {
-      "commandName": "Project",
-      "commandLineArgs": "extract-tags C:\\Users\\JamesMc\\Music\\iTunes\\Entertainment"
-    }
-  }
-}

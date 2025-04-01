@@ -21,7 +21,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Unit tests class.
 	/// </summary>
 	[TestFixture]
-	public class MusicTests : BaseTestsSupport, IDisposable
+	internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	{
 		private MusicManager musicManager;
 		private Rules rules;
@@ -820,7 +820,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		/// </summary>
 		/// <param name="disposing">Indicates whether currently disposing
 		/// or not.</param>
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (disposing)
 			{

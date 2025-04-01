@@ -23,6 +23,8 @@ bld/
 # NUNIT
 TestResult.xml
 
+SourceCode/MusicManager/Properties/launchSettings.json
+
 SourceCode/packages/
 
 SourceCode/FingerPrinter/CMakeFiles/

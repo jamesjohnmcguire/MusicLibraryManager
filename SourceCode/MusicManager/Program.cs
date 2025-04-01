@@ -24,7 +24,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 	/// <summary>
 	/// The main program class.
 	/// </summary>
-	public static class Program
+	internal static class Program
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
