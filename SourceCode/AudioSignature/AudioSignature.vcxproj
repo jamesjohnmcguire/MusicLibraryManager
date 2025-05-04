@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<CharacterSet>MultiByte</CharacterSet>
+		<CharacterSet>Unicode</CharacterSet>
 		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<GenerateManifest>true</GenerateManifest>
 		<Keyword>Win32Proj</Keyword>
@@ -63,6 +63,7 @@
 
 	<ItemDefinitionGroup>
 		<ClCompile>
+			<AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
 			<AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
 			<ExceptionHandling>Sync</ExceptionHandling>
 			<LanguageStandard>stdcpp20</LanguageStandard>
@@ -92,7 +93,6 @@
 
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<ClCompile>
-			<AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
 			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
 			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
 			<InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
