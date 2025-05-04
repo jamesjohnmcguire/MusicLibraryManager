@@ -10,6 +10,7 @@ int main(int argc, char** argv)
 {
 	bool minimal = true;
 	const char* dataPath = nullptr;
+	std::string tempPath;
 
 	if (minimal == false)
 	{
@@ -29,7 +30,7 @@ int main(int argc, char** argv)
 			std::filesystem::path path = appdata;
 			path /= "DigitalZenWorks\\MusicManager\\sakura.mp4";
 
-			std::string tempPath = path.string();
+			tempPath = path.string();
 			dataPath = tempPath.c_str();
 		}
 	}

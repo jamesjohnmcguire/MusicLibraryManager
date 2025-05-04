@@ -4,6 +4,8 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using DigitalZenWorks.MusicToolKit;
+
 [assembly: CLSCompliant(true)]
 
 namespace Music
@@ -11,7 +13,7 @@ namespace Music
 	/// <summary>
 	/// Dbx to pst program class.
 	/// </summary>
-	public static class Program
+	internal static class Program
 	{
 		/// <summary>
 		/// The program's main entry point.
@@ -31,6 +33,15 @@ namespace Music
 			int result = 0;
 
 			Console.WriteLine("Testing");
+
+			string appDataFolder = Environment.GetFolderPath(
+				Environment.SpecialFolder.ApplicationData);
+			string relativePath = Path.Combine(
+				"DigitalZenWorks", "MusicManager", "Sakura.mp4");
+			string testFilePath = Path.Combine(appDataFolder, relativePath);
+
+			string audioSignature =
+				AudioSignature.GetAudioSignature(testFilePath);
 
 			return result;
 		}
