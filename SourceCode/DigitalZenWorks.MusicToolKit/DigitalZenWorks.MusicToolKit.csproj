@@ -15,9 +15,14 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
-		<Platforms>x64</Platforms>
+		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.6.188</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)' == 'x64'">
+		<PlatformTarget>x64</PlatformTarget>
+		<Prefer32Bit>false</Prefer32Bit>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseItunes)' == 'true'">
