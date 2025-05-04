@@ -11,7 +11,8 @@
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<Platforms>x64</Platforms>
+		<TargetFramework>net9.0-windows</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseItunes)' == 'true'">
