@@ -16,7 +16,7 @@
 		<NoWarn>NU1701</NoWarn>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Platforms>x64</Platforms>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.6.188</Version>
 	</PropertyGroup>
 

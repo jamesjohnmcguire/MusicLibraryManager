@@ -17,7 +17,7 @@
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Exe</OutputType>
 		<Platforms>x64</Platforms>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.6.188</Version>
 	</PropertyGroup>
 
