@@ -6,7 +6,7 @@
 
 namespace DigitalZenWorks.MusicToolKit
 {
-	using Common.Logging;
+	using global::Common.Logging;
 	using NAudio.Wave;
 	using System;
 	using System.Buffers;
