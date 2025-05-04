@@ -4,14 +4,8 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.MusicToolKit.Decoders;
-using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 
 namespace DigitalZenWorks.MusicToolKit.Tests
