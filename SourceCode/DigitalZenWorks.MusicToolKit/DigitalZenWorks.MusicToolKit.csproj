@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>DigitalZenWorks.MusicToolKit</AssemblyTitle>
 		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
@@ -12,8 +14,15 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
-		<TargetFramework>net9-windows</TargetFramework>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
+		<Platforms>x86;x64</Platforms>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.6.188</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Platform)' == 'x64'">
+		<PlatformTarget>x64</PlatformTarget>
+		<Prefer32Bit>false</Prefer32Bit>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseItunes)' == 'true'">

@@ -3,18 +3,25 @@
 // Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
-using NAudio.Wave;
-using System;
-using System.Buffers;
-using System.IO;
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	using global::Common.Logging;
+	using NAudio.Wave;
+	using System;
+	using System.Buffers;
+	using System.IO;
+	using System.Reflection;
+	using System.Runtime.InteropServices;
+
 	/// <summary>
 	/// Decode using the NAudio library.
 	/// </summary>
 	public class NAudioDecoder : AudioDecoder
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			MethodBase.GetCurrentMethod().DeclaringType);
+
 		private readonly string file;
 
 		/// <summary>
