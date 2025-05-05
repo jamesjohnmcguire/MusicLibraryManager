@@ -2,6 +2,7 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyTitle>DigitalZenWorks.MusicToolKit</AssemblyTitle>
 		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
@@ -13,6 +14,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<NoWarn>NU1701</NoWarn>
+		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<Platforms>x86;x64</Platforms>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<Version>0.6.188</Version>
