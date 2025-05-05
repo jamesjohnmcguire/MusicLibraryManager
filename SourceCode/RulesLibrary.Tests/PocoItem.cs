@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="PocoItem.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -9,7 +9,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	/// <summary>
 	/// Plain old class object item.
 	/// </summary>
-	public class PocoItem
+	internal sealed class PocoItem
 	{
 		/// <summary>
 		/// Gets or sets the property 1.
@@ -21,12 +21,12 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		/// Gets or sets the PropertySet.
 		/// </summary>
 		/// <value>The artists.</value>
-		public virtual string[] PropertySet { get; set; }
+		public string[] PropertySet { get; set; }
 
 		/// <summary>
 		/// Gets or sets the PropertySet2.
 		/// </summary>
 		/// <value>The artists.</value>
-		public virtual string[] PropertySet2 { get; set; }
+		public string[] PropertySet2 { get; set; }
 	}
 }

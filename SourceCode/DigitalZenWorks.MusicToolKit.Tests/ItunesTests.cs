@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="ItunesTests.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +17,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// iTunes tests class.
 	/// </summary>
 	[TestFixture]
-	public class ItunesTests
+	internal sealed class ItunesTests
 	{
 		/// <summary>
 		/// The are file and track the same yes test.
@@ -84,6 +84,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			using ITunesManager iTunesManager = new ();
 			string location = iTunesManager.ItunesLibraryLocation;
 
+			Assert.That(location, Is.Not.Null);
 			Assert.That(location, Is.Not.Empty);
 		}
 

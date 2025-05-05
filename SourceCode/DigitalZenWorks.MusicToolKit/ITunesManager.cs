@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="ITunesManager.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -119,32 +119,14 @@ namespace DigitalZenWorks.MusicToolKit
 					if (track is IITFileOrCDTrack fileTrack &&
 						File.Exists(fileTrack.Location))
 					{
-						using MediaFileTags tags = new (filePath);
-
-						string album1 = fileTrack.Album;
-						string album2 = tags.Album;
-						string artist1 = fileTrack.Artist;
-						string artist2 = tags.Artist;
-						string title1 = fileTrack.Name;
-						string title2 = tags.Title;
-						int year1 = fileTrack.Year;
-						int year2 = (int)tags.Year;
-
-						if (album1.Equals(
-							album2, StringComparison.OrdinalIgnoreCase) &&
-							artist1.Equals(
-							artist2, StringComparison.OrdinalIgnoreCase) &&
-							title1.Equals(
-							title2, StringComparison.OrdinalIgnoreCase) &&
-							year1 == year2)
-						{
-							same = true;
-						}
+						same = CompareTags(filePath, fileTrack);
 					}
 				}
 				catch (Exception exception) when
 					(exception is ArgumentException ||
-					exception is ArgumentNullException)
+					exception is ArgumentNullException ||
+					exception is TagLib.CorruptFileException ||
+					exception is TagLib.UnsupportedFormatException)
 				{
 					Log.Error(exception.ToString());
 				}
@@ -327,6 +309,20 @@ namespace DigitalZenWorks.MusicToolKit
 						same = IsFileAndTrackLocationSame(filePath, fileTrack);
 					}
 				}
+				else
+				{
+					songName = songName.Replace(
+						" -", ":", StringComparison.OrdinalIgnoreCase);
+
+					if (trackName.Equals(
+						songName, StringComparison.OrdinalIgnoreCase))
+					{
+						if (track is IITFileOrCDTrack fileTrack)
+						{
+							same = IsFileAndTrackLocationSame(filePath, fileTrack);
+						}
+					}
+				}
 			}
 
 			return same;
@@ -469,6 +465,36 @@ namespace DigitalZenWorks.MusicToolKit
 			return trackCollection;
 		}
 
+		private static bool CompareTags(
+			string filePath, IITFileOrCDTrack fileTrack)
+		{
+			bool same = false;
+
+			using MediaFileTags tags = new (filePath);
+
+			string album1 = fileTrack.Album;
+			string album2 = tags.Album;
+			string artist1 = fileTrack.Artist;
+			string artist2 = tags.Artist;
+			string title1 = fileTrack.Name;
+			string title2 = tags.Title;
+			int year1 = fileTrack.Year;
+			int year2 = (int)tags.Year;
+
+			if (album1.Equals(
+				album2, StringComparison.OrdinalIgnoreCase) &&
+				artist1.Equals(
+				artist2, StringComparison.OrdinalIgnoreCase) &&
+				title1.Equals(
+				title2, StringComparison.OrdinalIgnoreCase) &&
+				year1 == year2)
+			{
+				same = true;
+			}
+
+			return same;
+		}
+
 		private static bool IsTrackLocationEmpty(IITFileOrCDTrack fileTrack)
 		{
 			bool emptyTrack = false;
@@ -552,6 +578,22 @@ namespace DigitalZenWorks.MusicToolKit
 		private IITTrackCollection GetPossibleTracks(string name)
 		{
 			string searchName = Path.GetFileNameWithoutExtension(name);
+
+#if NET6_0_OR_GREATER || NETSTANDARD2_1
+			searchName = searchName.Replace(
+				",", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				".", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				"-", string.Empty, StringComparison.OrdinalIgnoreCase);
+			searchName = searchName.Replace(
+				"'", " ", StringComparison.OrdinalIgnoreCase);
+#else
+			searchName = searchName.Replace(",", string.Empty);
+			searchName = searchName.Replace(".", string.Empty);
+			searchName = searchName.Replace("-", string.Empty);
+			searchName = searchName.Replace("'", " ");
+#endif
 
 			IITTrackCollection tracks = playList.Search(
 				searchName,

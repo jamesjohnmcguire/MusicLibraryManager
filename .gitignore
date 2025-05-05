@@ -24,3 +24,5 @@ bld/
 TestResult.xml
 
 SourceCode/packages/
+
+SourceCode/MusicManager/Properties/launchSettings.json

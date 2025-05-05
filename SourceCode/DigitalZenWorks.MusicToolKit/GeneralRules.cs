@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="GeneralRules.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +101,22 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			if (!string.IsNullOrWhiteSpace(text))
 			{
-				text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+				Match match = Regex.Match(
+					text, @"\d+$", RegexOptions.RightToLeft);
+
+				if (match.Success == true)
+				{
+					string numbersText = match.Value;
+					int numbers = Convert.ToInt32(
+						numbersText, CultureInfo.InvariantCulture);
+
+					if (numbers < 10)
+					{
+						// Trailing numbers greater then 9 probably mean
+						// something else besides a duplicate indicator.
+						text = Regex.Replace(text, @"\s+\d+$", string.Empty);
+					}
+				}
 			}
 
 			return text;

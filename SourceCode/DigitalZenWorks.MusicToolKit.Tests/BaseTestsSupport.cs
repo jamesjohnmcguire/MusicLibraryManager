@@ -1,17 +1,11 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="BaseTestsSupport.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.MusicToolKit.Decoders;
-using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 
 namespace DigitalZenWorks.MusicToolKit.Tests
@@ -20,10 +14,16 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Base test support class.
 	/// </summary>
 	[SetUpFixture]
-	public class BaseTestsSupport
+	internal class BaseTestsSupport
 	{
 		private string temporaryPath;
 		private string testFile;
+
+		/// <summary>
+		/// Gets the temporary path.
+		/// </summary>
+		/// <value>The temporary path.</value>
+		public string TemporaryPath { get => temporaryPath; }
 
 		/// <summary>
 		/// Gets the test file.
@@ -41,7 +41,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(temporaryPath);
 			Directory.CreateDirectory(temporaryPath);
 
-			testFile = temporaryPath + @"\Artist\Album\Sakura.mp4";
+			testFile = temporaryPath + @"\Music\Artist\Album\Sakura.mp4";
 		}
 
 		/// <summary>
@@ -70,6 +70,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Directory.CreateDirectory(newPath);
 
 			string newFileName = newPath + @"\" + fileName;
+
+			if (File.Exists(newFileName))
+			{
+				File.Delete(newFileName);
+			}
 
 			File.Copy(testFile, newFileName);
 

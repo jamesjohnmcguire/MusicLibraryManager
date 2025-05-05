@@ -1,0 +1,396 @@
+Sprints
+	Flac to Aliec
+	Move low rated Music
+	Start Using Chromaprints
+Music Library Manager Tasks
+	Add to PlayLists
+	MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs(262,44): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+	MusicLibraryManager\SourceCode\MusicManager\Program.cs(27,22): warning CA1515: Because an application's API isn't typically referenced from outside the assembly, types can be made internal
+	Clean	iTunes	Add to PlayLists
+	Clean	iTunes	Copy iTunes Rating to Tags
+	Entertainment Tags Only	Process Music, Music2, etc
+	Process image files
+	git clean -n -xdf --exclude="SourceCode/MusicManager/Properties/"
+	Add Test Music Library
+	Add ItunesAvailable Environment Variable to Documentation
+	Add Conditional #define based on ItunesAvailable
+	Move iTunes functionality to PlugIn
+	Make plan for moving "Bravos" to "Lost Bravos"	Move Bravos to "Los Bravos"	First, check tags and resolve
+	Investigate Metadata Support   | ID3v1, ID3v2        | MP4 metadata atoms
+	Clean Up MediaWavCompare.cmd, add c# equiv
+	Investigate AtomicParsley (AtomicParsley file.m4a -t) and ExifTool (exiftool file.m4a)
+	Remove temp wav files
+	Adjust MediaSaveLossyM4a.cmd to use source bitrate -b:a 192, maybe ask gpt
+	Verify	Add Script to convert wma to m4a
+	Integrate	Add Code to convert wma to m4a
+	Backup WMA Files	Move to backup location, all wma files
+	later
+		Resolve installing libfdk_aac	Then use ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
+	Include Chromaprint Test Projects
+	Change UseItunes Environment Variable to ItunesAvailable
+	Add multi-framework target support
+	Revise MediaTags
+	Tests	Add Fail test for GetArtistPathFromPath
+	Tests	Add Unit Tests for recent changes
+	Tests	Add test fir AlbumGeneralRules
+	Add depreciation warnings
+	Rename to Default	IsStandardLibraryDirectory
+	Shouldn't this in Title case?	"Sakura test"
+	This is set a lot, should it be default?	string musicPath =	LibraryLocation + Path.DirectorySeparatorChar + "Music";
+	Always returns false		public bool UpdateItunesLocation(IITTrack track, string filePath)
+	Music\\Bob Dylan\\Greatest Hits\\The Times They Are A-Changin'.m4a"
+	Music\\Billie Holiday\\The Complete Decca Recordings II\\Keeps on A-Rainin'.mp3"
+	Music\\David Bowie\\Hunky Dory\\The Bewlay Brothers[].mp3"
+	Music\\Diana Ross & the Supremes and the Temptations\\Motown Classics -  The Soul Of A Nation\\I'm Gonna Make You Love Me.mp3"
+	Gordon Lightfoot\Over 60 Minutes With\Steel Rail Blues.mp3	Message	"Could not find a part of the path."	System.IO.DirectoryNotFoundException
+	Music\\Green Day\\The best of\\The Best Of_Track18.mp3"
+	Music\\It's a Beautiful Day\\Choice Quality Stuff... Anytime\\Bitter Wine.mp3"
+	Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
+	Why return bool when no check? AddFile iTunes
+
+	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active	
+	AddFile	{"Value does not fall within the expected range."}	System.Exception {System.ArgumentException}
+	UpdateFile	{"Could not find a part of the path."}	System.Exception {System.IO.DirectoryNotFoundException}
+	Save Breakpoints
+	Review "Oh Word" from "Oh Word?"
+	Problem with ending number	The Very Best Of Ben E. King\Supernatural Thing, Pt. 1.mp3
+	iTunes	Problem with searching for titles with dash ('-') in it, doesn't return results.  So, need to take dash out, perhaps other symbols too, such as [].  Create some tests for this issue.
+	iTunes	Document building with UseItunes=true
+	Merge Back In Library Variants	Deleting file from Server: 13 Jimmy Bishop Christmas Column.m4a	Merge 'iTunes Media.bak'
+	Review Add to iTunes Directory
+	Fill out getting reparse point for target frameworks < .net 6	c# ReparsePoint	https://gist.github.com/LGM-AdrianHum/260bc9ab3c4cd49bc8617a2abe84ca74	https://stackoverflow.com/questions/2302416/how-to-obtain-the-target-of-a-symbolic-link-or-reparse-point-using-net
+	<Nullable>enable</Nullable>	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	ITunesXmlFile.cs	260
+	make parameter ordering consistent	track then filename
+	--prefer-link-targets
+	Deal with redundant tracks
+	Add tests for FindDuplicates
+	Refactor FindDuplicates?
+	Tags	TagLib.CorruptFileException: FLAC stream not found at starting position.	The Lovin' Spoonful - Revelation Revolution '69.flac	MediaFileTags.cs:line 48
+	Tags	Get original album name - Guardians of the Galaxy -  Awesome Mix Vol. 1
+	Add Config file that includes library (sub)directories
+	help	does nothing
+	tests RegexRemoveDifferent, RegexRemoveNoPattern, RegexRemoveSame doesn't test any functionality
+	RemoveDeadTracks as command API
+	File ending with comma?	Danny Singing With Mom and Dad, 1.wav	Entertainment\Music\Unknown Artist\Unknown Album\
+	Review	That Lady, Part 1 (The one gets removed)
+	Clean seems to be needed to run several times, in a row to 'catch' all the variants.  For some reason, not finding or processing all of the songs present.
+	Clean seems to be not catching the extra numbers at the end: Danny Singing With Mom and Dad, 1.wav
+	If song is an exact duplicate and then deleted, it should also be removed from iTunes.  This eventually happens, I think because of RemoveDeadTracks, but it should happen more immediately.
+	ReplaceVariousArtists Check for null or empty for replacement
+	Error	CS1056	Unexpected character ' AssemblyInfo.cs
+	Signature	Problems building FFMPeg
+	Signature	FFTW3 lib not found. Set FFTW3_DIR to find it.
+	Music2 Tags Only\Bob Dylan With Johnny Cash\Girl From The North Country
+	Add Methods to match commands - ExtractTags
+	[2023-04-30 18:52:10 INF] Tags Saved to: c:\Users\JamesMc\Data\External\Entertainment\Music Tags Only\The Lovin' Spoonful\The Lovin' Spoonful - Greatest Hits (2000)\20.-Lonely (Instrumental).flac.json
+	[2023-04-30 18:52:17 ERR] TagLib.CorruptFileException: FLAC stream not found at starting position.
+	previousArtist	"Julie Driscoll, Brian Auger & The Trinity"	string
+	performer	"Kool & The Gang"	string
+	exception	{"FLAC stream not found at starting position."}	System.Exception {TagLib.CorruptFileException}
+	Tests	In test like TagFileUpdateTitleFromPath, Specify if no change or change is expected
+	Log any and all changes
+	iTunes	If Location differs by only case sensitivity, update to match current file
+	Add exact duplicate checking functionality
+	File Segment AC / DC?
+	Convert Flac to iTunes support format
+	Merge iTune properties when deleting a track
+	Make consistent usage of parameter names (text/item)
+	Tests should use temp path instead of library location?
+	musicManager.LibraryLocation is at roaming
+	Over ride logging directory with environment variable
+	Rules	Constructor, if content is empty, throw exception?
+	Audio Signature	Add HttpTool\SourceCode\WebTools\HttpClientExtended.cs
+	Audio Signature	Add Tests of additional audio files in external script
+	Audio Signature	Set Logging to AppData
+	Audio Signature	Remove warnings from external sources
+	Audio Signature	Clean Up Warnings
+	Audio Signature	Connect to AcoustId service
+	Test Beets, MusicBee
+	Itunes	Build non-itunes version
+	Audio Signature	Add support for wide char FingerPrint(const wchar_t* filePath)
+	Deal with Multiple Artists
+	Rules	by getting base element, skipping testing of full namespace / objec name, should a test before hand
+	Artists doesn't exist
+	Rules	GetItemSubject should return an object
+	Rules	Double check not being used: \s*\(Disk).*?\)
+	Log any change to media file
+	If exact duplicate, remove, don't move
+	Re-add , @" \(.*?\)" for title?
+	Refactor ITunesXmlFile
+	Refactor FindDuplicates, into smaller testable methods
+	AcoustID fingerprints
+	Rules	GetDefaultRules use FileUtils
+	Rules	Don't call GetDefaultRules if rules already exist
+	items.OrderBy(i => i.Name, StringComparer.Ordinal)
+	SaveTagsToJsonFile, Catch json exceptions
+	Refactor CreateAlbumPathFromTag to make sense, move regex to tags
+	Music File Duplicates
+	MusicManager, expose important current private methods as APIs
+	return value for CleanFile
+	Refactor private MediaFileTags tags to be parameter of specific methods 
+	Refactor AreFileAndTrackTheSame with better internal testing
+	Optimize SaveTagsToJsonFile, so to not save if content is the same
+	Keep GetFullPathObject?
+	Unify all tucked away implicit rules, regex's inside private methods, etc
+	Rename to more appropriate name: ConditionNotEmptyTest
+	Review, Remove? UpdateTrackFromLocation	Seems unused, but contains potentially damaging functionality.  Also, it seems like it's not needed, at least in it's current state.  At the very least, refactor into smaller testable methods.
+	Tests for UpdateTrackFromLocation
+	Tests for UpdateItunesLocation
+	Catch Exceptions from ReadAllText, IsMatch
+	find	"\\s*\\(Dis[A-Za-z].*?\\)"	string
+	catch	public Rules(string data) { if (!string.IsNullOrEmpty(data)) { rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
+	GetPathPartFromTag, RemoveIllegalPathCharactors Refactor
+	many "* 1".* songs
+	convert flac files
+	https://github.com/josephw/titl
+	Many almost duplicates
+	Missing Artwork   Neil Young & Crazy Horse Rust Never Sleeps [320 Kbps]\AlbumArt_{5E574596-5561-4491-9CB4-3E5C7BFD6945}_Large.jpg
+	Change DLL names to match the following pattern: <Company>.<Component>.dll
+	Exclude non music directories
+	Remove null fields from json files
+	Add snapshot of each directory as csv
+	Failed obtaining configuration for Common.Logging from configuration section 'common/logging'	MusicClean.exe.Config line 11
+	Code analysis fixes
+	Deal with wma files	ArgumentException	"Value does not fall within the expected range." IITLibraryPlaylist.AddFile(String filePath) MusicUtility.MusicUtility.UpdateItunes(FileInfo file) MusicUtility.cs:line 467 CleanFile(FileInfo file) MusicUtility.cs:line 131"
+	Check IITOperationStatus status return from iTunes.LibraryPlaylist.AddFile
+	Consider when the file isn't just a song, could be a medley, or a collection, and album side.  Maybe not music at all, not even audio
+	Merge tags from previous libraries	?
+	Check complete list of audio files	??
+	Move all files when moving album files
+	extended unit tests to test tag rules
+	change rules to actual rules
+	test remove extra tracks that point to the same file
+	test updating itunes when removing duplicates
+	Music5 instead of Music4
+	fix "best hits of...", Compilations, Great Rock Hits lame tags
+	often wrong year
+	what about votes and stuff?
+	mp4 file diffs almost same... same?
+	deal with album artwork
+	Make Tests for DeleteDeadTracks
+	DeleteDeadTracks	set up progress monitor, if needed
+	DeleteDeadTracks	// check for cancel
+	DeleteDeadTracks	// increment progress
+	FindDuplicates	set up progress monitor, if needed
+	FindDuplicates	// check for cancel
+	FindDuplicates	// increment progress
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	dotnet build SourceCode\MusicManager.sln Fails	Most notably because of no support for COMReference task.  Net Core doesn't seem like it is going to address this anytime soon.
+	Some Issue?	MusicUnprocessed/Inbox/Talking Heads - Brick (2005) [FLAC] {8 DualDisc Remasters Boxset}/R-1570556-1229475368.jpg
+	iTunes	Investigate Automatically Add to iTunes
+
+	Not Reproducible
+		Stand By Me	Ben E King	Still empty		External/iTunes Media/Music/Compilations/S*/Stand By Me.mp3
+	Not Sure
+		1-05 Do You Know The Way To San Jose.m4a
+		Tangled Up In Blue (2).mp3
+		Guy Cabay & Toots Thielemans & Philip Catherine
+		Brussels Jazz Rally
+		Compilations\\P.S. I Love You\\Everything We Had.mp3
+		Really Gonna Rock Tonight - 30 Great Rock Hits (disc 1)
+		More Songs About Buildings And Food {2005 Remaster}\\Thank You For Sending Me An Angel (Country Angel Version).m4a
+	Finished
+		mediainfo install
+		Review CoPilot Chat and copy over all relevant notes
+		Listen Once and move to backup Music5\Bravos
+		Extract and Compare Raw Version  of 'Black Is Black' from Music3 & Music4
+		Deal with Music3, Music4\Bravos\Black Is Black, if audio is different, choose best
+		Cannot open include file: 'chromaprint.h': No such file or directory
+		cannot open file 'SourceCode\Bin\Debug\x64\AudioSignature.lib'
+		Current Solution Contains Incorrect Configuration Mappings
+		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint.vcxproj
+		error  : The project file could not be loaded. Could not find a part of the path SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj
+		WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
+		Tests	Arrange Tests Alphabetically
+		Fix Unit Tests
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
+		Log when adding new file to iTunes
+		Remove Pictures from extracted tags
+		Tests	tests for empty tags
+		Tests	Add tests for when the first character is lower case
+		Tests	Add tests for non-exact duplicates found
+		Tests	Expand UpdateFile Tests, one for file with different name only in case sensitivity
+		If not title case, at least capitalize first character
+		Add command line option to specify library location
+		Separate out tests into different classes
+		Tests	Review and improve tags.Clean tests
+		Tests	CleanAlbumSuccess Test	Doesn't really do anything, enhance
+		iTunes	In UpdateItunesLocation and AreFileAndTrackTheSame, check .Name as well for double verification before updating, line 242
+		Don't bother trying to import flac files into iTunes
+		iTunes	Check File.Exists at beginning
+		exclude wma
+		ITPlaylistSearchField.ITPlaylistSearchFieldAll - maybe just title?
+		Single apostrophe ok in files
+		ApplyExceptions	Need to add and check Artist parameter as well.
+		Move or create tests for new rules classes
+		Separate out custom rule processing from other operations, make into their own classes
+		Move rules from Paths
+		CleanArtist, refactor rules processing to go elsewhere
+		Should path operations fail (because of file not existing) when the file isn't actually needed?
+		CreateDirectoryIfNotExists	Not needed?
+		CreateArtistPathFromTag change to CreateArtistPath
+		CreateArtistPathFromTag pass in file.FullName, file
+		Fix Test, Commit
+		Property set method not found.
+		Object of type 'System.String' cannot be converted to type 'TagLib.File'.	MusicUtility\\Rules.cs:line 78
+		#pragma warning disable CS0618 // Type or member is obsolete
+		Deal with Multiple Artists, Remove throwing exception
+		Console.WriteLine
+		AudioId	Rename Files / Projects to AudioId
+		AudioId	Continue refactor of big function
+		Itunes	Do not instantiate iTunes when doing only extract-tags
+		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4	
+		Fix Python
+		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
+		Remove empty directories
+		Log any change to media file
+		TagSet property strangeness
+		MediaFileTags.cs(137,5): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MediaFileTags.cs(144,6): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.MediaFileTags.TagSet.get: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		MusicManager.cs(47,4): Trim analysis warning IL2072: DigitalZenWorks.MusicToolKit.MusicManager.MusicManager(): '#0' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicParameterlessConstructor' in call to 'System.Activator.CreateInstance(Type)'. The return value of method 'System.Runtime.InteropServices.Marshal.GetTypeFromCLSID(Guid)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(253,7): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetFullPathObject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(277,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.GetItemSubject(Object,String): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		Rule.cs(313,4): Trim analysis warning IL2075: DigitalZenWorks.MusicToolKit.Rule.SetItemSubject(Object,String,Object): 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperty(String)'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataSet.WriteXmlSchema(DataSet,XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataSet.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataSet.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataSet.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataSet.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.GetSchema(): Using member 'System.Data.DataTable.GetXmlSchema()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.GetSchema uses TypeDescriptor and XmlSerialization underneath which are not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.ReadXml(XmlReader): Using member 'System.Data.DataTable.ReadXmlSerializableInternal(XmlReader)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.ReadXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		ILLink : Trim analysis warning IL2026: System.Data.DataTable.System.Xml.Serialization.IXmlSerializable.WriteXml(XmlWriter): Using member 'System.Data.DataTable.WriteXmlInternal(XmlWriter)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. DataTable.WriteXml uses XmlSerialization underneath which is not trimming safe. Members from serialized types may be trimmed if not referenced directly.
+		warning IL2104: Assembly 'Common.Logging' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'CSCore' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
+		warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
+		Return filename from SaveTagsToJsonFile
+		Migrate custom functionality from GetAlbumFromPath
+		Refactor DeleteDeadTracks, into smaller testable methods
+		Replace all Console.WriteLine	with logging
+		Fix if ((TagFile.Tag.Artists.Length > 1) || (TagFile.Tag.Performers.Length > 1))
+		Write name of source when exception in SaveTagsToJsonFile
+		Add command line switch for UpdateLibrarySkeleton
+		clean up usings
+		Update all Log.Error(CultureInfo.InvariantCulture, m => m(
+		MusicManager(libraryLocation)
+		Move iTunes related functionality to its own class
+		Warning	CA1031	Modify 'UpdateItunesLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	748	Active
+		Warning	CA1031	Modify 'UpdateTrackFromLocation' to catch a more specific allowed exception type, or rethrow the exception	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MusicManager.cs	815	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
+		Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
+		Rename skeleton methods
+		Change skeleton to tagSet
+		ITunesFolderLocation / ITunesDirectoryLocation
+		Conditional check for existence of iTunesLib, before using everywhere
+		Tests for GetRuleByName
+		Tests for IsConditionMet
+		Tests for GetConditionalValue
+		Test ConditionRegexMatch
+		Test ConditionEqualsTest
+		Test ConditionNotEqualsTest
+		Test CheckNextRule
+		Test Action
+		Test RegexReplace
+		Test GetItemSubject
+		Test SetItemSubject
+		Test ConditionNotEmptyTest
+		Tests for Rule.Run
+		Test for GetObjectBaseElement, with one segment, with multiple segments, empty string
+		Add tests for UpdateItunes
+		Add tests for UpdateFile, same and different
+		Tests fir GetDulicateLocation
+		Tests for CreateArtistPathFromTag, same as above
+		Test for CreateAlbumPathFromTag, basic
+		AreFileAndTrackTheSame, tests for if they are the same and another test if they are different
+		Is OrderedContractResolver being used? necessary?
+		catch in ITunesXmlFile
+		Fix updated in Update
+		Make test for SaveTagsToJsonFile
+		What if com component doesn't exist?
+		Check for existence of iTunesLib
+		Test ITunesFolderLocation when valid, when null
+		Test LoadItunesXmlFile for valid return 
+		Test LoadItunesXmlFile when invalid
+		MusicManager, Test if rules exist
+		Test ITunesXmlFile when not xml file
+		Test ITunesXmlFile when existing file
+		Test ITunesXmlFile when not existing file
+		Tests for Update, copy all from above
+		Tests for Update, no change
+		Tests for Update, change album, change artist, change title
+		Instance tests for AlbumRemoveCd, AlbumRemoveDisc, 
+		Return same value if not different in RegexRemove
+		Catch exceptions in RegexRemove
+		Add bad values test for RegexRemove
+		Add no change test for AlbumRemoveCd
+		Add tests for AlbumReplaceCurlyBraces
+		Add tests for AlbumRemoveDisc
+		exception	{"Data at the root level is invalid. Line 1, position 1."}	System.Exception {System.Xml.XmlException}	MusicUtility\\ITunesXmlFile.cs:line 41
+		MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
+		error NETSDK1095: Optimizing assemblies for performance is not supported for the selected target platform or architecture. Please verify you are using a supported runtime identifier, or set the PublishReadyToRun property to false. VersionUpdate\VersionUpdate.csproj]
+		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. MusicUtility\MusicUtility.csproj
+		C:\Program Files\dotnet\sdk\5.0.101\Sdks\Microsoft.NET.Sdk\targets\Microsoft.PackageDependencyResolution.targets(241,5): error NETSDK1004: Assets file 'MusicUtility\obj\project.assets.json' not found. Run a NuGet package restore to generate this file. MusicUtility\MusicUtility.csproj
+		FileNotFoundException : Could not load file or assembly 'netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51' or one of its dependencies. The system cannot find the file specified.
+		MusicLibraryManager\SourceCode\MusicClean\MusicClean.csproj(21,2): error MSB4019: The imported project "C:\Program Files\dotnet\sdk\5.0.101\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" was not found. Confirm that the expression in the Import declaration "C:\Program Files\dotnet\sdk\5.0.101\\Microsoft\VisualStudio\v16.0\TextTemplating\Microsoft.TextTemplating.targets" is correct, and that the file exists on disk.
+		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [MusicUtility\MusicUtility.csproj]
+		Project '..\MusicUtility\MusicUtility.csproj' targets 'net5.0-windows'. It cannot be referenced by a project that targets '.NETCoreApp,Version=v5.0'.	MusicClean
+		NUnit.Engine.NUnitEngineException : An exception occurred in the driver while loading tests.  ----> System.IO.FileNotFoundException : Could not load file or assembly 'MusicUtility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203	
+		https://github.com/jamesjohnmcguire/MusicLibraryManager/security/dependabot/SourceCode/MusicClean/packages.config/log4net/open
+		Add build command, complete with running unit tests
+		SourceCode\DevelopmentTools\Commands\build.cmd Fails	References SourceCode\.build directory which doesn't exist
+		Stop hyper version updating
+		MSB3030: Could  not copy the file "NUnitTestDebugger\app.config" because it was not found.
+		MSB6004: The specified task executable location "MusicLibraryManager\SourceCode\packages\NUnit.ConsoleRunner.\tools\nunit3-console.exe" is invalid.
+		Remove sample projects
+		mvhd box not found.	TagLib.CorruptFileException}
+		iTunesLib.IITLibraryPlaylist.AddFile	Value does not fall within the expected range.
+		Property set method not found.
+		Formatting.Indented
+		Frame data incomplete.	TagLib.CorruptFileException
+		Error getting value from 'ReadTimeout' on 'System.IO.FileStream'.
+		extract tags into xml files, for backup purposes
+		System.UnauthorizedAccessException	Access to the path 'C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Automatically Add to iTunes' is denied.
+		FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
+		System.Reflection.TargetException	Object does not match target type.
+		Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to the following error: 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)).
+		Exception from HRESULT: 0xA0040203
+		Remove track number from file names
+		Remove [MFSL UDCD 675] type of junk from file names
+		extra directories	Music\\Flac\\Burt Bacharach\\20th Century Masters The Millennium Collection The Best Of Burt Bacharach"
+		(Disc 2)
+		logging
+		add code analysis
+		make	public class Tags	Disposable
+		unit tests
+		review code files
+		directory depth
+		title case
+		Music\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps\\Idina Menzel - Let It Go (Frozen OST) Single 320 kbps.mp3
+		deal with ' - ' split rules
+		remove dead tracks
+		InnerException	{"Timeouts are not supported on this stream."}	System.Exception {System.InvalidOperationException}
+		Newtonsoft.Json.JsonSerializationException Timeouts are not supported on this stream.
+		https://stackoverflow.com/questions/30331027/newtonsoft-json-net-how-to-serialize-content-of-a-stream
+		"Frame data incomplete."	TagLib.CorruptFileException
+		https://github.com/mono/taglib-sharp/issues/192
+		error MSB4019: The imported project MusicLibraryManager\SourceCode\.build\MSBuild.Community.Tasks.Targets" was not found. Confirm that the expression in the Import declaration\SourceCode\.build\MSBuild.Community.Tasks.Targets" is correct, and that the file exists on disk.
+		error MSB4126: The specified solution configuration "Release|x64" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration.
+		Warning	NU1702	ProjectReference SourceCode\MusicUtility\MusicUtility.csproj was resolved using '.NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v5.0'. This project may not be fully compatible with your project.	MusicUtilitiesTests
+		error NETSDK1047: Assets file 'MusicClean\obj\project.assets.json' doesn't have a target for 'net48/win7-x86'. Ensure that restore has run and that you have included 'net48' in the TargetFrameworks for your project. You may also need to include 'win7-x86' in your project's RuntimeIdentifiers. MusicClean\MusicClean.csproj]
+		error NETSDK1047: Assets file  doesn't have a target for 'net48/win7-x86'. Ensure that restore has run and that you have included 'net48' in the TargetFrameworks for your project.
+		NUNIT3 : error : no inputs specified MusicLibraryManager\SourceCode\DevelopmentTools\Commands\MusicLibrary.msbuild.xml
+		System.Runtime.InteropServices.COMException : Retrieving the COM class factory for component with CLSID {DC0C2640-1415-4644-875C-6F4D769839BA} failed due to t he following error : 80080005 Server execution failed (Exception from HRESULT: 0x80080005 (CO_E_SERVER_EXEC_FAILURE)). SourceCode\DevelopmentTools\Commands\MusicLibrary.msbuild.xml
+		Invalid : MusicUtility\MusicUtilityTests\Bin\x86\Release\netcoreapp2.2\MusicUtility.Tests.dll  File not found: SourceCode\MusicUtility\MusicUtilityTests\Bin\x86\Release\netcoreapp2.2\MusicUtility.Tests.dll
+		Invalid : C:\Microsoft\Xamarin\NuGet\nunit\3.12.0\lib\netstandard2.0\nunit.framework.dll .NETStandard test assemblies are not supported by this version of the engine
+		Invalid : MusicUtility\MusicUtilityTests\Bin\x86\Release\MusicUtility.Tests.dll File not found: SourceCode\MusicUtility\MusicUtilityTests\Bin\x86\Release\MusicUtility.Tests.dll
+		Invalid : C:\Microsoft\Xamarin\NuGet\nunit\3.12.0\lib\netstandard2.0\nunit.framework.dll .NETStandard test assemblies are not supported by this version of the engine
+		Invalid : MusicLibraryManager\SourceCode\Bin\x86\Release\MusicUtility.Tests.dll File not found: MusicLibraryManager\SourceCode\Bin\x86\Release\MusicUtility.Tests.dll
+		error :  MusicLibraryManager\SourceCode\DevelopmentTools\Commands\MusicLibrary.msbuild.xml NUnit.Engine.NUnitEngineException : The NUnit 3 driver encountered an error while executing reflected code.	System.InvalidCastException : Unable to cast transparent proxy to type 'System.Web.UI.ICallbackEventHandler'
+		Inner Exception 1: ConfigurationException: Failed obtaining configuration for Common.Logging from configuration section 'common/logging'.
+		Inner Exception 2: FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
+		Warning	NU1702	ProjectReference MusicUtility\MusicUtility.csproj was resolved using '.NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v5.0'. This project may not be fully compatible with your project.	MusicClean	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	1662
+		NU1702 ProjectReference csproj was resolved using '.NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v5.0'. This project may not be fully compatible with your project.	MusicClean	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	1662

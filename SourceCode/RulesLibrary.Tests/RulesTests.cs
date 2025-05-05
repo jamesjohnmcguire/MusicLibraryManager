@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="RulesTests.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +18,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 	/// Rules tests class.
 	/// </summary>
 	[TestFixture]
-	public class RulesTests
+	internal sealed class RulesTests
 	{
 		private string rulesFileContent;
 		private PocoItem tags;

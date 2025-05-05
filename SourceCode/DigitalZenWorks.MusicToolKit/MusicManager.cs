@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="MusicManager.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -29,6 +29,17 @@ namespace DigitalZenWorks.MusicToolKit
 			MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string libraryTagsOnlyDirectoryLocation;
+
+		// Total Possible List
+		// "3GP", "8SVX", "AA", "AAC", "AAX", "ACT", "AIFF", "ALAC", "AMR",
+		// "APE", "AU", "AWB", "CDA", "DSS", "DVF", "FLAC", "GSM", "IKLAX",
+		// "IVS", "M4A", "M4B", "M4P", "MMF", "MOGG", "MOVPKG", "MP3", "MPC",
+		// "MSV", "NMF", "OGA", "OGG", "OPUS", "RA", "RAW", "RF64", "RM",
+		// "SLN", "TTA", "VOC", "VOX", "WAV", "WEBM", "WMA", "WV"
+		private readonly string[] audioFileExtensions =
+		[
+			".AIFC", ".ALAC", ".FLAC", ".M4A", ".MP3", ".WAV", "WEBM", ".WMA"
+		];
 
 		private ITunesManager iTunesManager;
 		private string libraryLocation;
@@ -201,60 +212,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Normalize path.
-		/// </summary>
-		/// <param name="filePath">The file path to check.</param>
-		/// <returns>The normalized path.</returns>
-		public static string NormalizePath(string filePath)
-		{
-			if (!string.IsNullOrWhiteSpace(filePath))
-			{
-				string basePath = Paths.GetBasePathFromFilePath(filePath);
-				string artist = Paths.GetArtistFromPath(filePath);
-				string album = Paths.GetAlbumFromPath(filePath);
-				string title = Paths.GetTitleFromPath(filePath);
-
-				if (File.Exists(filePath))
-				{
-					using MediaFileTags tags = new (filePath);
-
-					if (!string.IsNullOrWhiteSpace(tags.Artist))
-					{
-						artist = tags.Artist;
-					}
-
-					if (!string.IsNullOrWhiteSpace(tags.Album))
-					{
-						album = tags.Album;
-					}
-
-					if (!string.IsNullOrWhiteSpace(tags.Title))
-					{
-						title = tags.Title;
-					}
-				}
-
-				artist = ArtistRules.CleanArtistFilePath(artist, album, null);
-				album = AlbumRules.CleanAlbumFilePath(album, artist);
-				title = TitleRules.ApplyTitleFileRules(title, artist);
-
-				string extension = Path.GetExtension(filePath);
-
-				filePath = string.Format(
-					CultureInfo.InvariantCulture,
-					@"{1}{0}{2}{0}{3}{0}{4}{5}",
-					Path.DirectorySeparatorChar,
-					basePath,
-					artist,
-					album,
-					title,
-					extension);
-			}
-
-			return filePath;
-		}
-
-		/// <summary>
 		/// Recollect duplicates.
 		/// </summary>
 		/// <param name="libraryPath">The library path.</param>
@@ -287,98 +244,6 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
-		/// Update files.
-		/// </summary>
-		/// <remarks>When adjusting the case in the file name parts, always
-		/// need to be aware and compensate for, that Windows will treat file
-		/// names with differnt cases as the same.</remarks>
-		/// <param name="filePath">The file path to update.</param>
-		/// <returns>The updated file path.</returns>
-		public static string UpdateFile(string filePath)
-		{
-			if (!string.IsNullOrWhiteSpace(filePath))
-			{
-				string normalizedfilePath = NormalizePath(filePath);
-
-				// File path has changed
-				if (!normalizedfilePath.Equals(
-					filePath, StringComparison.Ordinal))
-				{
-					// If no file existing with that name, just move it
-					if (!System.IO.File.Exists(normalizedfilePath))
-					{
-						string directory =
-							Path.GetDirectoryName(normalizedfilePath);
-						Directory.CreateDirectory(directory);
-
-						System.IO.File.Move(filePath, normalizedfilePath);
-					}
-					else
-					{
-						string existingFile = normalizedfilePath;
-
-						// There is already a file there with that name...
-						if (existingFile.Equals(
-							filePath, StringComparison.OrdinalIgnoreCase))
-						{
-							// Windows special case - The file names differ
-							// only by case, so need to compensate.  Simply
-							// saving with the new name won't work - Windows
-							// will just ignore the case change and keep the
-							// original name.
-							string temporaryFilePath = existingFile + ".tmp";
-							File.Move(filePath, temporaryFilePath);
-							File.Move(temporaryFilePath, existingFile);
-						}
-						else
-						{
-							bool areExactDuplicates =
-								FileUtils.AreFilesTheSame(
-									existingFile, filePath);
-
-							if (areExactDuplicates == true)
-							{
-								File.Delete(filePath);
-							}
-							else
-							{
-								// move into duplicates
-								normalizedfilePath =
-									GetDuplicateLocation(existingFile);
-								File.Move(filePath, normalizedfilePath);
-							}
-						}
-					}
-
-					filePath = normalizedfilePath;
-				}
-			}
-
-			return filePath;
-		}
-
-		/// <summary>
-		/// Update files.
-		/// </summary>
-		/// <remarks>When adjusting the case in the file name parts, always
-		/// need to be aware and compensate for, that Windows will treat file
-		/// names with differnt cases as the same.</remarks>
-		/// <param name="file">The file to update.</param>
-		/// <returns>The updated file.</returns>
-		[Obsolete("UpdateFile(FileInfo) is deprecated, " +
-			"please use UpdateFile(string) instead.")]
-		public static FileInfo UpdateFile(FileInfo file)
-		{
-			if (file != null)
-			{
-				string updatedFilePath = UpdateFile(file.FullName);
-				file = new (updatedFilePath);
-			}
-
-			return file;
-		}
-
-		/// <summary>
 		/// Clean music library method.
 		/// </summary>
 		/// <returns>A value indicating success or not.</returns>
@@ -406,6 +271,94 @@ namespace DigitalZenWorks.MusicToolKit
 		}
 
 		/// <summary>
+		/// Normalize path.
+		/// </summary>
+		/// <param name="filePath">The file path to check.</param>
+		/// <param name="useDefaultLibraryPath">Indicates whether to use the
+		/// default media library path or not.</param>
+		/// <param name="useTags">Indicates whether use the file tags in
+		/// determining the file location.</param>
+		/// <returns>The normalized path.</returns>
+		public string NormalizePath(
+			string filePath,
+			bool useDefaultLibraryPath = true,
+			bool useTags = true)
+		{
+			if (!string.IsNullOrWhiteSpace(filePath))
+			{
+				string musicPath =
+					LibraryLocation + Path.DirectorySeparatorChar + "Music";
+
+				string basePath = Paths.GetBasePathFromFilePath(filePath);
+
+				bool isStandard = IsStandardLibraryDirectory(filePath);
+
+				bool pathPartsCheck =
+					ArePathPartsIncluded(musicPath, filePath);
+
+				if ((useDefaultLibraryPath == true && isStandard == false) ||
+					pathPartsCheck == false)
+				{
+					basePath = musicPath;
+				}
+
+				string artist =
+					GetArtistPathSegment(musicPath, filePath, null, null);
+				string album =
+					GetAlbumPathSegment(musicPath, filePath, artist, null);
+				string title =
+					GetTitlePathSegment(musicPath, filePath, artist, null);
+
+				if (useTags == true)
+				{
+					try
+					{
+						using MediaFileTags tags = new (filePath);
+
+						artist = GetArtistPathSegment(
+							musicPath, filePath, null, tags);
+						album = GetAlbumPathSegment(
+							musicPath, filePath, artist, tags);
+						title = GetTitlePathSegment(
+							musicPath, filePath, artist, tags);
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
+				}
+
+				int depth = Paths.GetDirectoryCount(filePath);
+				int libraryPathDepth = Paths.GetDirectoryCount(basePath);
+				depth -= libraryPathDepth;
+
+				if (depth == 2)
+				{
+					// Missing album segment.
+					Log.Warn("Missing Album Information: " + filePath);
+					album = "Album Information Unavailable";
+					artist = Paths.GetPartFromPath(basePath, filePath, 2);
+				}
+
+				string extension = Path.GetExtension(filePath);
+
+				filePath = string.Format(
+					CultureInfo.InvariantCulture,
+					@"{1}{0}{2}{0}{3}{0}{4}{5}",
+					Path.DirectorySeparatorChar,
+					basePath,
+					artist,
+					album,
+					title,
+					extension);
+			}
+
+			return filePath;
+		}
+
+		/// <summary>
 		/// Save tags to json file method.
 		/// </summary>
 		/// <param name="sourceFile">The source file.</param>
@@ -425,20 +378,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 					SortedDictionary<string, object> tagSet = tags.GetTags();
 
-					JsonSerializerSettings jsonSettings = new ();
-					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-					jsonSettings.ContractResolver =
-						new OrderedContractResolver();
+					string jsonText = ConvertTagsToJsonText(tagSet);
 
-					string json = JsonConvert.SerializeObject(
-						tagSet, Formatting.Indented, jsonSettings);
-
-					if (!string.IsNullOrWhiteSpace(json))
+					if (!string.IsNullOrWhiteSpace(jsonText))
 					{
 						destinationFile =
 							destinationPath + "\\" + sourceFile.Name + ".json";
 
-						System.IO.File.WriteAllText(destinationFile, json);
+						System.IO.File.WriteAllText(destinationFile, jsonText);
 					}
 
 					Log.Info("Tags Saved to: " + destinationFile);
@@ -454,6 +401,111 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 
 			return destinationFile;
+		}
+
+		/// <summary>
+		/// Update files.
+		/// </summary>
+		/// <remarks>When adjusting the case in the file name parts, always
+		/// need to be aware and compensate for, that Windows will treat file
+		/// names with differnt cases as the same.</remarks>
+		/// <param name="filePath">The file path to update.</param>
+		/// <param name="useDefaultLibraryPath">Indicates whether to use the
+		/// default media library path or not.</param>
+		/// <returns>The updated file path.</returns>
+		public string UpdateFile(
+			string filePath, bool useDefaultLibraryPath = true)
+		{
+			if (!string.IsNullOrWhiteSpace(filePath))
+			{
+				string normalizedfilePath =
+					NormalizePath(filePath, useDefaultLibraryPath);
+
+				// File path has changed
+				if (!normalizedfilePath.Equals(
+					filePath, StringComparison.Ordinal))
+				{
+					// If no file existing with that name, just move it
+					if (!System.IO.File.Exists(normalizedfilePath))
+					{
+						string directory =
+							Path.GetDirectoryName(normalizedfilePath);
+						Log.Info("Creating Directory: " + directory);
+						Directory.CreateDirectory(directory);
+
+						Log.Info("Moving File: " + normalizedfilePath);
+						System.IO.File.Move(filePath, normalizedfilePath);
+					}
+					else
+					{
+						string existingFile = normalizedfilePath;
+
+						// There is already a file there with that name...
+						if (existingFile.Equals(
+							filePath, StringComparison.OrdinalIgnoreCase))
+						{
+							// Windows special case - The file names differ
+							// only by case, so need to compensate.  Simply
+							// saving with the new name won't work - Windows
+							// will just ignore the case change and keep the
+							// original name.
+							Log.Info("Renaming to Title Case: " +
+								existingFile + " from: " + filePath);
+							string temporaryFilePath = existingFile + ".tmp";
+							File.Move(filePath, temporaryFilePath);
+							File.Move(temporaryFilePath, existingFile);
+						}
+						else
+						{
+							bool areExactDuplicates =
+								FileUtils.AreFilesTheSame(
+									existingFile, filePath);
+
+							if (areExactDuplicates == true)
+							{
+								Log.Info(
+									"Deleting Exact Duplicate: " + filePath);
+								File.Delete(filePath);
+							}
+							else
+							{
+								// move into duplicates
+								Log.Info(
+									"Moving duplicate file: " +
+									normalizedfilePath);
+								normalizedfilePath =
+									GetDuplicateLocation(existingFile);
+								File.Move(filePath, normalizedfilePath);
+							}
+						}
+					}
+
+					filePath = normalizedfilePath;
+				}
+			}
+
+			return filePath;
+		}
+
+		/// <summary>
+		/// Update files.
+		/// </summary>
+		/// <remarks>When adjusting the case in the file name parts, always
+		/// need to be aware and compensate for, that Windows will treat file
+		/// names with differnt cases as the same.</remarks>
+		/// <param name="file">The file to update.</param>
+		/// <returns>The updated file.</returns>
+		[Obsolete("UpdateFile(FileInfo) is deprecated, " +
+			"please use UpdateFile(string) instead.")]
+		public FileInfo UpdateFile(FileInfo file)
+		{
+			if (file != null)
+			{
+				string updatedFilePath = UpdateFile(file.FullName);
+				file = new (updatedFilePath);
+			}
+
+			return file;
 		}
 
 		/// <summary>
@@ -482,11 +534,6 @@ namespace DigitalZenWorks.MusicToolKit
 					".url", ".xls", ".zip"
 				];
 
-				string[] includes =
-				[
-					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				];
-
 				if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
 				{
 					Directory.CreateDirectory(tagsOnlyPath);
@@ -497,7 +544,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					foreach (FileInfo file in files)
 					{
-						if (includes.Contains(
+						if (audioFileExtensions.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
 							SaveTagsToJsonFile(file, tagsOnlyPath);
@@ -560,6 +607,48 @@ namespace DigitalZenWorks.MusicToolKit
 			}
 		}
 
+		private static bool ArePathPartsIncluded(
+			string libraryPath, string filePath)
+		{
+			bool included = false;
+
+			string artist = Paths.GetPartFromPath(libraryPath, filePath, 3);
+			string album = Paths.GetPartFromPath(libraryPath, filePath, 2);
+
+			if (!string.IsNullOrWhiteSpace(artist) &&
+				!string.IsNullOrWhiteSpace(album))
+			{
+				included = true;
+			}
+
+			return included;
+		}
+
+		private static string ConvertTagsToJsonText(
+			SortedDictionary<string, object> tagSet)
+		{
+			string jsonText = null;
+
+			try
+			{
+				JsonSerializerSettings jsonSettings = new ();
+				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+				jsonSettings.ContractResolver =
+					new OrderedContractResolver();
+
+				jsonText = JsonConvert.SerializeObject(
+					tagSet, Formatting.Indented, jsonSettings);
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is JsonException)
+			{
+				Log.Error(exception.ToString());
+			}
+
+			return jsonText;
+		}
+
 		private static bool DeleteEmptyDirectory(string path)
 		{
 			bool deleted = false;
@@ -580,6 +669,59 @@ namespace DigitalZenWorks.MusicToolKit
 			return deleted;
 		}
 
+		private static string GetAlbumPathSegment(
+			string musicPath,
+			string filePath,
+			string artist,
+			MediaFileTags tags)
+		{
+			string album = Paths.GetAlbumFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Album))
+				{
+					album = tags.Album;
+				}
+			}
+
+			string pathSegment = AlbumRules.CleanAlbumFilePath(album, artist);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Album Information Unavailable";
+			}
+
+			return pathSegment;
+		}
+
+		private static string GetArtistPathSegment(
+			string musicPath,
+			string filePath,
+			string album,
+			MediaFileTags tags)
+		{
+			string artist = Paths.GetArtistFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Artist))
+				{
+					artist = tags.Artist;
+				}
+			}
+
+			string pathSegment = ArtistRules.CleanArtistFilePath(
+				artist, album, null);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Unknown Artist";
+			}
+
+			return pathSegment;
+		}
+
 		private static string GetDuplicateLocationByNumber(
 			string path, int number)
 		{
@@ -595,6 +737,32 @@ namespace DigitalZenWorks.MusicToolKit
 			return locationPath;
 		}
 
+		private static string GetTitlePathSegment(
+			string musicPath,
+			string filePath,
+			string artist,
+			MediaFileTags tags)
+		{
+			string title = Paths.GetTitleFromPath(musicPath, filePath);
+
+			if (tags != null)
+			{
+				if (!string.IsNullOrWhiteSpace(tags.Title))
+				{
+					title = tags.Title;
+				}
+			}
+
+			string pathSegment = TitleRules.ApplyTitleFileRules(title, artist);
+
+			if (string.IsNullOrWhiteSpace(pathSegment))
+			{
+				pathSegment = "Title Information Unavailable";
+			}
+
+			return pathSegment;
+		}
+
 		private void CleanFile(FileInfo file)
 		{
 			try
@@ -605,8 +773,17 @@ namespace DigitalZenWorks.MusicToolKit
 				if (UpdateTags == true)
 				{
 					// get and update tags
-					using MediaFileTags tags = new (file.FullName, rules);
-					tags.Clean();
+					try
+					{
+						using MediaFileTags tags = new (file.FullName, rules);
+						tags.Clean();
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
 				}
 
 				// update directory and file names
@@ -642,16 +819,9 @@ namespace DigitalZenWorks.MusicToolKit
 		{
 			try
 			{
-				string[] includes =
-				[
-					".AIFC", ".FLAC", ".M4A", ".MP3", ".WAV", ".WMA"
-				];
-
 				bool exists = Directory.Exists(path);
 
-				bool isStandard = IsStandardLibraryDirectory(path);
-
-				if (exists == true && isStandard == true)
+				if (exists == true)
 				{
 					DirectoryInfo directory = new (path);
 
@@ -659,7 +829,7 @@ namespace DigitalZenWorks.MusicToolKit
 
 					foreach (FileInfo file in files)
 					{
-						if (includes.Contains(
+						if (audioFileExtensions.Contains(
 							file.Extension.ToUpperInvariant()))
 						{
 							CleanFile(file);

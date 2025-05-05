@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="MediaFileTagTests.cs" company="Digital Zen Works">
-// Copyright © 2019 - 2024 Digital Zen Works. All Rights Reserved.
+// Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +17,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 	/// Media file tag tests class.
 	/// </summary>
 	[TestFixture]
-	public class MediaFileTagTests : BaseTestsSupport
+	internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		private Rules rules;
 
@@ -31,28 +31,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", TestFile);
 
 			rules = MusicManager.GetDefaultRules();
-		}
-
-		/// <summary>
-		/// Get tags check test.
-		/// </summary>
-		[Test]
-		public void GetTagsCheck()
-		{
-			using MediaFileTags tags = new (TestFile, rules);
-
-			string original =
-				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
-			tags.Album = original;
-
-			tags.Artist = "The Solos";
-			tags.Update();
-
-			SortedDictionary<string, object> tagSet = tags.GetTags();
-
-			Assert.That(tags, Is.Not.Null);
-			Assert.That(tags.TagFile, Is.Not.Null);
-			Assert.That(tagSet, Is.Not.Null);
 		}
 
 		/// <summary>
@@ -74,6 +52,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -94,6 +73,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
@@ -118,6 +98,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -140,9 +121,35 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			Assert.That(album, Is.EqualTo(original));
+		}
+
+		/// <summary>
+		/// Get tags check test.
+		/// </summary>
+		[Test]
+		public void GetTagsCheck()
+		{
+			using MediaFileTags tags = new (TestFile, rules);
+
+			string original =
+				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
+			tags.Album = original;
+
+			tags.Artist = "The Solos";
+			tags.Update();
+
+			SortedDictionary<string, object> tagSet = tags.GetTags();
+
+			using (Assert.EnterMultipleScope())
+			{
+				Assert.That(tags, Is.Not.Null);
+				Assert.That(tags.TagFile, Is.Not.Null);
+				Assert.That(tagSet, Is.Not.Null);
+			}
 		}
 
 		/// <summary>
@@ -156,10 +163,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -179,10 +187,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -209,6 +218,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -233,6 +243,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -257,6 +268,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album [In Heaven]";
@@ -281,6 +293,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album [In Heaven]";
@@ -305,6 +318,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -329,6 +343,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -353,6 +368,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -377,6 +393,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			File.Delete(newFileName);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			string expected = "Album";
@@ -393,10 +410,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string artist = tags.Artist;
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -415,10 +433,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string artist = tags.Artist;
+			Assert.That(artist, Is.Not.Null);
 			Assert.That(artist, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -443,6 +462,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -467,6 +487,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.True);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -494,6 +515,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -521,6 +543,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 			Assert.That(result, Is.False);
 
 			string album = tags.Album;
+			Assert.That(album, Is.Not.Null);
 			Assert.That(album, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -539,10 +562,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string title = tags.Title;
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			File.Delete(newFileName);
@@ -561,10 +585,11 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 				MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 			using MediaFileTags tags = new (newFileName, rules);
 
-			bool result = tags.Clean();
-			Assert.That(result, Is.False);
+			bool result = tags.Clean(true);
+			Assert.That(result, Is.True);
 
 			string title = tags.Title;
+			Assert.That(title, Is.Not.Null);
 			Assert.That(title, Is.Not.Empty);
 
 			File.Delete(newFileName);
