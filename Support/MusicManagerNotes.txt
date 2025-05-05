@@ -1316,3 +1316,7 @@ Script
 	)
 
 	convert_flac_to_alac.bat input.flac output.m4a
+DLL Loading Includes
+	Options
+		<None Include="..\Bin\Debug\x64\AudioSignature.dll">
+		<None Update="..\..\Bin\Debug\x64\AudioSignature.dll">
