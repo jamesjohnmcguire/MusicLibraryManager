@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<AnalysisMode>All</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.RulesLibrary.Tests</AssemblyName>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
@@ -38,8 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<CodeAnalysisDictionary Include="../CodeAnalysis.ruleset" />
-		<None Include="../.editorconfig" Link="../.editorconfig" />
 		<AdditionalFiles Include="stylecop.json" />
 		<EmbeddedResource Include="TestRules.json" />
 	</ItemGroup>

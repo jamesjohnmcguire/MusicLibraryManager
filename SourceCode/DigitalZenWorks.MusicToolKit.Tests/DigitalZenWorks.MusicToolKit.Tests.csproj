@@ -4,7 +4,6 @@
 		<AnalysisMode>All</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyName>DigitalZenWorks.MusicToolKit.Tests</AssemblyName>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
@@ -67,8 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<CodeAnalysisDictionary Include="../CodeAnalysis.ruleset" />
-		<None Include="../.editorconfig" Link="../.editorconfig" />
 		<AdditionalFiles Include="stylecop.json" />
 		<EmbeddedResource Include="Sakura.mp4" />
 		<EmbeddedResource Include="XMLFile.xml" />

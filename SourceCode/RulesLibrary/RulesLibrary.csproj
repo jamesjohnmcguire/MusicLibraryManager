@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<AnalysisMode>All</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.Rules.RulesLibrary</AssemblyName>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>

@@ -7,7 +7,6 @@
 		<AssemblyVersion>0.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2019 - 2025</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
