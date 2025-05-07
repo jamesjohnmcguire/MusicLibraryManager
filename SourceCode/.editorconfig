@@ -11,3 +11,6 @@ dotnet_diagnostic.CA1819.severity = none
 
 # SA1010: Opening square brackets should be spaced correctly
 dotnet_diagnostic.SA1010.severity = none
+
+# SA1101: Prefix Local Calls With This
+dotnet_diagnostic.SA1101.severity = none
