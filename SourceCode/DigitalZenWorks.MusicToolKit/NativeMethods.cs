@@ -21,14 +21,13 @@ namespace DigitalZenWorks.MusicToolKit
 			BestFitMapping = false,
 			CallingConvention = CallingConvention.Cdecl,
 			CharSet = CharSet.Ansi,
-			EntryPoint = "GetAudioSignature",
-			ThrowOnUnmappableChar = true)]
+			EntryPoint = "GetAudioSignature")]
 		public static extern IntPtr GetAudioSignature(string filePath);
 
 		[DllImport(
 			"AudioSignature",
-			EntryPoint = "FreeAudioSignature",
-			CallingConvention = CallingConvention.Cdecl)]
+			CallingConvention = CallingConvention.Cdecl,
+			EntryPoint = "FreeAudioSignature")]
 		public static extern void FreeAudioSignature(IntPtr data);
 	}
 }
