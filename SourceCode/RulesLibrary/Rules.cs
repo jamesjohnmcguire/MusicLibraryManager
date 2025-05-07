@@ -5,8 +5,10 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
-[assembly: CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace DigitalZenWorks.RulesLibrary
 {
