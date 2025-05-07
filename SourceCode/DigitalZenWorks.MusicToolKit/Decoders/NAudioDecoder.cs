@@ -4,13 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit.Decoders
 {
 	using System;
 	using System.Buffers;
 	using System.IO;
-	using System.Reflection;
-	using global::Common.Logging;
 	using NAudio.Wave;
 
 	/// <summary>
@@ -18,9 +16,6 @@ namespace DigitalZenWorks.MusicToolKit
 	/// </summary>
 	public class NAudioDecoder : AudioDecoder
 	{
-		private static readonly ILog Log = LogManager.GetLogger(
-			MethodBase.GetCurrentMethod().DeclaringType);
-
 		private readonly string file;
 
 		/// <summary>

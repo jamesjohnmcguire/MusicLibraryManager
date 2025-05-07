@@ -42,7 +42,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 
 				IList<Command> commands = Commands.GetCommands();
 
-				CommandLineArguments commandLine = new (commands, arguments);
+				CommandLineInstance commandLine = new (commands, arguments);
 
 				if (commandLine.ValidArguments == false)
 				{

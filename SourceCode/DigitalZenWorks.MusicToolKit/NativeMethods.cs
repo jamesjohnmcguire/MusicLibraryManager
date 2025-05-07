@@ -36,7 +36,7 @@ namespace DigitalZenWorks.MusicToolKit
 		/// <summary>
 		/// Free audio signature.
 		/// </summary>
-		/// <param name="data"></param>
+		/// <param name="data">The data to free.</param>
 		[DllImport(
 			"AudioSignature",
 			CallingConvention = CallingConvention.Cdecl,

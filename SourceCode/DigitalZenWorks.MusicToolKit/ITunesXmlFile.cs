@@ -193,7 +193,7 @@ namespace DigitalZenWorks.MusicToolKit
 				if (url.StartsWith(
 					"file://localhost/", StringComparison.InvariantCulture))
 				{
-					url = url.Remove(0, 17);
+					url = url[17..];
 				}
 
 				Uri uri = new (url, UriKind.Absolute);
@@ -262,7 +262,7 @@ namespace DigitalZenWorks.MusicToolKit
 		private static void SetToHTMLDecode(
 			string key, ref Dictionary<string, object> thisDict)
 		{
-			if (thisDict.TryGetValue(key, out object? value))
+			if (thisDict.TryGetValue(key, out object value))
 			{
 				string decodedValue = value as string;
 				thisDict[key] = WebUtility.HtmlDecode(decodedValue);

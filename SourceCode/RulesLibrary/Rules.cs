@@ -35,7 +35,7 @@ namespace DigitalZenWorks.RulesLibrary
 		/// Gets the rule list.
 		/// </summary>
 		/// <value>The rule list.</value>
-		public IList<Rule> RulesList
+		public IList<Rule>? RulesList
 		{
 			get
 			{
@@ -48,13 +48,13 @@ namespace DigitalZenWorks.RulesLibrary
 		/// </summary>
 		/// <param name="name">The name of the rule to get.</param>
 		/// <returns>The rule with matching name.</returns>
-		public Rule? GetRuleByName(string name)
+		public Rule? GetRuleByName(string? name)
 		{
 			Rule? rule = null;
 
-			foreach (Rule checkRule in rules)
+			foreach (Rule? checkRule in rules!)
 			{
-				if (checkRule.Name.Equals(
+				if (checkRule.Name!.Equals(
 					name, StringComparison.OrdinalIgnoreCase))
 				{
 					rule = checkRule;

@@ -34,8 +34,14 @@ namespace DigitalZenWorks.RulesLibrary
 	/// </summary>
 	public class Rule
 	{
-		private static readonly ILog Log = LogManager.GetLogger(
-			MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly MethodBase? MethodBaseName =
+			MethodBase.GetCurrentMethod();
+
+		private static readonly Type? MethodBaseType =
+			MethodBaseName!.DeclaringType;
+
+		private static readonly ILog Log =
+			LogManager.GetLogger(MethodBaseType);
 
 		private ConditionalType conditionalType = ConditionalType.Literal;
 
@@ -196,7 +202,7 @@ namespace DigitalZenWorks.RulesLibrary
 				// the item being inspected
 				Type itemType = item.GetType();
 				PropertyInfo? propertyInfo =
-					itemType.GetProperty(baseElement);
+					itemType.GetProperty(baseElement!);
 
 				if (propertyInfo != null)
 				{
@@ -254,11 +260,11 @@ namespace DigitalZenWorks.RulesLibrary
 
 			try
 			{
-				if (Regex.IsMatch(content, pattern, RegexOptions.IgnoreCase))
+				if (Regex.IsMatch(content!, pattern!, RegexOptions.IgnoreCase))
 				{
 					output = Regex.Replace(
-						content,
-						pattern,
+						content!,
+						pattern!,
 						string.Empty,
 						RegexOptions.IgnoreCase);
 				}
@@ -289,13 +295,13 @@ namespace DigitalZenWorks.RulesLibrary
 			{
 				subject = @string;
 
-				string? find = (string)conditional;
+				string? find = (string?)conditional;
 
-				if (Regex.IsMatch(subject, find, RegexOptions.IgnoreCase))
+				if (Regex.IsMatch(subject, find!, RegexOptions.IgnoreCase))
 				{
 					subject = Regex.Replace(
 						subject,
-						find,
+						find!,
 						string.Empty,
 						RegexOptions.IgnoreCase);
 				}
@@ -325,7 +331,7 @@ namespace DigitalZenWorks.RulesLibrary
 				// the item being inspected
 				Type itemType = item.GetType();
 				PropertyInfo? propertyInfo =
-					itemType.GetProperty(baseElement);
+					itemType.GetProperty(baseElement!);
 
 				if (propertyInfo != null)
 				{
@@ -338,7 +344,7 @@ namespace DigitalZenWorks.RulesLibrary
 					}
 					else if (propertyValue is string[])
 					{
-						string? textValue = (string)newValue;
+						string? textValue = (string?)newValue;
 						string?[] newValueArray = [textValue];
 						propertyInfo.SetValue(item, newValueArray, null);
 						result = true;
@@ -382,7 +388,7 @@ namespace DigitalZenWorks.RulesLibrary
 					{
 						// need to get the value of the property
 						this.Replacement =
-							GetItemSubject(item, (string)this.Replacement);
+							GetItemSubject(item, (string?)this.Replacement);
 					}
 
 					result = SetItemSubject(item, subject, this.Replacement);
@@ -436,7 +442,7 @@ namespace DigitalZenWorks.RulesLibrary
 		public bool ConditionEqualsTest(object? itemSubject)
 		{
 			bool success = false;
-			string? testing = (string)Conditional;
+			string? testing = (string?)Conditional;
 
 			if (itemSubject is string subject)
 			{
@@ -509,7 +515,7 @@ namespace DigitalZenWorks.RulesLibrary
 				try
 				{
 					if (Regex.IsMatch(
-						content, Conditional, RegexOptions.IgnoreCase))
+						content, Conditional!, RegexOptions.IgnoreCase))
 					{
 						conditionMet = true;
 					}
@@ -557,7 +563,7 @@ namespace DigitalZenWorks.RulesLibrary
 			switch (Condition)
 			{
 				case Condition.ContainsRegex:
-					string? contentText = (string)content;
+					string? contentText = (string?)content;
 					conditionMet = ConditionRegexMatch(contentText);
 					break;
 				case Condition.Equals:
@@ -607,9 +613,9 @@ namespace DigitalZenWorks.RulesLibrary
 		{
 			object? currentItem = item;
 
-			string[] parts = subject.Split('.');
+			string?[] parts = subject!.Split('.');
 
-			string path = string.Empty;
+			string? path = string.Empty;
 
 			for (int index = 0; index < parts.Length; index++)
 			{
@@ -622,7 +628,7 @@ namespace DigitalZenWorks.RulesLibrary
 				{
 					path += '.' + parts[index];
 
-					Type? itemType = currentItem.GetType();
+					Type? itemType = currentItem!.GetType();
 					if (path.Equals(
 						itemType.FullName, StringComparison.Ordinal))
 					{
@@ -631,7 +637,7 @@ namespace DigitalZenWorks.RulesLibrary
 					else
 					{
 						PropertyInfo? propertyInfo =
-							itemType.GetProperty(parts[index]);
+							itemType.GetProperty(parts[index] !);
 
 						if (propertyInfo != null)
 						{
