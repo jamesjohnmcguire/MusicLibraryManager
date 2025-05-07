@@ -6,11 +6,13 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 [assembly: DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	[SuppressUnmanagedCodeSecurity]
 	internal static class NativeMethods
 	{
 		// Caller must free the returned pointer using FreeAudioSignature
