@@ -13,6 +13,7 @@ namespace DigitalZenWorks.MusicToolKit
 {
 	internal static class NativeMethods
 	{
+		// Caller must free the returned pointer using FreeAudioSignature
 		[DllImport(
 			"AudioSignature",
 			BestFitMapping = false,
