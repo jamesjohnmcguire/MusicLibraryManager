@@ -4,19 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Net;
+	using System.Reflection;
+	using System.Text;
+	using System.Xml;
+	using global::Common.Logging;
+
 	/// <summary>
 	/// iTunes xml file class.
 	/// </summary>
@@ -89,7 +89,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets the library XML path.
 		/// </summary>
 		/// <value>The library XML path.</value>
-		public string LibraryXMLPath { get { return libraryXMLPath; } }
+		public string LibraryXMLPath
+		{
+			get { return libraryXMLPath; }
+		}
 
 		/// <summary>
 		/// Load iTunes xml file.

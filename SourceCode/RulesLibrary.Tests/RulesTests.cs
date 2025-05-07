@@ -4,16 +4,16 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-[assembly: CLSCompliant(false)]
+[assembly: System.CLSCompliant(false)]
 
 namespace DigitalZenWorks.RulesLibrary.Tests
 {
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using DigitalZenWorks.Common.Utilities;
+	using NUnit.Framework;
+
 	/// <summary>
 	/// Rules tests class.
 	/// </summary>
@@ -71,7 +71,7 @@ namespace DigitalZenWorks.RulesLibrary.Tests
 		{
 			bool result = Directory.Exists(temporaryPath);
 
-			if (true == result)
+			if (result == true)
 			{
 				Directory.Delete(temporaryPath, true);
 			}

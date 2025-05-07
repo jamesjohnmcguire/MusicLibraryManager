@@ -30,6 +30,9 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets the channels property.
 		/// </summary>
 		/// <value>The channels property.</value>
-		public int Channels { get { return channels; } }
+		public int Channels
+		{
+			get { return channels; }
+		}
 	}
 }

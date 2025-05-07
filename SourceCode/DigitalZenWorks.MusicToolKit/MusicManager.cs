@@ -4,22 +4,22 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.RulesLibrary;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-
-[assembly: CLSCompliant(false)]
+[assembly: System.CLSCompliant(false)]
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.IO;
+	using System.Linq;
+	using System.Reflection;
+	using System.Text.RegularExpressions;
+	using DigitalZenWorks.Common.Utilities;
+	using DigitalZenWorks.RulesLibrary;
+	using global::Common.Logging;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Music manager class.
 	/// </summary>
@@ -163,7 +163,7 @@ namespace DigitalZenWorks.MusicToolKit
 				string[] pathParts =
 					path.Split(Path.DirectorySeparatorChar);
 
-				while (false == locationOk)
+				while (locationOk == false)
 				{
 					string newBasePath = GetDuplicateLocationByNumber(
 						path, tries);

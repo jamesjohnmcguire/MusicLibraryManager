@@ -4,11 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.CommandLine.Commands;
-using System.Collections.Generic;
-
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
+	using System.Collections.Generic;
+	using DigitalZenWorks.CommandLine.Commands;
+
 	internal static class Commands
 	{
 		public static IList<Command> GetCommands()

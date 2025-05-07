@@ -12,10 +12,19 @@ using System.Security;
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	/// <summary>
+	/// The native method class.
+	/// </summary>
 	[SuppressUnmanagedCodeSecurity]
 	internal static class NativeMethods
 	{
-		// Caller must free the returned pointer using FreeAudioSignature
+		/// <summary>
+		/// Get audio signature.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>The audio signature.</returns>
+		/// <remarks>Caller must free the returned pointer using
+		/// FreeAudioSignature.</remarks>
 		[DllImport(
 			"AudioSignature",
 			BestFitMapping = false,
@@ -24,6 +33,10 @@ namespace DigitalZenWorks.MusicToolKit
 			EntryPoint = "GetAudioSignature")]
 		public static extern IntPtr GetAudioSignature(string filePath);
 
+		/// <summary>
+		/// Free audio signature.
+		/// </summary>
+		/// <param name="data"></param>
 		[DllImport(
 			"AudioSignature",
 			CallingConvention = CallingConvention.Cdecl,

@@ -4,12 +4,12 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Linq;
+	using System.Text.RegularExpressions;
+
 	/// <summary>
 	/// Artist tag rules class.
 	/// </summary>

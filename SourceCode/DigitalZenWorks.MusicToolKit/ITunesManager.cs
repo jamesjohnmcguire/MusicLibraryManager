@@ -4,17 +4,17 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using iTunesLib;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Reflection;
+	using System.Runtime.InteropServices;
+	using global::Common.Logging;
+	using iTunesLib;
+
 	/// <summary>
 	/// Manages iTunes operations class.
 	/// </summary>
@@ -62,13 +62,19 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <value>A value indicating whether is iTunes enabled
 		/// or not.</value>
-		public bool IsItunesEnabled { get { return isItunesEnabled; } }
+		public bool IsItunesEnabled
+		{
+			get { return isItunesEnabled; }
+		}
 
 		/// <summary>
 		/// Gets the iTunes Application Com Reference.
 		/// </summary>
 		/// <value>The iTunes Application Com Reference.</value>
-		public iTunesApp ItunesCom { get { return iTunes; } }
+		public iTunesApp ItunesCom
+		{
+			get { return iTunes; }
+		}
 
 		/// <summary>
 		/// Gets the iTunes library location.
@@ -348,7 +354,7 @@ namespace DigitalZenWorks.MusicToolKit
 					// tracks is a list of potential matches
 					IITTrackCollection tracks = GetPossibleTracks(file.Name);
 
-					if (null == tracks)
+					if (tracks == null)
 					{
 						updated = AddFile(file.FullName);
 					}
@@ -565,7 +571,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				bool same = IsFileAndTrackSame(fileName, track);
 
-				if (true == same)
+				if (same == true)
 				{
 					matchingTrack = track;
 					break;

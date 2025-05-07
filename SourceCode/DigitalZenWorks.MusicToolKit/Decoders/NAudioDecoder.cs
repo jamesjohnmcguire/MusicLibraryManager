@@ -6,13 +6,12 @@
 
 namespace DigitalZenWorks.MusicToolKit
 {
-	using global::Common.Logging;
-	using NAudio.Wave;
 	using System;
 	using System.Buffers;
 	using System.IO;
 	using System.Reflection;
-	using System.Runtime.InteropServices;
+	using global::Common.Logging;
+	using NAudio.Wave;
 
 	/// <summary>
 	/// Decode using the NAudio library.

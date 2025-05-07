@@ -4,12 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Runtime.InteropServices;
+
 	/// <summary>
 	/// Represents an audio signature.
 	/// </summary>

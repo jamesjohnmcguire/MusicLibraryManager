@@ -4,10 +4,10 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+
 	/// <summary>
 	/// Abstract base class for audio decoders.
 	/// </summary>

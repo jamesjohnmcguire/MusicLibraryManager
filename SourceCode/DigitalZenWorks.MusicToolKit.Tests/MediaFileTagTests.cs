@@ -4,15 +4,15 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.RulesLibrary;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System.Collections.Generic;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System.Collections.Generic;
+	using System.IO;
+	using DigitalZenWorks.Common.Utilities;
+	using DigitalZenWorks.RulesLibrary;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Media file tag tests class.
 	/// </summary>

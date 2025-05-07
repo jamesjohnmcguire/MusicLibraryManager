@@ -4,12 +4,12 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System.IO;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Base test support class.
 	/// </summary>
@@ -52,7 +52,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			bool result = Directory.Exists(temporaryPath);
 
-			if (true == result)
+			if (result == true)
 			{
 				Directory.Delete(temporaryPath, true);
 			}

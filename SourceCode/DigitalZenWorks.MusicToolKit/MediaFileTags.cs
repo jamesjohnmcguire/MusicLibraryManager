@@ -4,16 +4,15 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using DigitalZenWorks.RulesLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Reflection;
+	using System.Resources;
+	using DigitalZenWorks.RulesLibrary;
+	using global::Common.Logging;
+
 	/// <summary>
 	/// Media file tags class.
 	/// </summary>

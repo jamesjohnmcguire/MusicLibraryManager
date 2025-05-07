@@ -4,19 +4,18 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.MusicToolKit.Decoders;
-using DigitalZenWorks.RulesLibrary;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-
-[assembly: CLSCompliant(false)]
+[assembly: System.CLSCompliant(false)]
 
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System;
+	using System.IO;
+	using DigitalZenWorks.Common.Utilities;
+	using DigitalZenWorks.MusicToolKit.Decoders;
+	using DigitalZenWorks.RulesLibrary;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Unit tests class.
 	/// </summary>

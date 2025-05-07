@@ -4,13 +4,13 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities.Extensions;
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Globalization;
+	using System.Text.RegularExpressions;
+	using DigitalZenWorks.Common.Utilities.Extensions;
+
 	/// <summary>
 	/// General rules class.
 	/// </summary>

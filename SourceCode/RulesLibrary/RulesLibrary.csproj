@@ -6,6 +6,7 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
+		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net9.0</TargetFramework>
 	</PropertyGroup>
