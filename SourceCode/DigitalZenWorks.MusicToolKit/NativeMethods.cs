@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace DigitalZenWorks.MusicToolKit
 {
-	internal class NativeMethods
+	internal static class NativeMethods
 	{
 		[DllImport(
 			"AudioSignature",
