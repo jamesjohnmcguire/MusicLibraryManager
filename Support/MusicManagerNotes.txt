@@ -1,4 +1,10 @@
 Music Library Manager
+	Account Information
+		Acoust Id Org
+				https://acoustid.org/my-applications
+				Music Manager	0.6.188	Version	API Key	LUvY8Y4al3
+				Other API Key	l0IosbOfl4
+				Other API Key	6kK8lA6rZAI&
 
 Design
 	Process
@@ -100,6 +106,59 @@ Notes
 	Repositories
 		github  https://github.com/jamesjohnmcguire/MusicLibraryManager.git (push)
 		origin  https://jamesjohnmcguire@bitbucket.org/jamesjohnmcguire/MusicLibraryManager.git (fetch)
+	FFMpeg
+		FFMpeg is used in a variety of situations and sub-projects, both as an external command line utility and a library.
+
+		Use FFMpeg from VcPkg
+		vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
+				find_package(FFMPEG REQUIRED)
+					target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
+					target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
+					target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
+	Audio Track / File Information & Tags
+		Audio Track Identifiers
+		Audio Track Fingerprints
+		Audio Track Signatures
+			ChromaPrint
+				Testing
+					fpcalc sakura.mp4
+					fpcalc -algorithm 1 -raw sakura.mp4
+				Building ChromaPrint
+					CD ChromaPrint
+					cmake -G "Visual Studio 17 2022" -A x64
+					CD src/cmd
+					cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="C:\util\VcPkg\scripts\buildsystems\vcpkg.cmake" -DCMAKE_MODULE_PATH="C:\util\VcPkg\installed\x64-windows\share\ffmpeg"
+				Resources
+					https://oxygene.sk/2011/01/how-does-chromaprint-work/
+					https://acoustid.org/chromaprint
+					https://github.com/acoustid/chromaprint
+					https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
+					https://community.chocolatey.org/packages/chromaprint
+					https://beets.readthedocs.io/en/v1.6.0/plugins/chroma.html
+					https://github.com/addictedcs/soundfingerprinting
+					https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
+					Alternates
+						https://github.com/wo80/AcoustID.NET
+						https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
+						https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
+						https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
+						https://github.com/protyposis/Aurio
+						http://aurio.protyposis.net/
+		Retrieving Information
+			Acoust Id API
+				https://acoustid.org/webservice
+
+				Format
+					https://api.acoustid.org/v2/lookup?client=pgM92j41UAg&
+						meta=recordings+releasegroups+compress&
+						duration=641&
+						fingerprint=
+				Curl Example
+					curl "https://api.acoustid.org/v2/lookup?client=LUvY8Y4al3&meta=recordings+releasegroups+compress&duration=365&fingerprint=AQADtIkmKZGUJEqSoDE-S8SXQzyP66iPo6lC9DGFayW0H4eZoz60pNpQi8FpChoZiYZ4duhP6GguoTKJyD2yRcmJXHrQ9zCPUlvE4AjVodGPN8Gr4ztKH-nDHAefC_hyhKRk6PGD_HGIZvzRcjiZ4vDzgw9xBuRLXAcnSRde9DB5tLGFF3GRbMzxH7UuvEFz1A3-IdnmIM2D48nx42ONhAil49tR64G_seiNNztu8PjxhDiPOzG-o9GEUJNy9IKWybFw3DtEzcE1zfiFnkJzvIf-9AiTpS-6THnwp0LtoykevA84n2hsdPZxnjieiShZw1UPXlNRS0pxCtp4OBwPv0X_40ftgPoQ6ki8PzhqHn40Bn6GEElfB210olFeXEcfjeBDvMxROcN3_MQT5cOnFGGOkoca__guNHUc4jt0JYfLHX-JR97gNMxR6kNLeJRGaBZThImTHH0uPN3wMcV3dEwOn0f14DneRziqB2FGevj8oBchONaRH1ePO_AP58KRR4KoWwh_VNZx4TTSnoPWI-8xnTmaijd-XMOPL3jGHBdzDaF1ClrE0BpyZjme9PiF6oZ_hBSFZ_Gg72jyVOgVdKweiHkK78h3vDv-5HjwF96DNttxnujQ6Cme6ciF_jhzfOhF46FwaoL2VjCPmnhKhGg6Xjieoz98Dg--F4ef48df_JFxhzysfineRwTuoycu4z-O8sZPVPnxD3OiKBZyoUcehOdxnqgWNArDHa-g6jjSJ6NwND74HM1y4TpelUJVHs2VyLiR47fwNEPzF0dFB09z6JSKK0vGIJeiHM1nHI6PTgsn4tLR_KiVEXkM9UGWBzPp42jv4P_QJrXQRDw-F-mDm8cThriJ8goeOLmOioN-5NzxB67w5Dh6HWESLxP0Hs-gKV1O_GiTHneKH5qVIw9zuJJE9MgJTRbCqClx5_hFHA2Pkjy-nMglI9kP_3A0o8WZC_mh0cOlHaGP_OhpiCgp5biCF30N0emNKz8RJmly_OizoDmPPwh76FJw-vARfkdOYw_OFXoR4m7RZTqeGRWdo3mOGzfyG08iBlqcyMJ5xONMXJuCw9MJhiGuZkJ3NDeeSzgZXMlxH9OeDHdQUg_y_EH_QDzC45_RMQyaJSh9NCeX4MiVBiJjIxZ1THkqsMQUjsF7XA_RGP1xv0ieH8_QxPSMP4V45qh-5FnooqISxch9iAjJYz_-B-Zy4egf-NOw6zDqxkT7wHWM8D70DGF4PIfzxNIQfoP8Bnnl4c9xDb3gSctRPUBOUcYXhjoe_MgH58okxPlxaOSF5x5uxviSXLgG56ygHReeJBpOMegnNM_xz3gOPReqJgs8koi1mgg3B86D_dCVYQ9yHT-eFpWPTUdlHg9y6Gi4LEb4Dv0j_HA39Ji7H_1TwT9O8WjEJrhx4sdFoJYW4hSRI-GP38PVNDgcHw-cGMcnDe6ROj_a6AgfFw1HnMF_PE1Rw0eVH89y3MRT5fh0VMcDK8yOUD4eNC5KKYtQEmom6vgyKA_uHIe_5IipHIcvvAafXfCFKwuOvfCH03Ca7Ag_HYk3VqgOP8F2EZ-EMzPcBz0PXkMfxJqgTZyHG6GP_HjhD5eEH__xyfhxIh_sCbksxN9InIIr4tGQ82hJnDS-D9qTovF0PDhU5XiO3EF_wbhy9PrxC7kNVXkaNM-FEPdxhkRx9M3xEj_uGLXiSUR5JO8RPviUH8yP9ziPPiccX8HV4yIu9AqukMgPxVFzRK6O5jOY51h7XHmOSzQePWiOHmcuIVeW4S1y7WoAH__xHdVFpI-hp0X64_zw3Cg-4ifanUbz3Phx4-hTmD8-XQXS40o6pJ7EoJSc40HOI8zDDNXjFT9C6oKYaTJemOpxGz3xCCV7NI_wo_Bk5GMMVzl6ok8Ww0GodBd0BuHTwd1D9DpaLjg8OFSIE-EP7UPeo2ty4cG7Dc8QUoKeHP1j5EdfNFUyfMfxE1PjEB5S54KuIH4OSjwqZcePSwnxKYGvI-aOt8UfNCdKObgiXBzuHMoR6rB7bJOYCe1QCc3zIH9GKGSOJ4iU8QHn5MOeozuu_LiiB7Wu4zma8_hxMTuuqHgrNF9R_bhzxNCvEnm44ySO5sdEtkTyHNmPvhMePFMe9ErxHMkQ5genKMzxHTt6ws8eWJ_QZ8a3Ik8yatBSMwpC3fiPUz-uJHFxJ8eN8Dl81CIuET0PMUe5Q5eY49nxHN5x5cOvoYmZQe_haWiP-ziNyYK3PNCk8DiHvEXjHtVx4iueIHLyQztyifhijDceNOpxBcfP48s8NGkY5ihzfEf4QFGe9chxPMPV4dFxRnFWHKdw_AgfxRESqjeOb7gY45dhDj-cUwivQaeOhh_6nDh_aFVzpMdzwpdRtalwHEWDZ8d1xBJ0Hn2Mx8d7_PhTdD3iLUdd_PhSfPCO48eROhAv5DqsFw8uwg6eIQ9EIU-U48dhHT_-wXvxHP1xTD-a68Ij_EfKQX-R7ylKHtt1-EmOysiTI9eNRlobvAf6PciTqwBmpBDGADGEACYxI4BBAwFDCACgCEWMMQQAZIQDgghhCBGBAMGUUoJpxRQAylgFgCVNGIeokAYBoYBAjhFjACDGAQAQE4oYIIQRwChCiDHAmSYEcAAoIKAQFgAggACKIKSEUIoSSQijjBAAJBMQACAEI8AJQxQBzCjlADICACKCAhYYwhRBxijnpECCAEeUZYggQIAABDBkFCCGGAKMIYgoQJgTSjACCDMGMOZAEIBAB6hDQgGKCEZAIYYIAUYAwQwhjggmAACAEAWkAMQY4QhAiDkAnAAEMQOoYBQAYAgQDAEElMGCOICAQA4hgqCjABlmhBSKIGMEoAISiBgjCAgIDDNAQieMEhIQoJABThoikAgCACEIFEAQ6QATihhjiACGAUABFEIQA0RCUBBAkEJCACCAEAgBAIzggiBCkGEICCQEdQQIIwABBhlCAEIEAEKAIgQyZRQiBgAEmDEEGAKZEMZJAoAgCBggAEYCAAGGAowwY4xxShnINFdEKcYAEAQIoAAoQgFgCDCIGmqNNcAqQoFAnAjGABGEUEqQIYYAQ4ExADEiCGKEMCEEA8oQIITggAnBBCCGCMKEYYQAwoQhyCDHGBOCAoSAAEYIAQBAkAEAhBPKCKIQAEYowYgAAhCFjAPEASIIAwARRIBiwigBFABGQIEEIgww5BAQQiCIyAKAEOIUkQgBIRgjiBggmCNQAGCUMVAMDKQiQgIGlEDKAAYsUUgZhwgBjDKEBJDAAIGMBMIAwogRhhkACCEGUAOUQ4goZJAQBgiCiAMIAYCEOMIojBQTijvAgAEGCSKAIcQAKgAwQggFCIMGEkUEM4IR5xSiygHEmBJAOMMUskQIAyhCCgClGlKCAIElEYoCBIQgQBDBBGIAKECgRYw5ZgRRRhADDBGKUEIcZMBYZRxiiEllKKAGAGaIUgRaIwRSRAhDDDGEEGCEUAQSYQw"
+			Resources
+				https://www.quora.com/How-do-music-identification-applications-like-Shazam-SoundHound-and-musiXmatch-acoustic-fingerprinting-work
+				https://meinantoyuriawan.medium.com/recreate-a-simple-shazam-apps-ddc0e91b3c49
+				https://www.toptal.com/algorithms/shazam-it-music-processing-fingerprinting-and-recognition
 	Manual Renaming
 		C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
 			FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
@@ -157,83 +216,8 @@ Notes
 				// Remove 2 or more dots from abulm part.
 				albumTag = Regex.Replace(albumTag, pattern, string.Empty);
 			}
-	ChromaPrint
-		Testing
-			FPCalc Test
-				Channels	1
-				Sample Rate	11025
-						g_max_duration	120.00000000000000	double
-					const size_t stream_limit = g_max_duration * reader.GetSampleRate();
-				chunk_limit	0
-				no overlap
-						frame_size	230	unsigned __int64	from Read
-
-				Read
-					if (stream_limit > 0) {
-						const auto remaining = stream_limit - stream_size;
-						if (frame_size > remaining) {
-							frame_size = remaining;
-							stream_done = true;
-						}
-					}
-					stream_size += frame_size;
-
-					if (frame_size == 0) {
-						if (stream_done) {
-							break;
-						} else {
-							continue;
-						}
-					}
-
-			copy ChromaPrint\src\Debug\chromaprint.dll Bin\Debug\AnyCPU
-
-			fpcalc sakura.mp4
-			fpcalc -algorithm 1 -raw sakura.mp4
-
-			Test Files
-				"C:\Users\JamesMc\Data\External\Entertainment\Music6\Bravos\Black Is Black\Black Is Black.m4a"
-				C:\Users\JamesMc\AppData\Roaming\DigitalZenWorks\MusicManager\sakura.mp4
-		Building ChromaPrint
-			CD ChromaPrint
-			cmake -G "Visual Studio 17 2022" -A x64
-			CD src/cmd
-			cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="C:\util\VcPkg\scripts\buildsystems\vcpkg.cmake" -DCMAKE_MODULE_PATH="C:\util\VcPkg\installed\x64-windows\share\ffmpeg"
-		FFMPeg
-			Building FFMpeg
-				cmake -DFFMPEG_ROOT=C:/Users/JamesMc/Data/Clients/DigitalZenWorks/MusicLibraryManager/SourceCode/Libraries/FFMpeg -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON .
-
-				vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
-			find_package(FFMPEG REQUIRED)
-				target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
-				target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
-				target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
-		Resources
-			Audio Identifiers
-			AcoustID fingerprints
-				https://oxygene.sk/2011/01/how-does-chromaprint-work/
-				https://www.quora.com/How-do-music-identification-applications-like-Shazam-SoundHound-and-musiXmatch-acoustic-fingerprinting-work
-				https://meinantoyuriawan.medium.com/recreate-a-simple-shazam-apps-ddc0e91b3c49
-				https://www.toptal.com/algorithms/shazam-it-music-processing-fingerprinting-and-recognition
-				ChromaPrint
-					https://acoustid.org/chromaprint
-					https://github.com/acoustid/chromaprint
-					https://essentia.upf.edu/tutorial_fingerprinting_chromaprint.html
-					https://community.chocolatey.org/packages/chromaprint
-					https://beets.readthedocs.io/en/v1.6.0/plugins/chroma.html
-					Alternates
-						https://github.com/wo80/AcoustID.NET
-						https://github.com/wo80/AcoustID.NET/blob/master/AcoustID/ChromaContext.cs
-						https://www.nuget.org/packages/AcoustID.NET#versions-body-tab
-						https://github.com/wo80/AcoustID.NET/wiki/NAudio-decoder
-						https://github.com/protyposis/Aurio
-						http://aurio.protyposis.net/
-				https://github.com/addictedcs/soundfingerprinting
-				https://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
 	File Reading
 		Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
-	Audio Signatures
-		Fingerprint from FingerPrinter: AQAAfFGiSAmTHVRyHg-FQ_yQH7WWHJ_m4NIx7nCSD2cR_Tp-8BC_F6-QJwSj8HDoFD2LHjk8KodWsiueHLNuaDoatUH08bj4BPQsKbiiY2d05IGOPD-8l3ieCueLBz7xC8mRG3ZyfFqD6xWO68iXB7qSNsgvNEcvZcdjzEye4NkX_HjzgJ-RT0G3PqCWHtexH-JNeHoVTAwrxMV3MMkT9ApyQj9y8mi6pUlQ57jw_PCTDHl-6MjyJ_CDP0W9gVEIh0T4hLgM_Ud-9LmCpsmDZ0e8Clo-hFfwnvivBHWOD2fQH_FRLg-YLMsFfcfRfEck73jy4_iNdhmadwzOhMeHM0cYOcmhHceZA0EQZdAJQZAAhCEgnMFEEEGEdAAhZRABhCCBGBvICIQAAIhRQKIBAAJJEDAGCCMFIcgAYxAxwCHDgEDCCIGEQAAQRRgAgBBMBGJCKCkEMUADQwAAgiCmlFAECVIEQsJAAgAQgiGHQRMA
 	Title Case
 		https://titlecaseconverter.com/rules/
 	iTunes Program Flow
@@ -316,9 +300,6 @@ Issues
 		"D:\\Users\\JamesMc\\Data\\External\\iTunes Media\\Music\\The Beatles\\White Album 1\\Why Don't We Do It In The Road.m4a"
 		"D:\\Users\\JamesMc\\Data\\External\\iTunes Media\\Music\\The Lovin' Spoonful\\Greatest Hits\\Did You Ever Have To Make Up Your Mind.m4a"
 		"D:\\Users\\JamesMc\\Data\\External\\iTunes Media\\Music2\\David Bowie\\Hunky Dory\\The Bewlay Brothers[].mp3"
-	Building FFMPeg
-		See logs for more information:	C:\Util\vcpkg\buildtrees\libsrt\install-x64-windows-dbg-out.log
-		Then check for known issues at:	https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+libsrt	You can submit a new issue at:	https://github.com/microsoft/vcpkg/issues/new?title=[libsrt]+Build+error+on+x64-windows&body=Copy+issue+body+from+C%3A%2FUtil%2Fvcpkg%2Finstalled%2Fvcpkg%2Fissue_body.md
 Resources
 	c# mp3 get raw stream
 		https://stackoverflow.com/questions/20200829/getting-audio-data-from-mp3-file-using-naudio
@@ -328,7 +309,6 @@ Resources
 			https://musicbrainz.org/doc/MusicBrainz_API/Search
 			https://github.com/metabrainz/picard
 			https://picard-docs.musicbrainz.org/en/workflows/workflow_album.html
-			https://acoustid.org/webservice
 		Beets
 			music beets pip
 			https://beets.readthedocs.io/en/stable/guides/main.html
@@ -507,11 +487,6 @@ Music Manager
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\The Commodore Master Takes\\How Am I to Know.mp3"
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Bruce Springsteen\\Live 1975-1985\\Paradise By The C.m4a"
 Music Manager
-	git branch -a
-	* development
-	  feature/acoust-id
-	  main
-Music Manager
 	extract-tags
 	clean --no-update-tags
 	Add a Test Music Library
@@ -659,14 +634,6 @@ Music Manager
 		https://superuser.com/questions/1860878/force-ffmpeg-to-select-libfdk-aac-instead-of-native-aac-decoder-via-c-api
 
 	https://github.com/Martchus/tageditor
-
-	AcoustId  current API key	l0IosbOfl4
-		Example
-			https://api.acoustid.org/v2/lookup?
-			client=6kK8lA6rZAI&
-			duration=641&
-			fingerprint=AQABz0qUkZK4oOfhL-CPc4e5C_wW2H2QH9uDL4cvoT8UNQ-eHtsE8cceeFJx-LiiHT-aPzhxoc-Opj_eI5d2hOFyMJRzfDk-QSsu7fBxqZDMHcfxPfDIoPWxv9C1o3yg44d_3Df2GJaUQeeR-cb2HfaPNsdxHj2PJnpwPMN3aPcEMzd-_MeB_Ej4D_CLP8ghHjkJv_jh_UDuQ8xnILwunPg6hF2R8HgzvLhxHVYP_ziJX0eKPnIE1UePMByDJyg7wz_6yELsB8n4oDmDa0Gv40hf6D3CE3_wH6HFaxCPUD9-hNeF5MfWEP3SCGym4-SxnXiGs0mRjEXD6fgl4LmKWrSChzzC33ge9PB3otyJMk-IVC6R8MTNwD9qKQ_CC8kPv4THzEGZS8GPI3x0iGVUxC1hRSizC5VzoamYDi-uR7iKPhGSI82PkiWeB_eHijvsaIWfBCWH5AjjCfVxZ1TQ3CvCTclGnEMfHbnZFA8pjD6KXwd__Cn-Y8e_I9cq6CR-4S9KLXqQcsxxoWh3eMxiHI6TIzyPv0M43YHz4yte-Cv-4D16Hv9F9C9SPUdyGtZRHV-OHEeeGD--BKcjVLOK_NCDXMfx44dzHEiOZ0Z44Rf6DH5R3uiPj4d_PKolJNyRJzyu4_CTD2WOvzjKH9GPb4cUP1Av9EuQd8fGCFee4JlRHi18xQh96NLxkCgfWFKOH6WGeoe4I3za4c5hTscTPEZTES1x8kE-9MQPjT8a8gh5fPgQZtqCFj9MDvp6fDx6NCd07bjx7MLR9AhtnFnQ70GjOcV0opmm4zpY3SOa7HiwdTtyHa6NC4e-HN-OfC5-OP_gLe2QDxfUCz_0w9l65HiPAz9-IaGOUA7-4MZ5CWFOlIfe4yUa6AiZGxf6w0fFxsjTOdC6Itbh4mGD63iPH9-RFy909XAMj7mC5_BvlDyO6kGTZKJxHUd4NDwuZUffw_5RMsde5CWkJAgXnDReNEaP6DTOQ65yaD88HoeX8fge-DSeHo9Qa8cTHc80I-_RoHxx_UHeBxrJw62Q34Kd7MEfpCcu6BLeB1ePw6OO4sOF_sHhmB504WWDZiEu8sKPpkcfCT9xfej0o0lr4T5yNJeOvjmu40w-TDmqHXmYgfFhFy_M7tD1o0cO_B2ms2j-ACEEQgQgAIwzTgAGmBIKIImNQAABwgQATAlhDGCCEIGIIM4BaBgwQBogEBIOESEIA8ARI5xAhxEFmAGAMCKAURKQQpQzRAAkCCBQEAKkQYIYIQQxCixCDADCABMAE0gpJIgyxhEDiCKCCIGAEIgJIQByAhFgGACCACMRQEyBAoxQiHiCBCFOECQFAIgAABR2QAgFjCDMA0AUMIoAIMChQghChASGEGeYEAIAIhgBSErnJPPEGWYAMgw05AhiiGHiBBBGGSCQcQgwRYJwhDDhgCSCSSEIQYwILoyAjAIigBFEUQK8gAYAQ5BCAAjkjCCAEEMZAUQAZQCjCCkpCgFMCCiIcVIAZZgilAQAiSHQECOcQAQIc4QClAHAjDDGkAGAMUoBgyhihgEChFCAAWEIEYwIJYwViAAlHCBIGEIEAEIQAoBwwgwiEBAEEEOoEwBY4wRwxAhBgAcKAESIQAwwIowRFhoBhAE
-	C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\ChromaPrint\tests\SampleTest.vcxproj
 Music Manager
 	FFMpeg
 		cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
@@ -1288,8 +1255,6 @@ Music Manager
 
 	What about MP3 files?  Are they always lossy?
 	Yes, MP3 files are always lossy. The MP3 (MPEG-1 Audio Layer III) format uses a compression algorithm that removes some of the audio data to reduce the file size, which results in a loss of quality. This lossy compression is a trade-off between file size and audio quality.
-Music Manager
-	https://acoustid.org/webservice
 Script
 	@echo off
 	REM Converts a FLAC file to ALAC using FFmpeg
@@ -1320,3 +1285,124 @@ DLL Loading Includes
 	Options
 		<None Include="..\Bin\Debug\x64\AudioSignature.dll">
 		<None Update="..\..\Bin\Debug\x64\AudioSignature.dll">
+Inbox
+	Possible Additional Packages
+		<PackageReference Include="CSCore" Version="1.2.1.2" />
+	Include	SetLastError = true on NativeMethods
+
+	3. Consider SafeHandle instead of IntPtr
+	While IntPtr is standard, using a SafeHandle can help prevent memory leaks or misuse:
+
+	You can create a SafeAudioSignatureHandle class that overrides SafeHandle and releases the handle via FreeAudioSignature.
+
+	This is especially useful if you're returning ownership of unmanaged memory (as GetAudioSignature seems to do).
+
+	public static class AudioSignatureWrapper
+	{
+		public static string? GetSignature(string filePath)
+		{
+			byte[] utf8Bytes = System.Text.Encoding.UTF8.GetBytes(filePath + '\0');
+			IntPtr utf8Ptr = Marshal.AllocHGlobal(utf8Bytes.Length);
+			Marshal.Copy(utf8Bytes, 0, utf8Ptr, utf8Bytes.Length);
+
+			IntPtr resultPtr = IntPtr.Zero;
+
+			try
+			{
+				resultPtr = NativeMethods.GetAudioSignature(utf8Ptr);
+				return resultPtr != IntPtr.Zero
+					? Marshal.PtrToStringAnsi(resultPtr)
+					: null;
+			}
+			finally
+			{
+				if (resultPtr != IntPtr.Zero)
+				{
+					NativeMethods.FreeAudioSignature(resultPtr);
+				}
+
+				Marshal.FreeHGlobal(utf8Ptr);
+			}
+		}
+	}
+
+	Wrap P/Invoke in higher-level managed methods (optional)
+		This depends on how it's used, but consider a managed wrapper like:
+
+		public static byte[] GetSignature(string filePath)
+		{
+			IntPtr ptr = GetAudioSignature(filePath);
+			try
+			{
+				// Convert ptr to byte[] (depends on known size or convention)
+			}
+			finally
+			{
+				FreeAudioSignature(ptr);
+			}
+		}
+
+	Option 2: Marshal manually using UTF-8 (Encoding.UTF8.GetBytes())
+		Wrap your call like this:
+
+		public static string GetSignature(string filePath)
+		{
+			byte[] utf8Path = System.Text.Encoding.UTF8.GetBytes(filePath + "\0");
+			IntPtr unmanagedPath = Marshal.AllocHGlobal(utf8Path.Length);
+			Marshal.Copy(utf8Path, 0, unmanagedPath, utf8Path.Length);
+
+			IntPtr resultPtr = IntPtr.Zero;
+			try
+			{
+				resultPtr = NativeMethods.GetAudioSignature(unmanagedPath);
+				string result = Marshal.PtrToStringAnsi(resultPtr); // base64-style, safe
+				return result;
+			}
+			finally
+			{
+				if (resultPtr != IntPtr.Zero)
+				{
+					NativeMethods.FreeAudioSignature(resultPtr);
+				}
+				Marshal.FreeHGlobal(unmanagedPath);
+			}
+		}
+
+	[DllImport("AudioSignature", CharSet = CharSet.Unicode, EntryPoint = "GetAudioSignature")]
+	public static extern IntPtr GetAudioSignature(string filePath);
+
+	LIB_API(char*) GetAudioSignature(const wchar_t* filePath);
+
+	Unit Tests
+		namespace DigitalZenWorks.MusicToolKit.Tests
+		{
+			public class AudioSignatureWrapperTests
+			{
+				[Fact]
+				public void GetSignature_ValidFilePath_ReturnsSignature()
+				{
+					// Arrange
+					string testFilePath = "test-audio.wav"; // Replace with a valid test file path
+
+					// Act
+					string? signature = AudioSignatureWrapper.GetSignature(testFilePath);
+
+					// Assert
+					Assert.False(string.IsNullOrEmpty(signature));
+					Assert.Matches("^[A-Za-z0-9+/=]+$", signature!); // assuming base64-like format
+				}
+
+				[Fact]
+				public void GetSignature_InvalidFilePath_ReturnsNull()
+				{
+					// Arrange
+					string invalidPath = "nonexistentfile.wav";
+
+					// Act
+					string? signature = AudioSignatureWrapper.GetSignature(invalidPath);
+
+					// Assert
+					Assert.Null(signature);
+				}
+			}
+		}
