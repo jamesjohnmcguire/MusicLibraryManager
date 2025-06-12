@@ -1406,3 +1406,8 @@ Inbox
 				}
 			}
 		}
+Music Manager
+	Notes
+		AcoustId
+			https://acoustid.org/webservice
+			https://stackoverflow.com/questions/15571893/search-for-acoustid-on-musicbrainz
