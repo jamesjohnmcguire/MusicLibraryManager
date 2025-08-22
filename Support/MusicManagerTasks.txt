@@ -3,6 +3,7 @@ Sprints
 	Move low rated Music
 	Start Using Chromaprints
 Music Library Manager Tasks
+	ApplyRule	Add Tests in Music Manager.  Need to work out what it will be exactly about.
 	<NoWarn>NU1701</NoWarn>
 	<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
