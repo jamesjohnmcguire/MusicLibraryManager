@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project
+	DefaultTargets="Build"
+	ToolsVersion="17.0"
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+			<Platform>x64</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<CharacterSet>Unicode</CharacterSet>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<GenerateManifest>true</GenerateManifest>
+		<Keyword>Win32Proj</Keyword>
+		<OutDir>$(SolutionDir)\Bin\$(Configuration)\$(Platform)\</OutDir>
+		<Platform>x64</Platform>
+		<PlatformToolset>v143</PlatformToolset>
+		<PreferredToolArchitecture>x64</PreferredToolArchitecture>
+		<_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+		<ProjectGuid>{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}</ProjectGuid>
+		<ProjectName>AudioSignature</ProjectName>
+		<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+		<TargetName>AudioSignature</TargetName>
+		<TargetExt>.dll</TargetExt>
+	</PropertyGroup>
+
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|x64">
+			<Configuration>Debug</Configuration>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|x64">
+			<Configuration>Release</Configuration>
+		</ProjectConfiguration>
+	</ItemGroup>
+
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+
+	<PropertyGroup Label="UserMacros" />
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+		<LinkIncremental>true</LinkIncremental>
+		<UseDebugLibraries>true</UseDebugLibraries>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+		<UseDebugLibraries>false</UseDebugLibraries>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+			<AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+			<ExceptionHandling>Sync</ExceptionHandling>
+			<LanguageStandard>stdcpp20</LanguageStandard>
+			<ObjectFileName>$(IntDir)</ObjectFileName>
+			<RuntimeTypeInfo>true</RuntimeTypeInfo>
+			<UseFullPaths>false</UseFullPaths>
+			<WarningLevel>Level3</WarningLevel>
+		</ClCompile>
+		<Midl>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+			<HeaderFileName>%(Filename).h</HeaderFileName>
+			<TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+			<InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+			<ProxyFileName>%(Filename)_p.c</ProxyFileName>
+		</Midl>
+		<Link>
+			<AdditionalDependencies>$(SolutionDir)ChromaPrint\src\Debug\chromaprint.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+			<IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+			<ImportLibrary>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\AudioSignature.lib</ImportLibrary>
+			<ProgramDataBaseFile>$(SolutionDir)\Bin\$(Configuration)\$(PlatformTarget)\AudioSignature.pdb</ProgramDataBaseFile>
+			<SubSystem>Console</SubSystem>
+		</Link>
+	</ItemDefinitionGroup>
+
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<ClCompile>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+			<Optimization>Disabled</Optimization>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR="Debug";AudioSignature_EXPORTS</PreprocessorDefinitions>
+			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+		</ClCompile>
+		<ResourceCompile>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;DLL_EXPORTS;CMAKE_INTDIR=\"Debug\";AudioSignature_EXPORTS</PreprocessorDefinitions>
+		</ResourceCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+		</Link>
+		<ProjectReference>
+			<LinkLibraryDependencies>false</LinkLibraryDependencies>
+		</ProjectReference>
+	</ItemDefinitionGroup>
+
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<ClCompile>
+			<InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+			<Optimization>MaxSpeed</Optimization>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR="Release";AudioSignature_EXPORTS</PreprocessorDefinitions>
+		</ClCompile>
+		<ResourceCompile>
+			<PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;DLL_EXPORTS;CMAKE_INTDIR=\"Release\";AudioSignature_EXPORTS</PreprocessorDefinitions>
+		</ResourceCompile>
+		<Link>
+			<GenerateDebugInformation>false</GenerateDebugInformation>
+		</Link>
+		<ProjectReference>
+			<LinkLibraryDependencies>false</LinkLibraryDependencies>
+		</ProjectReference>
+	</ItemDefinitionGroup>
+
+	<ItemGroup>
+		<ClInclude Include="AudioSignature.h" />
+		<ClCompile Include="AudioSignature.cpp" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChromaPrint\src\chromaprint.vcxproj">
+			<Project>{21e8acde-900c-3b11-af3f-a86dc2e3b306}</Project>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<CopyFileToFolders Include="..\Bin\Debug\x64\chromaprint.dll">
+			<FileType>Document</FileType>
+		</CopyFileToFolders>
+	</ItemGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+
+</Project>

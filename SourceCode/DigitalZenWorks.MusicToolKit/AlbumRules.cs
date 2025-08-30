@@ -4,11 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.RulesLibrary;
-using System;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using DigitalZenWorks.RulesLibrary;
+
 	/// <summary>
 	/// Album tag rules class.
 	/// </summary>

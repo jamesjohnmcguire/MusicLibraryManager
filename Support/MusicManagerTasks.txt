@@ -1,4 +1,22 @@
+Sprints
+	Flac to Aliec
+	Move low rated Music
+	Start Using Chromaprints
 Music Library Manager Tasks
+	ApplyRule	Add Tests in Music Manager.  Need to work out what it will be exactly about.
+	<NoWarn>NU1701</NoWarn>
+	<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+	iTunes
+	ChromaPrint Tests	Source: test_audio_processor.cpp line 13	unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.	Exception thrown at 0x00007FF7F651E1DE in ChromaPrintTests.exe: 0xC0000005: Access violation reading location 0x000000A4E3700001.
+	Add to PlayLists
+	MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs(262,44): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+	MusicLibraryManager\SourceCode\MusicManager\Program.cs(27,22): warning CA1515: Because an application's API isn't typically referenced from outside the assembly, types can be made internal
+	Clean	iTunes	Add to PlayLists
+	Clean	iTunes	Copy iTunes Rating to Tags
+	Entertainment Tags Only	Process Music, Music2, etc
+	Process image files
+	git clean -n -xdf --exclude="SourceCode/MusicManager/Properties/"
 	Add Test Music Library
 	Add ItunesAvailable Environment Variable to Documentation
 	Add Conditional #define based on ItunesAvailable
@@ -382,3 +400,5 @@ Music Library Manager Tasks
 		Inner Exception 2: FileNotFoundException: Could not load file or assembly 'System.Configuration.ConfigurationManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the file specified.
 		Warning	NU1702	ProjectReference MusicUtility\MusicUtility.csproj was resolved using '.NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v5.0'. This project may not be fully compatible with your project.	MusicClean	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	1662
 		NU1702 ProjectReference csproj was resolved using '.NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v5.0'. This project may not be fully compatible with your project.	MusicClean	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	1662
+		Clean up gtests, all_tests, ChromaPrint Tests in Solution
+		<Platforms>x86;x64</Platforms>

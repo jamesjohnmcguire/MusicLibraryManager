@@ -4,7 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit.Decoders
 {
 	/// <summary>
 	/// Consumer for 16bit audio data buffer.

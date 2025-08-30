@@ -1,14 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AnalysisMode>All</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.Rules.RulesLibrary</AssemblyName>
-		<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net9.0</TargetFramework>
 	</PropertyGroup>

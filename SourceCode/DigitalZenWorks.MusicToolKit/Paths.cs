@@ -4,13 +4,13 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.IO;
+
 	/// <summary>
 	/// Paths class.
 	/// </summary>

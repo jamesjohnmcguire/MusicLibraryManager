@@ -21,5 +21,8 @@ bld/
 .vs/
 
 # NUNIT
-*.VisualState.xml
 TestResult.xml
+
+SourceCode/packages/
+
+SourceCode/MusicManager/Properties/launchSettings.json

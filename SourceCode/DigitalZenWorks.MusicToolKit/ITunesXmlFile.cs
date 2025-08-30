@@ -4,19 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Net;
+	using System.Reflection;
+	using System.Text;
+	using System.Xml;
+	using global::Common.Logging;
+
 	/// <summary>
 	/// iTunes xml file class.
 	/// </summary>
@@ -89,7 +89,10 @@ namespace DigitalZenWorks.MusicToolKit
 		/// Gets the library XML path.
 		/// </summary>
 		/// <value>The library XML path.</value>
-		public string LibraryXMLPath { get { return libraryXMLPath; } }
+		public string LibraryXMLPath
+		{
+			get { return libraryXMLPath; }
+		}
 
 		/// <summary>
 		/// Load iTunes xml file.
@@ -190,7 +193,7 @@ namespace DigitalZenWorks.MusicToolKit
 				if (url.StartsWith(
 					"file://localhost/", StringComparison.InvariantCulture))
 				{
-					url = url.Remove(0, 17);
+					url = url[17..];
 				}
 
 				Uri uri = new (url, UriKind.Absolute);
@@ -259,7 +262,7 @@ namespace DigitalZenWorks.MusicToolKit
 		private static void SetToHTMLDecode(
 			string key, ref Dictionary<string, object> thisDict)
 		{
-			if (thisDict.TryGetValue(key, out object? value))
+			if (thisDict.TryGetValue(key, out object value))
 			{
 				string decodedValue = value as string;
 				thisDict[key] = WebUtility.HtmlDecode(decodedValue);

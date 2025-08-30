@@ -1,4 +1,12 @@
-﻿[*.{cs,vb}]
+﻿[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = tab
+indent_size = 4
+
+[*.{cs,vb}]
+charset = utf-8 bom
 
 # IDE0017: Simplify object initialization
 dotnet_style_object_initializer = false:suggestion
@@ -11,3 +19,9 @@ dotnet_diagnostic.CA1819.severity = none
 
 # SA1010: Opening square brackets should be spaced correctly
 dotnet_diagnostic.SA1010.severity = none
+
+# SA1101: Prefix Local Calls With This
+dotnet_diagnostic.SA1101.severity = none
+
+#SA1413: Use Trailing Commas In MultiLine Initializers
+dotnet_diagnostic.SA1413.severity = none

@@ -7,6 +7,7 @@
 namespace DigitalZenWorks.MusicToolKit
 {
 #pragma warning disable CA1028
+#pragma warning disable CA1707
 	/// <summary>
 	/// COM HRESULT codes enumeration.
 	/// </summary>

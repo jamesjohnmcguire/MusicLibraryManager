@@ -1,3 +1,8 @@
+[submodule "SourceCode/ChromaPrint"]
+	path = SourceCode/ChromaPrint
+	url = https://github.com/jamesjohnmcguire/chromaprint
+	branch = msbuild
 [submodule "SourceCode/UtilitiesNet"]
 	path = SourceCode/UtilitiesNet
 	url = https://github.com/jamesjohnmcguire/UtilitiesNet
+	branch = main

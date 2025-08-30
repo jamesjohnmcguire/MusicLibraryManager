@@ -4,23 +4,17 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.MusicToolKit.Decoders;
-using DigitalZenWorks.RulesLibrary;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System.IO;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Base test support class.
 	/// </summary>
 	[SetUpFixture]
-	public class BaseTestsSupport
+	internal class BaseTestsSupport
 	{
 		private string temporaryPath;
 		private string testFile;
@@ -58,7 +52,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		{
 			bool result = Directory.Exists(temporaryPath);
 
-			if (true == result)
+			if (result == true)
 			{
 				Directory.Delete(temporaryPath, true);
 			}

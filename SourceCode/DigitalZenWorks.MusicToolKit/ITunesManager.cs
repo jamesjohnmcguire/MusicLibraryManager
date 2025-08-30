@@ -4,17 +4,17 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using iTunesLib;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Reflection;
+	using System.Runtime.InteropServices;
+	using global::Common.Logging;
+	using iTunesLib;
+
 	/// <summary>
 	/// Manages iTunes operations class.
 	/// </summary>
@@ -62,13 +62,19 @@ namespace DigitalZenWorks.MusicToolKit
 		/// </summary>
 		/// <value>A value indicating whether is iTunes enabled
 		/// or not.</value>
-		public bool IsItunesEnabled { get { return isItunesEnabled; } }
+		public bool IsItunesEnabled
+		{
+			get { return isItunesEnabled; }
+		}
 
 		/// <summary>
 		/// Gets the iTunes Application Com Reference.
 		/// </summary>
 		/// <value>The iTunes Application Com Reference.</value>
-		public iTunesApp ItunesCom { get { return iTunes; } }
+		public iTunesApp ItunesCom
+		{
+			get { return iTunes; }
+		}
 
 		/// <summary>
 		/// Gets the iTunes library location.
@@ -119,32 +125,14 @@ namespace DigitalZenWorks.MusicToolKit
 					if (track is IITFileOrCDTrack fileTrack &&
 						File.Exists(fileTrack.Location))
 					{
-						using MediaFileTags tags = new (filePath);
-
-						string album1 = fileTrack.Album;
-						string album2 = tags.Album;
-						string artist1 = fileTrack.Artist;
-						string artist2 = tags.Artist;
-						string title1 = fileTrack.Name;
-						string title2 = tags.Title;
-						int year1 = fileTrack.Year;
-						int year2 = (int)tags.Year;
-
-						if (album1.Equals(
-							album2, StringComparison.OrdinalIgnoreCase) &&
-							artist1.Equals(
-							artist2, StringComparison.OrdinalIgnoreCase) &&
-							title1.Equals(
-							title2, StringComparison.OrdinalIgnoreCase) &&
-							year1 == year2)
-						{
-							same = true;
-						}
+						same = CompareTags(filePath, fileTrack);
 					}
 				}
 				catch (Exception exception) when
 					(exception is ArgumentException ||
-					exception is ArgumentNullException)
+					exception is ArgumentNullException ||
+					exception is TagLib.CorruptFileException ||
+					exception is TagLib.UnsupportedFormatException)
 				{
 					Log.Error(exception.ToString());
 				}
@@ -366,7 +354,7 @@ namespace DigitalZenWorks.MusicToolKit
 					// tracks is a list of potential matches
 					IITTrackCollection tracks = GetPossibleTracks(file.Name);
 
-					if (null == tracks)
+					if (tracks == null)
 					{
 						updated = AddFile(file.FullName);
 					}
@@ -483,6 +471,36 @@ namespace DigitalZenWorks.MusicToolKit
 			return trackCollection;
 		}
 
+		private static bool CompareTags(
+			string filePath, IITFileOrCDTrack fileTrack)
+		{
+			bool same = false;
+
+			using MediaFileTags tags = new (filePath);
+
+			string album1 = fileTrack.Album;
+			string album2 = tags.Album;
+			string artist1 = fileTrack.Artist;
+			string artist2 = tags.Artist;
+			string title1 = fileTrack.Name;
+			string title2 = tags.Title;
+			int year1 = fileTrack.Year;
+			int year2 = (int)tags.Year;
+
+			if (album1.Equals(
+				album2, StringComparison.OrdinalIgnoreCase) &&
+				artist1.Equals(
+				artist2, StringComparison.OrdinalIgnoreCase) &&
+				title1.Equals(
+				title2, StringComparison.OrdinalIgnoreCase) &&
+				year1 == year2)
+			{
+				same = true;
+			}
+
+			return same;
+		}
+
 		private static bool IsTrackLocationEmpty(IITFileOrCDTrack fileTrack)
 		{
 			bool emptyTrack = false;
@@ -553,7 +571,7 @@ namespace DigitalZenWorks.MusicToolKit
 			{
 				bool same = IsFileAndTrackSame(fileName, track);
 
-				if (true == same)
+				if (same == true)
 				{
 					matchingTrack = track;
 					break;

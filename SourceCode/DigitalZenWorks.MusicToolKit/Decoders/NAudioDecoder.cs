@@ -3,13 +3,14 @@
 // Copyright © 2019 - 2025 Digital Zen Works. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
-using NAudio.Wave;
-using System;
-using System.Buffers;
-using System.IO;
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit.Decoders
 {
+	using System;
+	using System.Buffers;
+	using System.IO;
+	using NAudio.Wave;
+
 	/// <summary>
 	/// Decode using the NAudio library.
 	/// </summary>

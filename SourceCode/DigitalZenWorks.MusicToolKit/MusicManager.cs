@@ -4,22 +4,22 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.RulesLibrary;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-
-[assembly: CLSCompliant(false)]
+[assembly: System.CLSCompliant(false)]
 
 namespace DigitalZenWorks.MusicToolKit
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.IO;
+	using System.Linq;
+	using System.Reflection;
+	using System.Text.RegularExpressions;
+	using DigitalZenWorks.Common.Utilities;
+	using DigitalZenWorks.RulesLibrary;
+	using global::Common.Logging;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Music manager class.
 	/// </summary>
@@ -163,7 +163,7 @@ namespace DigitalZenWorks.MusicToolKit
 				string[] pathParts =
 					path.Split(Path.DirectorySeparatorChar);
 
-				while (false == locationOk)
+				while (locationOk == false)
 				{
 					string newBasePath = GetDuplicateLocationByNumber(
 						path, tries);
@@ -311,14 +311,23 @@ namespace DigitalZenWorks.MusicToolKit
 
 				if (useTags == true)
 				{
-					using MediaFileTags tags = new (filePath);
+					try
+					{
+						using MediaFileTags tags = new (filePath);
 
-					artist =
-						GetArtistPathSegment(musicPath, filePath, null, tags);
-					album =
-						GetAlbumPathSegment(musicPath, filePath, artist, tags);
-					title =
-						GetTitlePathSegment(musicPath, filePath, artist, tags);
+						artist = GetArtistPathSegment(
+							musicPath, filePath, null, tags);
+						album = GetAlbumPathSegment(
+							musicPath, filePath, artist, tags);
+						title = GetTitlePathSegment(
+							musicPath, filePath, artist, tags);
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
 				}
 
 				int depth = Paths.GetDirectoryCount(filePath);
@@ -369,20 +378,14 @@ namespace DigitalZenWorks.MusicToolKit
 
 					SortedDictionary<string, object> tagSet = tags.GetTags();
 
-					JsonSerializerSettings jsonSettings = new ();
-					jsonSettings.NullValueHandling = NullValueHandling.Ignore;
-					jsonSettings.ContractResolver =
-						new OrderedContractResolver();
+					string jsonText = ConvertTagsToJsonText(tagSet);
 
-					string json = JsonConvert.SerializeObject(
-						tagSet, Formatting.Indented, jsonSettings);
-
-					if (!string.IsNullOrWhiteSpace(json))
+					if (!string.IsNullOrWhiteSpace(jsonText))
 					{
 						destinationFile =
 							destinationPath + "\\" + sourceFile.Name + ".json";
 
-						System.IO.File.WriteAllText(destinationFile, json);
+						System.IO.File.WriteAllText(destinationFile, jsonText);
 					}
 
 					Log.Info("Tags Saved to: " + destinationFile);
@@ -621,6 +624,31 @@ namespace DigitalZenWorks.MusicToolKit
 			return included;
 		}
 
+		private static string ConvertTagsToJsonText(
+			SortedDictionary<string, object> tagSet)
+		{
+			string jsonText = null;
+
+			try
+			{
+				JsonSerializerSettings jsonSettings = new ();
+				jsonSettings.NullValueHandling = NullValueHandling.Ignore;
+				jsonSettings.ContractResolver =
+					new OrderedContractResolver();
+
+				jsonText = JsonConvert.SerializeObject(
+					tagSet, Formatting.Indented, jsonSettings);
+			}
+			catch (Exception exception) when
+				(exception is ArgumentException ||
+				exception is JsonException)
+			{
+				Log.Error(exception.ToString());
+			}
+
+			return jsonText;
+		}
+
 		private static bool DeleteEmptyDirectory(string path)
 		{
 			bool deleted = false;
@@ -745,8 +773,17 @@ namespace DigitalZenWorks.MusicToolKit
 				if (UpdateTags == true)
 				{
 					// get and update tags
-					using MediaFileTags tags = new (file.FullName, rules);
-					tags.Clean();
+					try
+					{
+						using MediaFileTags tags = new (file.FullName, rules);
+						tags.Clean();
+					}
+					catch (Exception exception) when
+						(exception is TagLib.CorruptFileException ||
+						exception is TagLib.UnsupportedFormatException)
+					{
+						Log.Error(exception.ToString());
+					}
 				}
 
 				// update directory and file names

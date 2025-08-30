@@ -4,7 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit.Decoders
 {
 	/// <summary>
 	/// Interface for audio decoders.
@@ -12,22 +12,24 @@ namespace DigitalZenWorks.MusicToolKit
 	public interface IDecoder
 	{
 		/// <summary>
-		/// Gets the sample rate of the audio sent to the fingerprinter.
+		/// Gets the sample rate of the audio sent to the audio signature.
 		/// </summary>
 		/// <remarks>
 		/// May be different from the source audio sample rate, if the
 		/// decoder does resampling.
 		/// </remarks>
-		/// <value>The sample rate of the audio sent to the fingerprinter.</value>
+		/// <value>The sample rate of the audio sent to the audio
+		/// signature.</value>
 		int SampleRate { get; }
 
 		/// <summary>
-		/// Gets the channel count of the audio sent to the fingerprinter.
+		/// Gets the channel count of the audio sent to the audio signature.
 		/// </summary>
 		/// <remarks>
 		/// May be different from the source audio channel count.
 		/// </remarks>
-		/// <value>The channel count of the audio sent to the fingerprinter.</value>
+		/// <value>The channel count of the audio sent to the audio
+		/// signature.</value>
 		int Channels { get; }
 
 		/// <summary>

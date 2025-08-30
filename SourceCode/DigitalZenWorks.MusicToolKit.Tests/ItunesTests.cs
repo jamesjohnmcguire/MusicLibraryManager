@@ -4,20 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using iTunesLib;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System.Collections.Generic;
+	using System.IO;
+	using DigitalZenWorks.Common.Utilities;
+	using iTunesLib;
+	using NUnit.Framework;
+
 	/// <summary>
 	/// iTunes tests class.
 	/// </summary>
 	[TestFixture]
-	public class ItunesTests
+	internal sealed class ItunesTests
 	{
 		/// <summary>
 		/// The are file and track the same yes test.
@@ -40,7 +39,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 				Assert.That(tracks, Is.Not.Null);
 
-				if (null != tracks)
+				if (tracks != null)
 				{
 					string fileName = iTunesManager.ItunesLibraryLocation +
 						@"Music\10cc\The Very Best Of 10cc\" +

@@ -4,24 +4,26 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Newtonsoft.Json;
-
-[assembly: CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace DigitalZenWorks.RulesLibrary
 {
+	using System;
+	using System.Collections.Generic;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Rules class.
 	/// </summary>
 	public class Rules
 	{
-		private readonly IList<Rule> rules;
+		private readonly IList<Rule>? rules;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Rules"/> class.
 		/// </summary>
 		/// <param name="data">The serialized rules data.</param>
-		public Rules(string data)
+		public Rules(string? data)
 		{
 			if (!string.IsNullOrEmpty(data))
 			{
@@ -33,7 +35,7 @@ namespace DigitalZenWorks.RulesLibrary
 		/// Gets the rule list.
 		/// </summary>
 		/// <value>The rule list.</value>
-		public IList<Rule> RulesList
+		public IList<Rule>? RulesList
 		{
 			get
 			{
@@ -46,13 +48,13 @@ namespace DigitalZenWorks.RulesLibrary
 		/// </summary>
 		/// <param name="name">The name of the rule to get.</param>
 		/// <returns>The rule with matching name.</returns>
-		public Rule GetRuleByName(string name)
+		public Rule? GetRuleByName(string? name)
 		{
-			Rule rule = null;
+			Rule? rule = null;
 
-			foreach (Rule checkRule in rules)
+			foreach (Rule? checkRule in rules!)
 			{
-				if (checkRule.Name.Equals(
+				if (checkRule.Name!.Equals(
 					name, StringComparison.OrdinalIgnoreCase))
 				{
 					rule = checkRule;

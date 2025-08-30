@@ -4,20 +4,20 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.RulesLibrary;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System.Collections.Generic;
-using System.IO;
-
 namespace DigitalZenWorks.MusicToolKit.Tests
 {
+	using System.Collections.Generic;
+	using System.IO;
+	using DigitalZenWorks.Common.Utilities;
+	using DigitalZenWorks.RulesLibrary;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Media file tag tests class.
 	/// </summary>
 	[TestFixture]
-	public class MediaFileTagTests : BaseTestsSupport
+	internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		private Rules rules;
 
@@ -133,7 +133,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 		[Test]
 		public void GetTagsCheck()
 		{
-			using MediaFileTags tags = new(TestFile, rules);
+			using MediaFileTags tags = new (TestFile, rules);
 
 			string original =
 				"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -144,9 +144,12 @@ namespace DigitalZenWorks.MusicToolKit.Tests
 
 			SortedDictionary<string, object> tagSet = tags.GetTags();
 
-			Assert.That(tags, Is.Not.Null);
-			Assert.That(tags.TagFile, Is.Not.Null);
-			Assert.That(tagSet, Is.Not.Null);
+			using (Assert.EnterMultipleScope())
+			{
+				Assert.That(tags, Is.Not.Null);
+				Assert.That(tags.TagFile, Is.Not.Null);
+				Assert.That(tagSet, Is.Not.Null);
+			}
 		}
 
 		/// <summary>

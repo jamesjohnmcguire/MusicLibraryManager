@@ -4,14 +4,22 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.CommandLine.Commands;
-using System;
-using System.IO;
-
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
+	using System;
+	using System.IO;
+	using DigitalZenWorks.CommandLine.Commands;
+
+	/// <summary>
+	/// The configuration class.
+	/// </summary>
 	internal static class Configuration
 	{
+		/// <summary>
+		/// Get the configuration file.
+		/// </summary>
+		/// <param name="command">The command.</param>
+		/// <returns>The configuration file.</returns>
 		public static string GetConfigurationFile(Command command)
 		{
 			string location;
@@ -30,6 +38,10 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			return location;
 		}
 
+		/// <summary>
+		/// Get the default configuration file.
+		/// </summary>
+		/// <returns>The default configuration file.</returns>
 		public static string GetDefaultConfigurationFile()
 		{
 			string configurationFile = null;
@@ -49,6 +61,10 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			return configurationFile;
 		}
 
+		/// <summary>
+		/// Get the default data location.
+		/// </summary>
+		/// <returns>The default data location.</returns>
 		public static string GetDefaultDataLocation()
 		{
 			string defaultDataLocation;

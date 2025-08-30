@@ -4,27 +4,25 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using DigitalZenWorks.CommandLine.Commands;
-using DigitalZenWorks.RulesLibrary;
-using Serilog;
-using Serilog.Configuration;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-
-using CommonLogging = Common.Logging;
-
-[assembly: CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.IO;
+	using DigitalZenWorks.CommandLine.Commands;
+	using DigitalZenWorks.RulesLibrary;
+	using global::Common.Logging;
+	using Serilog;
+	using Serilog.Configuration;
+	using Serilog.Events;
+
 	/// <summary>
 	/// The main program class.
 	/// </summary>
-	public static class Program
+	internal static class Program
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -44,7 +42,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 
 				IList<Command> commands = Commands.GetCommands();
 
-				CommandLineArguments commandLine = new (commands, arguments);
+				CommandLineInstance commandLine = new (commands, arguments);
 
 				if (commandLine.ValidArguments == false)
 				{
@@ -177,7 +175,7 @@ namespace DigitalZenWorks.Music.ToolKit.Application
 			Serilog.Log.Logger = configuration.CreateLogger();
 
 			LogManager.Adapter =
-				new CommonLogging.Serilog.SerilogFactoryAdapter();
+				new global::Common.Logging.Serilog.SerilogFactoryAdapter();
 		}
 	}
 }

@@ -4,13 +4,20 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.CommandLine.Commands;
-using System.Collections.Generic;
-
 namespace DigitalZenWorks.Music.ToolKit.Application
 {
+	using System.Collections.Generic;
+	using DigitalZenWorks.CommandLine.Commands;
+
+	/// <summary>
+	/// The commands class.
+	/// </summary>
 	internal static class Commands
 	{
+		/// <summary>
+		/// Get the list of commands.
+		/// </summary>
+		/// <returns>The list of commands.</returns>
 		public static IList<Command> GetCommands()
 		{
 			List<Command> commands = [];

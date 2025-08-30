@@ -4,11 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using NAudio.CoreAudioApi;
-using System;
-
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit.Decoders
 {
+	using System;
+	using NAudio.CoreAudioApi;
+
 	/// <summary>
 	/// Interface for audio decoders.
 	/// </summary>
