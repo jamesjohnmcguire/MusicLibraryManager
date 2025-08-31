@@ -1,11 +1,10 @@
 Music Library Manager
 	Account Information
 		Acoust Id Org
-				https://acoustid.org/my-applications
-				Music Manager	0.6.188	Version	API Key	LUvY8Y4al3
-				Other API Key	l0IosbOfl4
-				Other API Key	6kK8lA6rZAI&
-
+			https://acoustid.org/my-applications
+			Music Manager	0.6.188	Version	API Key	LUvY8Y4al3
+			Other API Key	l0IosbOfl4
+			Other API Key	6kK8lA6rZAI&
 Design
 	Process
 		Overall
@@ -17,70 +16,7 @@ Design
 						Update directory
 						Update file name
 					Update iTunes
-	Rules
-		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
-
-		if	artist is 'various artists' and
-			performers not empty and
-			performers is not 'various artists'
-				replace the artist tag with the performers tag
-
-		https://www.pluralsight.com/courses/patterns-library
-
-		If someObject is Pumpkin replace (change?) with Pie
-			  1       2  3       4                      5
-
-		If someObject is Pumpkin AND someOject is Ripe replace (change?) with Pie
-			  1       2  3       6                     4                      5
-
-		If someObject is Pumpkin AND someOject is Ripe replace (change?) with Pie AND serve
-			  1       2  3       6                     4                      5   7
-
-		1	item
-			subject
-		2	condition
-		3	conditional
-		4	operation
-		5	replacement
-		6	chain
-		7	chain
-
-					  equal
-		If someObject is of type Pumpkin AND someOject has property Ripe replace (change?) with Pie
-		   1          2  subject 3       6             subject           4                      5
-
-		If someObject artistProperty has value equal 'various artists' replace artistPropertyValue with performersPropertyValue
-
-		Remove subject as parameter as it is already a property
-	Album	"The Very Best Of 10cc"
-		Rule1 (album / disks)
-		Rule2 (artist / various artists)
-	will need to specify whether to ignore case sensitivity or not in rules	for that matter, whether ordinal values matter or not
-	handle actions if no more rules chained
-	Need to fix replacement, especially as a property.
-	Get other unit test in line with new approach
 Notes
-	FileTypes Client Support
-		aa audible files
-		aifc		Apple
-		alac	lossless	Apple Lossless Audio Codec
-		flac	lossless	Not supported in iTunes
-		m3u
-		m4a	Apple lossless	iTunes Supported
-		mp3
-		wav
-		wma	Not supported in iTunes
-		iTunes Supported File Types
-			aa
-			aac
-			aiff
-			m4a apple lossless
-			m4p
-			m4v
-			mov
-			mp3
-			mp4	mpeg-4
-			wav
 	Locations
 		C:\Users\JamesMc\Music\iTunes
 		C:\Users\JamesMc\AppData\Roaming\Apple Computer\iTunes	Not changed for quite a while
@@ -167,9 +103,6 @@ Notes
 		The Jackson 5 (Soul Source, 2000)
 	Source Code notes
 		TagSet based on public abstract class Tag
-	Snippets
-		//IITEncoder encoder = iTunes.CurrentEncoder;
-		//status = iTunes.ConvertFile2(musicFilePath);
 	Database
 		File
 			id
@@ -220,26 +153,6 @@ Notes
 		Additionally, it's always a good practice to consider the worst-case scenario and make sure that the application is able to handle larger files gracefully. This can be achieved by using streaming techniques, even if the performance impact of using File.ReadAllBytes on a 20 MB file is negligible.
 	Title Case
 		https://titlecaseconverter.com/rules/
-	iTunes Program Flow
-		UpdateItunes
-			playList.Search
-			if none
-				LibraryPlaylist.AddFile
-	*		for each track
-				check if same (AreFileAndTrackTheSame)
-			if none same
-				UpdateOrAddTrack
-	*				for each track
-						UpdateItunesLocation
-							trackName = TitleRules.ApplyTitleFileRules
-							if same
-								update track name
-								IsValidItunesLocation
-									if File.Exists(fileTrack.Location)
-								if invalid
-									fileTrack.Location = filePath;
-					if not updated
-						LibraryPlaylist.AddFile
 	Test Examples
 		clean --location c:\Users\JamesMc\Data\External\Entertainment\Music
 Issues
@@ -318,27 +231,6 @@ Resources
 		https://getmusicbee.com/help/api/
 		https://beets.readthedocs.io/en/stable/guides/main.html
 		https://getmusicbee.com/addons/s/?type=2
-	Rules
-		https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
-		https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
-		https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
-		https://archive.codeplex.com/?p=rulesengine
-		https://stackoverflow.com/questions/424366/string-representation-of-an-enum
-		https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
-		http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
-		https://www.infoq.com/articles/Rule-Engines/
-		https://en.wikipedia.org/wiki/Command_pattern
-		https://www.informit.com/articles/article.aspx?p=1398607&seqNum=2
-		https://softwareengineering.stackexchange.com/questions/323018/business-rules-design-pattern
-		rule pattern
-		https://www.pluralsight.com/courses/patterns-library
-		https://github.com/mwhelan/Blog_RulesPattern
-
-		https://tenmilesquare.com/basic-rules-engine-design-pattern/
-		https://yiniski.medium.com/rule-engine-pattern-8a3f0e0c2d81
-
-		https://nrules.net/
-		https://www.google.com/search?q=rule+pattern&oq=rule+pattern&aqs=chrome..69i57j0l4j0i22i30l3.5132j0j15&sourceid=chrome&ie=UTF-8
 	https://github.com/filoe/cscore
 	Tags
 		http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
@@ -368,41 +260,6 @@ Resources
 			https://en.wikipedia.org/wiki/List_of_online_music_databases
 	Converters
 		https://videoconvert.minitool.com/video-converter/itunes-music-format.html
-	iTunes
-		http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
-		https://support.apple.com/en-us/HT201596
-		http://samsoft.org.uk/iTunes/scripts.asp
-		http://www.everythingitunes.com/os/windows/category/scripts/
-		http://dougscripts.com/itunes/itinfo/windowshelp.php
-	iTunes Development
-		itunes build options
-			set environment variable for conditional build inclusion
-			include hard-coded reference to Interop.iTunesLib.dll
-			create tlb, tlh files?
-		Reference
-			https://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp/76423905#76423905
-		iTunes api
-			http://www.joshkunz.com/iTunesControl/
-			http://www.joshkunz.com/iTunesControl/interfaceIITTrackCollection.html
-			http://www.joshkunz.com/iTunesControl/interfaceIITTrack.html
-			http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
-			https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
-			https://www.google.com/#q=c%23+iTunes
-			http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
-			http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
-			http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
-			https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
-			https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
-			http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
-			http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
-			https://taglib.github.io/api/annotated.html
-		http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
-		http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
-		https://naudio.codeplex.com/
-		https://github.com/naudio/NAudio
-		http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
-		http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
-		https://musicbrainz.org/doc/Beginners_Guide
 	Xml
 		http://stackoverflow.com/questions/55828/how-does-one-parse-xml-files
 		https://github.com/mercury2269/ITunesManager
@@ -486,928 +343,165 @@ Music Manager
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Billie Holiday\\The Commodore Master Takes\\How Am I to Know.mp3"
 	filePath = "C:\\Users\\JamesMc\\Music\\iTunes\\iTunes Media\\Music\\Bruce Springsteen\\Live 1975-1985\\Paradise By The C.m4a"
-Music Manager
-	extract-tags
-	clean --no-update-tags
-	Add a Test Music Library
-Music Manager
-	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
-	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment\Music
-
-	Revisit iTunes Path Structure
-
-	FileInfo?		public string SaveTagsToJsonFile(
-				FileInfo sourceFile, string destinationPath)
-Convert Flac
-	@echo off
-	REM Converts a FLAC file to AAC using FFmpeg
-	REM Usage: convert_flac_to_aac.bat input.flac output.aac
-
-	IF "%~1"=="" (
-		echo Please provide the input FLAC file.
-		echo Usage: %0 input.flac [output.aac]
-		exit /b 1
-	)
-
-	IF "%~2"=="" (
-		set OUTPUT_FILE=%~n1.aac
-	) ELSE (
-		set OUTPUT_FILE=%~2
-	)
-
-	ffmpeg -i "%~1" -c:a aac -b:a 192k "%OUTPUT_FILE%"
-
-	IF %ERRORLEVEL% EQU 0 (
-		echo Conversion successful: %OUTPUT_FILE%
-	) ELSE (
-		echo Conversion failed.
-	)
-	pause
-
-	convert_flac_to_alac.bat input.flac output.m4a
-
-
-	using System;
-	using System.Diagnostics;
-	using System.IO;
-
-	public class AudioConverter
-	{
-		public static void ConvertFlacToAlac(string inputFilePath, string outputFilePath)
-		{
-			// Ensure FFmpeg is installed and available in the system PATH
-			if (!File.Exists(inputFilePath))
-			{
-				throw new FileNotFoundException("Input file not found.", inputFilePath);
-			}
-
-			// If output file path is not provided, create one with the same name but .m4a extension
-			if (string.IsNullOrEmpty(outputFilePath))
-			{
-				outputFilePath = Path.ChangeExtension(inputFilePath, ".m4a");
-			}
-
-			// Use FFmpeg to convert FLAC to ALAC
-			string ffmpegArguments = $"-i \"{inputFilePath}\" -c:a alac \"{outputFilePath}\"";
-			ProcessStartInfo processStartInfo = new ProcessStartInfo
-			{
-				FileName = "ffmpeg",
-				Arguments = ffmpegArguments,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				UseShellExecute = false,
-				CreateNoWindow = true
-			};
-
-			using (Process process = new Process { StartInfo = processStartInfo })
-			{
-				process.Start();
-
-				// Capture output and error streams
-				string output = process.StandardOutput.ReadToEnd();
-				string error = process.StandardError.ReadToEnd();
-
-				process.WaitForExit();
-
-				if (process.ExitCode != 0)
-				{
-					throw new Exception($"FFmpeg conversion failed: {error}");
-				}
-
-				Console.WriteLine($"Conversion successful: {outputFilePath}");
-			}
-		}
-	}
-iTunes
-	iTunes Library Management Tools:
-
-	iTunes: The official iTunes software itself provides robust tools for managing your library, including adding, removing, and organizing media files.
+Tools
 	MusicBee: A powerful music manager and player that can import your iTunes library and provide additional management features.
 	MediaMonkey: Another alternative that can also manage your iTunes library with advanced tagging and organization features.
 
-	iTunes Library Toolkit: A tool that provides various utilities for managing your iTunes library, including finding and removing duplicates, exporting playlists, and more.
-	TuneUp Media: An iTunes plugin that helps clean up your music library by fixing mislabeled songs, finding album artwork, and more.
-Music Manager
-	MediaGetRawAudio.cmd	!
-	File Formats
-		Check if files are lossless
-			if so,
-			if not,
-				convert to newer lossy format, m4a
-
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -minrate 128k -maxrate 320k "output.m4a"
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	ffmpeg -i "Black Is Black.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "NewTest.m4a"
-
-	choco install ffmpeg --params "/FfmpegPath:full"
-
-	Encoders check
-		ffmpeg -encoders | grep aac
-		libfdk_aac !!!
-	https://en.wikipedia.org/wiki/Audio_file_format
-	Music Manager	Config File
-Music Manager
-	extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
-	clean C:\Users\JamesMc\Music\iTunes\Entertainment
-	https://docs.mp3tag.de/
-
-	(1967) Cream - Disraeli Gears [FLAC,Tracks]
-	(1968) Cream - Wheels Of Fire (2CD) [FLAC,Tracks]
-	Donovan (flac)
-	Grease [Original Soundtrack]
-	Guardians of the Galaxy Soundtrack - Awesome Mix Vol 1 (Big Papi)
-	Jefferson Airplane [Discography]
-	Jimmy Cliff - The Best Of
-	Meatloaf
-	Neil Young with Crazy Horse
-	Renaissance - Turn Of The Cards (1974 uk progressive and folk rock - flac)
-	Rod Stewart Every Picture Tells A Story 1971 FLAC+CUE (RLG)
-	The Yardbirds - Over Under Sideways Down (Mono) PBTHAL (1966 Rock) [Flac 24-96 LP]
-
-	Anything ending with [Flac*], case-insens
-	Anything ending with (*Flac*), case-insens
-Music Manager
-	Test New Media*.cmd s
-
-	ffmpeg choco libfdk_aac
-		https://superuser.com/questions/1860878/force-ffmpeg-to-select-libfdk-aac-instead-of-native-aac-decoder-via-c-api
-
-	https://github.com/Martchus/tageditor
-Music Manager
-	FFMpeg
+	iTunes Library Management Tools:
+		iTunes: The official iTunes software itself provides robust tools for managing your library, including adding, removing, and organizing media files.
+		iTunes Library Toolkit: A tool that provides various utilities for managing your iTunes library, including finding and removing duplicates, exporting playlists, and more.
+		TuneUp Media: An iTunes plugin that helps clean up your music library by fixing mislabeled songs, finding album artwork, and more.
+Usage
+	Examples
+		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
+		clean C:\Users\JamesMc\Music\iTunes\Entertainment
+		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
+		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment\Music
+		extract-tags
+		clean --no-update-tags
+FFMpeg
+	Build
 		cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
 		cmake -G "Visual Studio 17 2022" -A x64 -DFFmpeg_DIR=C:/path/to/vcpkg/installed/x64-windows/share/ffmpeg ..
-	Process Art Work as Well
+Tags
+	https://github.com/Martchus/tageditor
 
-	# Convert with specific sample rate and bit depth
-	ffmpeg -i input.m4a -acodec pcm_s16le -ar 44100 output.wav
+	Besides typical media tags, what other type of data might be included in the metadata?
+		Beyond the common media tags (like title, artist, album, year), M4A files (which use the MPEG-4 container format) can contain quite a variety of metadata. Here are the key categories of metadata you might find:
 
-	# Convert with higher quality settings
-	ffmpeg -i input.m4a -acodec pcm_s24le -ar 96000 output.wav
-
-	# Convert while preserving metadata
-	ffmpeg -i input.m4a -acodec pcm_s16le -map_metadata 0 output.wav
-
-	# To PCM Raw (headerless)
-	ffmpeg -i input.m4a -f s16le -acodec pcm_s16le output.raw
-
-
-
-	To see this metadata in detail, you can use various tools:
-
-	bash
-	# Using FFmpeg
-	ffmpeg -i file.m4a -f ffmetadata metadata.txt
-
-	# Using MediaInfo (more detailed)
-	mediainfo file.m4a
-
-	# Using AtomicParsley (specifically for MPEG-4 containers)
-	AtomicParsley file.m4a -t
-
-	# Using ExifTool (very comprehensive)
-	exiftool file.m4a
-
-
-	so, if these m4a files are lossless, would it be better to convert them to flac & alac?
-	If your M4A files are already lossless (using ALAC codec), there's generally no significant benefit to converting them to FLAC or creating duplicate ALAC files. Here's why:
-
-
-	lossy
-	# Convert to AAC (M4A)
-	ffmpeg -i "Black Is Black.wma" -c:a aac -b:a 192k "Black Is Black.m4a"
-
-	# Or to MP3 (if wider compatibility needed)
-	ffmpeg -i "Black Is Black.wma" -c:a libmp3lame -b:a 192k "Black Is Black.mp3"
-Music Manager
-	Audio Conversion
-		Download SoX from: http://sox.sourceforge.net/
-
-		ffmpeg -i input.m4a output.wav
-
-		# Convert with specific sample rate and bit depth
-		ffmpeg -i input.m4a -acodec pcm_s16le -ar 44100 output.wav
-
-		# Convert with higher quality settings
-		ffmpeg -i input.m4a -acodec pcm_s24le -ar 96000 output.wav
-
-		# Convert while preserving metadata
-		ffmpeg -i input.m4a -acodec pcm_s16le -map_metadata 0 output.wav
-
-		# To PCM Raw (headerless)
-		ffmpeg -i input.m4a -f s16le -acodec pcm_s16le output.raw
-
-		diff audio
-			First, you can extract just the metadata to compare it separately:
-				ffmpeg -i file1.m4a -f ffmetadata metadata1.txt
-				ffmpeg -i file2.m4a -f ffmetadata metadata2.txt
-			Convert both files to raw PCM with identical parameters:
-				ffmpeg -i file1.m4a -f s16le -acodec pcm_s16le -ar 44100 -ac 2 file1.raw
-				ffmpeg -i file2.m4a -f s16le -acodec pcm_s16le -ar 44100 -ac 2 file2.raw
-
-			Important parameters explained:
-
-			-f s16le: Format is 16-bit little-endian
-			-acodec pcm_s16le: PCM signed 16-bit little-endian codec
-			-ar 44100: Sample rate of 44100 Hz (CD quality)
-			-ac 2: 2 channels (stereo)
-			Compare the raw files. On Windows, you can use:
-			bash
-			# Using FC (File Compare) command
-			fc /b file1.raw file2.raw
-
-			You can also check the exact specifications of each M4A file:
-			ffmpeg -i file1.m4a -hide_banner
-
-			compare_audio.bat
-				@echo off
-				setlocal EnableDelayedExpansion
-
-				REM Check if two arguments were provided
-				if "%~2"=="" (
-					echo Usage: %~nx0 file1.m4a file2.m4a
-					echo Both files must be m4a format
-					exit /b 1
-				)
-
-				REM Store the file names without extension for working files
-				set "file1_base=%~n1"
-				set "file2_base=%~n2"
-
-				echo Comparing files:
-				echo 1: %~1
-				echo 2: %~2
-				echo.
-
-				REM Create a temporary working directory
-				set "temp_dir=%TEMP%\audio_compare_%RANDOM%"
-				mkdir "%temp_dir%"
-
-				echo Extracting metadata...
-				ffmpeg -i "%~1" -f ffmetadata "%temp_dir%\%file1_base%_metadata.txt" 2>nul
-				ffmpeg -i "%~2" -f ffmetadata "%temp_dir%\%file2_base%_metadata.txt" 2>nul
-
-				echo Comparing metadata...
-				fc "%temp_dir%\%file1_base%_metadata.txt" "%temp_dir%\%file2_base%_metadata.txt" > "%temp_dir%\metadata_diff.txt"
-				if errorlevel 1 (
-					echo Metadata differences found - see "%temp_dir%\metadata_diff.txt"
-				) else (
-					echo No metadata differences found
-				)
-				echo.
-
-				echo Converting to raw PCM format...
-				ffmpeg -i "%~1" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%temp_dir%\%file1_base%.raw" 2>nul
-				ffmpeg -i "%~2" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%temp_dir%\%file2_base%.raw" 2>nul
-
-				echo Comparing raw audio data...
-				fc /b "%temp_dir%\%file1_base%.raw" "%temp_dir%\%file2_base%.raw" > "%temp_dir%\audio_diff.txt"
-				if errorlevel 1 (
-					echo Audio content differences found - see "%temp_dir%\audio_diff.txt"
-				) else (
-					echo No audio content differences found
-				)
-
-				echo.
-				echo Temporary files stored in: %temp_dir%
-				echo.
-				echo Files created:
-				echo - Metadata files: %file1_base%_metadata.txt, %file2_base%_metadata.txt
-				echo - Raw audio files: %file1_base%.raw, %file2_base%.raw
-				echo - Comparison results: metadata_diff.txt, audio_diff.txt
-
-				REM Note: Leaving temp files for inspection
-				REM To clean up, uncomment the following line:
-				REM rmdir /s /q "%temp_dir%"
-
-				endlocal
-
-				The script assumes ffmpeg is in your system PATH
-				It uses 16-bit, 44100Hz, stereo as the PCM parameters
-
-
-
-		Besides typical media tags, what other type of data might be included in the metadata?
-			Beyond the common media tags (like title, artist, album, year), M4A files (which use the MPEG-4 container format) can contain quite a variety of metadata. Here are the key categories of metadata you might find:
-
-			Technical Audio Information:
-			Encoder information and settings
-			Original bit rate and sample rate
-			Encoding quality parameters
-			Normalization settings
-			Channel configuration
-			Original file format (if converted)
-			Compression settings
-			Device/Software Information:
-			Recording device model
-			Software used to create/modify the file
-			Software version information
-			Encoding/transcoding history
-			Creation and modification timestamps
-			Device-specific identifiers
+		Technical Audio Information:
+				Encoder information and settings
+				Original bit rate and sample rate
+				Encoding quality parameters
+				Normalization settings
+				Channel configuration
+				Original file format (if converted)
+				Compression settings
+				Device/Software Information:
+				Recording device model
+				Software used to create/modify the file
+				Software version information
+				Encoding/transcoding history
+				Creation and modification timestamps
+				Device-specific identifiers
 			Rights Management:
-			Digital Rights Management (DRM) information
-			Copyright information
-			Purchase information (if from digital store)
-			Licensing details
-			Content ID markers
+				Digital Rights Management (DRM) information
+				Copyright information
+				Purchase information (if from digital store)
+				Licensing details
+				Content ID markers
 			Geographic/Location Data:
-			GPS coordinates (if recorded on mobile device)
-			Location names
-			Recording venue information
-			Country codes
+				GPS coordinates (if recorded on mobile device)
+				Location names
+				Recording venue information
+				Country codes
 			Processing History:
-			Audio processing applied
-			Filters used
-			Volume normalization history
-			Mixing/mastering information
-			Edit history
+				Audio processing applied
+				Filters used
+				Volume normalization history
+				Mixing/mastering information
+				Edit history
 			Extended Technical Details:
-			Replay gain information
-			Peak amplitude values
-			Dynamic range information
-			Sound check data (iTunes specific)
-			Gapless playback information
+				Replay gain information
+				Peak amplitude values
+				Dynamic range information
+				Sound check data (iTunes specific)
+				Gapless playback information
 			Platform-Specific Data:
-			iTunes-specific tags
-			Platform-specific identifiers
-			Store-specific metadata
+				iTunes-specific tags
+				Platform-specific identifiers
+				Store-specific metadata
 			Application-specific settings
 			File System Metadata:
-			Original filename
-			File creation date
-			Last modified date
-			File permissions
-			Operating system attributes
-
-
-			# Using FFmpeg
-			ffmpeg -i file.m4a -f ffmetadata metadata.txt
-
-			# Using MediaInfo (more detailed)
-			mediainfo file.m4a
-
-			# Using AtomicParsley (specifically for MPEG-4 containers)
-			AtomicParsley file.m4a -t
-
-			# Using ExifTool (very comprehensive)
-			exiftool file.m4a
-
-
-
-	Both M4A and WMA can support lossless and lossy compression, but it depends on the specific codec used within these container formats. Let me break this down:
-
-	M4A (MPEG-4 Audio):
-
-	Lossy Variants:
-
-	AAC (Advanced Audio Coding) - Most common
-	AAC-LC (Low Complexity)
-	HE-AAC (High Efficiency)
-	AAC-ELD (Enhanced Low Delay)
-	Lossless Variant:
-
-	ALAC (Apple Lossless Audio Codec)
-	File extension might be .m4a or sometimes .m4a-alac
-	Offers bit-perfect reproduction of the original audio
-	WMA (Windows Media Audio):
-
-	Lossy Variants:
-
-	WMA Standard
-	WMA Professional
-	WMA Voice
-	Lossless Variant:
-
-	WMA Lossless
-	Usually uses .wma extension
-	Provides bit-perfect reproduction
-
-
-
-	How to identify if your file is lossless:
-
-	Using FFmpeg:
-
-	bash
-	# For M4A files
-	ffmpeg -i yourfile.m4a 2>&1 | findstr "Audio"
-	# Look for "alac" in the output for lossless
-
-	# For WMA files
-	ffmpeg -i yourfile.wma 2>&1 | findstr "Audio"
-	# Look for "wmapro" or "wmalossless" in the output
-	Using MediaInfo:
-
-	bash
-	mediainfo yourfile.m4a
-	# or
-	mediainfo yourfile.wma
-
-
-	Sample FFmpeg commands to create lossless versions:
-
-	bash
-	# Convert to M4A ALAC (lossless)
-	ffmpeg -i input.wav -c:a alac output.m4a
-
-	# Convert to WMA Lossless
-	ffmpeg -i input.wav -c:a wmav2 -compression_level 100 output.wma
-
-
-	To verify if your specific files are lossless:
-
-	Check the bitrate - lossless will typically be > 500kbps for stereo
-	Check the codec information
-	Compare file sizes - lossless files will be much larger than lossy versions
-
-
-	The codec used within the container determines if it's lossless or lossy
-	Most M4A files in circulation are lossy AAC
-	Most WMA files in circulation are lossy WMA Standard
-
-
-	As of 2025, the most preferred lossless audio formats are:
-		FLAC (Free Lossless Audio Codec)
-		ALAC (Apple Lossless Audio Codec)
-
-
-	So, if these m4a files are lossless, would it be better to convert them to flac & alac?
-	If your M4A files are already lossless (using ALAC codec), there's generally no significant benefit to converting them to FLAC or creating duplicate ALAC files. 
-
-
-	For lossy format (maintaining similar quality):
-	bash
-	# Convert to AAC (M4A)
-	ffmpeg -i "Black Is Black.wma" -c:a aac -b:a 192k "Black Is Black.m4a"
-
-	# Or to MP3 (if wider compatibility needed)
-	ffmpeg -i "Black Is Black.wma" -c:a libmp3lame -b:a 192k "Black Is Black.mp3"
-
-	# Basic usage (convert to M4A)
-	dotnet run -- --input "C:\Path\To\Music"
-
-	# Convert to FLAC with high quality
-	dotnet run -- --input "C:\Path\To\Music" --format flac --quality high
-
-	# Convert to MP3 recursively
-	dotnet run -- --input "C:\Path\To\Music" --format mp3 --recursive
-
-
-	I've converted a wma file to m4a.  Are there any reasons to keep the wma version?
-	Generally, there are very few reasons to keep the WMA version after converting to M4A, especially in 2025.
-
-	Could I use ffmpeg to convert the lossy wma file to m4a?
-	Yes, you can use FFmpeg to convert your lossy WMA file to M4A. Since your source WMA file uses the wmav2 codec at 192 kb/s, here's the optimal FFmpeg command:
-
-	bash
-	# Basic conversion with same quality
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k "output.m4a"
-
-	# With metadata preservation and additional options
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	Let's break down the recommended command parameters:
-		ffmpeg -i "input.wma"          # Input file
-		-c:a aac                       # Use AAC codec (best for M4A)
-		-b:a 192k                      # Match original bitrate
-		-map_metadata 0               # Copy all metadata
-		-movflags +faststart          # Optimize for streaming
-		"output.m4a"                  # Output file
-
-
-	Additional options you might want to consider:
-
-	bash
-	# Higher quality version (if desired)
-	ffmpeg -i "input.wma" -c:a aac -b:a 256k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# With specific AAC encoder (if available)
-	ffmpeg -i "input.wma" -c:a libfdk_aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# With quality-based VBR encoding
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	Remember:
-
-	Since the source is lossy (WMA at 192 kb/s), there's no quality benefit in using higher bitrates
-	AAC in M4A container is the most compatible modern format
-	The -map_metadata 0 flag ensures all tags are preserved
-
-
-	What is 'quality-based VBR encoding'?
-	Quality-based VBR (Variable Bit Rate) encoding is an advanced audio encoding method that adjusts the bitrate dynamically based on the complexity of the audio signal. Let me break this down:
-
-	VBR vs CBR (Constant Bit Rate):
-
-	CBR: Uses the same bitrate throughout the file (e.g., constant 192 kbps)
-	VBR: Varies the bitrate based on what the audio needs
-	How Quality-based VBR works:
-
-	Code
-	Simple passage (e.g., silence)     → Lower bitrate (e.g., 32 kbps)
-	Complex passage (e.g., orchestra)  → Higher bitrate (e.g., 320 kbps)
-	FFmpeg's Quality Scale for AAC:
-
-	Code
-	-q:a VALUE    Where VALUE ranges from:
-	0.1 = Highest quality (larger file)
-	1   = Very good quality
-	2   = Good quality (recommended)
-	4   = Medium quality
-	6   = Low quality (smaller file)
-	Example FFmpeg commands showing different approaches:
-
-	bash
-	# CBR (Constant Bit Rate) - 192kbps always
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k "output.m4a"
-
-	# VBR (Quality-based) - varies bitrate based on content
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 "output.m4a"
-
-	# VBR with constraints (minimum and maximum bitrates)
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -minrate 128k -maxrate 320k "output.m4a"
-
-
-	Benefits of Quality-based VBR:
-
-	Better Quality-to-Size Ratio:
-
-	Uses more bits when needed
-	Saves space on simple passages
-	Overall more efficient
-	Quality Consistency:
-
-	Maintains consistent perceived quality
-	Rather than consistent bitrate
-	Better for variable content
-	File Size Benefits:
-
-
-	Use CBR when:
-	- Streaming is primary use
-	- Device compatibility is uncertain
-	- Exact file size is important
-
-	Use VBR when:
-	- Quality is priority
-	- Storage space is limited
-	- Content has varying complexity
-
-	For your WMA to M4A conversion, I'd recommend:
-
-	bash
-	# For best quality/size balance:
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# For maximum compatibility:
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	will 'ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"' produce vbr output?
-	Yes, the command ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a" will produce VBR output, but there's an important caveat:
-
-	The behavior depends on which AAC encoder FFmpeg is using. Let me break it down:
-
-	Native FFmpeg AAC encoder (default):
-	When you specify -c:a aac without explicitly choosing an encoder
-	-q:a 2 will engage VBR mode
-	Quality range is 0.1 (highest) to 6 (lowest)
-	Will produce true VBR output
-	To verify VBR encoding is working:
-	bash
-	# Before conversion, add -t 30 to test with just first 30 seconds
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart -t 30 "test_output.m4a"
-
-	# Then check the output file's properties
-	ffprobe -i "test_output.m4a" -show_format | grep bit_rate
-
-	# More explicit VBR command
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart "output.m4a"
-
-
-	How can I check AAC encoder available?  Are there preferences?
-	Let me help you check available AAC encoders and explain their differences.
-
-	To check which AAC encoders are available in your FFmpeg installation:
-
-	bash
-	ffmpeg -encoders | grep aac
-
-
-	AAC Encoder Preferences (from best to basic):
-
-	libfdk_aac (Fraunhofer FDK AAC):
-
-	Highest quality
-	Best VBR implementation
-	Not included in standard FFmpeg due to licensing
-	bash
-	# If available, use like this:
-	ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
-	VBR quality scale: 1 (highest) to 5 (lowest)
-
-	aac (Native FFmpeg AAC):
-
-	Included by default
-	Quality has improved significantly
-	Decent VBR implementation
-	bash
-	ffmpeg -i input.wma -c:a aac -q:a 2 output.m4a
-	VBR quality scale: 0.1 (highest) to 6 (lowest)
-
-
-	# For libfdk_aac (if available):
-	# High Quality VBR
-	ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 -map_metadata 0 -movflags +faststart output.m4a
-
-	# For native FFmpeg AAC:
-	# High Quality VBR
-	ffmpeg -i input.wma -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart output.m4a
-
-
-	ow can I get the 'Fraunhofer FDK AAC codec'?
-	The Fraunhofer FDK AAC codec (libfdk_aac) is considered the highest quality AAC encoder, but it requires special steps to obtain due to licensing restrictions. Here's how to get it:
-
-	Windows:
-
-	Code
-	# Using scoop package manager:
-	scoop install ffmpeg-full
-
-	# Or using Chocolatey:
-	choco install ffmpeg --params "/FfmpegPath:full"
-
-
-	Important Notes:
-
-	libfdk_aac is not included in standard FFmpeg builds due to licensing
-	Some distributions may require enabling non-free repositories
-	Building from source ensures you get the latest version
-	The codec is particularly good at low bitrates compared to other AAC encoders
-
-	es, VcPkg provides some interesting options for FFmpeg with FDK-AAC support. Here's what you can do:
-
-	First, check your current FFmpeg build features:
-	cmd
-	ffmpeg -buildconf
-	Look for --enable-libfdk-aac in the output.
-
-	If you want to install/rebuild FFmpeg with FDK-AAC support via VcPkg:
-	cmd
-	# First, remove current ffmpeg if needed
-	vcpkg remove ffmpeg:x64-windows
-
-	# Install with full features including FDK-AAC
-	vcpkg install ffmpeg[fdk-aac,gpl]:x64-windows
-	Alternative approaches in order of preference:
-
-	Use VcPkg (since you already have it):
-	cmd
-	# Full featured build with all codecs
-	vcpkg install ffmpeg[core,fdk-aac,gpl,x264,x265]:x64-windows
-	Use Chocolatey (keeping as backup option):
-	cmd
-	choco install ffmpeg --params "/FfmpegPath:full"
-
-	Download pre-built binaries from specialized sources like BtbN or gyan.dev which include libfdk-aac.
-
-
-	To get FFmpeg with libfdk_aac through Chocolatey, you need to specifically request the full version with all features:
-
-	cmd
-	# First, remove existing FFmpeg
-	choco uninstall ffmpeg
-
-	# Then install with full features
-	choco install ffmpeg --version=6.1.1 --params "/FfmpegPath:full"
-
-
-	If that doesn't include libfdk_aac, your best alternatives are:
-
-	Use a pre-built version that includes libfdk_aac:
-
-	Download from BtbN's build: https://github.com/BtbN/FFmpeg-Builds/releases
-	Look for "ffmpeg-master-latest-win64-gpl-shared.zip"
-	This build includes libfdk_aac and other professional codecs
-	Use VcPkg with explicit features:
-
-	cmd
-	vcpkg install ffmpeg[core,fdk-aac,gpl]:x64-windows
-
-
-	# Convert MP3 to M4A (for better quality)
-	ffmpeg -i input.mp3 -c:a aac -q:a 2 output.m4a
-
-
-
-	To save a wma file to m4a, you gave this example: set FileName=%~n1 ffmpeg -i  %1 -c:a aac -b:a 192k %FileName%.m4a.  But the bitrate seems hard-coded.  How can direct ffmpeg to use the same bit rate of source?
-	You can use FFmpeg's -b:a flag to set the bitrate for the audio encoding. However, FFmpeg does not have a direct option to automatically match the source bitrate. Instead, you can use a script to extract the source bitrate and then use it for the output file.
-
-	Here's a Windows batch script that accomplishes this:
-
-
-	For the AAC codec in FFmpeg, the -q:a option specifies the quality level for Variable Bit Rate (VBR) encoding. The quality scale typically ranges from 1 to 5, where:
-
-	1 provides the highest quality and largest file size.
-	5 provides the lowest quality and smallest file size.
-
-
-	What audio file formats can contain either lossy or lessless content? 
-	Several audio file formats can contain either lossy or lossless content. Here are some of the most common ones:
-
-	1. MP4/M4A
-	Lossy: Typically uses AAC (Advanced Audio Codec).
-	Lossless: Can use ALAC (Apple Lossless Audio Codec).
-	2. FLAC (Free Lossless Audio Codec)
-	Lossless: FLAC is designed for lossless compression.
-	3. WAV (Waveform Audio File Format)
-	Lossy: Uncommon, but can technically contain lossy codecs.
-	Lossless: Typically contains uncompressed PCM audio.
-	4. AIFF (Audio Interchange File Format)
-	Lossy: Uncommon, but possible.
-	Lossless: Typically contains uncompressed PCM audio.
-	5. ALAC (Apple Lossless Audio Codec)
-	Lossless: Specifically designed for lossless compression.
-	6. WMA (Windows Media Audio)
-	Lossy: Standard WMA codec.
-	Lossless: WMA Lossless codec.
-	7. OGG
-	Lossy: Typically uses the Vorbis codec.
-	Lossless: Can use the FLAC codec within the OGG container.
-	8. MPEG-4 Part 14 (.mp4)
-	Lossy: Uses codecs like AAC, MP3.
-	Lossless: Can use codecs like ALAC.
-	9. APE (Monkey's Audio)
-	Lossless: Specifically designed for lossless compression.
-
-	Summary
-	MP4/M4A, WMA, and OGG are versatile containers that can support both lossy and lossless codecs.
-	FLAC, ALAC, and APE are specifically designed for lossless compression but can be used within containers that support both types.
-	WAV and AIFF are typically used for lossless audio but can technically contain lossy data.
-
-
-	Before you mentioned that "Both M4A and WMA can support lossless and lossy compression, but it depends on the specific codec used within these container formats." but in the code sample, you don't really evaluate WMA files.  Why is that?  Is some modification needed?
-	You're correct. The code provided earlier does not fully evaluate WMA files to determine whether they are using a lossy or lossless codec. To address this, we can enhance the method to specifically check for the WMA format and identify whether it's using a lossy or lossless codec.
-
-	Here's an improved version of the code that includes a more thorough evaluation of WMA files:
-
-
-	What about MP3 files?  Are they always lossy?
-	Yes, MP3 files are always lossy. The MP3 (MPEG-1 Audio Layer III) format uses a compression algorithm that removes some of the audio data to reduce the file size, which results in a loss of quality. This lossy compression is a trade-off between file size and audio quality.
-Script
-	@echo off
-	REM Converts a FLAC file to ALAC using FFmpeg
-	REM Usage: convert_flac_to_alac.bat input.flac output.m4a
-
-	IF "%~1"=="" (
-		echo Please provide the input FLAC file.
-		echo Usage: %0 input.flac [output.m4a]
-		exit /b 1
-	)
-
-	IF "%~2"=="" (
-		set OUTPUT_FILE=%~n1.m4a
-	) ELSE (
-		set OUTPUT_FILE=%~2
-	)
-
-	ffmpeg -i "%~1" -c:a alac "%OUTPUT_FILE%"
-
-	IF %ERRORLEVEL% EQU 0 (
-		echo Conversion successful: %OUTPUT_FILE%
-	) ELSE (
-		echo Conversion failed.
-	)
-
-	convert_flac_to_alac.bat input.flac output.m4a
-DLL Loading Includes
-	Options
-		<None Include="..\Bin\Debug\x64\AudioSignature.dll">
-		<None Update="..\..\Bin\Debug\x64\AudioSignature.dll">
-Inbox
+				Original filename
+				File creation date
+				Last modified date
+				File permissions
+				Operating system attributes
+Cpdecs
+	Install
+		Fraunhofer FDK AAC codec
+			How can I get the 'Fraunhofer FDK AAC codec'?
+				The Fraunhofer FDK AAC codec (libfdk_aac) is considered the highest quality AAC encoder, but it requires special steps to obtain due to licensing restrictions.
+
+				Here's how to get it:
+					Windows:
+						# Using scoop package manager:
+						scoop install ffmpeg-full
+						# Or using Chocolatey:
+						choco install ffmpeg --params "/FfmpegPath:full"
+
+			Important Notes:
+				libfdk_aac is not included in standard FFmpeg builds due to licensing
+				Some distributions may require enabling non-free repositories
+				Building from source ensures you get the latest version
+				The codec is particularly good at low bitrates compared to other AAC encoders
+
+			VcPkg provides some interesting options for FFmpeg with FDK-AAC support. Here's what you can do:
+				First, check your current FFmpeg build features:
+					ffmpeg -buildconf
+				Look for --enable-libfdk-aac in the output.
+
+				If you want to install/rebuild FFmpeg with FDK-AAC support via VcPkg:
+					# First, remove current ffmpeg if needed
+					vcpkg remove ffmpeg:x64-windows
+
+					# Install with full features including FDK-AAC
+					vcpkg install ffmpeg[fdk-aac,gpl]:x64-windows
+
+			Alternative approaches in order of preference:
+				Use VcPkg (since you already have it):
+					# Full featured build with all codecs
+					vcpkg install ffmpeg[core,fdk-aac,gpl,x264,x265]:x64-windows
+				Use Chocolatey (keeping as backup option):
+					choco install ffmpeg --params "/FfmpegPath:full"
+				Download pre-built binaries from specialized sources like BtbN or gyan.dev which include libfdk-aac.
+
+			To get FFmpeg with libfdk_aac through Chocolatey, you need to specifically request the full version with all features:
+				# First, remove existing FFmpeg
+				choco uninstall ffmpeg
+
+				# Then install with full features
+				choco install ffmpeg --version=6.1.1 --params "/FfmpegPath:full"
+
+				If that doesn't include libfdk_aac, your best alternatives are:
+
+			Use a pre-built version that includes libfdk_aac:
+				Download from BtbN's build: https://github.com/BtbN/FFmpeg-Builds/releases
+				Look for "ffmpeg-master-latest-win64-gpl-shared.zip"
+				This build includes libfdk_aac and other professional codecs
+				Use VcPkg with explicit features:
+
+			vcpkg install ffmpeg[core,fdk-aac,gpl]:x64-windows
+		ffmpeg choco libfdk_aac
+			https://superuser.com/questions/1860878/force-ffmpeg-to-select-libfdk-aac-instead-of-native-aac-decoder-via-c-api
+AcoustId
+	https://acoustid.org/webservice
+	https://stackoverflow.com/questions/15571893/search-for-acoustid-on-musicbrainz
+File Conversions
+	http://www.codeproject.com/Articles/501521/How-to-convert-between-most-audio-formats-in-NET
+	http://coppertino.com/vox/resources/how-convert-flac-apple-lossless
+	http://geekswithblogs.net/PearlFactory/archive/2011/11/23/convert-mp3-to-aacflac-to-aac-or-any-other-combination.aspx
+NAudio
+	https://naudio.codeplex.com/
+	https://github.com/naudio/NAudio
+Music Brainz
+	https://musicbrainz.org/doc/Beginners_Guide
+Application Development
 	Possible Additional Packages
 		<PackageReference Include="CSCore" Version="1.2.1.2" />
-	Include	SetLastError = true on NativeMethods
-
-	3. Consider SafeHandle instead of IntPtr
-	While IntPtr is standard, using a SafeHandle can help prevent memory leaks or misuse:
-
-	You can create a SafeAudioSignatureHandle class that overrides SafeHandle and releases the handle via FreeAudioSignature.
-
-	This is especially useful if you're returning ownership of unmanaged memory (as GetAudioSignature seems to do).
-
-	public static class AudioSignatureWrapper
-	{
-		public static string? GetSignature(string filePath)
-		{
-			byte[] utf8Bytes = System.Text.Encoding.UTF8.GetBytes(filePath + '\0');
-			IntPtr utf8Ptr = Marshal.AllocHGlobal(utf8Bytes.Length);
-			Marshal.Copy(utf8Bytes, 0, utf8Ptr, utf8Bytes.Length);
-
-			IntPtr resultPtr = IntPtr.Zero;
-
-			try
-			{
-				resultPtr = NativeMethods.GetAudioSignature(utf8Ptr);
-				return resultPtr != IntPtr.Zero
-					? Marshal.PtrToStringAnsi(resultPtr)
-					: null;
-			}
-			finally
-			{
-				if (resultPtr != IntPtr.Zero)
-				{
-					NativeMethods.FreeAudioSignature(resultPtr);
-				}
-
-				Marshal.FreeHGlobal(utf8Ptr);
-			}
-		}
-	}
-
-	Wrap P/Invoke in higher-level managed methods (optional)
-		This depends on how it's used, but consider a managed wrapper like:
-
-		public static byte[] GetSignature(string filePath)
-		{
-			IntPtr ptr = GetAudioSignature(filePath);
-			try
-			{
-				// Convert ptr to byte[] (depends on known size or convention)
-			}
-			finally
-			{
-				FreeAudioSignature(ptr);
-			}
-		}
-
-	Option 2: Marshal manually using UTF-8 (Encoding.UTF8.GetBytes())
-		Wrap your call like this:
-
-		public static string GetSignature(string filePath)
-		{
-			byte[] utf8Path = System.Text.Encoding.UTF8.GetBytes(filePath + "\0");
-			IntPtr unmanagedPath = Marshal.AllocHGlobal(utf8Path.Length);
-			Marshal.Copy(utf8Path, 0, unmanagedPath, utf8Path.Length);
-
-			IntPtr resultPtr = IntPtr.Zero;
-			try
-			{
-				resultPtr = NativeMethods.GetAudioSignature(unmanagedPath);
-				string result = Marshal.PtrToStringAnsi(resultPtr); // base64-style, safe
-				return result;
-			}
-			finally
-			{
-				if (resultPtr != IntPtr.Zero)
-				{
-					NativeMethods.FreeAudioSignature(resultPtr);
-				}
-				Marshal.FreeHGlobal(unmanagedPath);
-			}
-		}
-
-	[DllImport("AudioSignature", CharSet = CharSet.Unicode, EntryPoint = "GetAudioSignature")]
-	public static extern IntPtr GetAudioSignature(string filePath);
-
-	LIB_API(char*) GetAudioSignature(const wchar_t* filePath);
-
-	Unit Tests
-		namespace DigitalZenWorks.MusicToolKit.Tests
-		{
-			public class AudioSignatureWrapperTests
-			{
-				[Fact]
-				public void GetSignature_ValidFilePath_ReturnsSignature()
-				{
-					// Arrange
-					string testFilePath = "test-audio.wav"; // Replace with a valid test file path
-
-					// Act
-					string? signature = AudioSignatureWrapper.GetSignature(testFilePath);
-
-					// Assert
-					Assert.False(string.IsNullOrEmpty(signature));
-					Assert.Matches("^[A-Za-z0-9+/=]+$", signature!); // assuming base64-like format
-				}
-
-				[Fact]
-				public void GetSignature_InvalidFilePath_ReturnsNull()
-				{
-					// Arrange
-					string invalidPath = "nonexistentfile.wav";
-
-					// Act
-					string? signature = AudioSignatureWrapper.GetSignature(invalidPath);
-
-					// Assert
-					Assert.Null(signature);
-				}
-			}
-		}
-Music Manager
-	Notes
-		AcoustId
-			https://acoustid.org/webservice
-			https://stackoverflow.com/questions/15571893/search-for-acoustid-on-musicbrainz
+		Include	SetLastError = true on NativeMethods
+	DLL Loading Includes
+		Options
+			<None Include="..\Bin\Debug\x64\AudioSignature.dll">
+			<None Update="..\..\Bin\Debug\x64\AudioSignature.dll">
+https://docs.mp3tag.de/
+Tasks
+	Process Art Work as Well
+	Test New Media*.cmd s
+	Review	https://github.com/Martchus/tageditor
+	Review	https://en.wikipedia.org/wiki/Audio_file_format
+	Music Manager	Add Config File
+	Add a Test Music Library
+	Revisit iTunes Path Structure
+	FileInfo?		public string SaveTagsToJsonFile(FileInfo sourceFile, string destinationPath)

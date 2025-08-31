@@ -1,0 +1,48 @@
+iTunes Program Flow
+	UpdateItunes
+		playList.Search
+		if none
+			LibraryPlaylist.AddFile
+*		for each track
+			check if same (AreFileAndTrackTheSame)
+		if none same
+			UpdateOrAddTrack
+*				for each track
+					UpdateItunesLocation
+						trackName = TitleRules.ApplyTitleFileRules
+						if same
+							update track name
+							IsValidItunesLocation
+								if File.Exists(fileTrack.Location)
+							if invalid
+								fileTrack.Location = filePath;
+				if not updated
+					LibraryPlaylist.AddFile
+iTunes Development
+	itunes build options
+		set environment variable for conditional build inclusion
+		include hard-coded reference to Interop.iTunesLib.dll
+		create tlb, tlh files?
+	Reference
+		https://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp/76423905#76423905
+Resources
+	http://www.mcelhearn.com/how-to-rebuild-your-itunes-library/
+	https://support.apple.com/en-us/HT201596
+	http://samsoft.org.uk/iTunes/scripts.asp
+	http://www.everythingitunes.com/os/windows/category/scripts/
+	http://dougscripts.com/itunes/itinfo/windowshelp.php
+	http://www.mcelhearn.com/how-to-play-flac-or-other-lossless-audio-files-in-itunes/
+
+	iTunes api
+		http://www.joshkunz.com/iTunesControl/
+		http://stackoverflow.com/questions/2966992/where-is-itunes-sdk-api-documentation
+		https://blogs.msdn.microsoft.com/noahc/2006/07/06/automating-itunes-with-c-in-net/
+		https://www.google.com/#q=c%23+iTunes
+		http://www.hanselman.com/blog/RemovingDeadTracksDuplicatesThatDontExistFromITunesUsingC.aspx
+		http://stackoverflow.com/questions/14352575/itunes-development-in-c-sharp
+		http://www.codeproject.com/Articles/12369/Accessing-songs-and-playlists-from-ITunes-using-C
+		https://ratnakarg.wordpress.com/tag/c-itunes-sdk/
+		https://www.google.com/#q=c%23%20itunes%20get%20track%20by%20file%20filenames
+		http://stackoverflow.com/questions/4834419/itunes-com-how-to-get-tracks-old-location-with-c
+		http://stackoverflow.com/questions/33849246/itunes-com-sdk-how-to-remove-lyrics
+		https://taglib.github.io/api/annotated.html

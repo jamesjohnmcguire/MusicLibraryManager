@@ -3,6 +3,14 @@ Sprints
 	Move low rated Music
 	Start Using Chromaprints
 Music Library Manager Tasks
+	Process Art Work as Well
+	Test New Media*.cmd s
+	Review	https://github.com/Martchus/tageditor
+	Review	https://en.wikipedia.org/wiki/Audio_file_format
+	Music Manager	Add Config File
+	Add a Test Music Library
+	Revisit iTunes Path Structure
+	FileInfo?		public string SaveTagsToJsonFile(FileInfo sourceFile, string destinationPath)
 	ApplyRule	Add Tests in Music Manager.  Need to work out what it will be exactly about.
 	<NoWarn>NU1701</NoWarn>
 	<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>

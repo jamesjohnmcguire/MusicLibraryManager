@@ -1,0 +1,63 @@
+	Rules
+		when the artist tag is 'various artists' and the performers tag not empty and the performers tag is not 'various artists', replace the artist tag with the performers tag
+
+		if	artist is 'various artists' and
+			performers not empty and
+			performers is not 'various artists'
+				replace the artist tag with the performers tag
+
+		https://www.pluralsight.com/courses/patterns-library
+
+		If someObject is Pumpkin replace (change?) with Pie
+			  1       2  3       4                      5
+
+		If someObject is Pumpkin AND someOject is Ripe replace (change?) with Pie
+			  1       2  3       6                     4                      5
+
+		If someObject is Pumpkin AND someOject is Ripe replace (change?) with Pie AND serve
+			  1       2  3       6                     4                      5   7
+
+		1	item
+			subject
+		2	condition
+		3	conditional
+		4	operation
+		5	replacement
+		6	chain
+		7	chain
+
+					  equal
+		If someObject is of type Pumpkin AND someOject has property Ripe replace (change?) with Pie
+		   1          2  subject 3       6             subject           4                      5
+
+		If someObject artistProperty has value equal 'various artists' replace artistPropertyValue with performersPropertyValue
+
+		Remove subject as parameter as it is already a property
+	Album	"The Very Best Of 10cc"
+		Rule1 (album / disks)
+		Rule2 (artist / various artists)
+	will need to specify whether to ignore case sensitivity or not in rules	for that matter, whether ordinal values matter or not
+	handle actions if no more rules chained
+	Need to fix replacement, especially as a property.
+	Get other unit test in line with new approach
+Rules
+	https://stackoverflow.com/questions/208659/looking-for-simple-rules-engine-library-in-net
+	https://cgeers.wordpress.com/2008/01/26/using-rules-outside-of-a-workflow/
+	https://www.codeproject.com/Articles/19768/Flee-Fast-Lightweight-Expression-Evaluator
+	https://archive.codeplex.com/?p=rulesengine
+	https://stackoverflow.com/questions/424366/string-representation-of-an-enum
+	https://www.codeguru.com/csharp/csharp/cs_syntax/reflection/article.php/c5885/Using-Reflection-to-Dump-Objects.htm
+	http://geekswithblogs.net/shahed/archive/2008/07/24/123998.aspx
+	https://www.infoq.com/articles/Rule-Engines/
+	https://en.wikipedia.org/wiki/Command_pattern
+	https://www.informit.com/articles/article.aspx?p=1398607&seqNum=2
+	https://softwareengineering.stackexchange.com/questions/323018/business-rules-design-pattern
+	rule pattern
+	https://www.pluralsight.com/courses/patterns-library
+	https://github.com/mwhelan/Blog_RulesPattern
+
+	https://tenmilesquare.com/basic-rules-engine-design-pattern/
+	https://yiniski.medium.com/rule-engine-pattern-8a3f0e0c2d81
+
+	https://nrules.net/
+	https://www.google.com/search?q=rule+pattern&oq=rule+pattern&aqs=chrome..69i57j0l4j0i22i30l3.5132j0j15&sourceid=chrome&ie=UTF-8
