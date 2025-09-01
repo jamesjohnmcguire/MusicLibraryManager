@@ -495,13 +495,24 @@ Application Development
 		Options
 			<None Include="..\Bin\Debug\x64\AudioSignature.dll">
 			<None Update="..\..\Bin\Debug\x64\AudioSignature.dll">
-https://docs.mp3tag.de/
-Tasks
-	Process Art Work as Well
-	Test New Media*.cmd s
-	Review	https://github.com/Martchus/tageditor
-	Review	https://en.wikipedia.org/wiki/Audio_file_format
-	Music Manager	Add Config File
-	Add a Test Music Library
-	Revisit iTunes Path Structure
-	FileInfo?		public string SaveTagsToJsonFile(FileInfo sourceFile, string destinationPath)
+Tags
+	https://docs.mp3tag.de/
+Music Utilities
+	External
+		fpcalc.exe
+		iTunesCoder.exe
+		MergeMP3.exe
+	C:\ProgramData\chocolatey\bin
+		ffmpeg.exe
+		ffplay.exe
+		ffprobe.exe
+		MediaInfo.exe
+	%USERPROFILE%\OneDrive\Desktop\"Music Tools"
+		Ear Power Training Center.lnk
+		EarMaster 7.7.lnk
+		iTunes.lnk
+		Mp3tag.lnk
+		MusicBee.lnk
+		Spotify.lnk
+	External Utilities Usage
+		mediainfo --Inform="Audio;Compression mode : %Compression_Mode%" "I'm Not in Love.mp3"
