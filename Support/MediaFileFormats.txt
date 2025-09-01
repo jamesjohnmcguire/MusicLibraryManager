@@ -1,14 +1,19 @@
-File Extension Types
-	extension	LossLess	iTunes	Description					Notes
-	aa						Y		audible files
+Containers and Codecs
+	Container
+		A container (or file format) is like a box that holds audio data and metadata. It defines the file structure, how the data is organized, and what additional information can be stored (like album art, track titles, etc.).
+	Codec
+		A codec (coder-decoder) is the actual method used to encode and compress the audio data that goes inside that container.
+Codecs Only
+	Name		LossLess	iTunes	Description					Notes
 	aac						Y
+	alac		Both				Apple Lossless Audio Codec
+File Containers Extension Types
+	extension	LossLess	iTunes	Description					Notes
 	aifc							Apple
 	aiff		Both		Y
-	alac		Both				Apple Lossless Audio Codec
 	ape			Y
 	flac		Both		N
 	ogg			Both
-	m3u
 	m4a			Both		Y			mpeg-4
 	m4p						Y
 	m4v						Y
@@ -17,6 +22,9 @@ File Extension Types
 	mov						Y
 	wav			Both		Y
 	wma			Both		N
+Other
+	aa						Y		audible files
+	m3u
 LossLess / Lossy
 	Several audio file formats can contain either lossy or lossless content.
 
@@ -27,11 +35,39 @@ LossLess / Lossy
 
 		For these types, it often depends on the specific codec used within these container formats.
 	Details
+		AA (Audible Audio)
+			Proprietary format used exclusively by Amazon's Audible audiobook service
+			Contains DRM (Digital Rights Management) protection
+			Compressed format optimized for spoken word content
+			Can only be played on authorized devices/apps linked to your Audible account
+		AAC (Advanced Audio Coding)
+			Lossy
+			Successor to MP3 with better compression efficiency
+			Lossy compression format (discards some audio data)
+			Widely supported across devices and platforms
+			Common in iTunes, streaming services, and mobile devices
+			Provides better quality than MP3 at similar file sizes
+		AIFC (Audio Interchange File Format Compressed)
+			Compressed variant of the AIFF format
+			Can use various compression algorithms
+			Less common than other formats
+			Primarily used in professional audio applications
 		AIFF (Audio Interchange File Format)
 			Lossy: Uncommon, but possible.
 			Lossless: Typically contains uncompressed PCM audio.
+
+			Uncompressed audio format developed by Apple
+			Lossless format that preserves all original audio data
+			Large file sizes due to no compression
+			High quality, often used in professional audio production
+			Similar to WAV but with different metadata structure
 		ALAC (Apple Lossless Audio Codec)
 			Lossless: Specifically designed for lossless compression.
+			Apple's proprietary lossless compression format
+			Reduces file size without losing any audio quality
+			Smaller than AIFF/WAV but larger than lossy formats like AAC
+			Primarily supported in Apple's ecosystem (iTunes, Apple Music, etc.)
+			Good balance between quality and file size for archival purposes
 		FLAC (Free Lossless Audio Codec)
 			Lossless: FLAC is designed for lossless compression.
 		M4A/MP4 (MPEG-4 Audio, MPEG-4 Part 14):
@@ -81,3 +117,6 @@ Lossless
 Lossy
 	MP3
 		Yes, MP3 files are always lossy. The MP3 (MPEG-1 Audio Layer III) format uses a compression algorithm that removes some of the audio data to reduce the file size, which results in a loss of quality. This lossy compression is a trade-off between file size and audio quality.
+
+
+aa, aac, aifc, aiff, alac, ape, flac, ogg, m3u, m4a, m4p, m4v, mp3, mp4, mov, wav, wma
