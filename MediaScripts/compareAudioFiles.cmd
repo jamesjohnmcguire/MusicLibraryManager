@@ -1,6 +1,8 @@
 @ECHO off
 SETLOCAL EnableDelayedExpansion
 
+:: The script assumes ffmpeg is in your system PATH
+:: It uses 16-bit, 44100Hz, stereo as the PCM parameters
 
 if "%~2"=="" SET Message=Usage: <<media file1>>  <<media file2>>
 if "%~2"=="" GOTO error
@@ -13,7 +15,7 @@ SET "File1Base=%~n1"
 SET "File2Base=%~n2"
 SET File1="%TempDirectory%\%File1Base%.Metadata.txt"
 SET File2="%TempDirectory%\%File2Base%.Metadata.txt"
-SET DiffFile="%empDirectory%\metadata_diff.txt"
+SET DiffFile="%TempDirectory%\metadata_diff.txt"
 
 ECHO Comparing files:
 ECHO 1: %~1
@@ -33,7 +35,9 @@ ffmpeg -i "%~2" 2>> "%File2%"
 ECHO Additional technical details: >> "%File2%"
 ffprobe -show_format -show_streams "%~2" 2>> "%File2%"
 
-REM ... [rest of code] ...
+:: Note: Leaving temp files for inspection
+:: To clean up, uncomment the following line:
+:: rmdir /s /q "%TempDirectory%"
 
 ECHO Comparing metadata...
 fc "%File1%" "%File2%" > "%DiffFile%"
