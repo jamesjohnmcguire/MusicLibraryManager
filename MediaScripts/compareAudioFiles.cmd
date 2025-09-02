@@ -46,9 +46,11 @@ if errorlevel 0 SET Message=No metadata differences found
 
 ECHO %Message%
 ECHO.
+GOTO finish
 
 ;error
 ECHO %Message%
 EXIT /b 1
 
+;finish
 ENDLOCAL

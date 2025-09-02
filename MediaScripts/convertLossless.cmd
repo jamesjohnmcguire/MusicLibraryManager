@@ -1,11 +1,9 @@
-@echo off
-setlocal EnableDelayedExpansion
+@ECHO off
+SETLOCAL EnableDelayedExpansion
 
-REM Check if file is provided
-if "%~1"=="" (
-    echo Usage: %~nx0 input.m4a
-    exit /b 1
-)
+:: Check if file is provided
+if "%~1"=="" SET Message=Usage: %~nx0 input.m4a
+if "%~1"=="" GOTO error
 
 REM Get codec info
 ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "%~1" > codec.tmp
@@ -25,3 +23,12 @@ if /i "%CODEC%" == "alac" (
     echo Warning: Input file is not ALAC. Codec detected: %CODEC%
     echo Conversion not recommended as source may not be lossless
 )
+
+GOTO finish
+
+;error
+ECHO %Message%
+EXIT /b 1
+
+;finish
+ENDLOCAL

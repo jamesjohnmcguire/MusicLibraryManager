@@ -1,5 +1,5 @@
-@echo off
-setlocal
+@ECHO off
+SETLOCAL
 
 SET FileName=%~n1
 
@@ -25,4 +25,4 @@ REM # For best quality/size balance:
 REM ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
 
 ECHO Conversion complete: %FileName%.m4a
-endlocal
+ENDLOCAL

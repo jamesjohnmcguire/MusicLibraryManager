@@ -1,9 +1,5 @@
-@echo off
-REM Batch script to run the Python converter
-REM Created: 2025-02-06
-REM Author: James John McGuire
-
-setlocal enabledelayedexpansion
+@ECHO off
+SETLOCAL enabledelayedexpansion
 
 REM Check if Python is installed
 python --version >nul 2>&1
@@ -14,12 +10,9 @@ if errorlevel 1 (
 
 REM Check if FFmpeg is installed
 ffmpeg -version >nul 2>&1
-if errorlevel 1 (
-    echo FFmpeg is not installed. Please install FFmpeg
-    exit /b 1
-)
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
 
-REM Get input directory
 set "INPUT_DIR=%~1"
 if "%INPUT_DIR%"=="" (
     set "INPUT_DIR=%CD%"
@@ -34,4 +27,11 @@ if not "%~2"=="" (
 REM Run the Python script
 python convert_audio.py "%INPUT_DIR%" --format %FORMAT% --quality high
 
-pause
+GOTO finish
+
+;error
+ECHO %Message%
+EXIT /b 1
+
+;finish
+ENDLOCAL
