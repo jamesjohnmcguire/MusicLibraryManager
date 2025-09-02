@@ -47,6 +47,7 @@ LossLess / Lossy
 			Widely supported across devices and platforms
 			Common in iTunes, streaming services, and mobile devices
 			Provides better quality than MP3 at similar file sizes
+			Generally, not a real file container.  You might need to rename them to .m4a for better compatibility or convert them to a more standard container format
 		AIFC (Audio Interchange File Format Compressed)
 			Compressed variant of the AIFF format
 			Can use various compression algorithms
