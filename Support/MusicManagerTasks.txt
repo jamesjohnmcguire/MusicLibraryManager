@@ -3,19 +3,25 @@ Sprints
 	Move low rated Music
 	Start Using Chromaprints
 Music Library Manager Tasks
-	Process Art Work as Well
-	Test New Media*.cmd s
-	Review	https://github.com/Martchus/tageditor
-	Review	https://en.wikipedia.org/wiki/Audio_file_format
-	Music Manager	Add Config File
-	Add a Test Music Library
-	Revisit iTunes Path Structure
-	FileInfo?		public string SaveTagsToJsonFile(FileInfo sourceFile, string destinationPath)
-	ApplyRule	Add Tests in Music Manager.  Need to work out what it will be exactly about.
+	Clean Up MediaScripts
+	Clean Up Scripts.txt
+	Review and Convert convert_audio.py, Refactor convertAudio.cmd
+	Clean Up and Integrate New Code Files
+	Clean Up and Integrate CodeSnippets.txt
+	Test New MediaScripts
 	<NoWarn>NU1701</NoWarn>
 	<CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 	<AnalysisMode>AllEnabledByDefault</AnalysisMode>
-	iTunes
+	Music Manager	Add Config File
+	Add a Test Music Library
+	Review	https://github.com/Martchus/tageditor
+	Review	https://en.wikipedia.org/wiki/Audio_file_format
+	ApplyRule	Add Tests in Music Manager.  Need to work out what it will be exactly about.
+	Process Art Work as Well
+	Revisit iTunes Path Structure
+	Revisit Use of FileInfo in SaveTagsToJsonFile(FileInfo sourceFile, string destinationPath)
+	iTunes Support as PlugIn
+
 	ChromaPrint Tests	Source: test_audio_processor.cpp line 13	unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.	Exception thrown at 0x00007FF7F651E1DE in ChromaPrintTests.exe: 0xC0000005: Access violation reading location 0x000000A4E3700001.
 	Add to PlayLists
 	MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs(262,44): warning CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
