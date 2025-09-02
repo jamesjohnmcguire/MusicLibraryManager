@@ -159,16 +159,7 @@ MediaGetRawAudio.cmd	!
 
 	# Convert to WMA Lossless
 	ffmpeg -i input.wav -c:a wmav2 -compression_level 100 output.wma
-
-
-	To verify if your specific files are lossless:
-
-	Check the bitrate - lossless will typically be > 500kbps for stereo
-	Check the codec information
-	Compare file sizes - lossless files will be much larger than lossy versions
 ####################
-
-
 	For lossy format (maintaining similar quality):
 	bash
 	# Convert to AAC (M4A)
