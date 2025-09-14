@@ -36,6 +36,12 @@ ECHO 1: %~1
 ECHO 2: %~2
 ECHO.
 
+SET CheckFile=%~1
+CALL :audio-info
+
+SET CheckFile=%~2
+CALL :audio-info
+
 ECHO Extracting detailed metadata...
 ECHO Full metadata for %~1: > "%File1%"
 :: ffmpeg -i "%~1" -f ffmetadata "%temp_dir%\%file1_base%_metadata.txt" 2>nul
@@ -81,6 +87,7 @@ GOTO finish
 	)
 
 	DEL "%TempFile%" 2>nul
+    GOTO :EOF
 
 :help
 	ECHO Audio PCM Comparison Script
