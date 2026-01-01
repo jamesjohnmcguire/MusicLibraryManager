@@ -98,8 +98,8 @@ Notes
 	Manual Renaming
 		C:\\Users\\JamesMc\\Data\\External\\Entertainment\\Music\\
 			FunkSoul\\ABC (Love Stream Mix By Kayoko Kimura Feat. Fireflys).wma
-		Soul Source Jackson 5 Remixes 
-		ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko 
+		Soul Source Jackson 5 Remixes
+		ABC (Love Stream Mix) Featuring Fireflys and Kimura Kayoko
 		The Jackson 5 (Soul Source, 2000)
 	Source Code notes
 		TagSet based on public abstract class Tag
@@ -287,7 +287,7 @@ Resources
 		soundcharts.com
 		muckrack.com
 		Spotify API dashboard
-		Apple Music / iTunes / 
+		Apple Music / iTunes /
 		Deezer
 	NAudio
 		https://github.com/naudio/NAudio
@@ -516,3 +516,15 @@ Music Utilities
 		Spotify.lnk
 	External Utilities Usage
 		mediainfo --Inform="Audio;Compression mode : %Compression_Mode%" "I'm Not in Love.mp3"
+Music Manager
+	where ffmpeg
+		C:\ProgramData\chocolatey\bin\ffmpeg.exe
+
+	Alternative Tools:
+	SoX (Sound eXchange):
+
+	$ git add MediaScripts/audioFilesCompare.sh
+	warning: in the working copy of 'MediaScripts/audioFilesCompare.sh', LF will be replaced by CRLF the next time Git touches it
+
+	Compare Scripts	audioFilesCompare.cmd
+	Convert Scripts
