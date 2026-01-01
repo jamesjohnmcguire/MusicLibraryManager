@@ -22,7 +22,7 @@
 		<Keyword>Win32Proj</Keyword>
 		<OutDir>$(SolutionDir)\Bin\$(Configuration)\$(Platform)\</OutDir>
 		<Platform>x64</Platform>
-		<PlatformToolset>v143</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<PreferredToolArchitecture>x64</PreferredToolArchitecture>
 		<_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
 		<ProjectGuid>{B3B4E7E5-5BC3-36BA-9D00-003C6DD6A5A4}</ProjectGuid>
