@@ -1,9 +1,9 @@
-﻿{
+{
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
       "companyName": "Digital Zen Works",
-      "copyrightText": "Copyright © 2023 - 2025 {companyName}. All Rights Reserved.",
+      "copyrightText": "Copyright © 2023 - 2026 {companyName}. All Rights Reserved.",
       "xmlHeader": true,
       "fileNamingConvention": "metadata"
     },
