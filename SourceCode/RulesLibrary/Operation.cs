@@ -4,26 +4,25 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.RulesLibrary
+namespace DigitalZenWorks.RulesLibrary;
+
+/// <summary>
+/// Operation types enum.
+/// </summary>
+public enum Operation
 {
 	/// <summary>
-	/// Operation types enum.
+	/// Operation none.
 	/// </summary>
-	public enum Operation
-	{
-		/// <summary>
-		/// Operation none.
-		/// </summary>
-		None,
+	None,
 
-		/// <summary>
-		/// Operation remove.
-		/// </summary>
-		Remove,
+	/// <summary>
+	/// Operation remove.
+	/// </summary>
+	Remove,
 
-		/// <summary>
-		/// Operation replace.
-		/// </summary>
-		Replace
-	}
+	/// <summary>
+	/// Operation replace.
+	/// </summary>
+	Replace
 }

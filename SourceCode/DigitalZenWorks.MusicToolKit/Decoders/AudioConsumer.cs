@@ -4,20 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit.Decoders
+namespace DigitalZenWorks.MusicToolKit.Decoders;
+
+/// <summary>
+/// Represents an audio consumer.
+/// </summary>
+public class AudioConsumer : IAudioConsumer
 {
 	/// <summary>
-	/// Represents an audio consumer.
+	/// Consume audio data.
 	/// </summary>
-	public class AudioConsumer : IAudioConsumer
+	/// <param name="input">The audio data.</param>
+	/// <param name="length">The number of samples to consume.</param>
+	public void Consume(short[] input, int length)
 	{
-		/// <summary>
-		/// Consume audio data.
-		/// </summary>
-		/// <param name="input">The audio data.</param>
-		/// <param name="length">The number of samples to consume.</param>
-		public void Consume(short[] input, int length)
-		{
-		}
 	}
 }

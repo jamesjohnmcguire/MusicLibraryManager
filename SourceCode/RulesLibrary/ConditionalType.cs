@@ -4,21 +4,20 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.RulesLibrary
+namespace DigitalZenWorks.RulesLibrary;
+
+/// <summary>
+/// Conditional types enum.
+/// </summary>
+public enum ConditionalType
 {
 	/// <summary>
-	/// Conditional types enum.
+	/// ConditionalType literal.
 	/// </summary>
-	public enum ConditionalType
-	{
-		/// <summary>
-		/// ConditionalType literal.
-		/// </summary>
-		Literal,
+	Literal,
 
-		/// <summary>
-		/// ConditionalType property.
-		/// </summary>
-		Property
-	}
+	/// <summary>
+	/// ConditionalType property.
+	/// </summary>
+	Property
 }

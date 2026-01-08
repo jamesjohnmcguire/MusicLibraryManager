@@ -4,20 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit.Decoders
-{
-	using System;
-	using NAudio.CoreAudioApi;
+namespace DigitalZenWorks.MusicToolKit.Decoders;
 
+using System;
+using NAudio.CoreAudioApi;
+
+/// <summary>
+/// Interface for audio decoders.
+/// </summary>
+public interface IAudioDecoder : IDecoder, IDisposable
+{
 	/// <summary>
-	/// Interface for audio decoders.
+	/// Gets the format property.
 	/// </summary>
-	public interface IAudioDecoder : IDecoder, IDisposable
-	{
-		/// <summary>
-		/// Gets the format property.
-		/// </summary>
-		/// <value>The format property.</value>
-		AudioProperties Format { get; }
-	}
+	/// <value>The format property.</value>
+	AudioProperties Format { get; }
 }

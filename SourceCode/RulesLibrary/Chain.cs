@@ -4,31 +4,30 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.RulesLibrary
+namespace DigitalZenWorks.RulesLibrary;
+
+/// <summary>
+/// Chain types enum.
+/// </summary>
+public enum Chain
 {
 	/// <summary>
-	/// Chain types enum.
+	/// No chaining.
 	/// </summary>
-	public enum Chain
-	{
-		/// <summary>
-		/// No chaining.
-		/// </summary>
-		None,
+	None,
 
-		/// <summary>
-		/// Chain by anding.
-		/// </summary>
-		And,
+	/// <summary>
+	/// Chain by anding.
+	/// </summary>
+	And,
 
-		/// <summary>
-		/// Chain by oring.
-		/// </summary>
-		Or,
+	/// <summary>
+	/// Chain by oring.
+	/// </summary>
+	Or,
 
-		/// <summary>
-		/// Chain by xoring.
-		/// </summary>
-		Xor
-	}
+	/// <summary>
+	/// Chain by xoring.
+	/// </summary>
+	Xor
 }

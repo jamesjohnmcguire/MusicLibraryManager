@@ -4,37 +4,36 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+/// <summary>
+/// Ordered contract resolver class.
+/// </summary>
+public class OrderedContractResolver : DefaultContractResolver
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Serialization;
-
 	/// <summary>
-	/// Ordered contract resolver class.
+	/// Create properties method.
 	/// </summary>
-	public class OrderedContractResolver : DefaultContractResolver
+	/// <param name="type">Property type.</param>
+	/// <param name="memberSerialization">Member serialization object.</param>
+	/// <returns>A list of properties.</returns>
+	protected override IList<JsonProperty> CreateProperties(
+		Type type, MemberSerialization memberSerialization)
 	{
-		/// <summary>
-		/// Create properties method.
-		/// </summary>
-		/// <param name="type">Property type.</param>
-		/// <param name="memberSerialization">Member serialization object.</param>
-		/// <returns>A list of properties.</returns>
-		protected override IList<JsonProperty> CreateProperties(
-			Type type, MemberSerialization memberSerialization)
-		{
-			IList<JsonProperty> properties =
-				base.CreateProperties(type, memberSerialization);
+		IList<JsonProperty> properties =
+			base.CreateProperties(type, memberSerialization);
 
-			IOrderedEnumerable<JsonProperty> ordered =
-				properties.OrderBy(p => p.PropertyName);
+		IOrderedEnumerable<JsonProperty> ordered =
+			properties.OrderBy(p => p.PropertyName);
 
-			properties = ordered.ToList();
+		properties = ordered.ToList();
 
-			return properties;
-		}
+		return properties;
 	}
 }

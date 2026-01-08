@@ -4,56 +4,55 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.RulesLibrary
+namespace DigitalZenWorks.RulesLibrary;
+
+/// <summary>
+/// Condition types enum.
+/// </summary>
+public enum Condition
 {
 	/// <summary>
-	/// Condition types enum.
+	/// Condition contains value.
 	/// </summary>
-	public enum Condition
-	{
-		/// <summary>
-		/// Condition contains value.
-		/// </summary>
-		Contains,
+	Contains,
 
-		/// <summary>
-		/// Condition contains regex value.
-		/// </summary>
-		ContainsRegex,
+	/// <summary>
+	/// Condition contains regex value.
+	/// </summary>
+	ContainsRegex,
 
-		/// <summary>
-		/// Condition empty.
-		/// </summary>
-		Empty,
+	/// <summary>
+	/// Condition empty.
+	/// </summary>
+	Empty,
 
-		/// <summary>
-		/// Condition equals.
-		/// </summary>
-		Equals,
+	/// <summary>
+	/// Condition equals.
+	/// </summary>
+	Equals,
 
-		/// <summary>
-		/// Condition greater than.
-		/// </summary>
-		GreaterThan,
+	/// <summary>
+	/// Condition greater than.
+	/// </summary>
+	GreaterThan,
 
-		/// <summary>
-		/// Condition less than.
-		/// </summary>
-		LessThan,
+	/// <summary>
+	/// Condition less than.
+	/// </summary>
+	LessThan,
 
-		/// <summary>
-		/// Condition matches.
-		/// </summary>
-		Matches,
+	/// <summary>
+	/// Condition matches.
+	/// </summary>
+	Matches,
 
-		/// <summary>
-		/// Condition not empty.
-		/// </summary>
-		NotEmpty,
+	/// <summary>
+	/// Condition not empty.
+	/// </summary>
+	NotEmpty,
 
-		/// <summary>
-		/// Condtion not equals.
-		/// </summary>
-		NotEquals
-	}
+	/// <summary>
+	/// Condtion not equals.
+	/// </summary>
+	NotEquals
 }

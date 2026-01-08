@@ -4,111 +4,110 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.MusicToolKit
+namespace DigitalZenWorks.MusicToolKit;
+
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+/// <summary>
+/// Artist tag rules class.
+/// </summary>
+public static class ArtistRules
 {
-	using System;
-	using System.Linq;
-	using System.Text.RegularExpressions;
+	/// <summary>
+	/// Apply artist general rules.
+	/// </summary>
+	/// <param name="artist">The artist text.</param>
+	/// <param name="album">The album text to remove.</param>
+	/// <param name="performer">The performer tag to check.</param>
+	/// <returns>The updated artist text.</returns>
+	public static string ArtistGeneralRules(
+		string artist, string album, string performer)
+	{
+		string[] excludes = ["10cc", "ABBA", "AC/DC"];
+		string extraPeriods = @"\.{2,}";
+
+		if (!string.IsNullOrWhiteSpace(artist))
+		{
+			artist = GeneralRules.ApplyGeneralRules(artist);
+
+			if (!excludes.Contains(artist))
+			{
+				artist = GeneralRules.GetTitleCase(artist);
+			}
+
+			if (!string.IsNullOrWhiteSpace(performer))
+			{
+				artist = ReplaceVariousArtists(artist, performer);
+			}
+
+			artist = RemoveAlbum(artist, album);
+
+			artist = Regex.Replace(artist, extraPeriods, string.Empty);
+		}
+
+		return artist;
+	}
 
 	/// <summary>
-	/// Artist tag rules class.
+	/// Create artist path from tag.
 	/// </summary>
-	public static class ArtistRules
+	/// <param name="artist">The artist text.</param>
+	/// <param name="album">The album text to remove.</param>
+	/// <param name="performer">The performer tag to check.</param>
+	/// <returns>The updated artist text.</returns>
+	public static string CleanArtistFilePath(
+		string artist, string album, string performer)
 	{
-		/// <summary>
-		/// Apply artist general rules.
-		/// </summary>
-		/// <param name="artist">The artist text.</param>
-		/// <param name="album">The album text to remove.</param>
-		/// <param name="performer">The performer tag to check.</param>
-		/// <returns>The updated artist text.</returns>
-		public static string ArtistGeneralRules(
-			string artist, string album, string performer)
+		if (!string.IsNullOrWhiteSpace(artist))
 		{
-			string[] excludes = ["10cc", "ABBA", "AC/DC"];
-			string extraPeriods = @"\.{2,}";
+			artist = ArtistGeneralRules(artist, album, performer);
 
-			if (!string.IsNullOrWhiteSpace(artist))
-			{
-				artist = GeneralRules.ApplyGeneralRules(artist);
-
-				if (!excludes.Contains(artist))
-				{
-					artist = GeneralRules.GetTitleCase(artist);
-				}
-
-				if (!string.IsNullOrWhiteSpace(performer))
-				{
-					artist = ReplaceVariousArtists(artist, performer);
-				}
-
-				artist = RemoveAlbum(artist, album);
-
-				artist = Regex.Replace(artist, extraPeriods, string.Empty);
-			}
-
-			return artist;
+			artist = Paths.RemoveIllegalPathCharacters(artist);
+			artist = artist.TrimEnd('.');
 		}
 
-		/// <summary>
-		/// Create artist path from tag.
-		/// </summary>
-		/// <param name="artist">The artist text.</param>
-		/// <param name="album">The album text to remove.</param>
-		/// <param name="performer">The performer tag to check.</param>
-		/// <returns>The updated artist text.</returns>
-		public static string CleanArtistFilePath(
-			string artist, string album, string performer)
+		return artist;
+	}
+
+	/// <summary>
+	/// Remove album method.
+	/// </summary>
+	/// <param name="artist">The artist string.</param>
+	/// <param name="album">The album name to compare.</param>
+	/// <returns>An updated artist string.</returns>
+	public static string RemoveAlbum(string artist, string album)
+	{
+		if (!string.IsNullOrWhiteSpace(artist) &&
+			!string.IsNullOrWhiteSpace(album))
 		{
-			if (!string.IsNullOrWhiteSpace(artist))
-			{
-				artist = ArtistGeneralRules(artist, album, performer);
-
-				artist = Paths.RemoveIllegalPathCharacters(artist);
-				artist = artist.TrimEnd('.');
-			}
-
-			return artist;
+			string compareText = " - " + album;
+			artist = GeneralRules.CompareRemove(artist, compareText);
 		}
 
-		/// <summary>
-		/// Remove album method.
-		/// </summary>
-		/// <param name="artist">The artist string.</param>
-		/// <param name="album">The album name to compare.</param>
-		/// <returns>An updated artist string.</returns>
-		public static string RemoveAlbum(string artist, string album)
-		{
-			if (!string.IsNullOrWhiteSpace(artist) &&
-				!string.IsNullOrWhiteSpace(album))
-			{
-				string compareText = " - " + album;
-				artist = GeneralRules.CompareRemove(artist, compareText);
-			}
+		return artist;
+	}
 
-			return artist;
+	/// <summary>
+	/// Replace various artists method.
+	/// </summary>
+	/// <param name="artist">The artist string.</param>
+	/// <param name="replacement">The replacement artist name.</param>
+	/// <returns>An updated artist string.</returns>
+	public static string ReplaceVariousArtists(
+		string artist, string replacement)
+	{
+		if (!string.IsNullOrWhiteSpace(artist) &&
+			!string.IsNullOrWhiteSpace(replacement))
+		{
+			if (artist.ToUpperInvariant().Equals(
+				"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
+			{
+				artist = replacement;
+			}
 		}
 
-		/// <summary>
-		/// Replace various artists method.
-		/// </summary>
-		/// <param name="artist">The artist string.</param>
-		/// <param name="replacement">The replacement artist name.</param>
-		/// <returns>An updated artist string.</returns>
-		public static string ReplaceVariousArtists(
-			string artist, string replacement)
-		{
-			if (!string.IsNullOrWhiteSpace(artist) &&
-				!string.IsNullOrWhiteSpace(replacement))
-			{
-				if (artist.ToUpperInvariant().Equals(
-					"VARIOUS ARTISTS", StringComparison.OrdinalIgnoreCase))
-				{
-					artist = replacement;
-				}
-			}
-
-			return artist;
-		}
+		return artist;
 	}
 }
