@@ -2,6 +2,7 @@ Sprints
 	Flac to Aliec
 	Move low rated Music
 	Start Using Chromaprints
+	Refactor iTunes Support as PlugIn
 Music Library Manager Tasks
 	Process Art Work as Well
 	Test New Media*.cmd s
@@ -62,7 +63,7 @@ Music Library Manager Tasks
 	Music\\Billie Holiday\\Lady in Autumn -  The Best of the Verve Years (2 of 2)\\What's New.mp3"
 	Why return bool when no check? AddFile iTunes
 
-	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active	
+	Warning	CS8632	The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.	DigitalZenWorks.MusicToolKit	C:\Users\User\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\DigitalZenWorks.MusicToolKit\ITunesXmlFile.cs	262	Active
 	AddFile	{"Value does not fall within the expected range."}	System.Exception {System.ArgumentException}
 	UpdateFile	{"Could not find a part of the path."}	System.Exception {System.IO.DirectoryNotFoundException}
 	Save Breakpoints
@@ -141,7 +142,7 @@ Music Library Manager Tasks
 	Music File Duplicates
 	MusicManager, expose important current private methods as APIs
 	return value for CleanFile
-	Refactor private MediaFileTags tags to be parameter of specific methods 
+	Refactor private MediaFileTags tags to be parameter of specific methods
 	Refactor AreFileAndTrackTheSame with better internal testing
 	Optimize SaveTagsToJsonFile, so to not save if content is the same
 	Keep GetFullPathObject?
@@ -217,9 +218,9 @@ Music Library Manager Tasks
 		WARNING: Project file MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj cannot be found.
 		Tests	Arrange Tests Alphabetically
 		Fix Unit Tests
-		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file 
-		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file 
-		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file 
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\cmd\fpcalc.vcxproj : error  : The project file could not be loaded. Could not find file
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint.vcxproj : error  : The project file could not be loaded. Could not find file
+		Signature	MusicLibraryManager\SourceCode\ChromaPrint\src\chromaprint_objs.vcxproj : error  : The project file could not be loaded. Could not find file
 		Log when adding new file to iTunes
 		Remove Pictures from extracted tags
 		Tests	tests for empty tags
@@ -255,7 +256,7 @@ Music Library Manager Tasks
 		AudioId	Rename Files / Projects to AudioId
 		AudioId	Continue refactor of big function
 		Itunes	Do not instantiate iTunes when doing only extract-tags
-		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4	
+		Warning	C4196	expected ',' or ')'; found 'constant'	FingerPrinter	FingerPrinter\FingerPrinter.cpp	4
 		Fix Python
 		CMake Warning (dev) in CMakeLists.txt:	No project() command is present.  The top-level CMakeLists.txt file must contain a literal, direct call to the project() command.  Add a line of code such as	project(ProjectName) near the top of the file, but after cmake_minimum_required().
 		Remove empty directories
@@ -276,7 +277,7 @@ Music Library Manager Tasks
 		warning IL2104: Assembly 'Common.Logging' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 		warning IL2104: Assembly 'CSCore' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 		warning IL2104: Assembly 'Newtonsoft.Json' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
-		warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries 
+		warning IL2104: Assembly 'Serilog' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 		warning IL2104: Assembly 'TagLibSharp' produced trim warnings. For more information see https://aka.ms/dotnet-illink/libraries
 		Return filename from SaveTagsToJsonFile
 		Migrate custom functionality from GetAlbumFromPath
@@ -294,7 +295,7 @@ Music Library Manager Tasks
 		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
 		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
 		Message	IDE0220	'foreach' statement implicitly converts 'object' to 'System.Text.RegularExpressions.Match'. Add an explicit cast to make intent clearer, as it may fail at runtime	DigitalZenWorks.MusicToolKit	DigitalZenWorks.MusicToolKit\MediaFileTags.cs	357	Active
-		Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1	
+		Warning	NU1701	Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.	DigitalZenWorks.MusicToolKit.Tests	DigitalZenWorks.MusicToolKit.Tests\DigitalZenWorks.MusicToolKit.Tests.csproj	1
 		Rename skeleton methods
 		Change skeleton to tagSet
 		ITunesFolderLocation / ITunesDirectoryLocation
@@ -326,7 +327,7 @@ Music Library Manager Tasks
 		What if com component doesn't exist?
 		Check for existence of iTunesLib
 		Test ITunesFolderLocation when valid, when null
-		Test LoadItunesXmlFile for valid return 
+		Test LoadItunesXmlFile for valid return
 		Test LoadItunesXmlFile when invalid
 		MusicManager, Test if rules exist
 		Test ITunesXmlFile when not xml file
@@ -335,7 +336,7 @@ Music Library Manager Tasks
 		Tests for Update, copy all from above
 		Tests for Update, no change
 		Tests for Update, change album, change artist, change title
-		Instance tests for AlbumRemoveCd, AlbumRemoveDisc, 
+		Instance tests for AlbumRemoveCd, AlbumRemoveDisc,
 		Return same value if not different in RegexRemove
 		Catch exceptions in RegexRemove
 		Add bad values test for RegexRemove
@@ -352,7 +353,7 @@ Music Library Manager Tasks
 		MSB4803: The task "ResolveComReference" is not supported on the .NET Core version of MSBuild. Please use the .NET Framework version of MSBuild. See https://aka.ms/msbuild/MSB4803 for further details. [MusicUtility\MusicUtility.csproj]
 		Project '..\MusicUtility\MusicUtility.csproj' targets 'net5.0-windows'. It cannot be referenced by a project that targets '.NETCoreApp,Version=v5.0'.	MusicClean
 		NUnit.Engine.NUnitEngineException : An exception occurred in the driver while loading tests.  ----> System.IO.FileNotFoundException : Could not load file or assembly 'MusicUtility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
-		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203	
+		Warning	MSB3243	No way to resolve conflict between "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" and "System.Web". Choosing "System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" arbitrarily.	MusicUtility	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets	2203
 		https://github.com/jamesjohnmcguire/MusicLibraryManager/security/dependabot/SourceCode/MusicClean/packages.config/log4net/open
 		Add build command, complete with running unit tests
 		SourceCode\DevelopmentTools\Commands\build.cmd Fails	References SourceCode\.build directory which doesn't exist
