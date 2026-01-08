@@ -466,7 +466,13 @@ Script
 		set OUTPUT_FILE=%~2
 	)
 
-	ffmpeg -i "%~1" -c:a alac "%OUTPUT_FILE%"
+	:: ffmpeg          - The Program
+	:: -i "%~1"        - Specifies the Input file
+	:: -c:a alac       - Convert to ALAC Format
+	:: -c:v copy       - Copy Video and Images Streams, as well
+	:: -map_metadata 0 - Copy Metadata and Tags, as well
+	::"%OUTPUT_FILE%"
+	ffmpeg -i "%~1" -c:a alac -c:v copy -map_metadata 0 "%OUTPUT_FILE%"
 
 	IF %ERRORLEVEL% EQU 0 (
 		echo Conversion successful: %OUTPUT_FILE%
