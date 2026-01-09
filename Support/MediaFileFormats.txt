@@ -1,13 +1,14 @@
 File Extension Types
 	extension	LossLess	iTunes	Description					Notes
 	aa						Y		audible files
-	aac						Y
+	aac			N			Y
 	aifc							Apple
-	aiff		Both		Y
+	aiff		Both*		Y									Technically both, but in practice, only lossless
 	alac		Both				Apple Lossless Audio Codec
 	ape			Y
-	flac		Both		N
-	ogg			Both
+	flac		Y			N									I had previous notes that this was both, but
+																seems not the case.
+	mka
 	m3u
 	m4a			Both		Y			mpeg-4
 	m4p						Y
@@ -15,6 +16,8 @@ File Extension Types
 	mp3			N			Y
 	mp4			Both
 	mov						Y
+	ogg			Both
+	opus
 	wav			Both		Y
 	wma			Both		N
 LossLess / Lossy
