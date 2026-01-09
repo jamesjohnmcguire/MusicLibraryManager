@@ -47,7 +47,7 @@
 		<None Include="App.config">
 			<SubType>Designer</SubType>
 		</None>
-		<AdditionalFiles Include="stylecop.json" />
+		<AdditionalFiles Include="../stylecop.json" />
 	</ItemGroup>
 
 </Project>
