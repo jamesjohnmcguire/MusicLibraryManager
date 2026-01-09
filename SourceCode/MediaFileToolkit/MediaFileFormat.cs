@@ -4,14 +4,10 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace MediaFileToolkit;
 
-using NAudio.Wave;
-using System;
-using System.Diagnostics;
 using System.IO;
+using NAudio.Wave;
 
 public class MediaFileFormat
 {
