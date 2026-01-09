@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AnalysisMode>All</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.RulesLibrary.Tests</AssemblyName>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
 		<OutputType>Library</OutputType>

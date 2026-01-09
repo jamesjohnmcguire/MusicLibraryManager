@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AnalysisMode>All</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.Rules.RulesLibrary</AssemblyName>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NeutralLanguage>en</NeutralLanguage>
 		<Nullable>enable</Nullable>
