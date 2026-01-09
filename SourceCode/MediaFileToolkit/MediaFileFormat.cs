@@ -9,9 +9,32 @@ namespace MediaFileToolkit;
 using System.IO;
 using NAudio.Wave;
 
-public class MediaFileFormat
+/// <summary>
+/// Provides methods for determining the audio type (lossy, lossless, or
+/// unknown) of a media file based on its file path and format.
+/// </summary>
+/// <remarks>This class supports a variety of common audio file formats and
+/// attempts to classify them as lossy or lossless using file extension and,
+/// where necessary, file content analysis. The classification may depend on
+/// the platform and available libraries. Not all formats can be definitively
+/// classified; in such cases, the result may be AudioType.Unknown.</remarks>
+public static class MediaFileFormat
 {
-
+	/// <summary>
+	/// Determines the audio type of the specified file based on its file
+	/// extension and, for certain formats, by inspecting the file contents.
+	/// </summary>
+	/// <remarks>For some formats, such as .m4a and .wma, the method may
+	/// inspect the file contents to determine the audio type. Formats that
+	/// can be either lossy or lossless may return AudioType.Unknown if the
+	/// type cannot be determined from the extension alone.</remarks>
+	/// <param name="filePath">The full path to the audio file to analyze.
+	/// Cannot be null or empty.</param>
+	/// <returns>An AudioType value indicating whether the file is a lossy,
+	/// lossless, or unknown audio type. Returns AudioType.Unknown if the type
+	/// cannot be determined.</returns>
+	/// <exception cref="FileNotFoundException">Thrown if the file specified by
+	/// filePath does not exist.</exception>
 	public static AudioType GetAudioType(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
