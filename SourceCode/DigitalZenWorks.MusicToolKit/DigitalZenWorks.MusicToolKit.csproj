@@ -61,11 +61,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Resources.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
 		<EmbeddedResource Include="DefaultRules.json" />
 		<AdditionalFiles Include="../stylecop.json" />
 	</ItemGroup>
