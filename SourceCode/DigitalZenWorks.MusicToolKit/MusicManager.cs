@@ -177,7 +177,7 @@ public class MusicManager : IDisposable
 				{
 					pathParts[depth] = baseName;
 
-					List<string> newList = new (pathParts);
+					List<string> newList = [.. pathParts];
 					while (newList.Count > depth + 1)
 					{
 						newList.RemoveAt(newList.Count - 1);
@@ -599,11 +599,8 @@ public class MusicManager : IDisposable
 		if (disposing)
 		{
 			// dispose managed resources
-			if (iTunesManager != null)
-			{
-				iTunesManager.Dispose();
-				iTunesManager = null;
-			}
+			iTunesManager?.Dispose();
+			iTunesManager = null;
 		}
 	}
 
