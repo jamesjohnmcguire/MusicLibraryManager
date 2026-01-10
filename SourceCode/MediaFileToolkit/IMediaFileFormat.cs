@@ -24,7 +24,7 @@ internal interface IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value that represents the detected type of the
 	/// specified M4A file.</returns>
-	AudioType GetAudioTypeM4a(string filePath);
+	static abstract AudioType GetAudioTypeM4a(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a Matroska audio (MKA) file based on its
@@ -34,7 +34,7 @@ internal interface IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value indicating the detected audio type of the
 	/// specified MKA file.</returns>
-	AudioType GetAudioTypeMka(string filePath);
+	static abstract AudioType GetAudioTypeMka(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of the specified Ogg file.
@@ -43,7 +43,7 @@ internal interface IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value that represents the detected type of the
 	/// Ogg audio file.</returns>
-	AudioType GetAudioTypeOgg(string filePath);
+	static abstract AudioType GetAudioTypeOgg(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a WavPack file based on the specified
@@ -53,7 +53,7 @@ internal interface IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value representing the detected audio type of the
 	/// specified WavPack file.</returns>
-	AudioType GetAudioTypeWavPack(string filePath);
+	static abstract AudioType GetAudioTypeWavPack(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a Windows Media Audio (WMA) file at the
@@ -63,5 +63,5 @@ internal interface IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value that represents the type of the specified
 	/// WMA file.</returns>
-	AudioType GetAudioTypeWma(string filePath);
+	static abstract AudioType GetAudioTypeWma(string filePath);
 }
