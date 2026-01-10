@@ -6,6 +6,7 @@
 
 namespace MediaFileToolkit;
 
+using System;
 using System.IO;
 using NAudio.Wave;
 
@@ -39,39 +40,40 @@ public static class MediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		if (!File.Exists(filePath))
+		if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
 		{
 			throw new FileNotFoundException("File not found: " + filePath);
 		}
 
-		string extension = Path.GetExtension(filePath).ToLower();
+		string extension = Path.GetExtension(filePath);
+		extension = filePath.ToUpperInvariant();
 
 		switch (extension)
 		{
 			// Only lossy formats
-			case ".aac":
-			case ".mp3":
-			case ".opus":
+			case ".AAC":
+			case ".MP3":
+			case ".OPUS":
 				audioType = AudioType.Lossy;
 				break;
 
 			// Only lossless formats
-			case ".aiff": // Rare edge case: AIFF-C can contain lossy
-			case ".ape":
-			case ".flac":
-			case ".tta":
-			case ".wav":
+			case ".AIFF": // Rare edge case: AIFF-C can contain lossy
+			case ".APE":
+			case ".FLAC":
+			case ".TTA":
+			case ".WAV":
 				audioType = AudioType.Lossless;
 				break;
 
 			// Both lossy and lossless formats
-			case ".mka":
-			case ".ogg":
-			case ".wv": // WavPack
+			case ".MKA":
+			case ".OGG":
+			case ".WV": // WavPack
 				// TODO
 				break;
 
-			case ".m4a":
+			case ".M4A":
 #if WINDOWS
 				audioType = GetAudioTypeM4aNaudio(filePath);
 #else
@@ -79,7 +81,7 @@ public static class MediaFileFormat
 #endif
 				break;
 
-			case ".wma":
+			case ".WMA":
 #if WINDOWS
 				audioType = GetAudioTypeWmaNaudio(filePath);
 #else
@@ -97,13 +99,11 @@ public static class MediaFileFormat
 
 	private static AudioType GetAudioTypeM4aNaudio(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
-
 		using MediaFoundationReader reader = new(filePath);
 
 		WaveFormat format = reader.WaveFormat;
 
-		audioType = format.Encoding switch
+		AudioType audioType = format.Encoding switch
 		{
 			WaveFormatEncoding.Pcm => AudioType.Lossless,
 			WaveFormatEncoding.Adpcm => AudioType.Lossless,
@@ -134,16 +134,21 @@ public static class MediaFileFormat
 					if (audioEntry.BoxType == "mp4a")
 					{
 						string description = codec.Description;
-						description = description?.ToLower() ?? string.Empty;
+						description =
+							description?.ToUpperInvariant() ?? string.Empty;
 
 						// ALAC sometimes reports as mp4a with ALAC description
-						if (description.Contains("alac") ||
-							description.Contains("apple lossless"))
+						if (description.Contains(
+							"ALAC", StringComparison.Ordinal) ||
+							description.Contains(
+								"APPLE LOSSLESS", StringComparison.Ordinal))
 						{
 							audioType = AudioType.Lossless;
 						}
-						else if (description.Contains("aac") ||
-							description.Contains("mpeg-4"))
+						else if (description.Contains(
+							"AAC", StringComparison.Ordinal) ||
+							description.Contains(
+								"MPEG-4", StringComparison.Ordinal))
 						{
 							// Most mp4a entries are AAC variants (lossy)
 							// AAC-LC, AAC-HE, AAC-HEv2, etc.
@@ -156,11 +161,6 @@ public static class MediaFileFormat
 							// mp4a is typically lossy
 							audioType = AudioType.Lossy;
 						}
-
-						if (audioType != AudioType.Unknown)
-						{
-							break;
-						}
 					}
 				}
 			}
@@ -171,15 +171,14 @@ public static class MediaFileFormat
 
 	private static AudioType GetAudioTypeWmaNaudio(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
-
 		using MediaFoundationReader reader = new(filePath);
 
 		WaveFormat format = reader.WaveFormat;
 
-		audioType = format.Encoding switch
+		AudioType audioType = format.Encoding switch
 		{
 			WaveFormatEncoding.WindowsMediaAudioLosseless => AudioType.Lossless,
+
 			// WMA Standard
 			WaveFormatEncoding.WindowsMediaAudio => AudioType.Lossy,
 			WaveFormatEncoding.WindowsMediaAudioProfessional => AudioType.Lossy,
@@ -201,14 +200,14 @@ public static class MediaFileFormat
 			foreach (TagLib.ICodec? codec in file.Properties.Codecs)
 			{
 				string description = codec.Description;
-				description = description?.ToLower() ?? string.Empty;
+				description = description?.ToUpperInvariant() ?? string.Empty;
 
-				if (description.Contains("lossless"))
+				if (description.Contains("LOSSLESS", StringComparison.Ordinal))
 				{
 					// WMA Lossless
 					audioType = AudioType.Lossless;
 				}
-				else if (description.Contains("wma"))
+				else if (description.Contains("WMA", StringComparison.Ordinal))
 				{
 					// Regular WMA is lossy
 					audioType = AudioType.Lossy;
@@ -235,25 +234,25 @@ public static class MediaFileFormat
 			foreach (TagLib.ICodec? codec in file.Properties.Codecs)
 			{
 				string description = codec.Description;
-				description = description?.ToLower() ?? string.Empty;
+				description = description?.ToUpperInvariant() ?? string.Empty;
 
-				if (description.Contains("alac") ||
-					description.Contains("ape") ||
-					description.Contains("flac") ||
-					description.Contains("pcm") ||
-					description.Contains("wav") ||
-					description.Contains("wavpack"))
+				if (description.Contains("ALAC", StringComparison.Ordinal) ||
+					description.Contains("APE", StringComparison.Ordinal) ||
+					description.Contains("FLAC", StringComparison.Ordinal) ||
+					description.Contains("PCM", StringComparison.Ordinal) ||
+					description.Contains("WAV", StringComparison.Ordinal) ||
+					description.Contains("WAVPACK", StringComparison.Ordinal))
 				{
 					// Lossless codecs
 					audioType = AudioType.Lossless;
 				}
 
-				if (description.Contains("aac") ||
-					description.Contains("ac3") ||
-					description.Contains("dts") ||
-					description.Contains("mp3") ||
-					description.Contains("opus") ||
-					description.Contains("vorbis"))
+				if (description.Contains("AAC", StringComparison.Ordinal) ||
+					description.Contains("AC3", StringComparison.Ordinal) ||
+					description.Contains("DTS", StringComparison.Ordinal) ||
+					description.Contains("MP3", StringComparison.Ordinal) ||
+					description.Contains("OPUS", StringComparison.Ordinal) ||
+					description.Contains("VORBIS", StringComparison.Ordinal))
 				{
 					// Lossy codecs
 					audioType = AudioType.Lossy;
@@ -288,11 +287,12 @@ public static class MediaFileFormat
 				else
 				{
 					// Seems Not Supported: codec is TagLib.Ogg.Codecs.Flac
-
 					string description = codec.Description;
-					description = description?.ToLower() ?? string.Empty;
+					description =
+						description?.ToUpperInvariant() ?? string.Empty;
 
-					if (description.Contains("lossless"))
+					if (description.Contains(
+						"LOSSLESS", StringComparison.Ordinal))
 					{
 						audioType = AudioType.Lossless;
 					}
