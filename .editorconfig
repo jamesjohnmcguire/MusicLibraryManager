@@ -17,11 +17,17 @@ dotnet_style_collection_initializer	= false
 # CA1819: Properties should not return arrays
 dotnet_diagnostic.CA1819.severity = none
 
+# SA1000: The keyword 'new' should be followed by a space
+dotnet_diagnostic.SA1000.severity = none
+
 # SA1010: Opening square brackets should be spaced correctly
 dotnet_diagnostic.SA1010.severity = none
 
 # SA1101: Prefix Local Calls With This
 dotnet_diagnostic.SA1101.severity = none
 
-#SA1413: Use Trailing Commas In MultiLine Initializers
+# SA1412: Store files as UTF-8 with byte order mark
+dotnet_diagnostic.SA1412.severity = none
+
+# SA1413: Use Trailing Commas In MultiLine Initializers
 dotnet_diagnostic.SA1413.severity = none
