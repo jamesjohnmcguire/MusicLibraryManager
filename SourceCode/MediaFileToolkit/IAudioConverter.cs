@@ -29,4 +29,17 @@ internal interface IAudioConverter
 	/// <returns>A task that represents the asynchronous conversion operation.
 	/// </returns>
 	Task ConvertFileAsync(FileInfo inputFile);
+
+	/// <summary>
+	/// Asynchronously converts all files of the specified types in the given
+	/// directory.
+	/// </summary>
+	/// <param name="inputDirectory">The directory containing the files to
+	/// convert. Must not be null.</param>
+	/// <param name="fileTypes">A comma-separated list of file extensions
+	/// (without dots) specifying which file types to convert. For example,
+	/// "mp3, m4a".</param>
+	/// <returns>A task that represents the asynchronous conversion operation.
+	/// </returns>
+	Task ConvertFilesAsync(DirectoryInfo inputDirectory, string fileTypes);
 }
