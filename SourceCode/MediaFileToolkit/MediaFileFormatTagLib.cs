@@ -32,7 +32,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value indicating whether the file is lossless,
 	/// lossy, or unknown.</returns>
-	public static AudioType GetAudioTypeM4a(string filePath)
+	public AudioType GetAudioTypeM4a(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -100,7 +100,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// Cannot be null or an empty string.</param>
 	/// <returns>An AudioType value indicating whether the file uses a
 	/// lossless, lossy, or unknown codec.</returns>
-	public static AudioType GetAudioTypeMka(string filePath)
+	public AudioType GetAudioTypeMka(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -158,7 +158,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public static AudioType GetAudioTypeOgg(string filePath)
+	public AudioType GetAudioTypeOgg(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -209,7 +209,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// Cannot be null or empty.</param>
 	/// <returns>An AudioType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public static AudioType GetAudioTypeWavPack(string filePath)
+	public AudioType GetAudioTypeWavPack(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -242,7 +242,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// to a valid WMA file; otherwise, the result may be inaccurate.</param>
 	/// <returns>An AudioType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public static AudioType GetAudioTypeWma(string filePath)
+	public AudioType GetAudioTypeWma(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 

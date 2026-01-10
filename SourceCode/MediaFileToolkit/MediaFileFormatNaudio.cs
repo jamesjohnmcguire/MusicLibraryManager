@@ -31,7 +31,7 @@ internal class MediaFileFormatNaudio : IMediaFileFormat
 	/// refer to a valid, accessible file.</param>
 	/// <returns>An AudioType value indicating whether the file uses a lossless
 	/// or lossy encoding.</returns>
-	public static AudioType GetAudioTypeM4a(string filePath)
+	public AudioType GetAudioTypeM4a(string filePath)
 	{
 		using MediaFoundationReader reader = new(filePath);
 
@@ -57,7 +57,7 @@ internal class MediaFileFormatNaudio : IMediaFileFormat
 	/// <returns>An AudioType value representing the detected audio type of the
 	/// specified file. Returns AudioType.Unknown if the type cannot be
 	/// determined.</returns>
-	public static AudioType GetAudioTypeMka(string filePath)
+	public AudioType GetAudioTypeMka(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -72,7 +72,7 @@ internal class MediaFileFormatNaudio : IMediaFileFormat
 	/// <returns>An AudioType value representing the type of the Ogg audio
 	/// file. Returns AudioType.Unknown if the type cannot be determined.
 	/// </returns>
-	public static AudioType GetAudioTypeOgg(string filePath)
+	public AudioType GetAudioTypeOgg(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -87,7 +87,7 @@ internal class MediaFileFormatNaudio : IMediaFileFormat
 	/// <returns>An AudioType value representing the type of the specified
 	/// audio file. Returns AudioType.Unknown if the type cannot be determined.
 	/// </returns>
-	public static AudioType GetAudioTypeWavPack(string filePath)
+	public AudioType GetAudioTypeWavPack(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
 
@@ -105,7 +105,7 @@ internal class MediaFileFormatNaudio : IMediaFileFormat
 	/// to a valid WMA file; otherwise, the result may be inaccurate.</param>
 	/// <returns>An AudioType value indicating whether the file is lossless,
 	/// lossy, or unknown based on its encoding.</returns>
-	public static AudioType GetAudioTypeWma(string filePath)
+	public AudioType GetAudioTypeWma(string filePath)
 	{
 		using MediaFoundationReader reader = new(filePath);
 
