@@ -169,60 +169,6 @@ public static class MediaFileFormat
 		return audioType;
 	}
 
-	private static AudioType GetAudioTypeWmaNaudio(string filePath)
-	{
-		using MediaFoundationReader reader = new(filePath);
-
-		WaveFormat format = reader.WaveFormat;
-
-		AudioType audioType = format.Encoding switch
-		{
-			WaveFormatEncoding.WindowsMediaAudioLosseless => AudioType.Lossless,
-
-			// WMA Standard
-			WaveFormatEncoding.WindowsMediaAudio => AudioType.Lossy,
-			WaveFormatEncoding.WindowsMediaAudioProfessional => AudioType.Lossy,
-			WaveFormatEncoding.WindowsMediaAudioSpdif => AudioType.Lossy,
-			_ => AudioType.Unknown,
-		};
-
-		return audioType;
-	}
-
-	private static AudioType GetAudioTypeWmaTagLib(string filePath)
-	{
-		AudioType audioType = AudioType.Unknown;
-
-		using TagLib.File file = TagLib.File.Create(filePath);
-
-		if (file.Properties.Codecs != null)
-		{
-			foreach (TagLib.ICodec? codec in file.Properties.Codecs)
-			{
-				string description = codec.Description;
-				description = description?.ToUpperInvariant() ?? string.Empty;
-
-				if (description.Contains("LOSSLESS", StringComparison.Ordinal))
-				{
-					// WMA Lossless
-					audioType = AudioType.Lossless;
-				}
-				else if (description.Contains("WMA", StringComparison.Ordinal))
-				{
-					// Regular WMA is lossy
-					audioType = AudioType.Lossy;
-				}
-
-				if (audioType != AudioType.Unknown)
-				{
-					break;
-				}
-			}
-		}
-
-		return audioType;
-	}
-
 	private static AudioType GetAudioTypeMka(string filePath)
 	{
 		AudioType audioType = AudioType.Unknown;
@@ -322,6 +268,60 @@ public static class MediaFileFormat
 			// hybrid mode. This is a simplification - hybrid detection is
 			// complex/
 			audioType = AudioType.Lossless;
+		}
+
+		return audioType;
+	}
+
+	private static AudioType GetAudioTypeWmaNaudio(string filePath)
+	{
+		using MediaFoundationReader reader = new(filePath);
+
+		WaveFormat format = reader.WaveFormat;
+
+		AudioType audioType = format.Encoding switch
+		{
+			WaveFormatEncoding.WindowsMediaAudioLosseless => AudioType.Lossless,
+
+			// WMA Standard
+			WaveFormatEncoding.WindowsMediaAudio => AudioType.Lossy,
+			WaveFormatEncoding.WindowsMediaAudioProfessional => AudioType.Lossy,
+			WaveFormatEncoding.WindowsMediaAudioSpdif => AudioType.Lossy,
+			_ => AudioType.Unknown,
+		};
+
+		return audioType;
+	}
+
+	private static AudioType GetAudioTypeWmaTagLib(string filePath)
+	{
+		AudioType audioType = AudioType.Unknown;
+
+		using TagLib.File file = TagLib.File.Create(filePath);
+
+		if (file.Properties.Codecs != null)
+		{
+			foreach (TagLib.ICodec? codec in file.Properties.Codecs)
+			{
+				string description = codec.Description;
+				description = description?.ToUpperInvariant() ?? string.Empty;
+
+				if (description.Contains("LOSSLESS", StringComparison.Ordinal))
+				{
+					// WMA Lossless
+					audioType = AudioType.Lossless;
+				}
+				else if (description.Contains("WMA", StringComparison.Ordinal))
+				{
+					// Regular WMA is lossy
+					audioType = AudioType.Lossy;
+				}
+
+				if (audioType != AudioType.Unknown)
+				{
+					break;
+				}
+			}
 		}
 
 		return audioType;
