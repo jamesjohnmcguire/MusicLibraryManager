@@ -104,7 +104,7 @@ internal class AudioConveterFfmpeg : IAudioConverter
 			Log.Info($"Converting: {inputFile.Name}");
 			ExternalProcess process = new();
 
-			bool result = await process.Execute("ffmpeg", arguments).
+			bool result = await process.ExecuteAsync("ffmpeg", arguments).
 				ConfigureAwait(false);
 
 			if (result == true)
