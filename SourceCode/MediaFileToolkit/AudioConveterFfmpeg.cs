@@ -102,22 +102,12 @@ internal class AudioConveterFfmpeg : IAudioConverter
 				GetFfmpegArguments(inputFile.FullName, outputPath);
 
 			Log.Info($"Converting: {inputFile.Name}");
+			ExternalProcess process = new();
 
-			ProcessStartInfo startInfo = new()
-			{
-				FileName = "ffmpeg",
-				Arguments = arguments,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				UseShellExecute = false,
-				CreateNoWindow = true
-			};
+			bool result = await process.Execute("ffmpeg", arguments).
+				ConfigureAwait(false);
 
-			using Process process = new () { StartInfo = startInfo };
-			process.Start();
-			await process.WaitForExitAsync().ConfigureAwait(false);
-
-			if (process.ExitCode == 0)
+			if (result == true)
 			{
 				if (batchMode == true)
 				{
@@ -126,9 +116,7 @@ internal class AudioConveterFfmpeg : IAudioConverter
 			}
 			else
 			{
-				StreamReader errorOutput = process.StandardOutput;
-				string error =
-					await errorOutput.ReadToEndAsync().ConfigureAwait(false);
+				string error = process.Output;
 				string message = $"Error converting {inputFile.Name}: {error}";
 				Log.Error(message);
 			}
