@@ -12,12 +12,16 @@ using NAudio.Wave;
 /// Provides methods for determining the audio type of various media file
 /// formats using NAudio.
 /// </summary>
-/// <remarks>This class implements the IMediaFileFormat interface to analyze
-/// audio files and identify their encoding type. All methods are static and
-/// are intended for internal use within the application. The class supports
-/// formats such as M4A and WMA, and returns an AudioType value indicating
-/// whether the audio is lossless, lossy, or unknown. For formats that are not
-/// currently supported, the methods return AudioType.Unknown.</remarks>
+/// <remarks>This class implements the <see cref="IMediaFileFormat"/> interface
+/// to analyze audio files and identify their encoding type.  This class is
+/// intended to assist in identifying the encoding type of various file
+/// formats. All methods require a valid file path to an existing media file.
+/// The class methods return an AudioType value indicating whether the
+/// audio is lossless, lossy, or unknown. For formats that are not currently
+/// supported, the methods return AudioType.Unknown. The results depend on the
+/// accuracy of the analysis provided by NAudio. This class does not modify
+/// files.
+/// </remarks>
 internal class MediaFileFormatNaudio : IMediaFileFormat
 {
 	/// <summary>

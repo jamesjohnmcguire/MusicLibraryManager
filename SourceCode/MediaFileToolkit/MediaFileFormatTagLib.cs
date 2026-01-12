@@ -9,12 +9,23 @@ namespace MediaFileToolkit;
 using System;
 
 /// <summary>
-/// Provides static methods for determining the audio type (lossless, lossy, or
-/// unknown) of various media file formats using TagLib metadata analysis.
+/// Provides methods for determining the audio type of various media file
+/// formats using TagLib metadata analysis.
 /// </summary>
-/// <remarks>This class is intended for internal use to assist in identifying
-/// the encoding type of audio streams within supported file formats such as
-/// M4A, MKA, OGG, WavPack, and WMA. All methods are static and require a valid
+/// <remarks>This class implements the <see cref="IMediaFileFormat"/> interface
+/// to analyze audio files and identify their encoding type.  This class is
+/// intended to assist in identifying the encoding type of various file
+/// formats. All methods require a valid file path to an existing media file.
+/// The class methods return an AudioType value indicating whether the
+/// audio is lossless, lossy, or unknown. For formats that are not currently
+/// supported, the methods return AudioType.Unknown. The results depend on the
+/// accuracy and completeness of the metadata provided by TagLib and the codecs
+/// present in the file. This class does not modify files or their metadata.
+/// </remarks>
+/// <remarks>This class implements the <see cref="IMediaFileFormat"/> interface
+/// to analyze audio files and identify their encoding type. This class is
+/// intended to assist in identifying
+/// the encoding type of various file formats. All methods are static and require a valid
 /// file path to an existing media file. The results depend on the accuracy and
 /// completeness of the metadata provided by TagLib and the codecs present in
 /// the file. This class does not modify files or their metadata.</remarks>
