@@ -528,3 +528,13 @@ Music Manager
 
 	Compare Scripts	audioFilesCompare.cmd
 	Convert Scripts
+FFMpeg
+	choco install ffmpeg --params "/FfmpegPath:full"
+
+	Encoders check
+		ffmpeg -encoders | grep aac
+		libfdk_aac !!!
+When to Convert
+	so, if these m4a files are lossless, would it be better to convert them to flac & alac?
+	If your M4A files are already lossless (using ALAC codec), there's generally no significant benefit to converting them to FLAC or creating duplicate ALAC files. Here's why:
+
