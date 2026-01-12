@@ -4,6 +4,10 @@ Sprints
 	Start Using Chromaprints
 	Refactor iTunes Support as PlugIn
 Music Library Manager Tasks
+	Finish FFProbe functionality
+	Optimize TagLib Analyzer Functionality
+	Add Different Format Test Files	Such as:	MusicInbox\"Unknown Artists\Unknown Artist\Unknown Album\whole witch.wav"
+	Add Tests for New Functionality
 	Process Art Work as Well
 	Test New Media*.cmd s
 	Review	https://github.com/Martchus/tageditor
