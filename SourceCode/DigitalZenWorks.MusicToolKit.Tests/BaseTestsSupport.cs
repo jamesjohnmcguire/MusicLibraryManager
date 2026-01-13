@@ -6,18 +6,26 @@
 
 namespace DigitalZenWorks.MusicToolKit.Tests;
 
+using System;
 using System.IO;
+using DigitalZenWorks.Common.Utilities;
+using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 /// <summary>
 /// Base test support class.
 /// </summary>
-[SetUpFixture]
 internal class BaseTestsSupport
 {
+	private Rules rules;
 	private string temporaryPath;
 	private string testFile;
+
+	/// <summary>
+	/// Gets or sets the rules object.
+	/// </summary>
+	/// <value>The rules object.</value>
+	public Rules Rules { get => rules; set => rules = value; }
 
 	/// <summary>
 	/// Gets the temporary path.
@@ -37,11 +45,14 @@ internal class BaseTestsSupport
 	[OneTimeSetUp]
 	public void BaseOneTimeSetUp()
 	{
-		temporaryPath = Path.GetTempFileName();
-		File.Delete(temporaryPath);
-		Directory.CreateDirectory(temporaryPath);
+		temporaryPath = CreateUniqueDirectory();
 
 		testFile = temporaryPath + @"\Music\Artist\Album\Sakura.mp4";
+
+		FileUtils.CreateFileFromEmbeddedResource(
+			"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", testFile);
+
+		rules = MusicManager.GetDefaultRules();
 	}
 
 	/// <summary>
@@ -79,5 +90,16 @@ internal class BaseTestsSupport
 		File.Copy(testFile, newFileName);
 
 		return newFileName;
+	}
+
+	private string CreateUniqueDirectory()
+	{
+		string guid = Guid.NewGuid().ToString("N");
+		string uniqueDirectoryName = "MusicManTests-" + guid;
+		string temporaryPath = Path.GetTempPath();
+		string uniqueDirectoryPath = Path.Combine(temporaryPath, uniqueDirectoryName);
+		Directory.CreateDirectory(uniqueDirectoryPath);
+
+		return uniqueDirectoryPath;
 	}
 }

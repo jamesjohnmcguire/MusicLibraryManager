@@ -8,8 +8,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests;
 
 using System.Collections.Generic;
 using System.IO;
-using DigitalZenWorks.Common.Utilities;
-using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
@@ -19,18 +17,12 @@ using NUnit.Framework.Internal;
 [TestFixture]
 internal sealed class MediaFileTagTests : BaseTestsSupport
 {
-	private Rules rules;
-
 	/// <summary>
 	/// The setup before every test method.
 	/// </summary>
 	[SetUp]
 	public void SetUp()
 	{
-		FileUtils.CreateFileFromEmbeddedResource(
-			"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", TestFile);
-
-		rules = MusicManager.GetDefaultRules();
 	}
 
 	/// <summary>
@@ -133,7 +125,10 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 	[Test]
 	public void GetTagsCheck()
 	{
-		using MediaFileTags tags = new (TestFile, rules);
+		string newFileName =
+			MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
+
+		using MediaFileTags tags = new (newFileName, Rules);
 
 		string original =
 			"What It Is! Funky Soul And Rare Grooves (Disk 2)";
@@ -143,6 +138,8 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		tags.Update();
 
 		SortedDictionary<string, object> tagSet = tags.GetTags();
+
+		File.Delete(newFileName);
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -185,7 +182,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 
 		bool result = tags.Clean(true);
 		Assert.That(result, Is.True);
@@ -234,7 +231,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album cd 1", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Album = "Album cd 1";
 
 		bool result = tags.Clean();
@@ -284,7 +281,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album {In Heaven}", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Album = "Album {In Heaven}";
 
 		bool result = tags.Clean();
@@ -334,7 +331,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Album = "Album (Disk 2)";
 
 		bool result = tags.Clean();
@@ -384,7 +381,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album[FLAC]", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Album = "Album[FLAC]";
 
 		bool result = tags.Clean();
@@ -431,7 +428,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 
 		bool result = tags.Clean(true);
 		Assert.That(result, Is.True);
@@ -480,7 +477,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album (Disk 2)", "Sakura.mp4");
 
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Album = "Album (Disk 2)";
 
 		bool result = tags.Clean();
@@ -532,7 +529,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 		tags.Artist = "Artist";
 		tags.Album = "Album";
 		tags.Title = "Sakura";
@@ -583,7 +580,7 @@ internal sealed class MediaFileTagTests : BaseTestsSupport
 	{
 		string newFileName =
 			MakeTestFileCopy(@"\Artist\Album Name", "Sakura.mp4");
-		using MediaFileTags tags = new (newFileName, rules);
+		using MediaFileTags tags = new (newFileName, Rules);
 
 		bool result = tags.Clean(true);
 		Assert.That(result, Is.True);
