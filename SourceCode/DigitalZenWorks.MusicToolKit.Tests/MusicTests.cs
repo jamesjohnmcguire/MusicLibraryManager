@@ -10,7 +10,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests;
 
 using System;
 using System.IO;
-using DigitalZenWorks.Common.Utilities;
 using DigitalZenWorks.MusicToolKit.Decoders;
 using DigitalZenWorks.RulesLibrary;
 using NUnit.Framework;
@@ -23,7 +22,6 @@ using NUnit.Framework.Internal;
 internal sealed class MusicTests : BaseTestsSupport, IDisposable
 {
 	private MusicManager musicManager;
-	private Rules rules;
 
 	/// <summary>
 	/// The one time setup method.
@@ -40,10 +38,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	[SetUp]
 	public void SetUp()
 	{
-		FileUtils.CreateFileFromEmbeddedResource(
-			"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", TestFile);
-
-		rules = musicManager.Rules;
+		Rules = musicManager.Rules;
 	}
 
 	/// <summary>
@@ -433,13 +428,13 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 			pattern,
 			Operation.Remove);
 
-		rules.RulesList.Add(rule);
+		Rules.RulesList.Add(rule);
 
-		using MusicManager musicManager2 = new (rules, false);
+		using MusicManager musicManager2 = new (Rules, false);
 
 		Rules rules2 = musicManager2.Rules;
 
-		int count1 = rules.RulesList.Count;
+		int count1 = Rules.RulesList.Count;
 		int count2 = rules2.RulesList.Count;
 		Assert.That(count2, Is.EqualTo(count1));
 	}
@@ -702,11 +697,15 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void UpdateFileDifferentMoved()
 	{
 		string originalFileName = MakeTestFileCopy(
-			@"\Music\Artist\Album (Disk 2)", "Sakura.mp4");
+			@"\Music\Artist\Album (Disk 2)", "Hanami.mp4");
 
-		// Delete original test file, so that we can move the normalized
-		// File there.
-		File.Delete(TestFile);
+		string albumPath = @"\Music\Artist\Album";
+		string normalizedFileName =
+			MakeTestFileCopy(albumPath, "Hanami.mp4");
+
+		// Delete normalized test file, so that we can move the new normalized
+		// file there.
+		File.Delete(normalizedFileName);
 
 		string newFileName =
 			musicManager.UpdateFile(originalFileName, false);
@@ -716,7 +715,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		Assert.That(exists, Is.False);
 
 		string basePath = Paths.GetBasePathFromFilePath(TestFile);
-		string expected = basePath + @"\Artist\Album\Sakura.mp4";
+		string expected = basePath + @"\Artist\Album\Hanami.mp4";
 
 		Assert.That(newFileName, Is.EqualTo(expected));
 
@@ -775,7 +774,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void UpdateFileExactDuplicate()
 	{
 		string originalFileName = MakeTestFileCopy(
-			@"\Music\Artist\Album (Disk 2)", "Sakura.mp4");
+			@"\Music\Artist\Album (Disk 2)", "Hanami.mp4");
 
 		string newFileName =
 			musicManager.UpdateFile(originalFileName, false);
@@ -785,7 +784,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		Assert.That(exists, Is.False);
 
 		string basePath = Paths.GetBasePathFromFilePath(TestFile);
-		string expected = basePath + @"\Artist\Album\Sakura.mp4";
+		string expected = basePath + @"\Artist\Album\Hanami.mp4";
 
 		Assert.That(newFileName, Is.EqualTo(expected));
 
