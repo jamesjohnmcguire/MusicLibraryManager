@@ -7,8 +7,8 @@
 namespace MediaFileToolkit;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
-using NAudio.Wave;
 
 /// <summary>
 /// Provides methods for determining the audio type (lossy, lossless, or
@@ -25,6 +25,32 @@ using NAudio.Wave;
 /// <param name="mediaFileFormat">The media file format provider.</param>
 public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 {
+	private static readonly HashSet<string> LosslessCodecs =
+		new(StringComparer.OrdinalIgnoreCase)
+		{
+			"aiff",
+			"alac",
+			"ape",
+			"flac",
+			"pcm_s16le",
+			"pcm_s24le",
+			"pcm_s32le",
+			"tta",
+			"wav",
+			"wv"
+		};
+
+	private static readonly HashSet<string> LossyCodecs =
+		new(StringComparer.OrdinalIgnoreCase)
+		{
+			"aac",
+			"ac3",
+			"dts",
+			"mp3",
+			"opus",
+			"vorbis"
+		};
+
 	private readonly IMediaFileFormat mediaFileFormat = mediaFileFormat;
 
 	/// <summary>
@@ -50,26 +76,31 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 		}
 
 		string extension = Path.GetExtension(filePath);
+		extension = extension.TrimStart('.');
 		extension = extension.ToUpperInvariant();
-		var audioType = extension switch
+
+		AudioType audioType = extension switch
 		{
 			// Only lossy formats
-			".AAC" or ".MP3" or ".OPUS" => AudioType.Lossy,
+			_ when LossyCodecs.Contains(extension)
+				=> AudioType.Lossy,
 
 			// Only lossless formats
 			// Rare edge case: AIFF-C can contain lossy
-			".AIFF" or ".APE" or ".FLAC" or ".TTA" or ".WAV" => AudioType.Lossless,
+			_ when LosslessCodecs.Contains(extension)
+				=> AudioType.Lossless,
 
 			// Both lossy and lossless formats
-			".M4A" => mediaFileFormat.GetAudioTypeM4a(filePath),
-			".MKA" => mediaFileFormat.GetAudioTypeMka(filePath),
-			".OGG" => mediaFileFormat.GetAudioTypeOgg(filePath),
-			".WMA" => mediaFileFormat.GetAudioTypeWma(filePath),
+			"M4A" => mediaFileFormat.GetAudioTypeM4a(filePath),
+			"MKA" => mediaFileFormat.GetAudioTypeMka(filePath),
+			"OGG" => mediaFileFormat.GetAudioTypeOgg(filePath),
+			"WMA" => mediaFileFormat.GetAudioTypeWma(filePath),
 
 			// WavPack
-			".WV" => mediaFileFormat.GetAudioTypeWavPack(filePath),
+			"WV" => mediaFileFormat.GetAudioTypeWavPack(filePath),
 			_ => AudioType.Unknown,
 		};
+
 		return audioType;
 	}
 }
