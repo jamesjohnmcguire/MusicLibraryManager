@@ -13,6 +13,10 @@ using Serilog;
 /// <summary>
 /// The FFmpeg base class.
 /// </summary>
+[System.Diagnostics.CodeAnalysis.SuppressMessage(
+	"Design",
+	"CA1052:Static holder types should be Static or NotInheritable",
+	Justification = "This is likely a temporary suppression.")]
 public class FfmpegBase
 {
 	/// <summary>
