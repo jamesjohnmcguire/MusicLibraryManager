@@ -61,6 +61,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DigitalZenWorks.MusicToolKit\DigitalZenWorks.MusicToolKit.csproj" />
+		<ProjectReference Include="..\MediaFileToolkit\MediaFileToolkit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
