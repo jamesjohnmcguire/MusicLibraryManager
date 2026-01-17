@@ -154,17 +154,18 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 
 		string filePath = testFiles[format];
 
-		// Example: Use FFprobe to get audio properties
-		var properties = GetAudioPropertiesWithFFprobe(filePath);
+		MediaStream? mediaStream = MediaFileFormatFfmpeg.ProcessFile(filePath);
+		Assert.That(mediaStream, Is.Not.Null);
 
-		Assert.That(properties, Is.Not.Null, "Could not retrieve audio properties");
-		Assert.That(properties.ContainsKey("duration"), Is.True, "Duration not found");
+		Assert.That(mediaStream.Duration, Is.Not.Null.And.Not.Empty);
 
-		// Verify duration is approximately correct (within 0.1 seconds)
-		if (double.TryParse(properties["duration"], out double duration))
+		bool result =
+			double.TryParse(mediaStream.Duration, out double duration);
+		Assert.That(result, Is.True);
+
+		if (result == true)
 		{
-			Assert.That(duration, Is.InRange(0.9, 1.1),
-				$"Duration {duration}s is not within expected range for {format}");
+			Assert.That(duration, Is.InRange(0.9, 1.1));
 		}
 	}
 
@@ -209,41 +210,5 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		}
 
 		return audioFile;
-	}
-
-	private static Dictionary<string, string> GetAudioPropertiesWithFFprobe(
-		string filePath)
-	{
-		Dictionary<string, string> properties = new();
-
-		try
-		{
-			string arguments = "-v quiet -print_format json -show_format " +
-				$"-show_streams \"{filePath}\"";
-
-			ExternalProcess process = new();
-
-			bool result = process.Execute("ffprobe", arguments);
-
-			string output = process.Output;
-
-			// Basic parsing - in real code you'd use JSON deserialization
-			if (output.Contains(
-				"duration", StringComparison.OrdinalIgnoreCase))
-			{
-				int startIdx = output.IndexOf("\"duration\": \"") + 13;
-				int endIdx = output.IndexOf("\"", startIdx);
-				if (startIdx > 12 && endIdx > startIdx)
-				{
-					properties["duration"] = output.Substring(startIdx, endIdx - startIdx);
-				}
-			}
-
-			return properties;
-		}
-		catch
-		{
-			return null;
-		}
 	}
 }
