@@ -22,7 +22,7 @@ using global::Common.Logging;
 /// <remarks>This class implements the <see cref="IAudioConverter"/> interface
 /// to perform audio file conversions. It is intended for internal use and may
 /// rely on FFmpeg being available in the execution environment.</remarks>
-internal class AudioConveterFfmpeg : IAudioConverter
+internal class AudioConveterFfmpeg : FfmpegBase, IAudioConverter
 {
 	private static readonly Type LogType = typeof(AudioConveterFfmpeg);
 	private static readonly ILog Log = LogManager.GetLogger(LogType);
@@ -214,37 +214,6 @@ internal class AudioConveterFfmpeg : IAudioConverter
 				Log.Info(message);
 			}
 		}
-	}
-
-	private static bool CheckFfmpeg()
-	{
-		bool result = false;
-
-		try
-		{
-			using var process = Process.Start(new ProcessStartInfo
-			{
-				FileName = "ffmpeg",
-				Arguments = "-version",
-				RedirectStandardOutput = true,
-				UseShellExecute = false,
-				CreateNoWindow = true
-			});
-
-			if (process != null)
-			{
-				result = true;
-			}
-		}
-		catch (Exception exception) when
-			(exception is Win32Exception ||
-			exception is InvalidOperationException)
-		{
-			// ffmpeg not found or cannot be executed
-			Log.Error("FFmpeg is not installed or not found in PATH.");
-		}
-
-		return result;
 	}
 
 	private string GetFfmpegArguments(
