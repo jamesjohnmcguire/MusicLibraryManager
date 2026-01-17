@@ -16,7 +16,7 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 
 /// <summary>
-/// Unit tests class.
+/// General music manager tests class.
 /// </summary>
 [TestFixture]
 internal sealed class MusicTests : BaseTestsSupport, IDisposable
