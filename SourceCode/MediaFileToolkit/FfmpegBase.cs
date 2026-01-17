@@ -4,12 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Serilog;
+namespace MediaFileToolkit;
+
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-
-namespace MediaFileToolkit;
+using Serilog;
 
 /// <summary>
 /// The FFmpeg base class.
