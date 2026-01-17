@@ -25,15 +25,84 @@ using Newtonsoft.Json;
 /// accuracy of the analysis provided by FFMpeg. This class does not modify
 /// files.
 /// </remarks>
-internal class MediaFileFormatFfmpeg : IMediaFileFormat
+public class MediaFileFormatFfmpeg : IMediaFileFormat
 {
 	private static readonly Type LogType = typeof(AudioConveterFfmpeg);
 	private static readonly ILog Log = LogManager.GetLogger(LogType);
 
 	/// <summary>
-	/// Gets the media stream information obtained from FFprobe.
+	/// Gets or sets the media stream information obtained from FFprobe.
 	/// </summary>
-	public MediaStream? MediaStream { get; private set; }
+	public MediaStream? MediaStream { get; set; }
+
+	/// <summary>
+	/// Processes the specified media file using FFprobe to extract audio
+	/// stream properties.
+	/// </summary>
+	/// <param name="filePath">The audio file path.</param>
+	/// <returns>A media stream object.</returns>
+	public static MediaStream? ProcessFile(string filePath)
+	{
+		MediaStream? mediaStream = null;
+
+		string arguments =
+			"-of json" +
+			"-v error " +
+			"-select_streams a:0 " +
+			"-show_entries stream=bit_rate,bits_per_sample,codec_long_name," +
+			"codec_name,codec_tag_string,profile,sample_rate ";
+
+		Log.Info($"Converting: {filePath}");
+		ExternalProcess process = new();
+
+		bool result = process.Execute("ffprobe", arguments);
+
+		if (result == false)
+		{
+			string error = process.Output;
+			string message = $"Error analyzing {filePath}: {error}";
+			Log.Error(message);
+		}
+		else
+		{
+			mediaStream = GetMediaStremFromFfprobe(process.Output);
+		}
+
+		return mediaStream;
+	}
+
+	/// <summary>
+	/// Asynchronously processes the specified media file using FFprobe to
+	/// extract audio stream properties.
+	/// </summary>
+	/// <param name="filePath">The audio file path.</param>
+	/// <returns>A media stream object.</returns>
+	public static async Task<MediaStream?> ProcessFileAsync(string filePath)
+	{
+		MediaStream? mediaStream = null;
+
+		string arguments =
+			"-v error -show_entries stream=codec_name,bit_rate,sample_rate";
+
+		Log.Info($"Converting: {filePath}");
+		ExternalProcess process = new();
+
+		bool result = await process.ExecuteAsync("ffprobe", arguments).
+			ConfigureAwait(false);
+
+		if (result == false)
+		{
+			string error = process.Output;
+			string message = $"Error analyzing {filePath}: {error}";
+			Log.Error(message);
+		}
+		else
+		{
+			mediaStream = GetMediaStremFromFfprobe(process.Output);
+		}
+
+		return mediaStream;
+	}
 
 	/// <summary>
 	/// Determines the audio type of an M4A file based on its encoding format.
@@ -46,7 +115,7 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		audioType = ProcessFile(filePath);
+		MediaStream = ProcessFile(filePath);
 
 		if (MediaStream != null)
 		{
@@ -82,7 +151,7 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		audioType = ProcessFile(filePath);
+		MediaStream = ProcessFile(filePath);
 
 		if (MediaStream != null)
 		{
@@ -125,7 +194,7 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		audioType = ProcessFile(filePath);
+		MediaStream = ProcessFile(filePath);
 
 		if (MediaStream != null)
 		{
@@ -158,7 +227,7 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		audioType = ProcessFile(filePath);
+		MediaStream = ProcessFile(filePath);
 
 		if (MediaStream != null)
 		{
@@ -189,7 +258,7 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 	{
 		AudioType audioType = AudioType.Unknown;
 
-		audioType = ProcessFile(filePath);
+		MediaStream = ProcessFile(filePath);
 
 		if (MediaStream != null)
 		{
@@ -211,77 +280,11 @@ internal class MediaFileFormatFfmpeg : IMediaFileFormat
 		return audioType;
 	}
 
-	private AudioType ProcessFile(string filePath)
-	{
-		AudioType audioType = AudioType.Unknown;
-
-		string arguments =
-			"-of json" +
-			"-v error " +
-			"-select_streams a:0 " +
-			"-show_entries stream=bit_rate,bits_per_sample,codec_long_name," +
-			"codec_name,codec_tag_string,profile,sample_rate ";
-
-		Log.Info($"Converting: {filePath}");
-		ExternalProcess process = new();
-
-		bool result = process.Execute("ffprobe", arguments);
-
-		if (result == false)
-		{
-			string error = process.Output;
-			string message = $"Error analyzing {filePath}: {error}";
-			Log.Error(message);
-		}
-		else
-		{
-			audioType = GetAudioTypeFromFfprobe(process.Output);
-		}
-
-		return audioType;
-	}
-
-	private async Task<AudioType> ProcessFileAsync(string filePath)
-	{
-		AudioType audioType = AudioType.Unknown;
-
-		string arguments =
-			"-v error -show_entries stream=codec_name,bit_rate,sample_rate";
-
-		Log.Info($"Converting: {filePath}");
-		ExternalProcess process = new();
-
-		bool result = await process.ExecuteAsync("ffprobe", arguments).
-			ConfigureAwait(false);
-
-		if (result == false)
-		{
-			string error = process.Output;
-			string message = $"Error analyzing {filePath}: {error}";
-			Log.Error(message);
-		}
-		else
-		{
-			audioType = GetAudioTypeFromFfprobe(process.Output);
-		}
-
-		return audioType;
-	}
-
 	private static MediaStream? GetMediaStremFromFfprobe(string ffprobeJson)
 	{
 		MediaStream? mediaStream =
 			JsonConvert.DeserializeObject<MediaStream>(ffprobeJson);
 
 		return mediaStream;
-	}
-
-	private AudioType GetAudioTypeFromFfprobe(string ffprobeJson)
-	{
-		AudioType audioType = AudioType.Unknown;
-
-		MediaStream = GetMediaStremFromFfprobe(ffprobeJson);
-
-		return audioType;
 	}
 }
