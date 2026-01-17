@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 /// <summary>
 /// Tags for a media stream.
 /// </summary>
-internal class MediaStreamTags
+public class MediaStreamTags
 {
 	/// <summary>
 	/// Gets or sets creation time property.

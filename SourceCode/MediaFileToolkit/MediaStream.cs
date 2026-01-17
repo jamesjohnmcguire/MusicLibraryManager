@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 /// <summary>
 /// Represents a media stream with various properties such as codec type.
 /// </summary>
-internal class MediaStream
+public class MediaStream
 {
 	/// <summary>
 	/// Gets or sets the average frame rate property.

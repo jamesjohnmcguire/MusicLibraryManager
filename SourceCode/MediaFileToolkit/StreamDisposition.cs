@@ -8,7 +8,7 @@ namespace MediaFileToolkit;
 
 using Newtonsoft.Json;
 
-internal class StreamDisposition
+public class StreamDisposition
 {
 	/// <summary>
 	/// Gets or sets attached picture property.
