@@ -7,6 +7,7 @@
 namespace DigitalZenWorks.MusicToolKit.Tests;
 
 using MediaFileToolkit;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ using System.Linq;
 internal sealed class AudioFileFormatTests : BaseTestsSupport
 {
 	private readonly AudioSettings audioSettings = new();
+	private MediaFileFormat mediaFileFormat;
+	private Mock<IMediaFileFormat> mockMediaFileFormat;
 
 	// Note: APE format generation is not currently supported.
 	private static readonly Collection<string> fileTypes = new()
@@ -57,6 +60,20 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		}
 
 		Assert.That(testFiles.Count, Is.GreaterThan(0));
+	}
+
+	[SetUp]
+	public void SetUp()
+	{
+		mockMediaFileFormat = new Mock<IMediaFileFormat>();
+		mediaFileFormat = new MediaFileFormat(mockMediaFileFormat.Object);
+	}
+
+	[Test]
+	public void GetAudioType_NullFilePath_ThrowsFileNotFoundException()
+	{
+		Assert.Throws<FileNotFoundException>(() =>
+			mediaFileFormat.GetAudioType(null));
 	}
 
 	/// <summary>
