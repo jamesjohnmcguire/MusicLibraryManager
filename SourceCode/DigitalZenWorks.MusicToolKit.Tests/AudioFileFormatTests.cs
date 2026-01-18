@@ -216,8 +216,12 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		ExternalProcess process = new();
 
 		bool result = process.Execute("ffmpeg", arguments);
+		bool exists = File.Exists(outputPath);
 
-		if (result == true && File.Exists(outputPath))
+		Assert.That(result, Is.True);
+		Assert.That(exists, Is.True);
+
+		if (result == true && exists == true)
 		{
 			audioFile = outputPath;
 		}
