@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D7E22C6-786C-4E14-A23D-A538207DBC49}"
 	ProjectSection(SolutionItems) = preProject
@@ -84,8 +84,8 @@ Global
 		{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}.Release|x64.Build.0 = Release|x64
 		{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}.Release|x86.ActiveCfg = Release|x86
 		{575A6EE0-BB5C-48A2-897A-E132EDE0A97C}.Release|x86.Build.0 = Release|x86
-		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|Any CPU.Build.0 = Debug|x64
 		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|x64.ActiveCfg = Debug|x64
 		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|x64.Build.0 = Debug|x64
 		{37A2F35A-A33F-4AED-8E02-951157D9EF01}.Debug|x86.ActiveCfg = Debug|Any CPU
