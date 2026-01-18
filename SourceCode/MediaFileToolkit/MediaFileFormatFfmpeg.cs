@@ -47,10 +47,11 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 
 		string arguments =
 			"-of json" +
-			"-v error " +
-			"-select_streams a:0 " +
-			"-show_entries stream=bit_rate,bits_per_sample,codec_long_name," +
-			"codec_name,codec_tag_string,profile,sample_rate ";
+			" -v error" +
+			" -select_streams a:0 " +
+			" -show_entries stream=bit_rate,bits_per_sample,codec_long_name," +
+			"codec_name,codec_tag_string,duration,profile,sample_rate " +
+			$"\"{filePath}\"";
 
 		Log.Info($"Converting: {filePath}");
 		ExternalProcess process = new();
