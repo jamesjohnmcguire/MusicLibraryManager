@@ -22,8 +22,12 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 {
 	private readonly AudioSettings audioSettings = new();
 
+	// Note: APE format generation is not currently supported.
 	private static readonly Collection<string> fileTypes = new()
-		{ "aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "wma" };
+	{
+		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
+		"opus", "tta", "wav", "wma", "wv"
+	};
 
 	private Dictionary<string, string> testFiles;
 
@@ -178,13 +182,22 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		string codec = format switch
 		{
 			"aac" => "-codec:a aac -b:a 32k",
-			"flac" => "-codec:a fla",
+			"aiff" => "-codec:a pcm_s16be",
+
+			// APE not available, not supported yet
+			// "ape" => "-codec:a ape -compression_level 2000",
+			// Use FLAC as lossless alternative
+			// "ape" => "-codec:a flac -compression_level 5",
+			"flac" => "-codec:a flac",
 			"m4a" => "-codec:a aac -b:a 32k",
+			"mka" => "-codec:a libvorbis -b:a 32k",
 			"mp3" => "-codec:a libmp3lame -b:a 32k",
 			"ogg" => "-codec:a libvorbis -b:a 32k",
 			"opus" => "-codec:a libopus -b:a 32k",
+			"tta" => "-codec:a tta",
 			"wav" => "-codec:a pcm_s16le",
 			"wma" => "-codec:a wmav2 -b:a 32k",
+			"wv" => "-codec:a wavpack",
 			_ => null
 		};
 
