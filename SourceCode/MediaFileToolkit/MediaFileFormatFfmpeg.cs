@@ -283,8 +283,15 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 
 	private static MediaStream? GetMediaStremFromFfprobe(string ffprobeJson)
 	{
-		MediaStream? mediaStream =
-			JsonConvert.DeserializeObject<MediaStream>(ffprobeJson);
+		MediaStream? mediaStream = null;
+
+		MediaInfo ? mediaInfo =
+			JsonConvert.DeserializeObject<MediaInfo>(ffprobeJson);
+
+		if (mediaInfo != null)
+		{
+			mediaStream = mediaInfo.Streams?[0];
+		}
 
 		return mediaStream;
 	}
