@@ -19,12 +19,11 @@ using Newtonsoft.Json;
 /// to analyze audio files and identify their encoding type.  This class is
 /// intended to assist in identifying the encoding type of various file
 /// formats. All methods require a valid file path to an existing media file.
-/// The class methods return an AudioType value indicating whether the
+/// The class methods return a CompressionType value indicating whether the
 /// audio is lossless, lossy, or unknown. For formats that are not currently
-/// supported, the methods return AudioType.Unknown. The results depend on the
-/// accuracy of the analysis provided by FFMpeg. This class does not modify
-/// files.
-/// </remarks>
+/// supported, the methods return CompressionType.Unknown. The results depend
+/// on the accuracy of the analysis provided by FFMpeg. This class does not
+/// modify files.</remarks>
 public class MediaFileFormatFfmpeg : IMediaFileFormat
 {
 	private static readonly Type LogType = typeof(AudioConveterFfmpeg);
@@ -110,11 +109,11 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the M4A audio file to analyze. Must
 	/// refer to a valid, accessible file.</param>
-	/// <returns>An AudioType value indicating whether the file uses a lossless
-	/// or lossy encoding.</returns>
-	public AudioType GetAudioTypeM4a(string filePath)
+	/// <returns>A CompressionType value indicating whether the file uses a
+	/// lossless or lossy encoding.</returns>
+	public CompressionType GetCompressionTypeM4a(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		MediaStream = ProcessFile(filePath);
 
@@ -127,16 +126,16 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 				codecName.Contains("LOSSLESS", StringComparison.Ordinal))
 			{
 				// WMA Lossless
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 			else if (codecName.Contains("AAC", StringComparison.Ordinal))
 			{
 				// Regular WMA is lossy
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -145,12 +144,12 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the Matroska audio file (.mka) to
 	/// analyze. Cannot be null or empty.</param>
-	/// <returns>An AudioType value representing the detected audio type of the
-	/// specified file. Returns AudioType.Unknown if the type cannot be
-	/// determined.</returns>
-	public AudioType GetAudioTypeMka(string filePath)
+	/// <returns>A CompressionType value representing the detected audio type
+	/// of the specified file. Returns CompressionType.Unknown if the type
+	/// cannot be determined.</returns>
+	public CompressionType GetCompressionTypeMka(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		MediaStream = ProcessFile(filePath);
 
@@ -167,7 +166,7 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 				codecName.Contains("WAV", StringComparison.Ordinal) ||
 				codecName.Contains("WAVPACK", StringComparison.Ordinal))
 			{
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 			else if (codecName.Contains("AAC", StringComparison.Ordinal) ||
 				codecName.Contains("AC3", StringComparison.Ordinal) ||
@@ -176,11 +175,11 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 				codecName.Contains("OPUS", StringComparison.Ordinal) ||
 				codecName.Contains("VORBIS", StringComparison.Ordinal))
 			{
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -188,12 +187,12 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the Ogg audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value representing the type of the Ogg audio
-	/// file. Returns AudioType.Unknown if the type cannot be determined.
+	/// <returns>A CompressionType value representing the type of the Ogg audio
+	/// file. Returns CompressionType.Unknown if the type cannot be determined.
 	/// </returns>
-	public AudioType GetAudioTypeOgg(string filePath)
+	public CompressionType GetCompressionTypeOgg(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		MediaStream = ProcessFile(filePath);
 
@@ -204,16 +203,16 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 
 			if (codecName.Contains("LOSSLESS", StringComparison.Ordinal))
 			{
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 			else if (codecName.Contains("OPUS", StringComparison.Ordinal) ||
 				codecName.Contains("VORBIS", StringComparison.Ordinal))
 			{
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -221,12 +220,12 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the WavPack audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value representing the type of the specified
-	/// audio file. Returns AudioType.Unknown if the type cannot be determined.
-	/// </returns>
-	public AudioType GetAudioTypeWavPack(string filePath)
+	/// <returns>A CompressionType value representing the type of the specified
+	/// audio file. Returns CompressionType.Unknown if the type cannot be
+	/// determined.</returns>
+	public CompressionType GetCompressionTypeWavPack(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		MediaStream = ProcessFile(filePath);
 
@@ -240,11 +239,11 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 				// If we can read the file, assume lossless unless we detect
 				// hybrid mode. This is a simplification - hybrid detection is
 				// complex/
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -253,11 +252,11 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the WMA file to analyze. Must refer
 	/// to a valid WMA file; otherwise, the result may be inaccurate.</param>
-	/// <returns>An AudioType value indicating whether the file is lossless,
-	/// lossy, or unknown based on its encoding.</returns>
-	public AudioType GetAudioTypeWma(string filePath)
+	/// <returns>A CompressionType value indicating whether the file is
+	/// lossless, lossy, or unknown based on its encoding.</returns>
+	public CompressionType GetCompressionTypeWma(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		MediaStream = ProcessFile(filePath);
 
@@ -269,23 +268,23 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 			if (codecName.Contains("LOSSLESS", StringComparison.Ordinal))
 			{
 				// WMA Lossless
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 			else if (codecName.Contains("WMA", StringComparison.Ordinal))
 			{
 				// Regular WMA is lossy
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	private static MediaStream? GetMediaStremFromFfprobe(string ffprobeJson)
 	{
 		MediaStream? mediaStream = null;
 
-		MediaInfo ? mediaInfo =
+		MediaInfo? mediaInfo =
 			JsonConvert.DeserializeObject<MediaInfo>(ffprobeJson);
 
 		if (mediaInfo != null)

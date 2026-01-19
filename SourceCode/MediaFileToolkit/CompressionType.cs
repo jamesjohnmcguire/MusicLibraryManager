@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-// <copyright file="AudioType.cs" company="Digital Zen Works">
+// <copyright file="CompressionType.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2026 Digital Zen Works.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ namespace MediaFileToolkit;
 /// audio quality, while lossless formats preserve the original audio data. The
 /// Unknown value can be used when the encoding type cannot be determined.
 /// </remarks>
-public enum AudioType
+public enum CompressionType
 {
 	/// <summary>
 	/// Specifies that the operation or process may result in a loss of data

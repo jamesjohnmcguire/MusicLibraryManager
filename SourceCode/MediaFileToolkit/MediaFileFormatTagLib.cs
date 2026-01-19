@@ -13,9 +13,9 @@ using System;
 /// </summary>
 /// <param name="codec">The codec to analyze.</param>
 /// <param name="description">The codec's description.</param>
-/// <returns>An AudioType value indicating whether the file is lossless,
+/// <returns>A CompressionType value indicating whether the file is lossless,
 /// lossy, or unknown.</returns>
-public delegate AudioType AnalyzeCodec(
+public delegate CompressionType AnalyzeCodec(
 	TagLib.ICodec? codec, string description);
 
 /// <summary>
@@ -26,19 +26,20 @@ public delegate AudioType AnalyzeCodec(
 /// to analyze audio files and identify their encoding type.  This class is
 /// intended to assist in identifying the encoding type of various file
 /// formats. All methods require a valid file path to an existing media file.
-/// The class methods return an AudioType value indicating whether the
+/// The class methods returns a CompressionType value indicating whether the
 /// audio is lossless, lossy, or unknown. For formats that are not currently
-/// supported, the methods return AudioType.Unknown. The results depend on the
-/// accuracy and completeness of the metadata provided by TagLib and the codecs
-/// present in the file. This class does not modify files or their metadata.
-/// </remarks>
+/// supported, the methods return CompressionType.Unknown. The results depend
+/// on the accuracy and completeness of the metadata provided by TagLib and the
+/// codecs present in the file. This class does not modify files or their
+/// metadata.</remarks>
 /// <remarks>This class implements the <see cref="IMediaFileFormat"/> interface
 /// to analyze audio files and identify their encoding type. This class is
 /// intended to assist in identifying
-/// the encoding type of various file formats. All methods are static and require a valid
-/// file path to an existing media file. The results depend on the accuracy and
-/// completeness of the metadata provided by TagLib and the codecs present in
-/// the file. This class does not modify files or their metadata.</remarks>
+/// the encoding type of various file formats. All methods are static and
+/// require a valid file path to an existing media file. The results depend on
+/// the accuracy and completeness of the metadata provided by TagLib and the
+/// codecs present in the file. This class does not modify files or their
+/// metadata.</remarks>
 internal class MediaFileFormatTagLib : IMediaFileFormat
 {
 	/// <summary>
@@ -48,16 +49,17 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// <remarks>This method inspects the codecs present in the specified M4A
 	/// file to distinguish between lossless (such as ALAC) and lossy (such as
 	/// AAC) audio formats. If the codec cannot be determined,
-	/// AudioType.Unknown is returned.</remarks>
+	/// CompressionType.Unknown is returned.</remarks>
 	/// <param name="filePath">The path to the M4A file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value indicating whether the file is lossless,
-	/// lossy, or unknown.</returns>
-	public AudioType GetAudioTypeM4a(string filePath)
+	/// <returns>A CompressionType value indicating whether the file is
+	/// lossless, lossy, or unknown.</returns>
+	public CompressionType GetCompressionTypeM4a(string filePath)
 	{
-		AudioType audioType = IterateTagLibCodecs(filePath, AnalyzeCodecM4a);
+		CompressionType compressionType =
+			IterateTagLibCodecs(filePath, AnalyzeCodecM4a);
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -71,13 +73,14 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// beyond what TagLib supports.</remarks>
 	/// <param name="filePath">The path to the MKA file to analyze.
 	/// Cannot be null or an empty string.</param>
-	/// <returns>An AudioType value indicating whether the file uses a
+	/// <returns>A CompressionType value indicating whether the file uses a
 	/// lossless, lossy, or unknown codec.</returns>
-	public AudioType GetAudioTypeMka(string filePath)
+	public CompressionType GetCompressionTypeMka(string filePath)
 	{
-		AudioType audioType = IterateTagLibCodecs(filePath, AnalyzeCodecMka);
+		CompressionType compressionType =
+			IterateTagLibCodecs(filePath, AnalyzeCodecMka);
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -88,16 +91,17 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// file to classify its audio type. If the codec is recognized as Opus or
 	/// Vorbis, the file is considered lossy. If the codec description contains
 	/// 'LOSSLESS', the file is considered lossless. If the codec cannot be
-	/// determined, AudioType.Unknown is returned.</remarks>
+	/// determined, CompressionType.Unknown is returned.</remarks>
 	/// <param name="filePath">The path to the Ogg audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value indicating whether the file is lossy,
+	/// <returns>A CompressionType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public AudioType GetAudioTypeOgg(string filePath)
+	public CompressionType GetCompressionTypeOgg(string filePath)
 	{
-		AudioType audioType = IterateTagLibCodecs(filePath, AnalyzeCodecOgg);
+		CompressionType compressionType =
+			IterateTagLibCodecs(filePath, AnalyzeCodecOgg);
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -109,11 +113,11 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// otherwise, tentatively, the file is lossy.</remarks>
 	/// <param name="filePath">The path to the WavPack audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value indicating whether the file is lossy,
+	/// <returns>A CompressionType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public AudioType GetAudioTypeWavPack(string filePath)
+	public CompressionType GetCompressionTypeWavPack(string filePath)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		using TagLib.File file = TagLib.File.Create(filePath);
 
@@ -124,10 +128,10 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 			// If we can read the file, assume lossless unless we detect
 			// hybrid mode. This is a simplification - hybrid detection is
 			// complex/
-			audioType = AudioType.Lossless;
+			compressionType = CompressionType.Lossless;
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
 	/// <summary>
@@ -138,23 +142,24 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 	/// Windows Media Audio (WMA) file to classify its audio type. If the codec
 	/// description contains 'LOSSLESS', the file is considered lossless. If
 	/// the codec description contains 'WMA', the file is considered lossy. If
-	/// the codec cannot be determined, AudioType.Unknown is returned.
+	/// the codec cannot be determined, CompressionType.Unknown is returned.
 	/// </remarks>
 	/// <param name="filePath">The path to the WMA file to analyze. Must refer
 	/// to a valid WMA file; otherwise, the result may be inaccurate.</param>
-	/// <returns>An AudioType value indicating whether the file is lossy,
+	/// <returns>A CompressionType value indicating whether the file is lossy,
 	/// lossless, or unknown based on the detected codec.</returns>
-	public AudioType GetAudioTypeWma(string filePath)
+	public CompressionType GetCompressionTypeWma(string filePath)
 	{
-		AudioType audioType = IterateTagLibCodecs(filePath, AnalyzeCodecWma);
+		CompressionType compressionType =
+			IterateTagLibCodecs(filePath, AnalyzeCodecWma);
 
-		return audioType;
+		return compressionType;
 	}
 
-	private static AudioType IterateTagLibCodecs(
+	private static CompressionType IterateTagLibCodecs(
 		string filePath, AnalyzeCodec analyzer)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		using TagLib.File file = TagLib.File.Create(filePath);
 
@@ -166,22 +171,22 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 				description =
 					description?.ToUpperInvariant() ?? string.Empty;
 
-				audioType = analyzer(codec, description);
+				compressionType = analyzer(codec, description);
 
-				if (audioType != AudioType.Unknown)
+				if (compressionType != CompressionType.Unknown)
 				{
 					break;
 				}
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
-	private static AudioType AnalyzeCodecM4a(
+	private static CompressionType AnalyzeCodecM4a(
 		TagLib.ICodec? codec, string description)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		if (codec != null)
 		{
@@ -189,7 +194,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 			{
 				if (audioEntry.BoxType == "alac")
 				{
-					audioType = AudioType.Lossless;
+					compressionType = CompressionType.Lossless;
 				}
 
 				if (audioEntry.BoxType == "mp4a")
@@ -200,7 +205,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 						description.Contains(
 							"APPLE LOSSLESS", StringComparison.Ordinal))
 					{
-						audioType = AudioType.Lossless;
+						compressionType = CompressionType.Lossless;
 					}
 					else if (description.Contains(
 						"AAC", StringComparison.Ordinal) ||
@@ -209,26 +214,26 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 					{
 						// Most mp4a entries are AAC variants (lossy)
 						// AAC-LC, AAC-HE, AAC-HEv2, etc.
-						audioType = AudioType.Lossy;
+						compressionType = CompressionType.Lossy;
 					}
 					else
 					{
 						// Add additional checks here for other codecs.
 						// If we can't determine specifically,
 						// mp4a is typically lossy
-						audioType = AudioType.Lossy;
+						compressionType = CompressionType.Lossy;
 					}
 				}
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
-	private static AudioType AnalyzeCodecMka(
+	private static CompressionType AnalyzeCodecMka(
 		TagLib.ICodec? codec, string description)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		if (codec != null)
 		{
@@ -240,7 +245,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 				description.Contains("WAVPACK", StringComparison.Ordinal))
 			{
 				// Lossless codecs
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 
 			if (description.Contains("AAC", StringComparison.Ordinal) ||
@@ -251,17 +256,17 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 				description.Contains("VORBIS", StringComparison.Ordinal))
 			{
 				// Lossy codecs
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
-	private static AudioType AnalyzeCodecOgg(
+	private static CompressionType AnalyzeCodecOgg(
 		TagLib.ICodec? codec, string description)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		if (codec != null)
 		{
@@ -269,7 +274,7 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 				codec is TagLib.Ogg.Codecs.Vorbis)
 			{
 				// Seems Not Supported: codec is TagLib.Ogg.Codecs.Speex
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 			else
 			{
@@ -277,33 +282,33 @@ internal class MediaFileFormatTagLib : IMediaFileFormat
 				if (description.Contains(
 					"LOSSLESS", StringComparison.Ordinal))
 				{
-					audioType = AudioType.Lossless;
+					compressionType = CompressionType.Lossless;
 				}
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 
-	private static AudioType AnalyzeCodecWma(
+	private static CompressionType AnalyzeCodecWma(
 		TagLib.ICodec? codec, string description)
 	{
-		AudioType audioType = AudioType.Unknown;
+		CompressionType compressionType = CompressionType.Unknown;
 
 		if (codec != null)
 		{
 			if (description.Contains("LOSSLESS", StringComparison.Ordinal))
 			{
 				// WMA Lossless
-				audioType = AudioType.Lossless;
+				compressionType = CompressionType.Lossless;
 			}
 			else if (description.Contains("WMA", StringComparison.Ordinal))
 			{
 				// Regular WMA is lossy
-				audioType = AudioType.Lossy;
+				compressionType = CompressionType.Lossy;
 			}
 		}
 
-		return audioType;
+		return compressionType;
 	}
 }

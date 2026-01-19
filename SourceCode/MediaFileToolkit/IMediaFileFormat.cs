@@ -22,9 +22,9 @@ public interface IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The full path to the M4A audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value that represents the detected type of the
+	/// <returns>A CompressionType value that represents the detected type of the
 	/// specified M4A file.</returns>
-	AudioType GetAudioTypeM4a(string filePath);
+	CompressionType GetCompressionTypeM4a(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a Matroska audio (MKA) file based on its
@@ -32,18 +32,18 @@ public interface IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The full path to the MKA file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value indicating the detected audio type of the
+	/// <returns>A CompressionType value indicating the detected audio type of the
 	/// specified MKA file.</returns>
-	AudioType GetAudioTypeMka(string filePath);
+	CompressionType GetCompressionTypeMka(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of the specified Ogg file.
 	/// </summary>
 	/// <param name="filePath">The path to the Ogg audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value that represents the detected type of the
+	/// <returns>A CompressionType value that represents the detected type of the
 	/// Ogg audio file.</returns>
-	AudioType GetAudioTypeOgg(string filePath);
+	CompressionType GetCompressionTypeOgg(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a WavPack file based on the specified
@@ -51,9 +51,9 @@ public interface IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The path to the WavPack audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value representing the detected audio type of the
+	/// <returns>A CompressionType value representing the detected audio type of the
 	/// specified WavPack file.</returns>
-	AudioType GetAudioTypeWavPack(string filePath);
+	CompressionType GetCompressionTypeWavPack(string filePath);
 
 	/// <summary>
 	/// Determines the audio type of a Windows Media Audio (WMA) file at the
@@ -61,7 +61,7 @@ public interface IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The full path to the WMA file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value that represents the type of the specified
+	/// <returns>A CompressionType value that represents the type of the specified
 	/// WMA file.</returns>
-	AudioType GetAudioTypeWma(string filePath);
+	CompressionType GetCompressionTypeWma(string filePath);
 }

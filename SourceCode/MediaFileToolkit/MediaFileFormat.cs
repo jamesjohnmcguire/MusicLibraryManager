@@ -18,7 +18,7 @@ using System.IO;
 /// attempts to classify them as lossy or lossless using file extension and,
 /// where necessary, file content analysis. The classification may depend on
 /// the platform and available libraries. Not all formats can be definitively
-/// classified; in such cases, the result may be AudioType.Unknown.</remarks>
+/// classified; in such cases, the result may be CompressionType.Unknown.</remarks>
 /// <remarks>
 /// Initializes a new instance of the <see cref="MediaFileFormat"/> class.
 /// </remarks>
@@ -59,16 +59,16 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 	/// </summary>
 	/// <remarks>For some formats, such as .m4a and .wma, the method may
 	/// inspect the file contents to determine the audio type. Formats that
-	/// can be either lossy or lossless may return AudioType.Unknown if the
+	/// can be either lossy or lossless may return CompressionType.Unknown if the
 	/// type cannot be determined from the extension alone.</remarks>
 	/// <param name="filePath">The full path to the audio file to analyze.
 	/// Cannot be null or empty.</param>
-	/// <returns>An AudioType value indicating whether the file is a lossy,
-	/// lossless, or unknown audio type. Returns AudioType.Unknown if the type
+	/// <returns>An CompressionType value indicating whether the file is a lossy,
+	/// lossless, or unknown audio type. Returns CompressionType.Unknown if the type
 	/// cannot be determined.</returns>
 	/// <exception cref="FileNotFoundException">Thrown if the file specified by
 	/// filePath does not exist.</exception>
-	public AudioType GetAudioType(string filePath)
+	public CompressionType GetAudioType(string filePath)
 	{
 		if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
 		{
@@ -79,26 +79,26 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 		extension = extension.TrimStart('.');
 		extension = extension.ToUpperInvariant();
 
-		AudioType audioType = extension switch
+		CompressionType audioType = extension switch
 		{
 			// Only lossy formats
 			_ when LossyCodecs.Contains(extension)
-				=> AudioType.Lossy,
+				=> CompressionType.Lossy,
 
 			// Only lossless formats
 			// Rare edge case: AIFF-C can contain lossy
 			_ when LosslessCodecs.Contains(extension)
-				=> AudioType.Lossless,
+				=> CompressionType.Lossless,
 
 			// Both lossy and lossless formats
-			"M4A" => mediaFileFormat.GetAudioTypeM4a(filePath),
-			"MKA" => mediaFileFormat.GetAudioTypeMka(filePath),
-			"OGG" => mediaFileFormat.GetAudioTypeOgg(filePath),
-			"WMA" => mediaFileFormat.GetAudioTypeWma(filePath),
+			"M4A" => mediaFileFormat.GetCompressionTypeM4a(filePath),
+			"MKA" => mediaFileFormat.GetCompressionTypeMka(filePath),
+			"OGG" => mediaFileFormat.GetCompressionTypeOgg(filePath),
+			"WMA" => mediaFileFormat.GetCompressionTypeWma(filePath),
 
 			// WavPack
-			"WV" => mediaFileFormat.GetAudioTypeWavPack(filePath),
-			_ => AudioType.Unknown,
+			"WV" => mediaFileFormat.GetCompressionTypeWavPack(filePath),
+			_ => CompressionType.Unknown,
 		};
 
 		return audioType;
