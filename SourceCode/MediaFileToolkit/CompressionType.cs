@@ -19,16 +19,21 @@ namespace MediaFileToolkit;
 public enum CompressionType
 {
 	/// <summary>
+	/// Specifies that the operation or process may involve both lossy and
+	/// lossless components.
+	/// </summary>
+	Hybrid,
+
+	/// <summary>
+	/// Specifies that the operation or process preserves all original data.
+	/// </summary>
+	Lossless,
+
+	/// <summary>
 	/// Specifies that the operation or process may result in a loss of data
 	/// or precision.
 	/// </summary>
 	Lossy,
-
-	/// <summary>
-	/// Gets or sets a value indicating whether lossless compression
-	/// is enabled.
-	/// </summary>
-	Lossless,
 
 	/// <summary>
 	/// Represents an unknown or unspecified value.
