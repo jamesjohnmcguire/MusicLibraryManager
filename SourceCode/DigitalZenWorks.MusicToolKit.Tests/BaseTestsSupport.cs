@@ -92,12 +92,13 @@ internal class BaseTestsSupport
 		return newFileName;
 	}
 
-	private string CreateUniqueDirectory()
+	private static string CreateUniqueDirectory()
 	{
 		string guid = Guid.NewGuid().ToString("N");
 		string uniqueDirectoryName = "MusicManTests-" + guid;
 		string temporaryPath = Path.GetTempPath();
-		string uniqueDirectoryPath = Path.Combine(temporaryPath, uniqueDirectoryName);
+		string uniqueDirectoryPath =
+			Path.Combine(temporaryPath, uniqueDirectoryName);
 		Directory.CreateDirectory(uniqueDirectoryPath);
 
 		return uniqueDirectoryPath;

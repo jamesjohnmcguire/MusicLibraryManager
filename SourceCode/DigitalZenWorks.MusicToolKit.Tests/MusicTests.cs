@@ -21,7 +21,7 @@ using NUnit.Framework.Internal;
 [TestFixture]
 internal sealed class MusicTests : BaseTestsSupport, IDisposable
 {
-	private MusicManager musicManager;
+	private MusicManager? musicManager;
 
 	/// <summary>
 	/// The one time setup method.
@@ -38,6 +38,11 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	[SetUp]
 	public void SetUp()
 	{
+		if (musicManager is null)
+		{
+			throw new ArgumentNullException(nameof(musicManager));
+		}
+
 		Rules = musicManager.Rules;
 	}
 
@@ -302,7 +307,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void ArtistReplaceVariousArtistsNotNull()
 	{
 		string original = "Various Artists";
-		string replacement = null;
+		string? replacement = null;
 
 		string artist =
 			ArtistRules.ReplaceVariousArtists(original, replacement);
@@ -399,7 +404,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	[Test]
 	public void GetDuplicateLocation()
 	{
-		string location = musicManager.LibraryLocation;
+		string location = musicManager!.LibraryLocation;
 
 		string fileName = @"Music\10cc\The Very Best Of 10cc\" +
 			"The Things We Do For Love.mp3";
@@ -537,7 +542,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void RegexRemoveDifferent()
 	{
 		string original = "What It Is! Funky Soul And Rare Grooves cd 1";
-		string content = original;
+		string? content = original;
 		string pattern = @" cd.*?\d";
 		content = Rule.RegexRemove(pattern, content);
 
@@ -553,8 +558,8 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void RegexRemoveNoPattern()
 	{
 		string original = "What It Is! Funky Soul And Rare Grooves";
-		string content = original;
-		string pattern = null;
+		string? content = original;
+		string? pattern = null;
 		content = Rule.RegexRemove(pattern, content);
 
 		Assert.That(content, Is.EqualTo(original));
@@ -567,7 +572,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void RegexRemoveSame()
 	{
 		string original = "What It Is! Funky Soul And Rare Grooves";
-		string content = original;
+		string? content = original;
 		string pattern = @" cd.*?\d";
 		content = Rule.RegexRemove(pattern, content);
 
@@ -582,9 +587,9 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	{
 		string temporaryFile = Path.GetTempFileName();
 		FileInfo fileInfo = new (temporaryFile);
-		string destinationPath = Path.GetDirectoryName(temporaryFile);
+		string? destinationPath = Path.GetDirectoryName(temporaryFile);
 		string filePath =
-			musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
+			musicManager!.SaveTagsToJsonFile(fileInfo, destinationPath);
 
 		Assert.That(filePath, Is.Null);
 	}
@@ -596,9 +601,9 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	public void SaveTagsToJsonFileSuccess()
 	{
 		FileInfo fileInfo = new (TestFile);
-		string destinationPath = Path.GetDirectoryName(TestFile);
+		string? destinationPath = Path.GetDirectoryName(TestFile);
 		string filePath =
-			musicManager.SaveTagsToJsonFile(fileInfo, destinationPath);
+			musicManager!.SaveTagsToJsonFile(fileInfo, destinationPath);
 
 		Assert.That(filePath, Is.Not.Null);
 
@@ -673,7 +678,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		string newFileName =
 			MakeTestFileCopy(albumPath, "sakura test.mp4");
 
-		musicManager.LibraryLocation = TemporaryPath;
+		musicManager!.LibraryLocation = TemporaryPath;
 
 		newFileName = musicManager.UpdateFile(newFileName, false);
 
@@ -708,7 +713,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		File.Delete(normalizedFileName);
 
 		string newFileName =
-			musicManager.UpdateFile(originalFileName, false);
+			musicManager!.UpdateFile(originalFileName, false);
 
 		// The un-normalized file should have been moved.
 		bool exists = File.Exists(originalFileName);
@@ -742,7 +747,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		tags.Update();
 
 		string newFileName =
-			musicManager.UpdateFile(originalFileName, false);
+			musicManager!.UpdateFile(originalFileName, false);
 
 		string basePath = Paths.GetBasePathFromFilePath(TestFile);
 
@@ -777,7 +782,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 			@"\Music\Artist\Album (Disk 2)", "Hanami.mp4");
 
 		string newFileName =
-			musicManager.UpdateFile(originalFileName, false);
+			musicManager!.UpdateFile(originalFileName, false);
 
 		// The un-normalized file should have been deleted.
 		bool exists = File.Exists(originalFileName);
@@ -801,7 +806,7 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 	[Test]
 	public void UpdateFileSame()
 	{
-		string newFileName = musicManager.UpdateFile(TestFile, false);
+		string newFileName = musicManager!.UpdateFile(TestFile, false);
 
 		string basePath = Paths.GetBasePathFromFilePath(TestFile);
 		string expected =
@@ -823,11 +828,8 @@ internal sealed class MusicTests : BaseTestsSupport, IDisposable
 		if (disposing)
 		{
 			// dispose managed resources
-			if (musicManager != null)
-			{
-				musicManager.Dispose();
-				musicManager = null;
-			}
+			musicManager?.Dispose();
+			musicManager = null;
 		}
 	}
 }

@@ -93,7 +93,7 @@ internal sealed class ItunesTests
 	[Test]
 	public void ItunesXmlFileCreateInvalidFile()
 	{
-		ITunesXmlFile iTunesXmlFile = null;
+		ITunesXmlFile? iTunesXmlFile = null;
 
 		string nonExistantFilePath = Path.GetTempFileName();
 		File.Delete(nonExistantFilePath);
