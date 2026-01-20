@@ -528,3 +528,248 @@ Music Manager
 
 	Compare Scripts	audioFilesCompare.cmd
 	Convert Scripts
+FFMpeg
+	choco install ffmpeg --params "/FfmpegPath:full"
+
+	Encoders check
+		ffmpeg -encoders | grep aac
+		libfdk_aac !!!
+When to Convert
+	so, if these m4a files are lossless, would it be better to convert them to flac & alac?
+	If your M4A files are already lossless (using ALAC codec), there's generally no significant benefit to converting them to FLAC or creating duplicate ALAC files. Here's why:
+Music Manager
+	FFMpeg
+		Possible levels are numbers or:
+			"quiet"
+			"panic"
+			"fatal"
+			"error"
+			"warning"
+			"info"
+			"verbose"
+			"debug"
+			"trace"
+
+		ffprobe -hide_banner -i
+		-select_streams v:0
+		ffprobe -hide_banner -v panic -show_entries stream=bit_rate
+		ffprobe -hide_banner -v info -show_entries stream=codec_name,bit_rate,sample_rate
+		ffprobe -v', 'error', '-show_entries',
+					 'stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+
+	"-v error -show_entries stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+
+	https://ottverse.com/ffprobe-comprehensive-tutorial-with-examples/
+	flac to alac
+	https://stackoverflow.com/questions/62486428/using-ffmpeg-to-convert-flac-to-alac-with-cover-art
+
+            ['ffprobe', '-v', 'error', '-show_entries',
+             'stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+	https://github.com/MediaArea/MediaInfo
+
+	D:\Users\JamesMc\Data\External\Entertainment\Music\10cc\Guardians of the Galaxy -  Awesome Mix Vol. 1>
+	mediainfo  --output=JSON  "I'm Not in Love.mp3"
+	{
+		"creatingLibrary":
+		{
+			"name":"MediaInfoLib",
+			"version":"25.07",
+			"url":"https://mediaarea.net/MediaInfo"
+		},
+		"media":
+		{
+			"@ref":"I'm Not in Love.mp3",
+			"track":
+			[
+				{
+					"@type":"General",
+					"AudioCount":"1",
+					"ImageCount":"1",
+					"FileExtension":"mp3",
+					"Format":"MPEG Audio",
+					"FileSize":"11245447",
+					"Duration":"365.035",
+					"OverallBitRate_Mode":"VBR",
+					"OverallBitRate":"244516",
+					"StreamSize":"87907",
+					"Title":"I'm Not in Love",
+					"Album":"Guardians of the Galaxy: Awesome Mix Vol. 1",
+					"Album_Performer":"Various",
+					"Part_Position":"1",
+					"Part_Position_Total":"1",
+					"Track":"I'm Not in Love",
+					"Track_Position":"06",
+					"Track_Position_Total":"13",
+					"Performer":"10cc",
+					"Genre":"Soundtrack",
+					"Recorded_Date":"2014",
+					"File_Created_Date":"2020-07-10 10:28:41.000 UTC",
+					"File_Created_Date_Local":"2020-07-10 19:28:41.000",
+					"File_Modified_Date":"2019-11-11 20:07:30.000 UTC",
+					"File_Modified_Date_Local":"2019-11-12 05:07:30.000",
+					"Encoded_Library":"LAME3.99r",
+					"Cover":"Yes",
+					"Cover_Type":"Cover",
+					"Cover_Mime":"image/jpeg"
+				},
+				{
+					"@type":"Audio",
+					"Format":"MPEG Audio",
+					"Format_Version":"1",
+					"Format_Profile":"Layer 3",
+					"Format_Settings_Mode":"Joint stereo",
+					"Duration":"365.035",
+					"BitRate_Mode":"VBR",
+					"BitRate":"244516",
+					"BitRate_Minimum":"32000",
+					"Channels":"2",
+					"SamplesPerFrame":"1152",
+					"SamplingRate":"44100",
+					"SamplingCount":"16098048",
+					"FrameRate":"38.281",
+					"FrameCount":"13974",
+					"Compression_Mode":"Lossy",
+					"StreamSize":"11157123",
+					"Encoded_Library":"LAME3.99r",
+					"Encoded_Library_Settings":"-m j -V 0 -q 0 -lowpass 22.1 --vbr-new -b 32"
+				},
+				{
+					"@type":"Image",
+					"Type":"Cover",
+					"Format":"JPEG",
+					"MuxingMode":"ID3v2 APIC",
+					"Width":"500",
+					"Height":"500",
+					"ColorSpace":"YUV",
+					"ChromaSubsampling":"4:2:0",
+					"BitDepth":"8",
+					"Compression_Mode":"Lossy",
+					"StreamSize":"86550"
+				}
+			]
+		}
+	}
+
+	/// <summary>
+	/// Processes the specified input file to determine its audio type.
+	/// </summary>
+	/// <param name="filePath">The file to be converted. Must be a valid,
+	/// existing file.</param>
+	/// <returns>A task that represents the asynchronous conversion operation.
+	/// </returns>
+
+			Assert.That(
+				duration,
+				Is.InRange(0.9, 1.1),
+				$"Duration {duration}s is not within expected range for {format}");
+
+	ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a fla temp.flac
+
+	ffprobe -of json -v error -select_streams a:0 -show_entries stream=bit_rate,bits_per_sample,codec_long_name,codec_name,codec_tag_string,profile,sample_rate
+	Output
+		{
+			"programs": [
+
+			],
+			"stream_groups": [
+
+			],
+			"streams": [
+				{
+					"codec_name": "aac",
+					"codec_long_name": "AAC (Advanced Audio Coding)",
+					"profile": "LC",
+					"codec_tag_string": "[0][0][0][0]",
+					"sample_rate": "44100",
+					"bits_per_sample": 0,
+					"bit_rate": "33982"
+				}
+			]
+		}
+	Probe.dev API
+		"local media files"
+		https://docs.probe.dev/guides/media-sources
+
+	https://www.probe.dev/resources/ffprobe-vs-mediainfo-comparison
+	https://stackoverflow.com/questions/41231998/mediainfo-cli-command-line-interface-syntax-teaching-me-once-for-all
+Music Manager
+	C:\ProgramData\chocolatey\bin\ffmpeg.exe
+	mka
+		ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a vorbis -strict -2 -b:a 32k test.mka
+		ffprobe -v quiet -print_format json -show_format -show_streams test.mka
+
+	Support APE format
+	Deal with multiple streams
+	Refactor TestGetAudioProperties for mka test
+	Add Stereo Tests with -ac 2 (audio channels = 2)
+
+	ffprobe -of json -v error -select_streams a:0 -show_entries stream=bit_rate,bits_per_sample,codec_long_name,codec_name,codec_tag_string,profile,sample_rate,duration temp.flac
+
+	ffprobe Output
+		{
+			"programs": [
+
+			],
+			"stream_groups": [
+
+			],
+			"streams": [
+				{
+					"codec_name": "aac",
+					"codec_long_name": "AAC (Advanced Audio Coding)",
+					"profile": "LC",
+					"codec_tag_string": "[0][0][0][0]",
+					"sample_rate": "44100",
+					"bits_per_sample": 0,
+					"bit_rate": "33982"
+				}
+			]
+		}
+	ffprobe Alternate Output
+
+C#, Given '    private HashSet<string> supportedFormats =
+        new (StringComparer.OrdinalIgnoreCase)
+    { "flac", "m4a", "mp3", "wma" };' and '    /// <param name="fileTypes">A comma-separated list of file extensions
+    /// (without dots) specifying which file types to convert. For example,
+    /// "txt,pdf".</param>'  I need a utility method to check for valid extensions.  Can you spin something up?
+
+var extensions = fileTypes.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    .Select(ext => ext.Trim());
+
+var convertFiles = extensions
+    .SelectMany(ext => inputDirectory.GetFiles($"*.{ext}", searchOption))
+    .Distinct()
+    .ToArray();
+// Alternate
+var convertFiles = new List<FileInfo>();
+
+foreach (var ext in extensions)
+{
+    convertFiles.AddRange(inputDirectory.GetFiles($"*.{ext}", searchOption));
+}
+
+// Remove duplicates if needed
+convertFiles = convertFiles.Distinct().ToList();
+
+var allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+{
+    ".txt", ".log", ".csv"
+};
+
+if (allowedExtensions.Contains(Path.GetExtension(filePath)))
+
+Lossless Copy
+	ffmpeg -i input.flac -c:v copy -c:a alac output.m4a
+	ffmpeg -i input.flac -c:v copy -c:a alac -map_metadata 0 output.m4a
+
+3. Tag stripping/cleaning before standardization
+	Remove non-standard or personal tags first:
+	bash# Remove ALL tags, then re-tag from scratch
+	ffmpeg -i input.m4a -map 0 -c copy -map_metadata -1 output.m4a
+	Then use Picard/beets to add standardized tags to the clean files.
+
+Best workflow:
+	Strip problematic/personal tags
+	Fingerprint & lookup against MusicBrainz (via Picard or beets)
+	Manually review edge cases
+	Enforce schema - only keep fields you want
