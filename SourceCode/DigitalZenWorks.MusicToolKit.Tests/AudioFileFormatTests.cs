@@ -51,7 +51,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 
 		foreach (string fileType in FileTypes)
 		{
-			string filePath = GenerateAudioFile(fileType);
+			string? filePath = GenerateAudioFile(fileType);
 
 			if (filePath != null)
 			{
@@ -79,7 +79,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	public void GetAudioTypeThrowsFileNotFoundExceptionOnNull()
 	{
 		Assert.Throws<FileNotFoundException>(() =>
-			mediaFileFormat.GetAudioType(null));
+			mediaFileFormat.GetAudioType("bad/file/path"));
 	}
 
 	/// <summary>
@@ -181,7 +181,8 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 
 		string filePath = testFiles[format];
 
-		MediaStream? mediaStream = MediaFileFormatFfmpeg.ProcessFile(filePath);
+		MediaStreamProperties? mediaStream =
+			MediaFileFormatFfmpeg.ProcessFile(filePath);
 		Assert.That(mediaStream, Is.Not.Null);
 
 		Assert.That(mediaStream.Duration, Is.Not.Null.And.Not.Empty);
@@ -202,7 +203,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 			$"\"sine=frequency={audioSettings.Frequency}:" +
 			$"duration={audioSettings.Duration}\"";
 
-		string codec = format switch
+		string? codec = format switch
 		{
 			"aac" => "-codec:a aac -b:a 32k",
 			"aiff" => "-codec:a pcm_s16be",
@@ -229,9 +230,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		return arguments;
 	}
 
-	private string GenerateAudioFile(string format)
+	private string? GenerateAudioFile(string format)
 	{
-		string audioFile = null;
+		string? audioFile = null;
 		string outputPath = Path.Combine(TemporaryPath, $"test.{format}");
 
 		string arguments = GetArguments(format, outputPath);

@@ -4,9 +4,9 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Newtonsoft.Json;
-
 namespace MediaFileToolkit;
+
+using Newtonsoft.Json;
 
 /// <summary>
 /// Represents the format information of a media file.

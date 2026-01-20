@@ -9,6 +9,9 @@ namespace MediaFileToolkit;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
+/// <summary>
+/// The media information DTO class.
+/// </summary>
 public class MediaInfo
 {
 	/// <summary>
@@ -19,16 +22,28 @@ public class MediaInfo
 	/// <summary>
 	/// Gets or sets the programs property.
 	/// </summary>
-	public Collection<object> Programs { get; set; } = new();
+	[System.Diagnostics.CodeAnalysis.SuppressMessage(
+		"Usage",
+		"CA2227:Collection properties should be read only",
+		Justification = "It's necessary to be set, as it is a DTO object.")]
+	public Collection<object>? Programs { get; set; }
 
 	/// <summary>
 	/// Gets or sets the stream groups property.
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage(
+		"Usage",
+		"CA2227:Collection properties should be read only",
+		Justification = "It's necessary to be set, as it is a DTO object.")]
 	[JsonProperty("stream_groups")]
-	public Collection<object> StreamGroups { get; set; } = new();
+	public Collection<object>? StreamGroups { get; set; }
 
 	/// <summary>
 	/// Gets or sets the streams property.
 	/// </summary>
-	public Collection<MediaStream> Streams { get; set; } = new();
+	[System.Diagnostics.CodeAnalysis.SuppressMessage(
+		"Usage",
+		"CA2227:Collection properties should be read only",
+		Justification = "It's necessary to be set, as it is a DTO object.")]
+	public Collection<MediaStreamProperties>? Streams { get; set; }
 }

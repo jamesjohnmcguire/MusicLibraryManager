@@ -8,6 +8,9 @@ namespace MediaFileToolkit;
 
 using Newtonsoft.Json;
 
+/// <summary>
+/// The stream disposition DTO class.
+/// </summary>
 public class StreamDisposition
 {
 	/// <summary>

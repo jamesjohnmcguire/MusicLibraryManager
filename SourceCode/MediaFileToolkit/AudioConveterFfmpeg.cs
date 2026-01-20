@@ -22,7 +22,7 @@ using global::Common.Logging;
 /// <remarks>This class implements the <see cref="IAudioConverter"/> interface
 /// to perform audio file conversions. It is intended for internal use and may
 /// rely on FFmpeg being available in the execution environment.</remarks>
-internal class AudioConveterFfmpeg : FfmpegBase, IAudioConverter
+public class AudioConveterFfmpeg : FfmpegBase, IAudioConverter
 {
 	private static readonly Type LogType = typeof(AudioConveterFfmpeg);
 	private static readonly ILog Log = LogManager.GetLogger(LogType);
@@ -88,37 +88,42 @@ internal class AudioConveterFfmpeg : FfmpegBase, IAudioConverter
 	/// </returns>
 	public async Task ConvertFileAsync(FileInfo inputFile)
 	{
-		string outputPath = Path.ChangeExtension(inputFile.FullName, format);
-
-		if (File.Exists(outputPath))
+		if (inputFile != null)
 		{
-			string message =
-				$"Skipping {inputFile.Name} - output file already exists";
-			Log.Warn(message);
-		}
-		else
-		{
-			string arguments =
-				GetFfmpegArguments(inputFile.FullName, outputPath);
+			string outputPath =
+				Path.ChangeExtension(inputFile.FullName, format);
 
-			Log.Info($"Converting: {inputFile.Name}");
-			ExternalProcess process = new();
-
-			bool result = await process.ExecuteAsync("ffmpeg", arguments).
-				ConfigureAwait(false);
-
-			if (result == true)
+			if (File.Exists(outputPath))
 			{
-				if (batchMode == true)
-				{
-					successCount++;
-				}
+				string message =
+					$"Skipping {inputFile.Name} - output file already exists";
+				Log.Warn(message);
 			}
 			else
 			{
-				string error = process.Output;
-				string message = $"Error converting {inputFile.Name}: {error}";
-				Log.Error(message);
+				string arguments =
+					GetFfmpegArguments(inputFile.FullName, outputPath);
+
+				Log.Info($"Converting: {inputFile.Name}");
+				ExternalProcess process = new();
+
+				bool result = await process.ExecuteAsync("ffmpeg", arguments).
+					ConfigureAwait(false);
+
+				if (result == true)
+				{
+					if (batchMode == true)
+					{
+						successCount++;
+					}
+				}
+				else
+				{
+					string error = process.Output;
+					string message =
+						$"Error converting {inputFile.Name}: {error}";
+					Log.Error(message);
+				}
 			}
 		}
 	}
@@ -143,75 +148,78 @@ internal class AudioConveterFfmpeg : FfmpegBase, IAudioConverter
 	public async Task ConvertFilesAsync(
 		DirectoryInfo inputDirectory, string fileTypes)
 	{
-		bool exists = CheckFfmpeg();
-
-		if (exists == false)
+		if (inputDirectory != null && fileTypes != null)
 		{
-			string message =
-				"FFmpeg is not installed. " +
-				"Please install FFmpeg to use this application.";
-			Log.Error(message);
-		}
-		else
-		{
-			IEnumerable<string> extensions = fileTypes.Split(
-				',', StringSplitOptions.RemoveEmptyEntries)
-				.Select(extension => extension.Trim());
-			List<string> extensionsList = [.. extensions];
+			bool exists = CheckFfmpeg();
 
-			try
+			if (exists == false)
 			{
-				ValidateFileExtensions(extensionsList);
-			}
-			catch (ArgumentException ex)
-			{
-				Log.Error(ex.Message);
-
-				throw;
-			}
-
-			this.batchMode = true;
-			string message = "Starting conversion process at "
-				+ $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
-			Log.Info(message);
-
-			SearchOption searchOption = SearchOption.TopDirectoryOnly;
-
-			if (recursive == true)
-			{
-				searchOption = SearchOption.AllDirectories;
-			}
-
-			IEnumerable<FileInfo> files = extensionsList
-				.SelectMany(extension => inputDirectory.GetFiles(
-					$"*.{extension}", searchOption))
-				.Distinct();
-			FileInfo[] convertFiles = [.. files];
-			totalFiles = convertFiles.Length;
-
-			if (totalFiles == 0)
-			{
-				Log.Error(
-					$"No valid files found in {inputDirectory.FullName}");
+				string message =
+					"FFmpeg is not installed. " +
+					"Please install FFmpeg to use this application.";
+				Log.Error(message);
 			}
 			else
 			{
-				Log.Info($"Found {totalFiles} WMA files to process");
+				IEnumerable<string> extensions = fileTypes.Split(
+					',', StringSplitOptions.RemoveEmptyEntries)
+					.Select(extension => extension.Trim());
+				List<string> extensionsList = [.. extensions];
 
-				foreach (FileInfo file in convertFiles)
+				try
 				{
-					await ConvertFileAsync(file).ConfigureAwait(false);
-					Log.Info($"Progress: {successCount} / {totalFiles}");
+					ValidateFileExtensions(extensionsList);
+				}
+				catch (ArgumentException ex)
+				{
+					Log.Error(ex.Message);
+
+					throw;
 				}
 
-				message = "Conversion completed: " +
-					$"{successCount} / {totalFiles} " +
-					"files converted successfully";
+				this.batchMode = true;
+				string message = "Starting conversion process at "
+					+ $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
 				Log.Info(message);
-				string now = DateTime.UtcNow.ToString(
-					"yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-				message = $"Process completed at {now}";
-				Log.Info(message);
+
+				SearchOption searchOption = SearchOption.TopDirectoryOnly;
+
+				if (recursive == true)
+				{
+					searchOption = SearchOption.AllDirectories;
+				}
+
+				IEnumerable<FileInfo> files = extensionsList
+					.SelectMany(extension => inputDirectory.GetFiles(
+						$"*.{extension}", searchOption))
+					.Distinct();
+				FileInfo[] convertFiles = [.. files];
+				totalFiles = convertFiles.Length;
+
+				if (totalFiles == 0)
+				{
+					Log.Error(
+						$"No valid files found in {inputDirectory.FullName}");
+				}
+				else
+				{
+					Log.Info($"Found {totalFiles} WMA files to process");
+
+					foreach (FileInfo file in convertFiles)
+					{
+						await ConvertFileAsync(file).ConfigureAwait(false);
+						Log.Info($"Progress: {successCount} / {totalFiles}");
+					}
+
+					message = "Conversion completed: " +
+						$"{successCount} / {totalFiles} " +
+						"files converted successfully";
+					Log.Info(message);
+					string now = DateTime.UtcNow.ToString(
+						"yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+					message = $"Process completed at {now}";
+					Log.Info(message);
+				}
 			}
 		}
 	}
