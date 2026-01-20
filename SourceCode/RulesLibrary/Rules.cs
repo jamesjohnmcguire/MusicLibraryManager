@@ -17,25 +17,30 @@ using Newtonsoft.Json;
 /// </summary>
 public class Rules
 {
-	private readonly IList<Rule>? rules;
+	private readonly IList<Rule> rules;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Rules"/> class.
 	/// </summary>
 	/// <param name="data">The serialized rules data.</param>
-	public Rules(string? data)
+	public Rules(string data)
 	{
-		if (!string.IsNullOrEmpty(data))
+		if (string.IsNullOrEmpty(data))
 		{
-			rules = JsonConvert.DeserializeObject<IList<Rule>>(data);
+			string message = "Rules data cannot be null or empty";
+			throw new ArgumentException(message, nameof(data));
 		}
+
+		rules = JsonConvert.DeserializeObject<IList<Rule>>(data)
+			?? throw new JsonSerializationException(
+				"Failed to deserialize rules data");
 	}
 
 	/// <summary>
 	/// Gets the rule list.
 	/// </summary>
 	/// <value>The rule list.</value>
-	public IList<Rule>? RulesList
+	public IList<Rule> RulesList
 	{
 		get
 		{
