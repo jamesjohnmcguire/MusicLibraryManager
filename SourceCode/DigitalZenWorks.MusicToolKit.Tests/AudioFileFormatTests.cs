@@ -21,16 +21,16 @@ using System.Linq;
 [TestFixture]
 internal sealed class AudioFileFormatTests : BaseTestsSupport
 {
+	// Note: APE format generation is not currently supported.
+	private static readonly Collection<string> FileTypes =
+	[
+		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
+		"opus", "tta", "wav", "wma", "wv"
+	];
+
 	private readonly AudioSettings audioSettings = new();
 	private MediaFileFormat mediaFileFormat;
 	private Mock<IMediaFileFormat> mockMediaFileFormat;
-
-	// Note: APE format generation is not currently supported.
-	private static readonly Collection<string> fileTypes = new()
-	{
-		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
-		"opus", "tta", "wav", "wma", "wv"
-	};
 
 	private Dictionary<string, string> testFiles;
 
@@ -40,7 +40,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
 	{
-		testFiles = new Dictionary<string, string>();
+		testFiles = [];
 
 		bool exists = FfmpegBase.CheckFfmpeg();
 
@@ -49,7 +49,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 			Assert.Fail("FFmpeg is not available in PATH.");
 		}
 
-		foreach (string fileType in fileTypes)
+		foreach (string fileType in FileTypes)
 		{
 			string filePath = GenerateAudioFile(fileType);
 
@@ -62,6 +62,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		Assert.That(testFiles.Count, Is.GreaterThan(0));
 	}
 
+	/// <summary>
+	/// The setup before every test method.
+	/// </summary>
 	[SetUp]
 	public void SetUp()
 	{
@@ -69,8 +72,11 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mediaFileFormat = new MediaFileFormat(mockMediaFileFormat.Object);
 	}
 
+	/// <summary>
+	/// The get audio type throws file not found exception on null test.
+	/// </summary>
 	[Test]
-	public void GetAudioType_NullFilePath_ThrowsFileNotFoundException()
+	public void GetAudioTypeThrowsFileNotFoundExceptionOnNull()
 	{
 		Assert.Throws<FileNotFoundException>(() =>
 			mediaFileFormat.GetAudioType(null));
@@ -96,7 +102,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	{
 		foreach (KeyValuePair<string, string> audioFile in testFiles)
 		{
-			FileInfo fileInfo = new FileInfo(audioFile.Value);
+			FileInfo fileInfo = new(audioFile.Value);
 			Assert.That(fileInfo.Length, Is.GreaterThan(0));
 		}
 	}
@@ -106,7 +112,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	/// </summary>
 	/// <param name="format">The audio file format.</param>
 	[Test]
-	[TestCaseSource(nameof(fileTypes))]
+	[TestCaseSource(nameof(FileTypes))]
 	public void TestFileCanBeRead(string format)
 	{
 		if (!testFiles.ContainsKey(format))
@@ -130,7 +136,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	/// </summary>
 	/// <param name="format">The audio file format.</param>
 	[Test]
-	[TestCaseSource(nameof(fileTypes))]
+	[TestCaseSource(nameof(FileTypes))]
 	public void TestFileHasCorrectExtension(string format)
 	{
 		if (!testFiles.ContainsKey(format))
@@ -152,9 +158,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	public void TestAllExpectedFormatsGenerated()
 	{
 		Dictionary<string, string>.KeyCollection keys = testFiles.Keys;
-		List<string> generatedFormats = keys.ToList<string>();
+		List<string> generatedFormats = [.. keys];
 
-		foreach (string format in fileTypes)
+		foreach (string format in FileTypes)
 		{
 			Assert.That(generatedFormats, Does.Contain(format));
 		}
@@ -165,7 +171,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	/// </summary>
 	/// <param name="format">The audio file format.</param>
 	[Test]
-	[TestCaseSource(nameof(fileTypes))]
+	[TestCaseSource(nameof(FileTypes))]
 	public void TestGetAudioProperties(string format)
 	{
 		if (!testFiles.ContainsKey(format))
@@ -235,8 +241,11 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		bool result = process.Execute("ffmpeg", arguments);
 		bool exists = File.Exists(outputPath);
 
-		Assert.That(result, Is.True);
-		Assert.That(exists, Is.True);
+		Assert.Multiple(() =>
+		{
+			Assert.That(result, Is.True);
+			Assert.That(exists, Is.True);
+		});
 
 		if (result == true && exists == true)
 		{
