@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-// <copyright file="MediaStream.cs" company="Digital Zen Works">
+// <copyright file="MediaStreamProperties.cs" company="Digital Zen Works">
 // Copyright © 2019 - 2026 Digital Zen Works.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 /// <summary>
 /// Represents a media stream with various properties such as codec type.
 /// </summary>
-public class MediaStream
+public class MediaStreamProperties
 {
 	/// <summary>
 	/// Gets or sets the average frame rate property.

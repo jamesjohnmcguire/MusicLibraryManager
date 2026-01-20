@@ -32,7 +32,7 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// <summary>
 	/// Gets or sets the media stream information obtained from FFprobe.
 	/// </summary>
-	public MediaStream? MediaStream { get; set; }
+	public MediaStreamProperties? MediaStream { get; set; }
 
 	/// <summary>
 	/// Processes the specified media file using FFprobe to extract audio
@@ -40,9 +40,9 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The audio file path.</param>
 	/// <returns>A media stream object.</returns>
-	public static MediaStream? ProcessFile(string filePath)
+	public static MediaStreamProperties? ProcessFile(string filePath)
 	{
-		MediaStream? mediaStream = null;
+		MediaStreamProperties? mediaStream = null;
 
 		string arguments =
 			"-of json" +
@@ -77,9 +77,10 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 	/// </summary>
 	/// <param name="filePath">The audio file path.</param>
 	/// <returns>A media stream object.</returns>
-	public static async Task<MediaStream?> ProcessFileAsync(string filePath)
+	public static async Task<MediaStreamProperties?> ProcessFileAsync(
+		string filePath)
 	{
-		MediaStream? mediaStream = null;
+		MediaStreamProperties? mediaStream = null;
 
 		string arguments =
 			"-v error -show_entries stream=codec_name,bit_rate,sample_rate";
@@ -280,9 +281,10 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 		return compressionType;
 	}
 
-	private static MediaStream? GetMediaStremFromFfprobe(string ffprobeJson)
+	private static MediaStreamProperties? GetMediaStremFromFfprobe(
+		string ffprobeJson)
 	{
-		MediaStream? mediaStream = null;
+		MediaStreamProperties? mediaStream = null;
 
 		MediaInfo? mediaInfo =
 			JsonConvert.DeserializeObject<MediaInfo>(ffprobeJson);
