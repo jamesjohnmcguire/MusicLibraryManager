@@ -5,6 +5,7 @@
 		<AssemblyName>DigitalZenWorks.MusicToolKit.Tests</AssemblyName>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
+		<Nullable>enable</Nullable>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<OutputType>Library</OutputType>
 		<Platforms>x86;x64</Platforms>
