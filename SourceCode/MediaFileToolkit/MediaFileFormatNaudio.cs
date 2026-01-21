@@ -21,7 +21,7 @@ using NAudio.Wave;
 /// supported, the methods return CompressionType.Unknown. The results depend
 /// on the accuracy of the analysis provided by NAudio. This class does not
 /// modify files.</remarks>
-internal class MediaFileFormatNaudio : IMediaFileFormat
+public class MediaFileFormatNaudio : IMediaFileFormat
 {
 	/// <summary>
 	/// Determines the audio type of an M4A file based on its encoding format.

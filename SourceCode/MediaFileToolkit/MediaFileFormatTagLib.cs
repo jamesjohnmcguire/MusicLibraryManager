@@ -40,7 +40,7 @@ public delegate CompressionType AnalyzeCodec(
 /// the accuracy and completeness of the metadata provided by TagLib and the
 /// codecs present in the file. This class does not modify files or their
 /// metadata.</remarks>
-internal class MediaFileFormatTagLib : IMediaFileFormat
+public class MediaFileFormatTagLib : IMediaFileFormat
 {
 	/// <summary>
 	/// Determines the audio type of an M4A file based on its codec
