@@ -68,7 +68,7 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 	/// cannot be determined.</returns>
 	/// <exception cref="FileNotFoundException">Thrown if the file specified by
 	/// filePath does not exist.</exception>
-	public CompressionType GetAudioType(string filePath)
+	public CompressionType GetCompressionType(string filePath)
 	{
 		if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
 		{
