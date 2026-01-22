@@ -89,39 +89,39 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	}
 
 	[Test]
-	[TestCase(".AAC")]
-	[TestCase(".aac")]
-	[TestCase(".Aac")]
+	[TestCase("AAC")]
+	[TestCase("aac")]
+	[TestCase("Aac")]
 	public void GetAudioType_AacFile_ReturnsLossy(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".AAC"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
 
 	[Test]
-	[TestCase(".MP3")]
-	[TestCase(".mp3")]
-	[TestCase(".Mp3")]
+	[TestCase("MP3")]
+	[TestCase("mp3")]
+	[TestCase("Mp3")]
 	public void GetAudioType_Mp3File_ReturnsLossy(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".MP3"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
 
 	[Test]
-	[TestCase(".OPUS")]
-	[TestCase(".opus")]
-	[TestCase(".Opus")]
+	[TestCase("OPUS")]
+	[TestCase("opus")]
+	[TestCase("Opus")]
 	public void GetAudioType_OpusFile_ReturnsLossy(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".OPUS"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
 
 	[Test]
 	public void GetAudioType_AllLossyFormats_ReturnLossy()
 	{
-		var lossyExtensions = new[] { ".AAC", ".MP3", ".OPUS" };
+		var lossyExtensions = new[] { "aac", "mp3", "opus" };
 
 		foreach (var ext in lossyExtensions)
 		{
@@ -131,59 +131,59 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	}
 
 	[Test]
-	[TestCase(".AIFF")]
-	[TestCase(".aiff")]
-	[TestCase(".Aiff")]
+	[TestCase("AIFF")]
+	[TestCase("aiff")]
+	[TestCase("Aiff")]
 	public void GetAudioType_AiffFile_ReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".AIFF"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
-	[TestCase(".APE")]
-	[TestCase(".ape")]
-	[TestCase(".Ape")]
+	[TestCase("APE")]
+	[TestCase("ape")]
+	[TestCase("Ape")]
 	public void GetAudioType_ApeFile_ReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".APE"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
-	[TestCase(".FLAC")]
-	[TestCase(".flac")]
-	[TestCase(".Flac")]
+	[TestCase("FLAC")]
+	[TestCase("flac")]
+	[TestCase("Flac")]
 	public void GetAudioType_FlacFile_ReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".FLAC"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
-	[TestCase(".TTA")]
-	[TestCase(".tta")]
-	[TestCase(".Tta")]
+	[TestCase("TTA")]
+	[TestCase("tta")]
+	[TestCase("Tta")]
 	public void GetAudioType_TtaFile_ReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".TTA"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
-	[TestCase(".WAV")]
-	[TestCase(".wav")]
-	[TestCase(".Wav")]
+	[TestCase("WAV")]
+	[TestCase("wav")]
+	[TestCase("Wav")]
 	public void GetAudioType_WavFile_ReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".WAV"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
 	public void GetAudioType_AllLosslessFormats_ReturnLossless()
 	{
-		var losslessExtensions = new[] { ".AIFF", ".APE", ".FLAC", ".TTA", ".WAV" };
+		var losslessExtensions = new[] { "aiff", "ape", "flac", "tta", "wav" };
 
 		foreach (var ext in losslessExtensions)
 		{
@@ -198,9 +198,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
+		mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(TestFiles[".M4A"]), Times.Once);
+		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(TestFiles["m4a"]), Times.Once);
 	}
 
 	[Test]
@@ -209,7 +209,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
@@ -220,7 +220,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
@@ -233,9 +233,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 			.Callback<string>(path => capturedPath = path)
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
+		mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
 
-		Assert.That(capturedPath, Is.EqualTo(TestFiles[".M4A"]));
+		Assert.That(capturedPath, Is.EqualTo(TestFiles["m4a"]));
 	}
 
 	[Test]
@@ -244,9 +244,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".MKA"]);
+		mediaFileFormat.GetCompressionType(TestFiles["mka"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(TestFiles[".MKA"]), Times.Once);
+		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(TestFiles["mka"]), Times.Once);
 	}
 
 	[Test]
@@ -255,7 +255,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".MKA"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["mka"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
@@ -266,7 +266,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".MKA"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["mka"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
@@ -277,9 +277,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".OGG"]);
+		mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeOgg(TestFiles[".OGG"]), Times.Once);
+		mockMediaFileFormat.Verify(m => m.GetCompressionTypeOgg(TestFiles["ogg"]), Times.Once);
 	}
 
 	[Test]
@@ -288,7 +288,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".OGG"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
@@ -299,7 +299,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".OGG"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
@@ -310,9 +310,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".WMA"]);
+		mediaFileFormat.GetCompressionType(TestFiles["wma"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWma(TestFiles[".WMA"]), Times.Once);
+		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWma(TestFiles["wma"]), Times.Once);
 	}
 
 	[Test]
@@ -321,7 +321,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".WMA"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["wma"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
@@ -332,7 +332,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".WMA"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["wma"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
@@ -343,9 +343,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		mediaFileFormat.GetCompressionType(TestFiles[".WV"]);
+		mediaFileFormat.GetCompressionType(TestFiles["wv"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWavPack(TestFiles[".WV"]), Times.Once);
+		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWavPack(TestFiles["wv"]), Times.Once);
 	}
 
 	[Test]
@@ -354,7 +354,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".WV"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["wv"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
 	}
@@ -365,7 +365,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles[".WV"]);
+		var result = mediaFileFormat.GetCompressionType(TestFiles["wv"]);
 
 		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
 	}
@@ -393,11 +393,11 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	}
 
 	[Test]
-	[TestCase(".mp4")]
-	[TestCase(".avi")]
-	[TestCase(".mkv")]
-	[TestCase(".txt")]
-	[TestCase(".doc")]
+	[TestCase("mp4")]
+	[TestCase("avi")]
+	[TestCase("mkv")]
+	[TestCase("txt")]
+	[TestCase("doc")]
 	public void GetAudioType_NonAudioExtensions_ReturnsUnknown(string extension)
 	{
 		string file = Path.Combine(TemporaryPath, $"test{extension}");
@@ -409,17 +409,17 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	}
 
 	[Test]
-	[TestCase(".mp3", CompressionType.Lossy)]
-	[TestCase(".MP3", CompressionType.Lossy)]
-	[TestCase(".Mp3", CompressionType.Lossy)]
-	[TestCase(".mP3", CompressionType.Lossy)]
-	[TestCase(".flac", CompressionType.Lossless)]
-	[TestCase(".FLAC", CompressionType.Lossless)]
-	[TestCase(".Flac", CompressionType.Lossless)]
-	[TestCase(".fLaC", CompressionType.Lossless)]
+	[TestCase("mp3", CompressionType.Lossy)]
+	[TestCase("MP3", CompressionType.Lossy)]
+	[TestCase("Mp3", CompressionType.Lossy)]
+	[TestCase("mP3", CompressionType.Lossy)]
+	[TestCase("flac", CompressionType.Lossless)]
+	[TestCase("FLAC", CompressionType.Lossless)]
+	[TestCase("Flac", CompressionType.Lossless)]
+	[TestCase("fLaC", CompressionType.Lossless)]
 	public void GetAudioType_CaseInsensitiveExtensions_ReturnsCorrectType(string extension, CompressionType expectedType)
 	{
-		string file = Path.Combine(TemporaryPath, $"casetest{extension}");
+		string file = Path.Combine(TemporaryPath, $"casetest.{extension}");
 		File.WriteAllText(file, "dummy");
 
 		var result = mediaFileFormat.GetCompressionType(file);
@@ -434,8 +434,8 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 			.Returns(CompressionType.Lossy)
 			.Returns(CompressionType.Lossless);
 
-		var result1 = mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
-		var result2 = mediaFileFormat.GetCompressionType(TestFiles[".M4A"]);
+		var result1 = mediaFileFormat.GetCompressionType(TestFiles["M4A"]);
+		var result2 = mediaFileFormat.GetCompressionType(TestFiles["M4A"]);
 
 		Assert.That(result1, Is.EqualTo(CompressionType.Lossy));
 		Assert.That(result2, Is.EqualTo(CompressionType.Lossless));
@@ -445,7 +445,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[Test]
 	public void GetAudioType_LossyFormat_DoesNotCallInterfaceMethods()
 	{
-		mediaFileFormat.GetCompressionType(TestFiles[".MP3"]);
+		mediaFileFormat.GetCompressionType(TestFiles["MP3"]);
 
 		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
 		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
@@ -457,7 +457,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[Test]
 	public void GetAudioType_LosslessFormat_DoesNotCallInterfaceMethods()
 	{
-		mediaFileFormat.GetCompressionType(TestFiles[".FLAC"]);
+		mediaFileFormat.GetCompressionType(TestFiles["FLAC"]);
 
 		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
 		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
