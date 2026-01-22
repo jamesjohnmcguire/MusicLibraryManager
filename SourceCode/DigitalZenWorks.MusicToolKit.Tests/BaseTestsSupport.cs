@@ -8,6 +8,7 @@ namespace DigitalZenWorks.MusicToolKit.Tests;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using DigitalZenWorks.Common.Utilities;
 using DigitalZenWorks.RulesLibrary;
@@ -19,6 +20,13 @@ using NUnit.Framework;
 /// </summary>
 internal class BaseTestsSupport
 {
+	// Note: APE format generation is not currently supported.
+	public static readonly Collection<string> FileTypes =
+	[
+		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
+		"opus", "tta", "wav", "wma", "wv"
+	];
+
 	private readonly AudioSettings audioSettings = new();
 	private Rules rules;
 	private string temporaryPath;
@@ -58,6 +66,8 @@ internal class BaseTestsSupport
 			"DigitalZenWorks.MusicToolKit.Tests.Sakura.mp4", testFile);
 
 		rules = MusicManager.GetDefaultRules();
+
+		TestFiles = GenerateAudioFiles();
 	}
 
 	/// <summary>
@@ -133,6 +143,24 @@ internal class BaseTestsSupport
 		Directory.CreateDirectory(uniqueDirectoryPath);
 
 		return uniqueDirectoryPath;
+	}
+
+	private Dictionary<string, string> GenerateAudioFiles()
+	{
+		Dictionary<string, string> testFiles =
+			new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+		foreach (string fileType in FileTypes)
+		{
+			string? filePath = GenerateAudioFile(fileType);
+
+			if (filePath != null)
+			{
+				testFiles[fileType] = filePath;
+			}
+		}
+
+		return testFiles;
 	}
 
 	private string GetArguments(string format, string outputPath)

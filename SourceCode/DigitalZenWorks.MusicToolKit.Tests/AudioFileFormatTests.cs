@@ -21,13 +21,6 @@ using System.Linq;
 [TestFixture]
 internal sealed class AudioFileFormatTests : BaseTestsSupport
 {
-	// Note: APE format generation is not currently supported.
-	private static readonly Collection<string> FileTypes =
-	[
-		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
-		"opus", "tta", "wav", "wma", "wv"
-	];
-
 	private MediaFileFormat mediaFileFormat;
 	private Mock<IMediaFileFormat> mockMediaFileFormat;
 
@@ -37,8 +30,6 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
 	{
-		TestFiles = [];
-
 		bool exists = FfmpegBase.CheckFfmpeg();
 
 		if (exists == false)
@@ -46,16 +37,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 			Assert.Fail("FFmpeg is not available in PATH.");
 		}
 
-		foreach (string fileType in FileTypes)
-		{
-			string? filePath = GenerateAudioFile(fileType);
-
-			if (filePath != null)
-			{
-				TestFiles[fileType] = filePath;
-			}
-		}
-
+		// Created in base class.
 		Assert.That(TestFiles.Count, Is.GreaterThan(0));
 	}
 
