@@ -7,6 +7,7 @@
 namespace MediaFileToolkit;
 
 using Newtonsoft.Json;
+using System.Globalization;
 
 /// <summary>
 /// Represents a media stream with various properties such as codec type.
@@ -106,11 +107,14 @@ public class MediaStreamProperties
 	public string? Duration { get; set; }
 
 	/// <summary>
-	/// Gets the duration numeric property.
+	/// Gets or sets the duration numeric property.
 	/// </summary>
 	[JsonIgnore]
-	public double? DurationNumeric =>
-		double.TryParse(Duration, out var result) ? result : null;
+	public double? DurationNumeric
+	{
+		get => double.TryParse(Duration, out var result) ? result : null;
+		set => Duration = value?.ToString(CultureInfo.InvariantCulture);
+	}
 
 	/// <summary>
 	/// Gets or sets the duration ts property.
