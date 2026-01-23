@@ -23,7 +23,7 @@ internal class BaseTestsSupport
 	// Note: APE format generation is not currently supported.
 	public static readonly Collection<string> FileTypes =
 	[
-		"aac", "aiff", "flac", "m4a", "mka", "mp3", "ogg",
+		"aac", "aiff", "ape", "flac", "m4a", "mka", "mp3", "ogg",
 		"opus", "tta", "wav", "wma", "wv"
 	];
 
@@ -89,20 +89,26 @@ internal class BaseTestsSupport
 		string? audioFile = null;
 		string outputPath = Path.Combine(TemporaryPath, $"test.{format}");
 
-		string arguments = GetArguments(format, outputPath);
+		if (format.Equals("ape", StringComparison.OrdinalIgnoreCase))
+		{
+			string apeFile = GetApeAudioFile();
+			File.Copy(apeFile, outputPath);
+		}
+		else
+		{
+			string arguments = GetArguments(format, outputPath);
 
-		ExternalProcess process = new();
+			ExternalProcess process = new();
 
-		bool result = process.Execute("ffmpeg", arguments);
+			bool result = process.Execute("ffmpeg", arguments);
+			Assert.That(result, Is.True);
+		}
+
 		bool exists = File.Exists(outputPath);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(result, Is.True);
-			Assert.That(exists, Is.True);
-		});
+		Assert.That(exists, Is.True);
 
-		if (result == true && exists == true)
+		if (exists == true)
 		{
 			audioFile = outputPath;
 		}
@@ -161,6 +167,16 @@ internal class BaseTestsSupport
 		}
 
 		return testFiles;
+	}
+
+	private string GetApeAudioFile()
+	{
+		string testFile = temporaryPath + @"\Music\Artist\Album\Sakura.mp4";
+
+		FileUtils.CreateFileFromEmbeddedResource(
+			"DigitalZenWorks.MusicToolKit.Tests.SampleV2.ape", testFile);
+
+		return testFile;
 	}
 
 	private string GetArguments(string format, string outputPath)
