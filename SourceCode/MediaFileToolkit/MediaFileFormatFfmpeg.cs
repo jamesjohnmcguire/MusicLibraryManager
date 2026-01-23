@@ -49,8 +49,8 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 			" -v error" +
 			" -select_streams a:0 " +
 			" -show_entries stream=bit_rate,bits_per_sample,codec_long_name," +
-			"codec_name,codec_tag_string,duration,profile,sample_rate " +
-			$"\"{filePath}\"";
+			"codec_name,codec_tag_string,duration,profile,sample_rate" +
+			$":format=duration \"{filePath}\"";
 
 		Log.Info($"Converting: {filePath}");
 		ExternalProcess process = new();
@@ -281,6 +281,24 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 		return compressionType;
 	}
 
+	private static double? SetDurationIfMissing(
+		MediaStreamProperties? mediaStream,
+		MediaFormat? mediaFormat)
+	{
+		double? duration = 0.0;
+
+		if (mediaStream != null && mediaFormat != null &&
+			mediaStream.Duration == null)
+		{
+			mediaStream.Duration = mediaFormat.Duration;
+
+			duration = mediaFormat.DurationNumeric;
+			mediaStream.DurationNumeric = duration;
+		}
+
+		return duration;
+	}
+
 	private static MediaStreamProperties? GetMediaStremFromFfprobe(
 		string ffprobeJson)
 	{
@@ -292,6 +310,8 @@ public class MediaFileFormatFfmpeg : IMediaFileFormat
 		if (mediaInfo != null)
 		{
 			mediaStream = mediaInfo.Streams?[0];
+
+			SetDurationIfMissing(mediaStream, mediaInfo.Format);
 		}
 
 		return mediaStream;
