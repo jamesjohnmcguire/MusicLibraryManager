@@ -42,8 +42,8 @@ public class MediaFileFormatNaudio : IMediaFileFormat
 
 		CompressionType compressionType = format.Encoding switch
 		{
-			WaveFormatEncoding.Pcm => CompressionType.Lossless,
-			WaveFormatEncoding.Adpcm => CompressionType.Lossless,
+			WaveFormatEncoding.Pcm => CompressionType.Unknown,
+			WaveFormatEncoding.Adpcm => CompressionType.Unknown,
 			WaveFormatEncoding.IeeeFloat => CompressionType.Lossless,
 			_ => CompressionType.Lossy,
 		};
