@@ -23,7 +23,7 @@ internal class BaseTestsSupport
 	// Note: APE format generation is not currently supported.
 	public static readonly Collection<string> FileTypes =
 	[
-		"aac", "aiff", "ape", "flac", "m4a", "mka", "mp3", "ogg",
+		"aac", "aiff", "alac", "ape", "flac", "m4a", "mka", "mp3", "ogg",
 		"opus", "tta", "wav", "wma", "wv"
 	];
 
@@ -96,6 +96,11 @@ internal class BaseTestsSupport
 		}
 		else
 		{
+			if (format.Equals("alac", StringComparison.OrdinalIgnoreCase))
+			{
+				outputPath = Path.Combine(TemporaryPath, "test.m4a");
+			}
+
 			string arguments = GetArguments(format, outputPath);
 
 			ExternalProcess process = new();
@@ -189,6 +194,7 @@ internal class BaseTestsSupport
 		{
 			"aac" => "-codec:a aac -b:a 32k",
 			"aiff" => "-codec:a pcm_s16be",
+			"alac" => "-codec:a alac",
 
 			// APE not available, not supported yet
 			// "ape" => "-codec:a ape -compression_level 2000",
