@@ -176,7 +176,7 @@ internal class BaseTestsSupport
 
 	private string GetApeAudioFile()
 	{
-		string testFile = temporaryPath + @"\Music\Artist\Album\Sakura.mp4";
+		string testFile = temporaryPath + @"\Music\Artist\Album\SampleV2.ape";
 
 		FileUtils.CreateFileFromEmbeddedResource(
 			"DigitalZenWorks.MusicToolKit.Tests.SampleV2.ape", testFile);
