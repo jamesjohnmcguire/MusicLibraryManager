@@ -532,6 +532,12 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 
 		string filePath = TestFiles[format];
 		string extension = Path.GetExtension(filePath);
+
+		if (format.Equals("alac", StringComparison.OrdinalIgnoreCase))
+		{
+			extension = GetSecondToLastExtension(filePath);
+		}
+
 		extension = extension.TrimStart('.');
 
 		Assert.That(extension, Is.EqualTo(format));

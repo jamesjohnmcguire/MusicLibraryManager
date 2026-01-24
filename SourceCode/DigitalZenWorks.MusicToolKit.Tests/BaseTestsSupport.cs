@@ -98,7 +98,7 @@ internal class BaseTestsSupport
 		{
 			if (format.Equals("alac", StringComparison.OrdinalIgnoreCase))
 			{
-				outputPath = Path.Combine(TemporaryPath, "test.m4a");
+				outputPath = Path.Combine(TemporaryPath, "test.alac.m4a");
 			}
 
 			string arguments = GetArguments(format, outputPath);
@@ -119,6 +119,20 @@ internal class BaseTestsSupport
 		}
 
 		return audioFile;
+	}
+
+	protected string GetSecondToLastExtension(string filename)
+	{
+		string extension = string.Empty;
+
+		string[] parts = filename.Split('.');
+
+		if (parts.Length > 2)
+		{
+			extension = parts[^2];   // using index-from-end (^2 = second last)
+		}
+
+		return extension;
 	}
 
 	/// <summary>
