@@ -345,7 +345,9 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 
 		mediaFileFormat.GetCompressionType(TestFiles["wv"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWavPack(TestFiles["wv"]), Times.Once);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWavPack(
+				TestFiles["wv"]), Times.Once);
 	}
 
 	[Test]
