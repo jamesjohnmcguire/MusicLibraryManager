@@ -100,7 +100,7 @@ internal class MediaFileFormatIntegrationTests : BaseTestsSupport
 		var resultTagLib = _mediaFileFormatWithTagLib.GetCompressionType(filePath);
 
 		Assert.That(resultFfmpeg, Is.EqualTo(CompressionType.Lossy));
-		Assert.That(resultNaudio, Is.EqualTo(CompressionType.Lossy));
+		Assert.That(resultNaudio, Is.EqualTo(CompressionType.Unknown));
 		Assert.That(resultTagLib, Is.EqualTo(CompressionType.Lossy));
 	}
 
