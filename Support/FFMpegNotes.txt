@@ -1,0 +1,176 @@
+FFMpeg
+	FFMpeg is used in a variety of situations and sub-projects, both as an external command line utility and a library.
+
+	choco install ffmpeg --params "/FfmpegPath:full"
+
+	Encoders check
+		ffmpeg -encoders | grep aac
+		libfdk_aac !!!
+
+	Use FFMpeg from VcPkg
+	vcpkg install ffmpeg[all,all-gpl,all-nonfree]:x64-windows
+			find_package(FFMPEG REQUIRED)
+				target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
+				target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
+				target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
+	Build
+		cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+		cmake -G "Visual Studio 17 2022" -A x64 -DFFmpeg_DIR=C:/path/to/vcpkg/installed/x64-windows/share/ffmpeg ..
+Cpdecs
+	Install
+		Fraunhofer FDK AAC codec
+			How can I get the 'Fraunhofer FDK AAC codec'?
+				The Fraunhofer FDK AAC codec (libfdk_aac) is considered the highest quality AAC encoder, but it requires special steps to obtain due to licensing restrictions.
+
+				Here's how to get it:
+					Windows:
+						# Using scoop package manager:
+						scoop install ffmpeg-full
+						# Or using Chocolatey:
+						choco install ffmpeg --params "/FfmpegPath:full"
+
+			Important Notes:
+				libfdk_aac is not included in standard FFmpeg builds due to licensing
+				Some distributions may require enabling non-free repositories
+				Building from source ensures you get the latest version
+				The codec is particularly good at low bitrates compared to other AAC encoders
+
+			VcPkg provides some interesting options for FFmpeg with FDK-AAC support. Here's what you can do:
+				First, check your current FFmpeg build features:
+					ffmpeg -buildconf
+				Look for --enable-libfdk-aac in the output.
+
+				If you want to install/rebuild FFmpeg with FDK-AAC support via VcPkg:
+					# First, remove current ffmpeg if needed
+					vcpkg remove ffmpeg:x64-windows
+
+					# Install with full features including FDK-AAC
+					vcpkg install ffmpeg[fdk-aac,gpl]:x64-windows
+
+			Alternative approaches in order of preference:
+				Use VcPkg (since you already have it):
+					# Full featured build with all codecs
+					vcpkg install ffmpeg[core,fdk-aac,gpl,x264,x265]:x64-windows
+				Use Chocolatey (keeping as backup option):
+					choco install ffmpeg --params "/FfmpegPath:full"
+				Download pre-built binaries from specialized sources like BtbN or gyan.dev which include libfdk-aac.
+
+			To get FFmpeg with libfdk_aac through Chocolatey, you need to specifically request the full version with all features:
+				# First, remove existing FFmpeg
+				choco uninstall ffmpeg
+
+				# Then install with full features
+				choco install ffmpeg --version=6.1.1 --params "/FfmpegPath:full"
+
+				If that doesn't include libfdk_aac, your best alternatives are:
+
+			Use a pre-built version that includes libfdk_aac:
+				Download from BtbN's build: https://github.com/BtbN/FFmpeg-Builds/releases
+				Look for "ffmpeg-master-latest-win64-gpl-shared.zip"
+				This build includes libfdk_aac and other professional codecs
+				Use VcPkg with explicit features:
+
+			vcpkg install ffmpeg[core,fdk-aac,gpl]:x64-windows
+		ffmpeg choco libfdk_aac
+			https://superuser.com/questions/1860878/force-ffmpeg-to-select-libfdk-aac-instead-of-native-aac-decoder-via-c-api
+	Usage
+		Possible levels are numbers or:
+			"quiet"
+			"panic"
+			"fatal"
+			"error"
+			"warning"
+			"info"
+			"verbose"
+			"debug"
+			"trace"
+
+		ffprobe -hide_banner -i
+		-select_streams v:0
+		ffprobe -hide_banner -v panic -show_entries stream=bit_rate
+		ffprobe -hide_banner -v info -show_entries stream=codec_name,bit_rate,sample_rate
+		ffprobe -v', 'error', '-show_entries',
+					 'stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+
+		"-v error -show_entries stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+
+		https://ottverse.com/ffprobe-comprehensive-tutorial-with-examples/
+
+            ['ffprobe', '-v', 'error', '-show_entries',
+             'stream=codec_name,bit_rate,sample_rate', '-of', 'default=noprint_wrappers=1',
+
+	ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a fla temp.flac
+
+	ffprobe -of json -v error -select_streams a:0 -show_entries stream=bit_rate,bits_per_sample,codec_long_name,codec_name,codec_tag_string,profile,sample_rate
+	Output
+		{
+			"programs": [
+
+			],
+			"stream_groups": [
+
+			],
+			"streams": [
+				{
+					"codec_name": "aac",
+					"codec_long_name": "AAC (Advanced Audio Coding)",
+					"profile": "LC",
+					"codec_tag_string": "[0][0][0][0]",
+					"sample_rate": "44100",
+					"bits_per_sample": 0,
+					"bit_rate": "33982"
+				}
+			]
+		}
+
+	C:\ProgramData\chocolatey\bin\ffmpeg.exe
+	mka
+		ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a vorbis -strict -2 -b:a 32k test.mka
+		ffprobe -v quiet -print_format json -show_format -show_streams test.mka
+
+
+	ffprobe -of json -v error -select_streams a:0 -show_entries stream=bit_rate,bits_per_sample,codec_long_name,codec_name,codec_tag_string,duration,profile,sample_rate:format=duration temp.flac
+	ffprobe -of json -v error -select_streams a:0 -show_entries stream=bit_rate,bits_per_sample,codec_long_name,codec_name,codec_tag_string,duration,profile,sample_rate:format=duration test.mka
+
+	ffprobe Output Samples
+		{
+			"programs": [
+
+			],
+			"stream_groups": [
+
+			],
+			"streams": [
+				{
+					"codec_name": "aac",
+					"codec_long_name": "AAC (Advanced Audio Coding)",
+					"profile": "LC",
+					"codec_tag_string": "[0][0][0][0]",
+					"sample_rate": "44100",
+					"bits_per_sample": 0,
+					"bit_rate": "33982"
+				}
+			]
+		}
+
+		{
+			"programs": [
+
+			],
+			"stream_groups": [
+
+			],
+			"streams": [
+				{
+					"codec_name": "vorbis",
+					"codec_long_name": "Vorbis",
+					"codec_tag_string": "[0][0][0][0]",
+					"sample_rate": "44100",
+					"bits_per_sample": 0
+				}
+			],
+			"format": {
+				"duration": "1.006000"
+			}
+		}
+

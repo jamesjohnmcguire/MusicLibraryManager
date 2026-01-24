@@ -4,8 +4,12 @@ Sprints
 	Start Using Chromaprints
 	Refactor iTunes Support as PlugIn
 Music Library Manager Tasks
+	Support APE format
+	Deal with multiple streams
+	Refactor TestGetAudioProperties for mka test
+	Add Stereo Tests with -ac 2 (audio channels = 2)
 	Finish FFProbe functionality
-	Optimize TagLib Analyzer Functionality
+	Dry Run Option
 	Add Different Format Test Files	Such as:	MusicInbox\"Unknown Artists\Unknown Artist\Unknown Album\whole witch.wav"
 	Add Tests for New Functionality
 	Process Art Work as Well
