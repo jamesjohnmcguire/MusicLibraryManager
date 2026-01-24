@@ -36,8 +36,7 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 			"pcm_s24le",
 			"pcm_s32le",
 			"tta",
-			"wav",
-			"wv"
+			"wav"
 		};
 
 	private static readonly HashSet<string> LossyCodecs =
