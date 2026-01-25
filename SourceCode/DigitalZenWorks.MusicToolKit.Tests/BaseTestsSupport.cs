@@ -84,7 +84,53 @@ internal class BaseTestsSupport
 		}
 	}
 
+	/// <summary>
+	/// Verifies that the compression type of the specified media file matches
+	/// the expected compression type.
+	/// </summary>
+	/// <param name="mediaFileFormatAnalyzer">An analyzer used to determine
+	/// the compression type of the media file.</param>
+	/// <param name="filePath">The path to the media file to check. Cannot be
+	/// null.</param>
+	/// <param name="expectedCompressionType">The compression type that the
+	/// media file is expected to have.</param>
+	protected static void CheckCompressionType(
+		MediaFileFormat mediaFileFormatAnalyzer,
+		string filePath,
+		CompressionType expectedCompressionType)
+	{
+		CompressionType actualCompressionType =
+			mediaFileFormatAnalyzer.GetCompressionType(filePath);
+
+		string message = "Expected compression type " +
+			$"'{expectedCompressionType}' " +
+			$"but found '{actualCompressionType}' for file '{filePath}'.";
+
+		Assert.That(
+			actualCompressionType,
+			Is.EqualTo(expectedCompressionType),
+			message);
+	}
+
+	/// <summary>
+	/// Determines whether the specified file exists at the given path.
+	/// </summary>
+	/// <param name="filePath">The path of the file to check. This can be
+	/// either a relative or absolute path. Cannot be null or an empty string.
+	/// </param>
+	/// <returns>true if a file exists at the specified path; otherwise, false.
+	/// </returns>
+	protected bool CheckFileExists(string filePath)
+	{
+		bool exists = File.Exists(filePath);
+
+		Assert.That(exists, Is.True);
+
+		return exists;
+	}
+
 	protected string? GenerateAudioFile(string format)
+
 	{
 		string? audioFile = null;
 		string outputPath = Path.Combine(TemporaryPath, $"test.{format}");
