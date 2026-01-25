@@ -83,9 +83,17 @@ internal class MediaFileFormatIntegrationTests : BaseTestsSupport
 	[Test]
 	public void GetAudioType_M4aAlac_AllImplementations_ReturnLossless()
 	{
-		// This test would require generating an ALAC M4A file
-		// using FFmpeg with -codec:a alac
-		Assert.Inconclusive("Requires ALAC M4A test file generation");
+		string filePath = TestFiles["alac"];
+		if (filePath == null)
+			Assert.Ignore("M4A test file not available");
+
+		var resultFfmpeg = _mediaFileFormatWithFfmpeg.GetCompressionType(filePath);
+		var resultNaudio = _mediaFileFormatWithNaudio.GetCompressionType(filePath);
+		var resultTagLib = _mediaFileFormatWithTagLib.GetCompressionType(filePath);
+
+		Assert.That(resultFfmpeg, Is.EqualTo(CompressionType.Lossless));
+		Assert.That(resultNaudio, Is.EqualTo(CompressionType.Unknown));
+		Assert.That(resultTagLib, Is.EqualTo(CompressionType.Lossless));
 	}
 
 	[Test]
