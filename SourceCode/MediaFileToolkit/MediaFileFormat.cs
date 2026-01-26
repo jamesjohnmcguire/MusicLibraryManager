@@ -67,9 +67,18 @@ public class MediaFileFormat(IMediaFileFormat mediaFileFormat)
 	/// cannot be determined.</returns>
 	/// <exception cref="FileNotFoundException">Thrown if the file specified by
 	/// filePath does not exist.</exception>
-	public CompressionType GetCompressionType(string filePath)
+	public CompressionType GetCompressionType(string? filePath)
 	{
-		if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+		ArgumentNullException.ThrowIfNull(filePath);
+
+		if (string.IsNullOrWhiteSpace(filePath))
+		{
+			throw new ArgumentException(
+				"File path cannot be empty or whitespace.",
+				nameof(filePath));
+		}
+
+		if (!File.Exists(filePath))
 		{
 			throw new FileNotFoundException("File not found: " + filePath);
 		}
