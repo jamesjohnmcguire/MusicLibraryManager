@@ -68,6 +68,8 @@ internal class BaseTestsSupport
 		rules = MusicManager.GetDefaultRules();
 
 		TestFiles = GenerateAudioFiles();
+
+		Assert.That(TestFiles.Count, Is.GreaterThan(0));
 	}
 
 	/// <summary>
@@ -127,6 +129,16 @@ internal class BaseTestsSupport
 		Assert.That(exists, Is.True);
 
 		return exists;
+	}
+
+	protected void CheckFfmpegExists()
+	{
+		bool exists = FfmpegBase.CheckFfmpeg();
+
+		if (exists == false)
+		{
+			Assert.Fail("FFmpeg is not available in PATH.");
+		}
 	}
 
 	protected string? GenerateAudioFile(string format)

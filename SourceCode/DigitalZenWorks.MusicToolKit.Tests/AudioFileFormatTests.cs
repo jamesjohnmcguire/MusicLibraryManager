@@ -6,22 +6,29 @@
 
 namespace DigitalZenWorks.MusicToolKit.Tests;
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using MediaFileToolkit;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 
 /// <summary>
-/// Audio file format tests class.
+/// Contains unit tests for verifying audio file format detection and
+/// properties using the MediaFileFormat class.
 /// </summary>
+/// <remarks>This test fixture covers scenarios for identifying audio
+/// compression types, handling invalid or missing files, and validating file
+/// properties across a variety of audio formats. It ensures that the
+/// MediaFileFormat implementation correctly distinguishes between lossy,
+/// lossless, and unknown formats, and that test audio files are present and
+/// readable. The tests also verify that the correct interface methods are
+/// called for specific formats and that results are not cached between calls.
+/// </remarks>
 [TestFixture]
 internal sealed class AudioFileFormatTests : BaseTestsSupport
 {
-	private MediaFileFormat mediaFileFormat;
+	private MediaFileFormat mediaFileFormatMocked;
 	private Mock<IMediaFileFormat> mockMediaFileFormat;
 
 	/// <summary>
@@ -30,15 +37,7 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
 	{
-		bool exists = FfmpegBase.CheckFfmpeg();
-
-		if (exists == false)
-		{
-			Assert.Fail("FFmpeg is not available in PATH.");
-		}
-
-		// Created in base class.
-		Assert.That(TestFiles.Count, Is.GreaterThan(0));
+		CheckFfmpegExists();
 	}
 
 	/// <summary>
@@ -48,368 +47,644 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	public void SetUp()
 	{
 		mockMediaFileFormat = new Mock<IMediaFileFormat>();
-		mediaFileFormat = new MediaFileFormat(mockMediaFileFormat.Object);
+		mediaFileFormatMocked =
+			new MediaFileFormat(mockMediaFileFormat.Object);
 	}
 
 	/// <summary>
-	/// The get audio type throws file not found exception on null test.
+	/// Verifies that the GetCompressionType method throws an
+	/// ArgumentNullException when passed a null argument.
 	/// </summary>
+	/// <remarks>This test ensures that the method enforces its null argument
+	/// precondition by throwing the expected exception. Use this test to
+	/// validate input checking behavior for the GetCompressionType method.
+	/// </remarks>
 	[Test]
-	public void GetAudioTypeThrowsFileNotFoundExceptionOnNull()
+	public void GetAudioTypeThrowsArgumentExceptionOnNull()
+	{
+		Assert.Throws<ArgumentNullException>(() =>
+			mediaFileFormatMocked.GetCompressionType(null));
+	}
+
+	/// <summary>
+	/// Verifies that GetCompressionType throws an ArgumentException when the
+	/// specified file name is empty or consists only of whitespace.
+	/// </summary>
+	/// <remarks>This test ensures that GetCompressionType enforces input
+	/// validation by throwing an ArgumentException for invalid file name
+	/// values.</remarks>
+	/// <param name="fileName">The file name to test. Must be either an empty
+	/// string or contain only whitespace characters.</param>
+	[TestCase("")]
+	[TestCase("    ")]
+	public void GetAudioTypeThrowsArgumentExceptionOnEmpty(string fileName)
+	{
+		Assert.Throws<ArgumentException>(() =>
+			mediaFileFormatMocked.GetCompressionType(fileName));
+	}
+
+	/// <summary>
+	/// Verifies that calling GetCompressionType with a non-existent file path
+	/// throws a FileNotFoundException.
+	/// </summary>
+	/// <remarks>Use this test to ensure that the GetCompressionType method
+	/// correctly handles missing files by throwing the expected exception.
+	/// </remarks>
+	/// <param name="fileName">The path to the audio file to test. Must refer
+	/// to a file that does not exist.</param>
+	[TestCase("bad/file/path")]
+	[Test]
+	public void GetAudioTypeThrowsFileNotFound(string fileName)
 	{
 		Assert.Throws<FileNotFoundException>(() =>
-			mediaFileFormat.GetCompressionType("bad/file/path"));
+			mediaFileFormatMocked.GetCompressionType(fileName));
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method throws a
+	/// FileNotFoundException when called with a path to a non-existent audio
+	/// file.
+	/// </summary>
+	/// <remarks>This test ensures that the method correctly handles invalid
+	/// file paths by throwing the expected exception, helping to validate
+	/// error handling behavior.</remarks>
 	[Test]
-	public void GetAudioType_EmptyFilePath_ThrowsFileNotFoundException()
+	public void GetAudioTypeThrowsFileNotFoundNonExistentFile()
 	{
-		Assert.Throws<FileNotFoundException>(() => mediaFileFormat.GetCompressionType(""));
+		string nonExistentPath =
+			Path.Combine(TemporaryPath, "nonexistent.mp3");
+		Assert.Throws<FileNotFoundException>(() =>
+			mediaFileFormatMocked.GetCompressionType(nonExistentPath));
 	}
 
+	/// <summary>
+	/// Verifies that GetCompressionType throws a FileNotFoundException
+	/// containing the file path when the specified audio file does not exist.
+	/// </summary>
+	/// <remarks>This test ensures that the exception message includes the
+	/// missing file's path, which helps callers identify which file could not
+	/// be found.</remarks>
 	[Test]
-	public void GetAudioType_WhitespaceFilePath_ThrowsFileNotFoundException()
-	{
-		Assert.Throws<FileNotFoundException>(() => mediaFileFormat.GetCompressionType("   "));
-	}
-
-	[Test]
-	public void GetAudioType_NonExistentFile_ThrowsFileNotFoundException()
-	{
-		string nonExistentPath = Path.Combine(TemporaryPath, "nonexistent.mp3");
-		Assert.Throws<FileNotFoundException>(() => mediaFileFormat.GetCompressionType(nonExistentPath));
-	}
-
-	[Test]
-	public void GetAudioType_FileNotFound_ExceptionContainsFilePath()
+	public void GetAudioTypeExceptionContainsFilePathOnFileNotFound()
 	{
 		string path = "missing.mp3";
-		var ex = Assert.Throws<FileNotFoundException>(() => mediaFileFormat.GetCompressionType(path));
-		Assert.That(ex.Message, Does.Contain(path));
+		FileNotFoundException? exception =
+			Assert.Throws<FileNotFoundException>(() =>
+				mediaFileFormatMocked.GetCompressionType(path));
+		Assert.That(exception.Message, Does.Contain(path));
 	}
 
+	/// <summary>
+	/// Verifies that files with AAC, MP3, or OPUS extensions are identified as
+	/// using lossy compression.
+	/// </summary>
+	/// <remarks>This test ensures that the compression type detection logic
+	/// correctly classifies common audio formats as lossy, regardless of the
+	/// casing of the extension.</remarks>
+	/// <param name="extension">The file extension to test. Supported values
+	/// are "AAC", "MP3", and "OPUS" (case-insensitive).</param>
 	[Test]
 	[TestCase("AAC")]
-	[TestCase("aac")]
 	[TestCase("Aac")]
-	public void GetAudioType_AacFile_ReturnsLossy(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
-	}
-
-	[Test]
+	[TestCase("aac")]
 	[TestCase("MP3")]
-	[TestCase("mp3")]
 	[TestCase("Mp3")]
-	public void GetAudioType_Mp3File_ReturnsLossy(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
-	}
-
-	[Test]
+	[TestCase("mp3")]
 	[TestCase("OPUS")]
-	[TestCase("opus")]
 	[TestCase("Opus")]
-	public void GetAudioType_OpusFile_ReturnsLossy(string extension)
+	[TestCase("opus")]
+	public void GetAudioTypeAacReturnsLossy(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		string filePath = TestFiles[extension];
+
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Verifies that files with lossy audio formats return the expected lossy
+	/// compression type.
+	/// </summary>
+	/// <remarks>This test checks multiple common lossy audio file extensions
+	/// to ensure that the compression type detection logic correctly
+	/// identifies them as lossy formats. The test is intended to validate the
+	/// behavior of the compression type detection for AAC, MP3, and Opus
+	/// files.</remarks>
 	[Test]
-	public void GetAudioType_AllLossyFormats_ReturnLossy()
+	public void GetAudioTypeAllLossyFormatsReturnLossy()
 	{
-		var lossyExtensions = new[] { "aac", "mp3", "opus" };
+		string[] lossyExtensions = new[] { "aac", "mp3", "opus" };
 
-		foreach (var ext in lossyExtensions)
+		foreach (string? extension in lossyExtensions)
 		{
-			var result = mediaFileFormat.GetCompressionType(TestFiles[ext]);
-			Assert.That(result, Is.EqualTo(CompressionType.Lossy), $"Expected {ext} to be Lossy");
+			string filePath = TestFiles[extension];
+
+			CheckCompressionType(
+				mediaFileFormatMocked,
+				filePath,
+				CompressionType.Lossy);
 		}
 	}
 
+	/// <summary>
+	/// Verifies that the audio type determined by file extension is classified
+	/// as lossless.
+	/// </summary>
+	/// <remarks>This test ensures that files with the specified extension are
+	/// recognized as using a lossless compression type. Supported extensions
+	/// include AIFF, APE, FLAC, TTA, and WAV in any casing.</remarks>
+	/// <param name="extension">The file extension to test. The value is
+	/// case-insensitive and should correspond to a supported lossless audio
+	/// format.</param>
 	[Test]
 	[TestCase("AIFF")]
-	[TestCase("aiff")]
 	[TestCase("Aiff")]
-	public void GetAudioType_AiffFile_ReturnsLossless(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
-	}
-
-	[Test]
+	[TestCase("aiff")]
 	[TestCase("APE")]
-	[TestCase("ape")]
 	[TestCase("Ape")]
-	public void GetAudioType_ApeFile_ReturnsLossless(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
-	}
-
-	[Test]
+	[TestCase("ape")]
 	[TestCase("FLAC")]
-	[TestCase("flac")]
 	[TestCase("Flac")]
-	public void GetAudioType_FlacFile_ReturnsLossless(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
-	}
-
-	[Test]
+	[TestCase("flac")]
 	[TestCase("TTA")]
-	[TestCase("tta")]
 	[TestCase("Tta")]
-	public void GetAudioType_TtaFile_ReturnsLossless(string extension)
-	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
-	}
-
-	[Test]
+	[TestCase("tta")]
 	[TestCase("WAV")]
-	[TestCase("wav")]
 	[TestCase("Wav")]
-	public void GetAudioType_WavFile_ReturnsLossless(string extension)
+	[TestCase("wav")]
+	public void GetAudioTypeReturnsLossless(string extension)
 	{
-		var result = mediaFileFormat.GetCompressionType(TestFiles[extension]);
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		string filePath = TestFiles[extension];
+
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Verifies that all supported lossless audio file formats are
+	/// correctly identified as lossless compression types.
+	/// </summary>
+	/// <remarks>This test iterates through a set of known lossless
+	/// audio file extensions and asserts that each is recognized as having a
+	/// lossless compression type. Use this test to ensure that the audio type
+	/// detection logic remains accurate when new formats are added or existing
+	/// formats are modified.</remarks>
 	[Test]
-	public void GetAudioType_AllLosslessFormats_ReturnLossless()
+	public void GetAudioTypeAllLosslessFormatsReturnLossless()
 	{
 		var losslessExtensions = new[] { "aiff", "ape", "flac", "tta", "wav" };
 
-		foreach (var ext in losslessExtensions)
+		foreach (var extension in losslessExtensions)
 		{
-			var result = mediaFileFormat.GetCompressionType(TestFiles[ext]);
-			Assert.That(result, Is.EqualTo(CompressionType.Lossless), $"Expected {ext} to be Lossless");
+			string filePath = TestFiles[extension];
+
+			CheckCompressionType(
+				mediaFileFormatMocked,
+				filePath,
+				CompressionType.Lossless);
 		}
 	}
 
+	/// <summary>
+	/// Verifies that calling GetCompressionType with an M4A file path invokes
+	/// GetCompressionTypeM4a on the mocked IMediaFileFormat instance.
+	/// </summary>
+	/// <remarks>This test ensures that the GetCompressionType method correctly
+	/// delegates to the M4A-specific compression type method when provided
+	/// with an M4A file. The verification checks that GetCompressionTypeM4a is
+	/// called exactly once with the expected file path.</remarks>
 	[Test]
-	public void GetAudioType_M4aFile_CallsGetAudioTypeM4a()
+	public void GetAudioTypeMockCallsGetAudioTypeM4a()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
+		string filePath = TestFiles["m4a"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
+		mediaFileFormatMocked.GetCompressionType(filePath);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(TestFiles["m4a"]), Times.Once);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeM4a(filePath), Times.Once);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an M4A file is correctly identified as
+	/// lossy when the interface returns a lossy compression type.
+	/// </summary>
+	/// <remarks>This test sets up the mock interface to return a lossy
+	/// compression type for an M4A file and asserts that the system under test
+	/// recognizes the file as lossy. Use this test to ensure correct behavior
+	/// when handling M4A files with lossy compression.</remarks>
 	[Test]
-	public void GetAudioType_M4aFile_ReturnsLossy_WhenInterfaceReturnsLossy()
+	public void GetAudioTypeM4aFileWhenInterfaceReturnsLossy()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
+		string filePath = TestFiles["m4a"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an M4A file is correctly identified as
+	/// lossless when the interface returns a lossless compression type.
+	/// </summary>
+	/// <remarks>This test sets up the mock interface to return a lossless
+	/// compression type for M4A files and asserts that the system under test
+	/// recognizes the file accordingly. Use this test to ensure correct
+	/// handling of lossless M4A files in scenarios where compression type
+	/// detection is critical.</remarks>
 	[Test]
-	public void GetAudioType_M4aFile_ReturnsLossless_WhenInterfaceReturnsLossless()
+	public void GetAudioTypeM4aFileWhenInterfaceReturnsLossless()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
+		string filePath = TestFiles["m4a"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method passes the correct file
+	/// path to the underlying M4A compression type handler.
+	/// </summary>
+	/// <remarks>This test ensures that when an M4A file path is provided, the
+	/// method under test forwards the exact path to the dependency responsible
+	/// for determining the compression type. Use this test to confirm correct
+	/// parameter forwarding in scenarios involving M4A audio files.</remarks>
 	[Test]
-	public void GetAudioType_M4aFile_PassesCorrectFilePath()
+	public void GetAudioTypeM4aFilePassesCorrectFilePath()
 	{
-		string capturedPath = null;
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
+		string filePath = TestFiles["m4a"];
+		string? capturedPath = null;
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Callback<string>(path => capturedPath = path)
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles["m4a"]);
+		mediaFileFormatMocked.GetCompressionType(filePath);
 
-		Assert.That(capturedPath, Is.EqualTo(TestFiles["m4a"]));
+		Assert.That(capturedPath, Is.EqualTo(filePath));
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method calls GetCompressionTypeMka
+	/// on the mock object with the expected file path when processing an MKA
+	/// audio file.
+	/// </summary>
+	/// <remarks>This test ensures that the GetCompressionType method delegates
+	/// to the correct mock method for MKA files and that the method is invoked
+	/// exactly once. Use this test to confirm integration between the media
+	/// file format abstraction and its mock implementation.</remarks>
 	[Test]
-	public void GetAudioType_MkaFile_CallsGetAudioTypeMka()
+	public void GetAudioTypeMockCallsGetAudioTypeMka()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
+		string filePath = TestFiles["mka"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles["mka"]);
+		mediaFileFormatMocked.GetCompressionType(filePath);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(TestFiles["mka"]), Times.Once);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeMka(filePath), Times.Once);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an MKA file is identified as lossy
+	/// when the interface returns a lossy compression type.
+	/// </summary>
+	/// <remarks>This test configures the mock interface to return a lossy
+	/// compression type for MKA files and asserts that the system under test
+	/// correctly recognizes the file as lossy. Use this test to ensure correct
+	/// handling of lossy audio formats in scenarios involving MKA files.
+	/// </remarks>
 	[Test]
-	public void GetAudioType_MkaFile_ReturnsLossy_WhenInterfaceReturnsLossy()
+	public void GetAudioTypeMkaFileWhenInterfaceReturnsLossy()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
+		string filePath = TestFiles["mka"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["mka"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an MKA file is identified as lossless
+	/// when the interface returns a lossless compression type.
+	/// </summary>
+	/// <remarks>This test ensures that the system correctly interprets the
+	/// compression type returned by the interface for MKA files. It is
+	/// intended to validate integration between the file format detection
+	/// logic and the compression type interface.</remarks>
 	[Test]
-	public void GetAudioType_MkaFile_ReturnsLossless_WhenInterfaceReturnsLossless()
+	public void GetAudioTypeMkaFileWhenInterfaceReturnsLossless()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeMka(It.IsAny<string>()))
+		string filePath = TestFiles["mka"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeMka(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["mka"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method calls GetCompressionTypeOgg
+	/// with the correct file path when processing an Ogg audio file.
+	/// </summary>
+	/// <remarks>This test ensures that the mocked media file format
+	/// implementation correctly delegates to the Ogg-specific compression type
+	/// method when an Ogg file is provided. Use this test to validate
+	/// integration between the general compression type logic and the Ogg
+	/// -specific handler.</remarks>
 	[Test]
-	public void GetAudioType_OggFile_CallsGetAudioTypeOgg()
+	public void GetAudioTypeMockCallsGetAudioTypeOgg()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
+		string filePath = TestFiles["ogg"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
+		mediaFileFormatMocked.GetCompressionType(filePath);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeOgg(TestFiles["ogg"]), Times.Once);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeOgg(filePath), Times.Once);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an Ogg file is identified as lossy
+	/// when the interface returns a lossy compression type.
+	/// </summary>
+	/// <remarks>This test configures the mock interface to return a lossy
+	/// compression type for Ogg files and asserts that the system correctly
+	/// recognizes the file as lossy. Use this test to ensure that Ogg file
+	/// handling aligns with expected compression type detection behavior.
+	/// </remarks>
 	[Test]
-	public void GetAudioType_OggFile_ReturnsLossy_WhenInterfaceReturnsLossy()
+	public void GetAudioTypeOggFileWhenInterfaceReturnsLossy()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
+		string filePath = TestFiles["ogg"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for an Ogg file is identified as lossless
+	/// when the interface returns a lossless compression type.
+	/// </summary>
+	/// <remarks>This test ensures that the system correctly interprets the
+	/// compression type returned by the interface for Ogg files. It is
+	/// intended to validate the mapping between the interface's compression
+	/// type and the expected audio type result.</remarks>
 	[Test]
-	public void GetAudioType_OggFile_ReturnsLossless_WhenInterfaceReturnsLossless()
+	public void GetAudioTypeOggFileWhenInterfaceReturnsLossless()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeOgg(It.IsAny<string>()))
+		string filePath = TestFiles["ogg"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeOgg(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["ogg"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method calls GetCompressionTypeWma
+	/// when provided with a WMA file path.
+	/// </summary>
+	/// <remarks>This test ensures that the media file format mock correctly
+	/// delegates WMA file compression type requests to the
+	/// GetCompressionTypeWma method. It uses a mock setup and verification to
+	/// confirm the expected interaction occurs exactly once.</remarks>
 	[Test]
-	public void GetAudioType_WmaFile_CallsGetAudioTypeWma()
+	public void GetAudioTypeMockCallsGetAudioTypeWma()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
+		string filePath = TestFiles["wma"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeWma(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		mediaFileFormat.GetCompressionType(TestFiles["wma"]);
+		mediaFileFormatMocked.GetCompressionType(TestFiles["wma"]);
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWma(TestFiles["wma"]), Times.Once);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWma(TestFiles["wma"]), Times.Once);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for a WMA file is correctly identified as
+	/// lossy when the interface returns a lossy compression type.
+	/// </summary>
+	/// <remarks>This test sets up the mock interface to return a lossy
+	/// compression type for a WMA file and asserts that the system under test
+	/// recognizes the file as lossy. Use this test to ensure correct behavior
+	/// when handling WMA files with lossy compression.</remarks>
 	[Test]
-	public void GetAudioType_WmaFile_ReturnsLossy_WhenInterfaceReturnsLossy()
+	public void GetAudioTypeWmaFileWhenInterfaceReturnsLossy()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
+		string filePath = TestFiles["wma"];
+
+		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(
+			It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["wma"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Verifies that the audio type for a WMA file is correctly identified as
+	/// lossless when the interface returns a lossless compression type.
+	/// </summary>
+	/// <remarks>This test ensures that the system correctly interprets the
+	/// compression type returned by the interface for WMA files. It is
+	/// intended to validate the behavior when the compression type is set to
+	/// lossless, helping to prevent regressions in audio type detection logic.
+	/// </remarks>
 	[Test]
-	public void GetAudioType_WmaFile_ReturnsLossless_WhenInterfaceReturnsLossless()
+	public void GetAudioTypeWmaFileWhenInterfaceReturnsLossless()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWma(It.IsAny<string>()))
+		string filePath = TestFiles["wma"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeWma(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["wma"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Verifies that the GetCompressionType method calls
+	/// GetCompressionTypeWavPack with the correct file path when processing a
+	/// WavPack audio file.
+	/// </summary>
+	/// <remarks>This test sets up a mock for GetCompressionTypeWavPack to
+	/// return CompressionType.Lossless and ensures that the method is invoked
+	/// exactly once with the expected file path. Use this test to confirm
+	/// correct delegation for WavPack file type handling.</remarks>
 	[Test]
-	public void GetAudioType_WvFile_CallsGetAudioTypeWavPack()
+	public void GetAudioTypeMockCallsGetAudioTypeWavPack()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
+		string filePath = TestFiles["wv"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		mediaFileFormat.GetCompressionType(TestFiles["wv"]);
+		mediaFileFormatMocked.GetCompressionType(filePath);
 
 		mockMediaFileFormat.Verify(
 			m => m.GetCompressionTypeWavPack(
-				TestFiles["wv"]), Times.Once);
+				filePath), Times.Once);
 	}
 
+	/// <summary>
+	/// Get audio type wv file when interface returns lossy.
+	/// </summary>
 	[Test]
-	public void GetAudioType_WvFile_ReturnsLossy_WhenInterfaceReturnsLossy()
+	public void GetAudioTypeWvFileWhenInterfaceReturnsLossy()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
+		string filePath = TestFiles["wv"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["wv"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossy));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossy);
 	}
 
+	/// <summary>
+	/// Get audio type wv file when interface returns lossless.
+	/// </summary>
 	[Test]
-	public void GetAudioType_WvFile_ReturnsLossless_WhenInterfaceReturnsLossless()
+	public void GetAudioTypeWvFileWhenInterfaceReturnsLossless()
 	{
-		mockMediaFileFormat.Setup(m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
+		string filePath = TestFiles["wv"];
+
+		mockMediaFileFormat.Setup(
+			m => m.GetCompressionTypeWavPack(It.IsAny<string>()))
 			.Returns(CompressionType.Lossless);
 
-		var result = mediaFileFormat.GetCompressionType(TestFiles["wv"]);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Lossless));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			filePath,
+			CompressionType.Lossless);
 	}
 
+	/// <summary>
+	/// Get audio type when unknown extenstion returns unknown.
+	/// </summary>
 	[Test]
-	public void GetAudioType_UnknownExtension_ReturnsUnknown()
+	public void GetAudioTypeUnknownExtensionReturnsUnknown()
 	{
 		string unknownFile = Path.Combine(TemporaryPath, "test.xyz");
 		File.WriteAllText(unknownFile, "dummy");
 
-		var result = mediaFileFormat.GetCompressionType(unknownFile);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Unknown));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			unknownFile,
+			CompressionType.Unknown);
 	}
 
+	/// <summary>
+	/// Get audio type when no extenstion returns unknown.
+	/// </summary>
 	[Test]
-	public void GetAudioType_NoExtension_ReturnsUnknown()
+	public void GetAudioTypeNoExtensionReturnsUnknown()
 	{
-		string noExtFile = Path.Combine(TemporaryPath, "testfile");
-		File.WriteAllText(noExtFile, "dummy");
+		string noExtentionFile = Path.Combine(TemporaryPath, "testfile");
+		File.WriteAllText(noExtentionFile, "dummy");
 
-		var result = mediaFileFormat.GetCompressionType(noExtFile);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Unknown));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			noExtentionFile,
+			CompressionType.Unknown);
 	}
 
+	/// <summary>
+	/// Verifies that GetAudioType returns CompressionType.Unknown for file
+	/// extensions that are not associated with audio formats.
+	/// </summary>
+	/// <remarks>This test ensures that the method under test does not
+	/// incorrectly identify non-audio file types as audio, and instead returns
+	/// CompressionType.Unknown as expected.</remarks>
+	/// <param name="extension">The file extension to test. This should be a
+	/// non-audio extension such as "mp4", "avi", "mkv", "txt", or "doc".
+	/// </param>
 	[Test]
 	[TestCase("mp4")]
 	[TestCase("avi")]
 	[TestCase("mkv")]
 	[TestCase("txt")]
 	[TestCase("doc")]
-	public void GetAudioType_NonAudioExtensions_ReturnsUnknown(string extension)
+	public void GetAudioTypeNonAudioExtensionsReturnsUnknown(string extension)
 	{
 		string file = Path.Combine(TemporaryPath, $"test{extension}");
 		File.WriteAllText(file, "dummy");
 
-		var result = mediaFileFormat.GetCompressionType(file);
-
-		Assert.That(result, Is.EqualTo(CompressionType.Unknown));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			file,
+			CompressionType.Unknown);
 	}
 
+	/// <summary>
+	/// Verifies that audio file extensions are correctly mapped to their
+	/// corresponding compression types, regardless of case sensitivity.
+	/// </summary>
+	/// <remarks>This test ensures that the method for determining audio
+	/// compression type from file extensions functions correctly for various
+	/// casing scenarios, such as 'mp3', 'MP3', 'Mp3', and 'mP3'.</remarks>
+	/// <param name="extension">The file extension to test, representing an
+	/// audio format. The comparison is performed in a case-insensitive manner.
+	/// </param>
+	/// <param name="expectedType">The expected compression type associated
+	/// with the specified audio file extension.</param>
 	[Test]
 	[TestCase("mp3", CompressionType.Lossy)]
 	[TestCase("MP3", CompressionType.Lossy)]
@@ -419,53 +694,104 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[TestCase("FLAC", CompressionType.Lossless)]
 	[TestCase("Flac", CompressionType.Lossless)]
 	[TestCase("fLaC", CompressionType.Lossless)]
-	public void GetAudioType_CaseInsensitiveExtensions_ReturnsCorrectType(string extension, CompressionType expectedType)
+	public void GetAudioTypeCaseInsensitiveExtensions(
+		string extension, CompressionType expectedType)
 	{
 		string file = Path.Combine(TemporaryPath, $"casetest.{extension}");
 		File.WriteAllText(file, "dummy");
 
-		var result = mediaFileFormat.GetCompressionType(file);
-
-		Assert.That(result, Is.EqualTo(expectedType));
+		CheckCompressionType(
+			mediaFileFormatMocked,
+			file,
+			expectedType);
 	}
 
+	/// <summary>
+	/// Verifies that repeated calls to GetCompressionType for the same M4A
+	/// file do not return cached results and instead invoke the underlying
+	/// method each time.
+	/// </summary>
+	/// <remarks>This test ensures that the GetCompressionType method does not
+	/// cache its output for M4A files, and that each call reflects the current
+	/// state of the underlying GetCompressionTypeM4a implementation. This
+	/// behavior is important when the compression type may change between
+	/// invocations or when accurate, up-to-date results are required.
+	/// </remarks>
 	[Test]
-	public void GetAudioType_CalledMultipleTimes_DoesNotCacheResults()
+	public void GetAudioTypeDoesNotCacheResults()
 	{
-		mockMediaFileFormat.SetupSequence(m => m.GetCompressionTypeM4a(It.IsAny<string>()))
+		mockMediaFileFormat.SetupSequence(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()))
 			.Returns(CompressionType.Lossy)
 			.Returns(CompressionType.Lossless);
 
-		var result1 = mediaFileFormat.GetCompressionType(TestFiles["M4A"]);
-		var result2 = mediaFileFormat.GetCompressionType(TestFiles["M4A"]);
+		CompressionType result1 =
+			mediaFileFormatMocked.GetCompressionType(TestFiles["M4A"]);
+		CompressionType result2 =
+			mediaFileFormatMocked.GetCompressionType(TestFiles["M4A"]);
 
 		Assert.That(result1, Is.EqualTo(CompressionType.Lossy));
 		Assert.That(result2, Is.EqualTo(CompressionType.Lossless));
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Exactly(2));
+
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeM4a(
+				It.IsAny<string>()), Times.Exactly(2));
 	}
 
+	/// <summary>
+	/// Verifies that calling GetCompressionType for a lossy audio file does
+	/// not invoke interface methods for other audio formats.
+	/// </summary>
+	/// <remarks>This test ensures that when processing an MP3 file, only the
+	/// relevant compression type method is called, and methods for other
+	/// formats such as M4A, MKA, OGG, WMA, and WavPack are not invoked. This
+	/// helps confirm correct dispatching behavior and prevents unintended
+	/// side effects.</remarks>
 	[Test]
-	public void GetAudioType_LossyFormat_DoesNotCallInterfaceMethods()
+	public void GetAudioTypeLossyDoesNotCallInterfaceMethods()
 	{
-		mediaFileFormat.GetCompressionType(TestFiles["MP3"]);
+		string filePath = TestFiles["MP3"];
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeOgg(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWma(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWavPack(It.IsAny<string>()), Times.Never);
+		mediaFileFormatMocked.GetCompressionType(filePath);
+
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeOgg(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWma(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWavPack(It.IsAny<string>()), Times.Never);
 	}
 
+	/// <summary>
+	/// Verifies that retrieving the compression type for a FLAC file does not
+	/// invoke interface methods for other audio formats.
+	/// </summary>
+	/// <remarks>This test ensures that when the compression type is requested
+	/// for a lossless FLAC file, only the relevant method is called and
+	/// methods for M4A, MKA, OGG, WMA, and WavPack formats are not invoked.
+	/// This helps confirm correct dispatching behavior in the media file
+	/// format implementation.</remarks>
 	[Test]
-	public void GetAudioType_LosslessFormat_DoesNotCallInterfaceMethods()
+	public void GetAudioTypeLosslessDoesNotCallInterfaceMethods()
 	{
-		mediaFileFormat.GetCompressionType(TestFiles["FLAC"]);
+		string filePath = TestFiles["FLAC"];
 
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeOgg(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWma(It.IsAny<string>()), Times.Never);
-		mockMediaFileFormat.Verify(m => m.GetCompressionTypeWavPack(It.IsAny<string>()), Times.Never);
+		mediaFileFormatMocked.GetCompressionType(filePath);
+
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeM4a(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeMka(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeOgg(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWma(It.IsAny<string>()), Times.Never);
+		mockMediaFileFormat.Verify(
+			m => m.GetCompressionTypeWavPack(It.IsAny<string>()), Times.Never);
 	}
 
 	/// <summary>
@@ -501,10 +827,8 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[TestCaseSource(nameof(FileTypes))]
 	public void TestFileCanBeRead(string format)
 	{
-		if (!TestFiles.ContainsKey(format))
-		{
-			Assert.Ignore($"Test file for {format} was not generated");
-		}
+		bool exists = TestFiles.ContainsKey(format);
+		Assert.That(exists, Is.True);
 
 		string filePath = TestFiles[format];
 
@@ -525,10 +849,8 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[TestCaseSource(nameof(FileTypes))]
 	public void TestFileHasCorrectExtension(string format)
 	{
-		if (!TestFiles.ContainsKey(format))
-		{
-			Assert.Ignore($"Test file for {format} was not generated");
-		}
+		bool exists = TestFiles.ContainsKey(format);
+		Assert.That(exists, Is.True);
 
 		string filePath = TestFiles[format];
 		string extension = Path.GetExtension(filePath);
@@ -566,10 +888,8 @@ internal sealed class AudioFileFormatTests : BaseTestsSupport
 	[TestCaseSource(nameof(FileTypes))]
 	public void TestGetAudioProperties(string format)
 	{
-		if (!TestFiles.ContainsKey(format))
-		{
-			Assert.Ignore($"Test file for {format} was not generated");
-		}
+		bool exists = TestFiles.ContainsKey(format);
+		Assert.That(exists, Is.True);
 
 		string filePath = TestFiles[format];
 

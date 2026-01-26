@@ -8,7 +8,6 @@ namespace DigitalZenWorks.MusicToolKit.Tests;
 
 using MediaFileToolkit;
 using NUnit.Framework;
-using System.Reflection.Metadata;
 
 /// <summary>
 /// Provides integration tests for verifying audio file format detection and
@@ -38,6 +37,8 @@ internal class MediaFileFormatIntegrationTests : BaseTestsSupport
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
 	{
+		CheckFfmpegExists();
+
 		// Initialize with real implementations
 		MediaFileFormatFfmpeg mediaFileFormatFfmpeg =
 			new MediaFileFormatFfmpeg();
