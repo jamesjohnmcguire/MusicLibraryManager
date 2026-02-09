@@ -4,6 +4,7 @@ Sprints
 	Start Using Chromaprints
 	Refactor iTunes Support as PlugIn
 Music Library Manager Tasks
+	Add MediaInfo Support
 	Support APE format
 	Deal with multiple streams
 	Refactor TestGetAudioProperties for mka test

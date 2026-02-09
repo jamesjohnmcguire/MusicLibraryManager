@@ -614,3 +614,272 @@ Best workflow:
 	Fingerprint & lookup against MusicBrainz (via Picard or beets)
 	Manually review edge cases
 	Enforce schema - only keep fields you want
+
+Music Manager
+	https://github.com/tinytag/tinytag/tree/master/tinytag/tests/samples
+
+	ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a aac -b:a 32k "C:\Users\JamesMc\AppData\Local\Temp\MusicManTests-fa467a2d831b4595a90554b78e147b6b\test.m4a"
+
+	m4a
+		lossy
+			ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a aac -b:a 32k test.m4a
+		alac
+			ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a alac test.m4a
+
+	caf
+		.caf (Core Audio Format) is Apple's proprietary audio file format developed for macOS and iOS.
+
+		Key Characteristics of .caf:
+			Advantages:
+				Massive file support - Can store files larger than 4GB (unlike WAV's 2GB limit)
+				Extremely flexible - Can contain virtually any audio codec (PCM, ALAC, AAC, MP3, etc.)
+				Streamable - Designed for efficient streaming
+				Extensive metadata - Can store rich metadata and edit information
+				Native macOS/iOS support - Core Audio framework handles it natively
+		Same container - Still using .m4a (or you could use .caf which is also common for ALAC)
+
+	modern media servers (Plex, Jellyfin, Navidrome)
+
+	Trend #2: Library Managers are Specialized
+		Roon: Requires embedded art, has excellent metadata
+		Plexamp (Plex's music player): Uses Plex server's art (embedded or external)
+		Logitech Media Server: Prefers embedded but supports external
+
+		ffmpeg -f lavfi -i "sine=frequency=440:duration=1" -codec:a alac test.caf
+
+	mp4 vs m4a
+		They're the Same Thing!
+		MP4 = M4A (technically). Both use the MPEG-4 Part 14 container format
+		mv audio.mp4 audio.m4a
+
+	The Album Art Situation
+		Extract to external image files, (but for now) keep in audio file
+
+	Beets
+		# Install
+			pip install beets
+
+			# Configure (~/.config/beets/config.yaml)
+			directory: ~/music/library
+			library: ~/.config/beets/library.db
+
+			# Import an album
+			beet import /path/to/album_folder
+
+			# Beets asks:
+			# [A]pply, [S]kip, [U]se as-is, [e]dit, [i]mport, [a]bort?
+		~/.config/beets/config.yaml
+			directory: ~/Music/Library
+			library: ~/.config/beets/library.db
+
+			paths:
+				default: %upper{$artist}/$album%aunique{}/$track $title
+				singleton: %upper{$artist}/Non-Album/$year - $title
+				comp: Compilations/$album/$track $title
+
+			import:
+				copy: yes  # Don't modify originals
+				write: yes  # Write metadata to files
+				autotag: yes
+				resume: ask
+
+			plugins:
+				- fetchart
+				- lyrics
+				- chroma
+				- replaygain
+				- lastgenre
+				- info
+
+			fetchart:
+				auto: yes
+				cover_filename: cover.jpg
+				sources: filesystem coverart itunes amazon albumart
+	MusicBrainz
+		using MetaBrainz.MusicBrainz;
+		using MetaBrainz.MusicBrainz.Interfaces.Entities;
+
+		public class MusicBrainzQuery
+		{
+			public static void SearchAlbum(string albumTitle)
+			{
+				var q = new Query("YourAppName/1.0 ( your-email@example.com )");
+				var releases = q.FindReleases($"album:{albumTitle}", 10);
+				foreach (var release in releases.Results)
+				{
+					Console.WriteLine($"Release: {release.Item.Title} by {release.Item.ArtistCredit.Name}");
+				}
+			}
+		}
+	Organize
+		public class FileOrganizer
+		{
+			public static void OrganizeFile(string sourceFile, string destinationPattern, TagLib.File tagFile)
+			{
+				// Replace placeholders in the pattern with tag values.
+				string destinationPath = destinationPattern
+					.Replace("%artist%", tagFile.Tag.Artists.FirstOrDefault() ?? "Unknown Artist")
+					.Replace("%album%", tagFile.Tag.Album ?? "Unknown Album")
+					.Replace("%track%", tagFile.Tag.Track.ToString("D2"))
+					.Replace("%title%", tagFile.Tag.Title ?? "Unknown Title");
+
+				// Ensure the directory exists.
+				var directory = Path.GetDirectoryName(destinationPath);
+				Directory.CreateDirectory(directory);
+
+				// Move the file.
+				File.Move(sourceFile, destinationPath);
+			}
+		}
+
+	Lessons
+		1. Never Move Files Without Explicit Permission
+			// BAD (iTunes style):
+			File.Move(source, destination); // No undo!
+
+			// GOOD:
+			public class SafeFileMover
+			{
+				public Operation PlanMove(FileInfo source, string pattern);
+				public void Execute(Operation plan, bool dryRun = true);
+				public void UndoLast();
+			}
+		2. Keep Original Files Intact
+			// Always work on copies first
+			var workingCopy = await CreateStagingCopyAsync(originalFile);
+			await ProcessAsync(workingCopy);
+			await VerifyResultsAsync(workingCopy, originalFile);
+			await CommitOrRollbackAsync(workingCopy, originalFile);
+
+		public class MusicLibraryContext : DbContext
+		{
+			public DbSet<Track> Tracks { get; set; }
+			public DbSet<Album> Albums { get; set; }
+			public DbSet<Artist> Artists { get; set; }
+			public DbSet<OperationLog> OperationLogs { get; set; } // Critical for undo!
+		}
+
+		public class Track
+		{
+			public Guid Id { get; set; }
+			public string OriginalPath { get; set; }
+			public string CurrentPath { get; set; }
+			public string Fingerprint { get; set; } // AcoustID/Chromaprint
+			public DateTime LastProcessed { get; set; }
+			public Dictionary<string, string> Metadata { get; set; }
+		}
+
+		// Use MusicBrainz.Xml (unofficial .NET client)
+		public async Task<List<Release>> SearchAlbumAsync(string artist, string album)
+		{
+			var query = new Query();
+			var releases = await query.FindReleasesAsync(
+				$"artist:{artist} AND release:{album}",
+				10, // limit
+				Include.ReleaseRelationships | Include.Recordings
+			);
+			return releases.Items;
+		}
+
+		Safe File Operations:
+			public class SafeFileOperation
+			{
+				private readonly List<Operation> _operations = new();
+
+				public async Task<OperationResult> OrganizeFileAsync(
+					string sourcePath,
+					string template,
+					bool previewOnly = true)
+				{
+					var source = new FileInfo(sourcePath);
+					var tags = await ReadTagsAsync(sourcePath);
+
+					var destination = GeneratePath(template, tags);
+					var op = new FileOperation
+					{
+						Source = source.FullName,
+						Destination = destination,
+						BackupPath = await CreateBackupAsync(source)
+					};
+
+					_operations.Add(op);
+
+					if (!previewOnly)
+					{
+						await ExecuteOperationAsync(op);
+					}
+
+					return new OperationResult(op, previewOnly);
+				}
+
+				public async Task UndoLastAsync()
+				{
+					var lastOp = _operations.LastOrDefault();
+					if (lastOp != null)
+					{
+						await RestoreFromBackupAsync(lastOp);
+					}
+				}
+			}
+		2. Template Engine for Paths:
+			public class PathTemplateEngine
+			{
+				// Like beets: $artist/$album/$track $title
+				public string GeneratePath(string template, AudioMetadata metadata)
+				{
+					return template
+						.Replace("$artist", SafeFileName(metadata.Artist))
+						.Replace("$album", SafeFileName(metadata.Album))
+						.Replace("$track", metadata.TrackNumber.ToString("D2"))
+						.Replace("$title", SafeFileName(metadata.Title));
+				}
+
+				private string SafeFileName(string input)
+				{
+					// Remove invalid chars, trim, etc.
+					return Path.GetInvalidFileNameChars()
+						.Aggregate(input, (current, c) => current.Replace(c, '_'));
+				}
+			}
+		3. Duplicate Detection:
+			public class DuplicateDetector
+			{
+				public async Task<List<DuplicateSet>> FindDuplicatesAsync(
+					string directory,
+					DetectionMethod method)
+				{
+					var files = Directory.GetFiles(directory, "*.mp3", SearchOption.AllDirectories);
+
+					return method switch
+					{
+						DetectionMethod.Checksum => await FindByChecksumAsync(files),
+						DetectionMethod.Fingerprint => await FindByFingerprintAsync(files),
+						DetectionMethod.Metadata => await FindByMetadataAsync(files),
+						_ => throw new ArgumentOutOfRangeException()
+					};
+				}
+			}
+		1. User Experience Matters Most:
+			public async Task PreviewReorganizationAsync(string sourceDir)
+		[Test]
+		public void Should_Not_Lose_Data_When_Reorganizing()
+	Native Tests
+		Could not locate debug symbols for ChromaPrint\src\cmd\Debug\fpcalc.exe'. To make use of '--list_content' discovery, ensure that debug symbols are available or make use of '<ForceListContent>' via a .runsettings file.
+		Could not locate debug symbols for Bin\Debug\x64\ChromaPrintTests.exe
+		ERROR: Could not list test cases for executable ChromaPrint\tests\Debug\all_tests.exe: process execution failed with exit code -1073741515
+		Command executed: 'ChromaPrint\tests\Debug\all_tests.exe --gtest_list_tests'
+	WMA Support
+		# WMA Lossless (what you asked for)
+		ffmpeg -i input.wav -c:a wmalossless output.wma
+
+		# WMA Pro (lossy, has bitrate control)
+		ffmpeg -i input.wav -c:a wmapro -b:a 192k output.wma
+
+	Add Support for WMA Lossless and WMA Pro
+Music Manager
+	https://www.monkeysaudio.com/help.html
+
+	MediaFileFormatNaudio Needs to be filled out or throw exceptions?
+	Include MediaInfo as Provider
+
+	https://github.com/tinytag/tinytag/tree/master/tinytag/tests/samples
