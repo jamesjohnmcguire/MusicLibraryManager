@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AnalysisMode>All</AnalysisMode>
 		<Company>Digital Zen Works</Company>
-		<Copyright>Copyright (c) 2019 - 2026 by Digital Zen Works</Copyright>
+		<Copyright>Copyright © 2019 - 2026 Digital Zen Works</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	</PropertyGroup>
 
