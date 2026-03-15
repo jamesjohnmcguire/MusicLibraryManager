@@ -883,3 +883,9 @@ Music Manager
 	Include MediaInfo as Provider
 
 	https://github.com/tinytag/tinytag/tree/master/tinytag/tests/samples
+Sample Audios
+	sakura.mp4
+
+	Sample.ape
+	Sample.flac
+	Sample.mka
