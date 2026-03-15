@@ -12,13 +12,6 @@
 		"indentation":
 		{
 			"useTabs": true
-		},
-		"namingRules":
-		{
-			"allowedHungarianPrefixes":
-			[
-				"my"
-			]
 		}
 	}
 }

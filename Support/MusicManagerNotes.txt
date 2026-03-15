@@ -876,3 +876,16 @@ Music Manager
 		ffmpeg -i input.wav -c:a wmapro -b:a 192k output.wma
 
 	Add Support for WMA Lossless and WMA Pro
+Music Manager
+	https://www.monkeysaudio.com/help.html
+
+	MediaFileFormatNaudio Needs to be filled out or throw exceptions?
+	Include MediaInfo as Provider
+
+	https://github.com/tinytag/tinytag/tree/master/tinytag/tests/samples
+Sample Audios
+	sakura.mp4
+
+	Sample.ape
+	Sample.flac
+	Sample.mka
