@@ -15,6 +15,13 @@ IF "%~2"=="" (
 	set outputFile=%~2
 )
 
+:: ffmpeg          - The Program
+:: -i "%source%"        - Specifies the Input file
+:: -c:a alac       - Convert to ALAC Format
+:: -c:v copy       - Copy Video and Images Streams, as well
+:: -map_metadata 0 - Copy Metadata and Tags, as well
+:: -map
+::"%outputFile%"
 ffmpeg -i "%source%" -c:a alac -c:v copy -map_metadata 0 -map 0 "%outputFile%"
 
 IF %ERRORLEVEL% EQU 0 (
