@@ -1,128 +1,126 @@
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
 
-:: The script assumes ffmpeg is in your system PATH
-:: It uses 16-bit, 44100Hz, stereo as the PCM parameters
+:: The script uses 16-bit, 44100Hz, stereo as the PCM parameters
 
-if "%~1"=="-help" GOTO help
-if "%~1"=="--help" GOTO help
+if "%~1"=="-help" GOTO :help
+if "%~1"=="--help" GOTO :help
 
 ffmpeg -version >nul 2>&1
 IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
-IF ERRORLEVEL 1 GOTO error
+IF ERRORLEVEL 1 GOTO :error
 
-if "%~1"=="" SET Message="Missing File Name Arguments"
-if "%~1"=="" GOTO error
-if "%~2"=="" SET Message="Missing File Name Arguments"
-if "%~2"=="" GOTO error
+IF "%~1"=="" SET "Message=Usage: %~nx0 ^<command^> ^<Input File 1^> ^<Input File 2^>"
+IF "%~1"=="" GOTO :error
+IF "%~2"=="" SET "Message=Usage: %~nx0 ^<command^> ^<Input File 1^> ^<Input File 2^>"
+IF "%~2"=="" GOTO :error
+IF "%~3"=="" SET "Message=Usage: %~nx0 ^<command^> ^<Input File 1^> ^<Input File 2^>"
+IF "%~3"=="" GOTO :error
+
+SET "File1=%~nx2"
+SET "File2=%~nx3"
+SET "File1Base=%~n2"
+SET "File2Base=%~n3"
 
 SET Normalize=false
-if "%~1"=="--normalize" SET Normalize=true
-if "%~1"=="--normalize" GOTO check3
+if "%~2"=="--normalize" SET Normalize=true
+if "%~2"=="--normalize" GOTO :check3
 GOTO continue
 
 :check3
-if "%~3"=="" SET Message=Usage: %~nx0 --normalize <<media file1>> <<media file2>>
-if "%~3"=="" GOTO error
+if "%~4"=="" SET Message=Usage: %~nx0 --normalize <<media file1>> <<media file2>>
+if "%~4"=="" GOTO :error
+SET "File1=%~nx3"
+SET "File2=%~nx4"
+SET "File1Base=%~n3"
+SET "File2Base=%~n4"
+PAUSE
 
 :continue
-SET TemporaryDirectory=%TEMP%\AudioCompare%RANDOM%"
+SET "TemporaryDirectory=%TEMP%\AudioCompare%RANDOM%"
 MD %TemporaryDirectory%
 
 :: Store the file names without extension for working files
-SET "File1Base=%~n1"
-SET "File2Base=%~n2"
-SET File1="%TemporaryDirectory%\%File1Base%.Metadata.txt"
-SET File2="%TemporaryDirectory%\%File2Base%.Metadata.txt"
-SET DiffFile="%TemporaryDirectory%\metadata_diff.txt"
+SET File1Meta="%TemporaryDirectory%\%File1Base%.Metadata.txt"
+SET File2Meta="%TemporaryDirectory%\%File2Base%.Metadata.txt"
+SET DiffFile="%TemporaryDirectory%\MetadataDiff.txt"
 
 ECHO Comparing files:
-ECHO 1: %~1
-ECHO 2: %~2
+ECHO 1: %File1%
+ECHO 2: %File2%
 ECHO.
 
-SET CheckFile=%~1
+SET CheckFile=%File1%
 CALL :audio-info
 
-SET CheckFile=%~2
+SET CheckFile=%File2%
 CALL :audio-info
 
 ECHO Extracting metadata...
-:: ECHO Full metadata for %~1: > "%temp_dir%\%file1_base%_full_metadata.txt"
-ECHO Full metadata for %~1: > "%File1%"
+ECHO Full metadata for %File1%: > "%File1Meta%"
+ECHO Full metadata for %File2%: > "%File2Meta%"
+:: ffmpeg -f ffmetadata %File2Meta% -i "%File2%" 2>nul
+:: ffmpeg -f ffmetadata %File1Meta% -i "%File1%" 2>nul
 
-ffmpeg -i "%~1" -f ffmetadata %TemporaryDirectory%\%FileBase1%MetaData.txt 2>nul
-ffmpeg -i "%~2" -f ffmetadata %TemporaryDirectory%\%FileBase2%MetaData.txt 2>nul
+ECHO Additional technical details: >> "%File1Meta%"
+ECHO Additional technical details: >> "%File2Meta%"
 
-:: ECHO Additional technical details: >> "%temp_dir%\%file1_base%_full_metadata.txt"
-ECHO Additional technical details: >> "%File1%"
-
-:: ffprobe -show_format -show_streams "%~1" 2>> "%temp_dir%\%file1_base%_full_metadata.txt"
-ffprobe -show_format -show_streams "%~1" 2>> "%File1%"
-
-
-:: ECHO Full metadata for %~2: > "%temp_dir%\%file2_base%_full_metadata.txt"
-ECHO Full metadata for %~2: > "%File2%"
-
-:: ffmpeg -i "%~2" 2>> "%temp_dir%\%file2_base%_full_metadata.txt"
-ffmpeg -i "%~2" 2>> "%File2%"
-
-ECHO Additional technical details: >> "%temp_dir%\%file2_base%_full_metadata.txt"
-ECHO Additional technical details: >> "%File2%"
-
-:: ffprobe -show_format -show_streams "%~2" 2>> "%temp_dir%\%file2_base%_full_metadata.txt"
-ffprobe -show_format -show_streams "%~2" 2>> "%File2%"
-
-:: Note: Leaving temp files for inspection
-:: To clean up, uncomment the following line:
-:: rmdir /s /q "%TempDirectory%"
+ffprobe -show_format -show_streams "%File1%" 2>> "%File1Meta%"
+ffprobe -show_format -show_streams "%File2%" 2>> "%File2Meta%"
 
 ECHO Comparing metadata...
-fc "%TemporaryDirectory%\%FileBase1%MetaData.txt" "%TemporaryDirectory%\%FileBase2%MetaData.txt" > %TemporaryDirectory%\MetaDataDiff.txt
+fc %File1Meta% %File2Meta% > %TemporaryDirectory%\MetaDataDiff.txt
 IF %ERRORLEVEL% NEQ 0 ECHO Metadata differences found - see "%TemporaryDirectory%\metadata_diff.txt"
 IF %ERRORLEVEL% EQU 0 ECHO No metadata differences found
 
-fc "%File1%" "%File2%" > "%DiffFile%"
+fc "%File1Meta%" "%File2Meta%" > "%DiffFile%"
 if errorlevel 1 SET Message=Metadata differences found - see "%DiffFile%"
 if errorlevel 0 SET Message=No metadata differences found
+
 ECHO.
 ECHO Converting to raw PCM format...
-ffmpeg -i "%~1" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%file1_base%.raw" 2>nul
-ffmpeg -i "%~2" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%file2_base%.raw" 2>nul
+SET Normalize=false
+IF "%Normalize%"=="true" ECHO Normalize=true
+IF "%Normalize%"=="false" ECHO Normalize=false
+
+IF "%Normalize%"=="false" CALL ffmpeg -i "%File1%" "%TemporaryDirectory%\%File1Base%.wav" 2>nul
+IF "%Normalize%"=="false" CALL ffmpeg -i "%File2%" "%TemporaryDirectory%\%File2Base%.wav" 2>nul
+IF "%Normalize%"=="true" ffmpeg -i "%File1%" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%File1Base%.wav" 2>nul
+IF "%Normalize%"=="true" ffmpeg -i "%File2%" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%File2Base%.raw" 2>nul
 
 ECHO Comparing raw audio data...
-fc /b "%TemporaryDirectory%\%file1_base%.raw" "%TemporaryDirectory%\%file2_base%.raw" > "%TemporaryDirectory%\audio_diff.txt"
+fc /b "%TemporaryDirectory%\%File1Base%.wav" "%TemporaryDirectory%\%File2Base%.wav" > "%TemporaryDirectory%\audioDiff.txt"
 
-IF %ERRORLEVEL% NEQ 0 ECHO Audio content differences found - see "%TemporaryDirectory%\audio_diff.txt"
+IF %ERRORLEVEL% NEQ 0 ECHO Audio content differences found - see "%TemporaryDirectory%\audioDiff.txt"
 IF %ERRORLEVEL% EQU 0 ECHO No audio content differences found
 
-ECHO %Message%
 ECHO.
-GOTO finish
+ECHO Process Complete
+GOTO :finish
 
 :audio-info
-	SET "TempFile=%temp%\audio_info_%random%.txt"
+	SET "TempFile=%temp%\AudioInfo%random%.txt"
 
-	ffprobe -v quiet -select_streams a:0 -show_entries stream=sample_rate,channels,bits_per_sample,codec_name,bit_rate -of csv=p=0 "%file%" 2>nul > "%TempFile%"
+	ffprobe -v quiet -select_streams a:0 -show_entries stream=sample_rate,channels,bits_per_sample,codec_name,bit_rate -of csv=p=0 "%CheckFile%" 2>nul > "%TempFile%"
 
-	if not exist "%TempFile%" (
-		echo Error: Could not get audio information
-		exit /b 1
+	IF NOT EXIST "%TempFile%" (
+		ECHO Error: Could not get audio information
+		EXIT /B 1
 	)
 
-	for /f "usebackq tokens=1-5 delims=," %%a in ("%TempFile%") do (
-		echo   Codec: %%d
-		echo   Sample Rate: %%a Hz
-		echo   Channels: %%b
-		echo   Bits per Sample: %%c
-		echo   Bit Rate: %%e bps
+	FOR /F "USEBACKQ TOKENS=1-5 DELIMS=," %%a IN ("%TempFile%") DO (
+		ECHO   Codec: %%d
+		ECHO   Sample Rate: %%a Hz
+		ECHO   Channels: %%b
+		ECHO   Bits per Sample: %%c
+		ECHO   Bit Rate: %%e bps
 	)
 
 	DEL "%TempFile%" 2>nul
     GOTO :EOF
 
 :help
-	ECHO Audio PCM Comparison Script
+	ECHO Audio Comparison Script
 	ECHO.
 	ECHO Usage: %~nx0 [command] [--normalize] file1 file2
 	ECHO.
@@ -138,13 +136,14 @@ GOTO finish
 	ECHO Without --normalize, compares files in their native formats
 	ECHO and shows technical differences.
 
-	GOTO finish
+	GOTO :finish
 
 :error
 	ECHO %Message%
 	ECHO.
 	ECHO Try: %~nx0 --help for more information.
-	EXIT /b 1
+	EXIT /B 1
 
 :finish
+RD /S /Q "%TemporaryDirectory%"
 ENDLOCAL
