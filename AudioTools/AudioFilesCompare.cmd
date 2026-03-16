@@ -1,35 +1,35 @@
-@ECHO off
+@ECHO OFF
 SETLOCAL EnableDelayedExpansion
 
 :: The script assumes ffmpeg is in your system PATH
 :: It uses 16-bit, 44100Hz, stereo as the PCM parameters
 
+if "%~1"=="-help" GOTO help
+if "%~1"=="--help" GOTO help
+if "%~1"=="" SET Message="Missing File Name Arguments"
 if "%~1"=="" GOTO error
-if "%~1"=="--help" GOTO error
+if "%~2"=="" SET Message="Missing File Name Arguments"
+if "%~2"=="" GOTO error
 
 SET Normalize=false
 if "%~1"=="--normalize" SET Normalize=true
-
-if "%~2"=="" SET Message=Usage: %~nx0 <<media file1>> <<media file2>>
-if "%~2"=="" GOTO error
-
 if "%~1"=="--normalize" GOTO check3
 GOTO continue
-:check3
 
+:check3
 if "%~3"=="" SET Message=Usage: %~nx0 --normalize <<media file1>> <<media file2>>
 if "%~3"=="" GOTO error
 
 :continue
-SET "TempDirectory=%TEMP%\AudioCompare%RANDOM%"
-MKDIR "%TempDirectory%"
+SET TemporaryDirectory=%TEMP%\AudioCompare%RANDOM%"
+MD %TemporaryDirectory%
 
 :: Store the file names without extension for working files
 SET "File1Base=%~n1"
 SET "File2Base=%~n2"
-SET File1="%TempDirectory%\%File1Base%.Metadata.txt"
-SET File2="%TempDirectory%\%File2Base%.Metadata.txt"
-SET DiffFile="%TempDirectory%\metadata_diff.txt"
+SET File1="%TemporaryDirectory%\%File1Base%.Metadata.txt"
+SET File2="%TemporaryDirectory%\%File2Base%.Metadata.txt"
+SET DiffFile="%TemporaryDirectory%\metadata_diff.txt"
 
 ECHO Comparing files:
 ECHO 1: %~1
@@ -42,15 +42,12 @@ CALL :audio-info
 SET CheckFile=%~2
 CALL :audio-info
 
-ECHO Extracting detailed metadata...
+ECHO Extracting metadata...
 :: ECHO Full metadata for %~1: > "%temp_dir%\%file1_base%_full_metadata.txt"
 ECHO Full metadata for %~1: > "%File1%"
 
-:: ffmpeg -i "%~1" -f ffmetadata "%temp_dir%\%file1_base%_metadata.txt" 2>nul
-ffmpeg -i "%~1" 2>> "%File1%"
-
-
-ffmpeg -i "%~1" 2>> "%temp_dir%\%file1_base%_full_metadata.txt"
+ffmpeg -i "%~1" -f ffmetadata %TemporaryDirectory%\%FileBase1%MetaData.txt 2>nul
+ffmpeg -i "%~2" -f ffmetadata %TemporaryDirectory%\%FileBase2%MetaData.txt 2>nul
 
 :: ECHO Additional technical details: >> "%temp_dir%\%file1_base%_full_metadata.txt"
 ECHO Additional technical details: >> "%File1%"
@@ -76,9 +73,23 @@ ffprobe -show_format -show_streams "%~2" 2>> "%File2%"
 :: rmdir /s /q "%TempDirectory%"
 
 ECHO Comparing metadata...
+fc "%TemporaryDirectory%\%FileBase1%MetaData.txt" "%TemporaryDirectory%\%FileBase2%MetaData.txt" > %TemporaryDirectory%\MetaDataDiff.txt
+IF %ERRORLEVEL% NEQ 0 ECHO Metadata differences found - see "%TemporaryDirectory%\metadata_diff.txt"
+IF %ERRORLEVEL% EQU 0 ECHO No metadata differences found
+
 fc "%File1%" "%File2%" > "%DiffFile%"
 if errorlevel 1 SET Message=Metadata differences found - see "%DiffFile%"
 if errorlevel 0 SET Message=No metadata differences found
+ECHO.
+ECHO Converting to raw PCM format...
+ffmpeg -i "%~1" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%file1_base%.raw" 2>nul
+ffmpeg -i "%~2" -f s16le -acodec pcm_s16le -ar 44100 -ac 2 "%TemporaryDirectory%\%file2_base%.raw" 2>nul
+
+ECHO Comparing raw audio data...
+fc /b "%TemporaryDirectory%\%file1_base%.raw" "%TemporaryDirectory%\%file2_base%.raw" > "%TemporaryDirectory%\audio_diff.txt"
+
+IF %ERRORLEVEL% NEQ 0 ECHO Audio content differences found - see "%TemporaryDirectory%\audio_diff.txt"
+IF %ERRORLEVEL% EQU 0 ECHO No audio content differences found
 
 ECHO %Message%
 ECHO.
@@ -124,11 +135,11 @@ GOTO finish
 
 	GOTO finish
 
-;error
+:error
 	ECHO %Message%
 	ECHO.
 	ECHO Try: %~nx0 --help for more information.
 	EXIT /b 1
 
-;finish
+:finish
 ENDLOCAL
