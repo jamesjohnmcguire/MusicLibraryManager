@@ -1,5 +1,10 @@
 @ECHO off
-SETLOCAL
+SETLOCAL enabledelayedexpansion
+
+REM Check if FFmpeg is installed
+ffmpeg -version >nul 2>&1
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
 
 SET FileName=%~n1
 
@@ -25,4 +30,11 @@ REM # For best quality/size balance:
 REM ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
 
 ECHO Conversion complete: %FileName%.m4a
+GOTO finish
+
+:error
+ECHO %Message%
+EXIT /b 1
+
+:finish
 ENDLOCAL
