@@ -1,6 +1,10 @@
 @ECHO OFF
 SETLOCAL
 
+ffmpeg -version >nul 2>&1
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
+
 :: Check if file is provided
 IF "%~1"=="" SET Message=Usage: %~nx0 <<input file>>.wma
 IF "%~1"=="" GOTO error

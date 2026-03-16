@@ -6,6 +6,11 @@ SETLOCAL EnableDelayedExpansion
 
 if "%~1"=="-help" GOTO help
 if "%~1"=="--help" GOTO help
+
+ffmpeg -version >nul 2>&1
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
+
 if "%~1"=="" SET Message="Missing File Name Arguments"
 if "%~1"=="" GOTO error
 if "%~2"=="" SET Message="Missing File Name Arguments"

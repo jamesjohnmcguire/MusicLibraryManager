@@ -1,5 +1,9 @@
-@ECHO off
-SETLOCAL EnableDelayedExpansion
+@ECHO OFF
+SETLOCAL
+
+ffmpeg -version >nul 2>&1
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
 
 :: Check if file is provided
 if "%~1"=="" SET Message=Usage: %~nx0 input.m4a
@@ -13,11 +17,11 @@ del codec.tmp
 REM Check if it's ALAC
 if /i "%CODEC%" == "alac" (
     echo Input file is already lossless (ALAC)
-    
+
     REM Convert to FLAC
     echo Converting to FLAC...
     ffmpeg -i "%~1" -c:a flac -compression_level 8 "%~n1.flac"
-    
+
     echo Done! Created: %~n1.flac
 ) else (
     echo Warning: Input file is not ALAC. Codec detected: %CODEC%
@@ -26,9 +30,9 @@ if /i "%CODEC%" == "alac" (
 
 GOTO finish
 
-;error
+:error
 ECHO %Message%
 EXIT /b 1
 
-;finish
+:finish
 ENDLOCAL

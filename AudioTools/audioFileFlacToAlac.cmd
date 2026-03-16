@@ -1,8 +1,12 @@
 @ECHO OFF
+SETLOCAL
+
 :: Converts a FLAC file to ALAC using FFmpeg
 :: Usage: convert_flac_to_alac.bat input.flac output.m4a
 
-SETLOCAL
+ffmpeg -version >nul 2>&1
+IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
+IF ERRORLEVEL 1 GOTO error
 
 IF "%~1"=="" SET error="Please provide the input FLAC file."
 IF "%~1"=="" GOTO error

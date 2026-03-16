@@ -1,7 +1,6 @@
-@ECHO off
-SETLOCAL enabledelayedexpansion
+@ECHO OFF
+SETLOCAL EnableDelayedExpansion
 
-REM Check if FFmpeg is installed
 ffmpeg -version >nul 2>&1
 IF ERRORLEVEL 1 SET Message=FFmpeg is not installed. Please install FFmpeg
 IF ERRORLEVEL 1 GOTO error
