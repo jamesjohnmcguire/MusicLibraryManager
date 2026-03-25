@@ -868,14 +868,6 @@ Music Manager
 		Could not locate debug symbols for Bin\Debug\x64\ChromaPrintTests.exe
 		ERROR: Could not list test cases for executable ChromaPrint\tests\Debug\all_tests.exe: process execution failed with exit code -1073741515
 		Command executed: 'ChromaPrint\tests\Debug\all_tests.exe --gtest_list_tests'
-	WMA Support
-		# WMA Lossless (what you asked for)
-		ffmpeg -i input.wav -c:a wmalossless output.wma
-
-		# WMA Pro (lossy, has bitrate control)
-		ffmpeg -i input.wav -c:a wmapro -b:a 192k output.wma
-
-	Add Support for WMA Lossless and WMA Pro
 Music Manager
 	https://www.monkeysaudio.com/help.html
 
