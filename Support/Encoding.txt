@@ -1,0 +1,95 @@
+CBR (Constant Bit Rate) vs VBR (Variable Bit Rate)
+	Opinion 1
+		It depends on the use case, but for your specific situation — probably not worth switching.
+		The case for VBR:
+			More efficient — quiet passages use fewer bits, complex passages use more
+			Can achieve better quality at the same average bitrate as CBR
+			Generally preferred for new encodes from lossless sources (FLAC, WAV)
+		The case for sticking with CBR/matched bitrate:
+			You're transcoding lossy → lossy (WMA → AAC). The source already has artifacts baked in — VBR's efficiency gains are largely wasted trying to encode already-degraded audio
+			Matching the source bitrate with -b:a is the more honest approach — you're not inventing quality that isn't there
+			Predictable file sizes
+			Broader device/player compatibility (some older hardware is picky about VBR AAC)
+		The nuance:
+			If your WMA files are at a high bitrate (256k+), you could argue that transcoding to VBR AAC at -q:a 1 might produce a slightly cleaner output. But the difference is academic — you've already lost quality in the original WMA encode, and AAC is generally more efficient than WMA anyway, so even CBR AAC at the same bitrate tends to sound at least as good.
+		Bottom line: Your current script — extracting the source bitrate and matching it — is a sensible, pragmatic approach for a batch conversion tool. Switching to VBR adds complexity without meaningful benefit in a lossy-to-lossy workflow.
+	Opinion 2
+		CBR
+			Uses the same bitrate throughout the file (e.g., constant 192 kbps)
+		VBR
+			What is 'quality-based VBR encoding'?
+				Quality-based VBR (Variable Bit Rate) encoding is an advanced audio encoding method that adjusts the bitrate dynamically based on the complexity of the audio signal.
+			Varies the bitrate based on what the audio needs
+			How Quality-based VBR works:
+				Simple passage (e.g., silence)     → Lower bitrate (e.g., 32 kbps)
+				Complex passage (e.g., orchestra)  → Higher bitrate (e.g., 320 kbps)
+			Benefits of Quality-based VBR:
+				Better Quality-to-Size Ratio:
+					Uses more bits when needed
+					Saves space on simple passages
+					Overall more efficient
+					Quality Consistency:
+						Maintains consistent perceived quality
+						Rather than consistent bitrate
+						Better for variable content
+						File Size Benefits
+	Use CBR when:
+		- Streaming is primary use
+		- Device compatibility is uncertain
+		- Exact file size is important
+	Use VBR when:
+		- Quality is priority
+		- Storage space is limited
+		- Content has varying complexity
+	FFmpeg's Quality Scale for AAC:
+		-q:a VALUE    Where VALUE ranges from:
+			0.1 = Highest quality (larger file)
+			1   = Very good quality
+			2   = Good quality (recommended)
+			4   = Medium quality
+			6   = Low quality (smaller file)
+
+	Native FFmpeg AAC encoder (default):
+	When you specify -c:a aac without explicitly choosing an encoder
+	-q:a 2 will engage VBR mode
+	Quality range is 0.1 (highest) to 6 (lowest)
+	Will produce true VBR output
+	To verify VBR encoding is working:
+
+	# Before conversion, add -t 30 to test with just first 30 seconds
+	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart -t 30 "test_output.m4a"
+
+	# Then check the output file's properties
+	ffprobe -i "test_output.m4a" -show_format | grep bit_rate
+
+
+	How can I check AAC encoder available?  Are there preferences?
+	Let me help you check available AAC encoders and explain their differences.
+AAC Encoders
+	To check which AAC encoders are available in your FFmpeg installation:
+		ffmpeg -encoders | grep aac
+			A....D aac_mf               AAC via MediaFoundation (codec aac)
+	AAC Encoder Preferences (from best to basic):
+		libfdk_aac (Fraunhofer FDK AAC):
+			Highest quality
+			Best VBR implementation
+			Not included in standard FFmpeg due to licensing
+			# If available, use like this:
+			ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
+			VBR quality scale: 1 (highest) to 5 (lowest)
+
+			# For libfdk_aac (if available):
+			# High Quality VBR
+			ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 -map_metadata 0 -movflags +faststart output.m4a
+
+		aac (Native FFmpeg AAC):
+			Included by default
+			Quality has improved significantly
+			Decent VBR implementation
+
+			ffmpeg -i input.wma -c:a aac -q:a 2 output.m4a
+			VBR quality scale: 0.1 (highest) to 6 (lowest)
+
+		# For native FFmpeg AAC:
+		# High Quality VBR
+		ffmpeg -i input.wma -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart output.m4a

@@ -32,18 +32,12 @@ Convert Flac
 			if not,
 				convert to newer lossy format, m4a
 
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -minrate 128k -maxrate 320k "output.m4a"
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	ffmpeg -i "Black Is Black.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "NewTest.m4a"
-
 	choco install ffmpeg --params "/FfmpegPath:full"
 
 	Encoders check
 		ffmpeg -encoders | grep aac
 		libfdk_aac !!!
 ################
-
 	# Convert with specific sample rate and bit depth
 	ffmpeg -i input.m4a -acodec pcm_s16le -ar 44100 output.wav
 
@@ -60,7 +54,6 @@ Convert Flac
 
 	To see this metadata in detail, you can use various tools:
 
-	bash
 	# Using FFmpeg
 	ffmpeg -i file.m4a -f ffmetadata metadata.txt
 
@@ -72,14 +65,6 @@ Convert Flac
 
 	# Using ExifTool (very comprehensive)
 	exiftool file.m4a
-
-
-	lossy
-	# Convert to AAC (M4A)
-	ffmpeg -i "Black Is Black.wma" -c:a aac -b:a 192k "Black Is Black.m4a"
-
-	# Or to MP3 (if wider compatibility needed)
-	ffmpeg -i "Black Is Black.wma" -c:a libmp3lame -b:a 192k "Black Is Black.mp3"
 ##########################
 	Audio Conversion
 		Download SoX from: http://sox.sourceforge.net/
@@ -199,56 +184,32 @@ Convert Flac
 			# Using ExifTool (very comprehensive)
 			exiftool file.m4a
 #################
-
 	How to identify if your file is lossless:
+		Using FFmpeg:
+			# For M4A files
+			ffmpeg -i yourfile.m4a 2>&1 | findstr "Audio"
+			# Look for "alac" in the output for lossless
 
-	Using FFmpeg:
-
-	bash
-	# For M4A files
-	ffmpeg -i yourfile.m4a 2>&1 | findstr "Audio"
-	# Look for "alac" in the output for lossless
-
-	# For WMA files
+WMA Formats / Codecs
 	ffmpeg -i yourfile.wma 2>&1 | findstr "Audio"
 	# Look for "wmapro" or "wmalossless" in the output
-	Using MediaInfo:
 
-	bash
-	mediainfo yourfile.m4a
-	# or
-	mediainfo yourfile.wma
+	Using MediaInfo:
+		mediainfo yourfile.m4a
+		# or
+		mediainfo yourfile.wma
 
 
 	Sample FFmpeg commands to create lossless versions:
 
-	bash
 	# Convert to M4A ALAC (lossless)
 	ffmpeg -i input.wav -c:a alac output.m4a
 
-	# Convert to WMA Lossless
-	ffmpeg -i input.wav -c:a wmav2 -compression_level 100 output.wma
-
-
 	To verify if your specific files are lossless:
-
-	Check the bitrate - lossless will typically be > 500kbps for stereo
-	Check the codec information
-	Compare file sizes - lossless files will be much larger than lossy versions
+		Check the bitrate - lossless will typically be > 500kbps for stereo
+		Check the codec information
+		Compare file sizes - lossless files will be much larger than lossy versions
 ####################
-
-
-	For lossy format (maintaining similar quality):
-	bash
-	# Convert to AAC (M4A)
-	ffmpeg -i "Black Is Black.wma" -c:a aac -b:a 192k "Black Is Black.m4a"
-
-	# Or to MP3 (if wider compatibility needed)
-	ffmpeg -i "Black Is Black.wma" -c:a libmp3lame -b:a 192k "Black Is Black.mp3"
-
-	# Basic usage (convert to M4A)
-	dotnet run -- --input "C:\Path\To\Music"
-
 	# Convert to FLAC with high quality
 	dotnet run -- --input "C:\Path\To\Music" --format flac --quality high
 
@@ -256,190 +217,32 @@ Convert Flac
 	dotnet run -- --input "C:\Path\To\Music" --format mp3 --recursive
 
 
-	I've converted a wma file to m4a.  Are there any reasons to keep the wma version?
-	Generally, there are very few reasons to keep the WMA version after converting to M4A, especially in 2025.
-
-	Could I use ffmpeg to convert the lossy wma file to m4a?
-	Yes, you can use FFmpeg to convert your lossy WMA file to M4A. Since your source WMA file uses the wmav2 codec at 192 kb/s, here's the optimal FFmpeg command:
-
-	bash
-	# Basic conversion with same quality
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k "output.m4a"
-
-	# With metadata preservation and additional options
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	Let's break down the recommended command parameters:
-		ffmpeg -i "input.wma"          # Input file
-		-c:a aac                       # Use AAC codec (best for M4A)
-		-b:a 192k                      # Match original bitrate
-		-map_metadata 0               # Copy all metadata
-		-movflags +faststart          # Optimize for streaming
-		"output.m4a"                  # Output file
-
-
-	Additional options you might want to consider:
-
-	bash
-	# Higher quality version (if desired)
-	ffmpeg -i "input.wma" -c:a aac -b:a 256k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# With specific AAC encoder (if available)
-	ffmpeg -i "input.wma" -c:a libfdk_aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# With quality-based VBR encoding
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	Remember:
-
-	Since the source is lossy (WMA at 192 kb/s), there's no quality benefit in using higher bitrates
+break down the recommended command parameters:
+	ffmpeg -i "inputFile"          # Input file
+	-c:a aac                       # Use AAC codec (best for M4A)
+	-b:a 192k                      # Match original bitrate
+	-map_metadata 0               # Copy all metadata
+	-movflags +faststart          # Optimize for streaming
+	"output.m4a"                  # Output file
+Reminders
+	Since the source is lossy, there's no quality benefit in using higher bitrates then what the source is at
 	AAC in M4A container is the most compatible modern format
 	The -map_metadata 0 flag ensures all tags are preserved
-
-
-	What is 'quality-based VBR encoding'?
-	Quality-based VBR (Variable Bit Rate) encoding is an advanced audio encoding method that adjusts the bitrate dynamically based on the complexity of the audio signal. Let me break this down:
-
-	VBR vs CBR (Constant Bit Rate):
-
-	CBR: Uses the same bitrate throughout the file (e.g., constant 192 kbps)
-	VBR: Varies the bitrate based on what the audio needs
-	How Quality-based VBR works:
-
-	Code
-	Simple passage (e.g., silence)     → Lower bitrate (e.g., 32 kbps)
-	Complex passage (e.g., orchestra)  → Higher bitrate (e.g., 320 kbps)
-	FFmpeg's Quality Scale for AAC:
-
-	Code
-	-q:a VALUE    Where VALUE ranges from:
-	0.1 = Highest quality (larger file)
-	1   = Very good quality
-	2   = Good quality (recommended)
-	4   = Medium quality
-	6   = Low quality (smaller file)
-	Example FFmpeg commands showing different approaches:
-
-	bash
-	# CBR (Constant Bit Rate) - 192kbps always
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k "output.m4a"
-
-	# VBR (Quality-based) - varies bitrate based on content
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 "output.m4a"
-
-	# VBR with constraints (minimum and maximum bitrates)
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -minrate 128k -maxrate 320k "output.m4a"
-
-
-	Benefits of Quality-based VBR:
-
-	Better Quality-to-Size Ratio:
-
-	Uses more bits when needed
-	Saves space on simple passages
-	Overall more efficient
-	Quality Consistency:
-
-	Maintains consistent perceived quality
-	Rather than consistent bitrate
-	Better for variable content
-	File Size Benefits:
-
-
-	Use CBR when:
-	- Streaming is primary use
-	- Device compatibility is uncertain
-	- Exact file size is important
-
-	Use VBR when:
-	- Quality is priority
-	- Storage space is limited
-	- Content has varying complexity
-
-	For your WMA to M4A conversion, I'd recommend:
-
-	bash
-	# For best quality/size balance:
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"
-
-	# For maximum compatibility:
-	ffmpeg -i "input.wma" -c:a aac -b:a 192k -map_metadata 0 -movflags +faststart "output.m4a"
-
-	will 'ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a"' produce vbr output?
-	Yes, the command ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart "output.m4a" will produce VBR output, but there's an important caveat:
-
-	The behavior depends on which AAC encoder FFmpeg is using. Let me break it down:
-
-	Native FFmpeg AAC encoder (default):
-	When you specify -c:a aac without explicitly choosing an encoder
-	-q:a 2 will engage VBR mode
-	Quality range is 0.1 (highest) to 6 (lowest)
-	Will produce true VBR output
-	To verify VBR encoding is working:
-	bash
-	# Before conversion, add -t 30 to test with just first 30 seconds
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -map_metadata 0 -movflags +faststart -t 30 "test_output.m4a"
-
-	# Then check the output file's properties
-	ffprobe -i "test_output.m4a" -show_format | grep bit_rate
-
-	# More explicit VBR command
-	ffmpeg -i "input.wma" -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart "output.m4a"
-
-
-	How can I check AAC encoder available?  Are there preferences?
-	Let me help you check available AAC encoders and explain their differences.
-
-	To check which AAC encoders are available in your FFmpeg installation:
-
-	bash
-	ffmpeg -encoders | grep aac
-
-
-	AAC Encoder Preferences (from best to basic):
-
+FFmpeg
+	-b:a
+		You can use FFmpeg's -b:a flag to set the bitrate for the audio encoding. However, FFmpeg does not have a direct option to automatically match the source bitrate. Instead, you can use a script to extract the source bitrate and then use it for the output file.
+	-q:a
+		For the AAC codec in FFmpeg, the -q:a option specifies the quality level for Variable Bit Rate (VBR) encoding. The quality scale typically ranges from 1 to 5, where:
+			1 provides the highest quality and largest file size.
+			5 provides the lowest quality and smallest file size.
+AAC Encoder Preferences (from best to basic):
 	libfdk_aac (Fraunhofer FDK AAC):
-
-	Highest quality
-	Best VBR implementation
-	Not included in standard FFmpeg due to licensing
-	bash
-	# If available, use like this:
-	ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
-	VBR quality scale: 1 (highest) to 5 (lowest)
-
-	aac (Native FFmpeg AAC):
-
-	Included by default
-	Quality has improved significantly
-	Decent VBR implementation
-	bash
-	ffmpeg -i input.wma -c:a aac -q:a 2 output.m4a
-	VBR quality scale: 0.1 (highest) to 6 (lowest)
-
-
-	# For libfdk_aac (if available):
-	# High Quality VBR
-	ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 -map_metadata 0 -movflags +faststart output.m4a
-
-	# For native FFmpeg AAC:
-	# High Quality VBR
-	ffmpeg -i input.wma -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart output.m4a
-
-
-
+		Highest quality
+		Best VBR implementation
+		Not included in standard FFmpeg due to licensing
+		# If available, use like this:
+		ffmpeg -i inputFile -c:a libfdk_aac -vbr 3 outputFile.m4a
+		VBR quality scale: 1 (highest) to 5 (lowest)
+Conversions
 	# Convert MP3 to M4A (for better quality)
 	ffmpeg -i input.mp3 -c:a aac -q:a 2 output.m4a
-
-
-
-	To save a wma file to m4a, you gave this example: set FileName=%~n1 ffmpeg -i  %1 -c:a aac -b:a 192k %FileName%.m4a.  But the bitrate seems hard-coded.  How can direct ffmpeg to use the same bit rate of source?
-	You can use FFmpeg's -b:a flag to set the bitrate for the audio encoding. However, FFmpeg does not have a direct option to automatically match the source bitrate. Instead, you can use a script to extract the source bitrate and then use it for the output file.
-
-	Here's a Windows batch script that accomplishes this:
-
-
-	For the AAC codec in FFmpeg, the -q:a option specifies the quality level for Variable Bit Rate (VBR) encoding. The quality scale typically ranges from 1 to 5, where:
-
-	1 provides the highest quality and largest file size.
-	5 provides the lowest quality and smallest file size.
