@@ -900,3 +900,20 @@ Applications
 	Tag Editors
 		MusicBrainz Picard
 		Kid3
+FFMpeg Wrappers
+	https://github.com/rosenbjerg/FFMpegCore
+	https://www.nuget.org/packages/FFmpeg.AutoGen#readme-body-tab
+	https://github.com/Ruslan-B/FFmpeg.AutoGen
+NewSources - What to do with them?
+	For Now, Wait for PR
+		Maybe Cherry Pick later
+One Off Scripts - What to do with them?
+	Work through each of them
+	Add Tests Scripts?
+Review Recent Changes (Again!)
+Review Sprint Notes
+Review Tasks
+Update Notes?
+Update Plan
+
+One caveat worth noting: -vbr 5 with libfdk_aac can produce bitrates significantly higher than the source in some cases — since you're converting from lossy sources, -b:a %BitRate% (matching source) is arguably still the more sensible approach even with libfdk_aac, just with better quality at that bitrate than the native encoder would achieve.
