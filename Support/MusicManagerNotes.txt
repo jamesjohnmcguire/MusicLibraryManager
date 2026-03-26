@@ -881,3 +881,39 @@ Sample Audios
 	Sample.ape
 	Sample.flac
 	Sample.mka
+Issues
+	Test -af aresample=resampler=soxr, if so, use
+		ffmpeg -filters | findstr resampler
+	Get libfdk-aac
+		libfdk_aac — widely considered the best AAC encoder available in ffmpeg. Better quality than both at the same bitrate. However it's not included in standard ffmpeg builds due to licensing — requires a custom compile.
+
+		https://github.com/m-ab-s/media-autobuild_suite
+
+		Fraunhofer FDK AAC (libfdk_aac)
+		The Fraunhofer FDK AAC codec library. This is currently the highest-quality AAC encoder available with ffmpeg in Linux or Windows. Requires ffmpeg to be configured with --enable-libfdk-aac (and additionally --enable-nonfree if you're also using --enable-gpl).
+
+		Detailed information about the FDK AAC library (not FFmpeg specific) can be found at ​HydrogenAudio Knowledgebase: Fraunhofer FDK AAC: http://wiki.hydrogenaud.io/index.php?title=Fraunhofer_FDK_AAC
+Applications
+	Information
+		ffprobe
+		mp4info
+	Tag Editors
+		MusicBrainz Picard
+		Kid3
+FFMpeg Wrappers
+	https://github.com/rosenbjerg/FFMpegCore
+	https://www.nuget.org/packages/FFmpeg.AutoGen#readme-body-tab
+	https://github.com/Ruslan-B/FFmpeg.AutoGen
+NewSources - What to do with them?
+	For Now, Wait for PR
+		Maybe Cherry Pick later
+One Off Scripts - What to do with them?
+	Work through each of them
+	Add Tests Scripts?
+Review Recent Changes (Again!)
+Review Sprint Notes
+Review Tasks
+Update Notes?
+Update Plan
+
+One caveat worth noting: -vbr 5 with libfdk_aac can produce bitrates significantly higher than the source in some cases — since you're converting from lossy sources, -b:a %BitRate% (matching source) is arguably still the more sensible approach even with libfdk_aac, just with better quality at that bitrate than the native encoder would achieve.
