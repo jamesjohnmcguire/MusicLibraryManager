@@ -41,19 +41,6 @@ CBR (Constant Bit Rate) vs VBR (Variable Bit Rate)
 		- Quality is priority
 		- Storage space is limited
 		- Content has varying complexity
-	FFmpeg's Quality Scale for AAC:
-		-q:a VALUE    Where VALUE ranges from:
-			0.1 = Highest quality (larger file)
-			1   = Very good quality
-			2   = Good quality (recommended)
-			4   = Medium quality
-			6   = Low quality (smaller file)
-
-	Native FFmpeg AAC encoder (default):
-	When you specify -c:a aac without explicitly choosing an encoder
-	-q:a 2 will engage VBR mode
-	Quality range is 0.1 (highest) to 6 (lowest)
-	Will produce true VBR output
 	To verify VBR encoding is working:
 
 	# Before conversion, add -t 30 to test with just first 30 seconds
@@ -74,22 +61,68 @@ AAC Encoders
 			Highest quality
 			Best VBR implementation
 			Not included in standard FFmpeg due to licensing
-			# If available, use like this:
-			ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 output.m4a
+			If available, use like this:
+				# High Quality VBR
+				ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 -map_metadata 0 -movflags +faststart output.m4a
 			VBR quality scale: 1 (highest) to 5 (lowest)
-
-			# For libfdk_aac (if available):
-			# High Quality VBR
-			ffmpeg -i input.wma -c:a libfdk_aac -vbr 3 -map_metadata 0 -movflags +faststart output.m4a
-
-		aac (Native FFmpeg AAC):
+			Scale: 1 to 5, where higher = better (opposite direction)
+			Highest quality: -q:a 5
+		aac (Native FFmpeg AAC - default):
 			Included by default
 			Quality has improved significantly
 			Decent VBR implementation
 
-			ffmpeg -i input.wma -c:a aac -q:a 2 output.m4a
+			# High Quality VBR
+			ffmpeg -i input.wma -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart output.m4a
 			VBR quality scale: 0.1 (highest) to 6 (lowest)
 
-		# For native FFmpeg AAC:
-		# High Quality VBR
-		ffmpeg -i input.wma -c:a aac -q:a 2 -vbr on -map_metadata 0 -movflags +faststart output.m4a
+			FFmpeg's Quality Scale for AAC:
+				-q:a VALUE    Where VALUE ranges from:
+					0.1 = Highest quality (larger file)
+					1   = Very good quality
+					2   = Good quality (recommended)
+					4   = Medium quality
+					6   = Low quality (smaller file)
+				Native aac encoder (-c:a aac)
+					Scale: 0.1 to 2, where lower = better
+					Highest quality: -q:a 0.1
+				When you specify -c:a aac without explicitly choosing an encoder
+				-q:a 2 will engage VBR mode
+				Quality range is 0.1 (highest) to 6 (lowest)
+				Will produce true VBR output
+		aac_mf encoder
+			Scale: 1 to 5 (approximately), where lower = better
+			Highest quality: -q:a 1
+		libmp3lame (MP3, for reference)
+			Scale: 0 to 9, where lower = better
+			Highest quality: -q:a 0
+Conversions
+	Flac to AAC
+		Low Priority
+		Loss of Quality
+		Beginning point
+			ffmpeg -i "%~1" -c:a aac -b:a 192k "%OUTPUT_FILE%"
+	FFMpeg Options
+		-ar 44100
+			Forces the output sample rate to 44,100 Hz. Most music is already at 44.1kHz, so this is usually a no-op. It matters when:
+
+			Source is at 48kHz (common with audio ripped from video/TV sources)
+			Source is high-res at 96kHz or 192kHz
+
+			For a pure music library, 44.1kHz is the standard (CD quality). If your files came from music sources they're almost certainly already 44.1kHz, so -ar 44100 would be redundant. You can safely omit it unless you know you have mixed sample rates.
+		-af aresample=resampler=soxr
+			This only activates if a sample rate conversion actually happens. If input and output are already the same rate, it does nothing.
+			When resampling is needed, ffmpeg's default resampler (swr) is decent but SoX Resampler (soxr) is considered higher quality — better frequency response, lower noise during the conversion math.
+			The catch: soxr support is a compile-time option. It's included in most standard ffmpeg builds (the official ffmpeg.org builds have it), but not guaranteed.
+		-movflags +faststart
+			Moves the MP4 index (moov atom) to the beginning of the file instead of the end. Useful for streaming/web playback — lets a player start before the file fully downloads. For a local music library it doesn't matter much, but it's harmless and considered good practice.
+		-c:v copy
+			Copies the video/art stream as-is without re-encoding it.
+			This way:
+				If album art exists → it's preserved
+				If no art → ffmpeg just skips it, no error
+			One caveat: Occasionally WMA files store art in a format that doesn't map cleanly into M4A. If you ever see warnings about video stream incompatibility, you can re-encode the art specifically:
+				-c:v mjpeg
+			But -c:v copy works the vast majority of the time and is the right default for a batch script.
+		-map_metadata 0
+			Copies all metadata (artist, album, title, year, etc.) from the input file to the output. This one is worth adding — without it, tags can be dropped or inconsistently carried over depending on the container.
