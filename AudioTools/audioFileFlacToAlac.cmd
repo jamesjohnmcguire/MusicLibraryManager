@@ -27,7 +27,7 @@ IF NOT "%~2"=="" SET outputFile=%~2
 ffmpeg -i "%source%" -c:a alac -c:v copy -map_metadata 0 -map 0 "%outputFile%"
 
 IF %ERRORLEVEL% EQU 0 ECHO Conversion successful: %outputFile%
-IF %ERRORLEVEL% NEQ 0 ECHO Conversion failed.
+IF %ERRORLEVEL% NEQ 0 ECHO Conversion failed
 
 GOTO finish
 
