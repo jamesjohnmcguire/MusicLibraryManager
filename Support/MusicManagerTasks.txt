@@ -4,6 +4,7 @@ Sprints
 	Start Using Chromaprints
 	Refactor iTunes Support as PlugIn
 Music Library Manager Tasks
+	Add comment, source Tags upon conversions
 	Test -af aresample=resampler=soxr
 	Add Support for WMA Lossless and WMA Pro
 	Add MediaInfo Support

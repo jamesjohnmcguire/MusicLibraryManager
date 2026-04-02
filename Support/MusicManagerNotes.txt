@@ -917,3 +917,6 @@ Update Notes?
 Update Plan
 
 One caveat worth noting: -vbr 5 with libfdk_aac can produce bitrates significantly higher than the source in some cases — since you're converting from lossy sources, -b:a %BitRate% (matching source) is arguably still the more sensible approach even with libfdk_aac, just with better quality at that bitrate than the native encoder would achieve.
+FFMpeg
+	Build
+		https://github.com/m-ab-s/media-autobuild_suite?tab=readme-ov-file
