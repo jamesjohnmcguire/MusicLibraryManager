@@ -344,12 +344,10 @@ Tools
 		TuneUp Media: An iTunes plugin that helps clean up your music library by fixing mislabeled songs, finding album artwork, and more.
 Usage
 	Examples
-		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
 		clean C:\Users\JamesMc\Music\iTunes\Entertainment
+		clean --no-update-tags
 		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment
 		extract-tags C:\Users\JamesMc\Music\iTunes\Entertainment\Music
-		extract-tags
-		clean --no-update-tags
 Tags
 	https://github.com/Martchus/tageditor
 
