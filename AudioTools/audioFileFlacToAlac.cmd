@@ -13,9 +13,8 @@ IF "%~1"=="" GOTO :error
 
 set "source=%~1"
 
-IF "%~2"=="" SET "outputFile=%~dp1%~n1.flac.m4a"
+IF "%~2"=="" SET "outputFile=%~dp1%~n1.m4a"
 IF NOT "%~2"=="" SET outputFile=%~2
-
 
 :: ffmpeg          - The Program
 :: -i "%source%"        - Specifies the Input file
@@ -24,7 +23,7 @@ IF NOT "%~2"=="" SET outputFile=%~2
 :: -map_metadata 0 - Copy Metadata and Tags, as well
 :: -map
 ::"%outputFile%"
-ffmpeg -i "%source%" -c:a alac -c:v copy -map_metadata 0 -map 0 "%outputFile%"
+ffmpeg -i "%source%" -movflags +faststart -c:a alac -c:v copy -map 0:a -map_metadata 0 -metadata source="FLAC" -metadata comment="Converted from FLAC" "%outputFile%"
 
 IF %ERRORLEVEL% EQU 0 ECHO Conversion successful: %outputFile%
 IF %ERRORLEVEL% NEQ 0 ECHO Conversion failed
