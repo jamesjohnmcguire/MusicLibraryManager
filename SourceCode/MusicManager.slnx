@@ -4,25 +4,25 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/ChromaPrint/">
-    <Project Path="ChromaPrint/src/chromaprint.vcxproj">
+    <Project Path="ChromaPrint/src/chromaprint.vcxproj" Id="28c68632-2402-3743-a94e-49a675b759ad">
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="ChromaPrint/src/chromaprint_objs.vcxproj">
+    <Project Path="ChromaPrint/src/chromaprint_objs.vcxproj" Id="e0425213-c05d-35bb-a44e-c1a5cd49f5b2">
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="ChromaPrint/src/cmd/fpcalc.vcxproj">
+    <Project Path="ChromaPrint/src/cmd/fpcalc.vcxproj" Id="de0e0bb9-13f1-31d6-9503-201d1cc0b096">
       <BuildDependency Project="ChromaPrint/src/chromaprint.vcxproj" />
       <BuildDependency Project="ChromaPrint/src/chromaprint_objs.vcxproj" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="ChromaPrint/tests/all_tests.vcxproj">
+    <Project Path="ChromaPrint/tests/all_tests.vcxproj" Id="a02086b8-5ea7-3255-9a50-b0545ed4ea38">
       <Platform Project="x64" />
     </Project>
-    <Project Path="ChromaPrint/tests/ChromaPrintTestsNew.vcxproj">
+    <Project Path="ChromaPrint/tests/ChromaPrintTestsNew.vcxproj" Id="e6c35ff8-0236-450e-acd2-581adf0c3eca">
       <BuildDependency Project="ChromaPrint/tests/gtest.vcxproj" />
       <Platform Project="x64" />
     </Project>
-    <Project Path="ChromaPrint/tests/gtest.vcxproj">
+    <Project Path="ChromaPrint/tests/gtest.vcxproj" Id="12fb1db9-de40-34ab-8cba-0884bb37b516">
       <Platform Project="x64" />
     </Project>
   </Folder>
@@ -31,8 +31,8 @@
     <File Path="CodeAnalysis.ruleset" />
     <File Path="Directory.Build.props" />
   </Folder>
-  <Project Path="AudioSignature.Tests/AudioSignature.Tests.vcxproj" />
-  <Project Path="AudioSignature/AudioSignature.vcxproj">
+  <Project Path="AudioSignature.Tests/AudioSignature.Tests.vcxproj" Id="9effe0ae-5bad-4582-8505-4d82aa48f21a" />
+  <Project Path="AudioSignature/AudioSignature.vcxproj" Id="b3b4e7e5-5bc3-36ba-9d00-003c6dd6a5a4">
     <BuildDependency Project="ChromaPrint/src/chromaprint.vcxproj" />
     <BuildDependency Project="ChromaPrint/src/chromaprint_objs.vcxproj" />
     <Platform Solution="*|x86" Project="x86" />
@@ -50,7 +50,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="NativeTestConsole/NativeTestConsole.vcxproj" />
+  <Project Path="NativeTestConsole/NativeTestConsole.vcxproj" Id="b238ccbf-125f-456a-96fb-a7c03ac083b7" />
   <Project Path="RulesLibrary.Tests/RulesLibrary.Tests.csproj" />
   <Project Path="RulesLibrary/RulesLibrary.csproj">
     <Platform Solution="*|x86" Project="x86" />
