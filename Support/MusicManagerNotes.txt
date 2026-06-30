@@ -918,3 +918,9 @@ One caveat worth noting: -vbr 5 with libfdk_aac can produce bitrates significant
 FFMpeg
 	Build
 		https://github.com/m-ab-s/media-autobuild_suite?tab=readme-ov-file
+Music Manager
+	AudioSignature	Cannot open include file: 'spdlog/spdlog.h': No such file or directory
+	ChromaPrint.Tests	cannot open file '..\src\Debug\chromaprint.lib'
+	NativeTestConsole	cannot open file 'C:\Users\JamesMc\Data\Clients\DigitalZenWorks\MusicLibraryManager\SourceCode\Bin\Debug\x64\AudioSignature.lib'
+	fpCalc	Cannot open include file: 'libavcodec/avcodec.h': No such file or directory
+	Unzip the files somewhere accessible on your PATH
